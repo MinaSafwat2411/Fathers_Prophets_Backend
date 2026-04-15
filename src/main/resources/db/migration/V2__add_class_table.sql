@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS classes
+(
+    id
+    INT
+    GENERATED
+    ALWAYS AS
+    IDENTITY
+    PRIMARY
+    KEY,
+    name
+    VARCHAR(255) NOT NULL,
+    image VARCHAR(255)
+);
