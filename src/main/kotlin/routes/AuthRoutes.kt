@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.routes
 
 import com.fathersprophets.backend.models.request.auth.LoginRequest
+import com.fathersprophets.backend.models.request.auth.RefreshRequest
 import com.fathersprophets.backend.models.request.auth.RegisterRequest
 import com.fathersprophets.backend.services.IAuthService
-import com.fathersprophets.backend.utils.Localization
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -36,25 +38,27 @@ fun Route.authRoutes(authService: IAuthService) {
         }
 
         post("/refresh-token") {
+            val request = call.receive<RefreshRequest>()
             val lang = call.request.header("Accept-Language") ?: "en"
-            // TODO: Implement refresh token logic in IAuthService
+            val result = authService.refreshToken(request.refreshToken, lang)
+
             call.respond(
-                com.fathersprophets.backend.models.ApiResponse<Nothing>(
-                    success = false,
-                    message = Localization.get("not_implemented", lang)
-                )
+                HttpStatusCode.OK,
+                result
             )
         }
 
-        post("/logout") {
-            val lang = call.request.header("Accept-Language") ?: "en"
-            // TODO: Implement logout logic if needed (e.g., blacklisting tokens)
-            call.respond(
-                com.fathersprophets.backend.models.ApiResponse<Nothing>(
-                    success = true,
-                    message = Localization.get("logout_success", lang)
-                )
-            )
+        authenticate("auth-jwt") {
+            post("/logout") {
+                val principal = call.principal<JWTPrincipal>()
+                val userId = principal?.payload?.getClaim("userId")?.asInt()
+                    ?: return@post call.respond(HttpStatusCode.Unauthorized)
+
+                val lang = call.request.header("Accept-Language") ?: "en"
+                val result = authService.logout(userId, lang)
+
+                call.respond(HttpStatusCode.OK, result)
+            }
         }
     }
 }

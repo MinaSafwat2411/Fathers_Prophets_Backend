@@ -4,8 +4,10 @@ import com.fathersprophets.backend.database.dao.UserDao
 import com.fathersprophets.backend.exceptions.ConflictException
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.request.auth.LoginRequest
+import com.fathersprophets.backend.models.request.auth.RefreshRequest
 import com.fathersprophets.backend.models.request.auth.RegisterRequest
 import com.fathersprophets.backend.models.response.auth.LoginResponse
+import com.fathersprophets.backend.models.response.auth.RefreshResponse
 import com.fathersprophets.backend.models.response.users.UserResponse
 import com.fathersprophets.backend.utils.JwtConfig
 import com.fathersprophets.backend.utils.Localization
@@ -46,7 +48,12 @@ class AuthRepository(
             return ApiResponse(false, Localization.get("invalid_credentials", lang))
         }
 
-        val token = JwtConfig.generateAccessToken(user.id, user.username)
+        val token = JwtConfig.generateAccessToken(
+            user.id,
+            user.username,
+            user.role,
+            user.isReviewed == true
+        )
         val refreshToken = JwtConfig.generateRefreshToken(user.id)
 
         userDao.updateToken(user.id, token)
@@ -81,4 +88,43 @@ class AuthRepository(
             )
         )
     }
+
+    override suspend fun refreshToken(refresh: RefreshRequest): ApiResponse<RefreshResponse> {
+        val userId = JwtConfig.verifyRefreshToken(refresh.refreshToken)
+            ?: return ApiResponse(false, Localization.get("invalid_token", lang))
+
+        val user = userDao.findById(userId)
+            ?: return ApiResponse(false, Localization.get("user_not_found", lang))
+
+        if (user.refreshToken != refresh.refreshToken) {
+            return ApiResponse(false, Localization.get("invalid_token", lang))
+        }
+
+        val newToken = JwtConfig.generateAccessToken(
+            user.id,
+            user.username,
+            user.role,
+            user.isReviewed == true
+        )
+        val newRefreshToken = JwtConfig.generateRefreshToken(user.id)
+
+        userDao.updateToken(user.id, newToken)
+        userDao.updateRefreshToken(user.id, newRefreshToken)
+
+        return ApiResponse(
+            success = true,
+            message = Localization.get("token_refreshed", lang),
+            data = RefreshResponse(
+                token = newToken,
+                refreshToken = newRefreshToken
+            )
+        )
+    }
+
+    override suspend fun logout(userId: Int): ApiResponse<Nothing> {
+        userDao.updateToken(userId, "")
+        userDao.updateRefreshToken(userId, "")
+        return ApiResponse(success = true, message = Localization.get("logout_success", lang))
+    }
+
 }

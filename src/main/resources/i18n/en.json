@@ -4,5 +4,8 @@
   "username_exists": "Username already exists",
   "register_success": "Registration successful",
   "not_implemented": "Not implemented",
-  "logout_success": "Logged out successfully"
+  "logout_success": "Logged out successfully",
+  "invalid_token": "Invalid token",
+  "user_not_found": "User not found",
+  "permission_denied": "You don't have permission"
 }

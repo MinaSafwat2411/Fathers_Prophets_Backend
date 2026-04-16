@@ -18,15 +18,15 @@ object UsersTable : Table("users") {
     val profile = varchar("profile", 255).nullable()
     val isReviewed = bool("is_reviewed").nullable()
     val role = varchar("role", 255)
-    val fcmToken = varchar("fcm_token", 255).nullable()
+    val fcmToken = varchar("fcm_token", 512).nullable()
     val classId = integer("class_id").references(ClassesTable.id, onDelete = ReferenceOption.SET_NULL).nullable()
     val chats = varchar("chats", 255).nullable()
     val memberId = varchar("member_id", 100).nullable()
     val skipMembership = bool("skip_membership").nullable()
     val comments = varchar("comments", 255).nullable()
     val passwordHash = varchar("password_hash", 255)
-    val token = varchar("token", 255).nullable()
-    val refreshToken = varchar("refresh_token", 255).nullable()
+    val token = varchar("token", 512).nullable()
+    val refreshToken = varchar("refresh_token", 512).nullable()
 
     override val primaryKey = PrimaryKey(id)
 }

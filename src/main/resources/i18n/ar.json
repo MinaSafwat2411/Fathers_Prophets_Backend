@@ -4,5 +4,8 @@
   "username_exists": "اسم المستخدم موجود بالفعل",
   "register_success": "تم التسجيل بنجاح",
   "not_implemented": "غير مطبق",
-  "logout_success": "تم تسجيل الخروج بنجاح"
+  "logout_success": "تم تسجيل الخروج بنجاح",
+  "invalid_token": "رمز غير صالح",
+  "user_not_found": "المستخدم غير موجود",
+  "permission_denied": "ليس لديك صلاحية"
 }

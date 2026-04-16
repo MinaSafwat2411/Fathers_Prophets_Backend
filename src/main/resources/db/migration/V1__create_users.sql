@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS users
     'quiz'
 )
     ),
-    fcm_token       VARCHAR(255),
+    fcm_token       VARCHAR(512),
     class_id        INT REFERENCES classes
 (
     id
@@ -58,6 +58,6 @@ CREATE TABLE IF NOT EXISTS users
     skip_membership BOOLEAN,
     comments        VARCHAR(255),
     password_hash   VARCHAR(255) NOT NULL,
-    token           VARCHAR(255),
-    refresh_token   VARCHAR(255)
+    token           VARCHAR(512),
+    refresh_token   VARCHAR(512)
     );

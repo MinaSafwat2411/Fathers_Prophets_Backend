@@ -25,7 +25,10 @@ class UserDao {
         profile = row[UsersTable.profile],
         isReviewed = row[UsersTable.isReviewed],
         classId = row[UsersTable.classId],
-        memberId = row[UsersTable.memberId]
+        memberId = row[UsersTable.memberId],
+        token = row[UsersTable.token],
+        refreshToken = row[UsersTable.refreshToken],
+        fcmToken = row[UsersTable.fcmToken],
     )
     fun findByUsername(username: String) = transaction {
         UsersTable.selectAll().where { UsersTable.username eq username }
@@ -78,5 +81,15 @@ class UserDao {
         UsersTable.update({ UsersTable.id eq userId }) {
             it[UsersTable.fcmToken] = fcm
         }
+    }
+
+    fun findByClassId(classId: Int) = transaction {
+        UsersTable.selectAll().where { UsersTable.classId eq classId }
+            .map { resultRowToUser(it) }
+    }
+
+    fun findByRole(role: String) = transaction {
+        UsersTable.selectAll().where { UsersTable.role eq role }
+            .map { resultRowToUser(it) }
     }
 }

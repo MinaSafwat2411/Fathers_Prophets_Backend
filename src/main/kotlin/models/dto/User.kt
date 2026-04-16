@@ -17,5 +17,8 @@ data class User(
     val profile: String?,
     val isReviewed: Boolean?,
     val classId: Int?,
-    val memberId: String?
+    val memberId: String?,
+    val token : String?,
+    val refreshToken : String?,
+    val fcmToken : String?,
 )

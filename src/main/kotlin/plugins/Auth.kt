@@ -1,6 +1,9 @@
 package com.fathersprophets.backend.plugins
 
+import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.utils.JwtConfig.verifier
+import com.fathersprophets.backend.utils.Localization
+import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
@@ -20,12 +23,10 @@ fun Application.configureAuth() {
             verifier(verifier)
 
             validate { credential ->
+                val username = credential.payload.getClaim("username").asString()
+                val userId = credential.payload.getClaim("userId").asInt()
 
-                val username = credential.payload
-                    .getClaim("username")
-                    .asString()
-
-                if (username.isNullOrEmpty()) {
+                if (username.isNullOrEmpty() || userId == null) {
                     null
                 } else {
                     JWTPrincipal(credential.payload)
@@ -33,11 +34,12 @@ fun Application.configureAuth() {
             }
 
             challenge { _, _ ->
+                val lang = call.request.headers["Accept-Language"] ?: "en"
                 call.respond(
-                    io.ktor.http.HttpStatusCode.Unauthorized,
-                    mapOf(
-                        "success" to false,
-                        "message" to "Invalid or expired token"
+                    HttpStatusCode.Unauthorized,
+                    ApiResponse<Nothing>(
+                        success = false,
+                        message = Localization.get("invalid_token", lang)
                     )
                 )
             }
