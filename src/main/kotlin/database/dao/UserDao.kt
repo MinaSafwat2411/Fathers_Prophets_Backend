@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.database.dao
 
 import com.fathersprophets.backend.database.tables.UsersTable
+import com.fathersprophets.backend.models.dto.User
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.update
@@ -9,8 +10,23 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDate
 
 class UserDao {
-    private fun resultRowToUser(row: ResultRow) = row
-
+    private fun resultRowToUser(row: ResultRow) = User(
+        id = row[UsersTable.id],
+        name = row[UsersTable.name],
+        username = row[UsersTable.username],
+        passwordHash = row[UsersTable.passwordHash],
+        role = row[UsersTable.role],
+        email = row[UsersTable.email],
+        phone = row[UsersTable.phone],
+        address = row[UsersTable.address],
+        birthDate = row[UsersTable.birthDate],
+        fatherName = row[UsersTable.fatherName],
+        isShams = row[UsersTable.isShams],
+        profile = row[UsersTable.profile],
+        isReviewed = row[UsersTable.isReviewed],
+        classId = row[UsersTable.classId],
+        memberId = row[UsersTable.memberId]
+    )
     fun findByUsername(username: String) = transaction {
         UsersTable.selectAll().where { UsersTable.username eq username }
             .singleOrNull()?.let { resultRowToUser(it) }

@@ -13,9 +13,6 @@ val appModule = module {
     single<IAuthRepository> {
         AuthRepository(
             userDao = get(),
-            jwtSecret = "secret",
-            jwtIssuer = "http://0.0.0.0:8080/",
-            jwtAudience = "http://0.0.0.0:8080/"
         )
     }
 

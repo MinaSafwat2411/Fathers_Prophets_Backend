@@ -4,6 +4,7 @@ import com.fathersprophets.backend.database.config.DatabaseFactory
 import com.fathersprophets.backend.plugins.configureDI
 import com.fathersprophets.backend.plugins.configureRouting
 import com.fathersprophets.backend.plugins.configureSerialization
+import com.fathersprophets.backend.plugins.configureStatusPages
 import com.fathersprophets.backend.utils.Localization
 import io.ktor.server.application.*
 
@@ -15,6 +16,7 @@ fun Application.module() {
     Localization.load()
     DatabaseFactory.init()
     configureDI()
+    configureStatusPages()
     configureRouting()
     configureSerialization()
 }

@@ -1,33 +1,45 @@
 package com.fathersprophets.backend.plugins
 
-import com.auth0.jwt.JWT
-import com.auth0.jwt.algorithms.Algorithm
+import com.fathersprophets.backend.utils.JwtConfig.verifier
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
+import io.ktor.server.response.*
 
 fun Application.configureAuth() {
-    val jwtSecret = environment.config.propertyOrNull("jwt.secret")?.getString() ?: "secret"
-    val jwtIssuer = environment.config.propertyOrNull("jwt.issuer")?.getString() ?: "http://0.0.0.0:8080/"
-    val jwtAudience = environment.config.propertyOrNull("jwt.audience")?.getString() ?: "http://0.0.0.0:8080/"
-    val jwtRealm = environment.config.propertyOrNull("jwt.realm")?.getString() ?: "Access to 'fathers-prophets'"
+
+    val jwtRealm = environment.config.propertyOrNull("jwt.realm")
+        ?.getString() ?: "Access to 'fathers-prophets'"
 
     install(Authentication) {
+
         jwt("auth-jwt") {
+
             realm = jwtRealm
-            verifier(
-                JWT
-                    .require(Algorithm.HMAC256(jwtSecret))
-                    .withAudience(jwtAudience)
-                    .withIssuer(jwtIssuer)
-                    .build()
-            )
+
+            verifier(verifier)
+
             validate { credential ->
-                if (credential.payload.audience.contains(jwtAudience)) {
-                    JWTPrincipal(credential.payload)
-                } else {
+
+                val username = credential.payload
+                    .getClaim("username")
+                    .asString()
+
+                if (username.isNullOrEmpty()) {
                     null
+                } else {
+                    JWTPrincipal(credential.payload)
                 }
+            }
+
+            challenge { _, _ ->
+                call.respond(
+                    io.ktor.http.HttpStatusCode.Unauthorized,
+                    mapOf(
+                        "success" to false,
+                        "message" to "Invalid or expired token"
+                    )
+                )
             }
         }
     }

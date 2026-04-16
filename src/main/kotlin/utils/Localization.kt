@@ -3,17 +3,24 @@ package com.fathersprophets.backend.utils
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import java.io.File
 
 object Localization {
+
     private val translations = mutableMapOf<String, Map<String, String>>()
 
     fun load() {
-        val langs = listOf("en", "ar")
+        val langList = listOf("en", "ar")
 
-        langs.forEach { lang ->
-            val file = File("resources/i18n/$lang.json")
-            val json = Json.parseToJsonElement(file.readText()).jsonObject
+        langList.forEach { lang ->
+
+            val stream = this::class.java
+                .classLoader
+                .getResourceAsStream("i18n/$lang.json")
+                ?: throw Exception("Missing file: i18n/$lang.json")
+
+            val text = stream.bufferedReader().use { it.readText() }
+
+            val json = Json.parseToJsonElement(text).jsonObject
 
             translations[lang] = json.mapValues { it.value.jsonPrimitive.content }
         }
