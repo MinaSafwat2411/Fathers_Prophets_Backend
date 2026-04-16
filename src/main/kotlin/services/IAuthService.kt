@@ -6,6 +6,6 @@ import com.fathersprophets.backend.models.request.auth.RegisterRequest
 import com.fathersprophets.backend.models.response.auth.LoginResponse
 
 interface IAuthService {
-    suspend fun register(request: RegisterRequest): ApiResponse<Nothing>
-    suspend fun login(request: LoginRequest): ApiResponse<LoginResponse>
+    suspend fun register(request: RegisterRequest, lang: String = "en"): ApiResponse<Nothing>
+    suspend fun login(request: LoginRequest, lang: String = "en"): ApiResponse<LoginResponse>
 }

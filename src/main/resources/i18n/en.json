@@ -1,3 +1,8 @@
 {
-  "login_success": "Login successful"
+  "login_success": "Login successful",
+  "invalid_credentials": "Invalid username or password",
+  "username_exists": "Username already exists",
+  "register_success": "Registration successful",
+  "not_implemented": "Not implemented",
+  "logout_success": "Logged out successfully"
 }

@@ -1,3 +1,8 @@
 {
-  "login_success": "تم تسجيل الدخول بنجاح"
+  "login_success": "تم تسجيل الدخول بنجاح",
+  "invalid_credentials": "اسم المستخدم أو كلمة المرور غير صحيحة",
+  "username_exists": "اسم المستخدم موجود بالفعل",
+  "register_success": "تم التسجيل بنجاح",
+  "not_implemented": "غير مطبق",
+  "logout_success": "تم تسجيل الخروج بنجاح"
 }

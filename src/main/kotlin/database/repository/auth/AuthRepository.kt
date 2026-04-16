@@ -8,15 +8,17 @@ import com.fathersprophets.backend.models.request.auth.RegisterRequest
 import com.fathersprophets.backend.models.response.auth.LoginResponse
 import com.fathersprophets.backend.models.response.users.UserResponse
 import com.fathersprophets.backend.utils.JwtConfig
+import com.fathersprophets.backend.utils.Localization
 import com.fathersprophets.backend.utils.PasswordUtil
 
 class AuthRepository(
-    private val userDao: UserDao
+    val userDao: UserDao,
+    private val lang: String = "en"
 ) : IAuthRepository {
     override suspend fun register(request: RegisterRequest): ApiResponse<Nothing> {
         val existingUser = userDao.findByUsername(request.username)
         if (existingUser != null) {
-            throw ConflictException("Username already exists")
+            throw ConflictException(Localization.get("username_exists", lang))
         }
 
         val passwordHash = PasswordUtil.hashPassword(request.password)
@@ -31,17 +33,17 @@ class AuthRepository(
             )
         )
 
-        return ApiResponse(success = true, message = "Registration successful")
+        return ApiResponse(success = true, message = Localization.get("register_success", lang))
     }
 
     override suspend fun login(request: LoginRequest): ApiResponse<LoginResponse> {
 
         val user = userDao.findByUsername(request.username)
-            ?: return ApiResponse(false, "Invalid username or password")
+            ?: return ApiResponse(false, Localization.get("invalid_credentials", lang))
 
 
         if (!PasswordUtil.checkPassword(request.password, user.passwordHash)) {
-            return ApiResponse(false, "Invalid username or password")
+            return ApiResponse(false, Localization.get("invalid_credentials", lang))
         }
 
         val token = JwtConfig.generateAccessToken(user.id, user.username)
@@ -71,7 +73,7 @@ class AuthRepository(
 
         return ApiResponse(
             success = true,
-            message = "Login successful",
+            message = Localization.get("login_success", lang),
             data = LoginResponse(
                 user = userResponse,
                 token = token,
