@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users
     email           VARCHAR(255) UNIQUE,
     phone           VARCHAR(50),
     address         VARCHAR(255),
-    birth_date      DATE,
+    birth_date      VARCHAR(255),
     father_name     VARCHAR(255),
     is_shams        BOOLEAN,
     profile         VARCHAR(255),
@@ -53,7 +53,6 @@ CREATE TABLE IF NOT EXISTS users
 (
     id
 ),
-    chats           VARCHAR(255),
     member_id       VARCHAR(100),
     skip_membership BOOLEAN,
     comments        VARCHAR(255),

@@ -7,5 +7,11 @@
   "logout_success": "Logged out successfully",
   "invalid_token": "Invalid token",
   "user_not_found": "User not found",
-  "permission_denied": "You don't have permission"
+  "permission_denied": "You don't have permission",
+  "invalid_or_expired_token": "Invalid or expired token",
+  "user_found": "User found",
+  "user_added_success": "User added successfully",
+  "update_success": "Updated successfully",
+  "delete_success": "Deleted successfully",
+  "users_found": "Users found"
 }

@@ -7,5 +7,11 @@
   "logout_success": "تم تسجيل الخروج بنجاح",
   "invalid_token": "رمز غير صالح",
   "user_not_found": "المستخدم غير موجود",
-  "permission_denied": "ليس لديك صلاحية"
+  "permission_denied": "ليس لديك صلاحية",
+  "invalid_or_expired_token": "رمز غير صالح أو منتهي الصلاحية",
+  "user_found": "تم العثور على المستخدم",
+  "user_added_success": "تمت إضافة المستخدم بنجاح",
+  "update_success": "تم التحديث بنجاح",
+  "delete_success": "تم الحذف بنجاح",
+  "users_found": "تم العثور على المستخدمين"
 }

@@ -47,4 +47,9 @@ class ClassDao {
         }
     }
 
+    fun getClassMember(classId: Int) = transaction {
+        UsersTable.selectAll().where { UsersTable.classId eq classId }
+            .map { resultRowToClass(it) }
+    }
+
 }

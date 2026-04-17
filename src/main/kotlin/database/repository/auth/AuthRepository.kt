@@ -3,6 +3,7 @@ package com.fathersprophets.backend.database.repository.auth
 import com.fathersprophets.backend.database.dao.UserDao
 import com.fathersprophets.backend.exceptions.ConflictException
 import com.fathersprophets.backend.models.ApiResponse
+import com.fathersprophets.backend.models.dto.User
 import com.fathersprophets.backend.models.request.auth.LoginRequest
 import com.fathersprophets.backend.models.request.auth.RefreshRequest
 import com.fathersprophets.backend.models.request.auth.RegisterRequest
@@ -26,12 +27,13 @@ class AuthRepository(
         val passwordHash = PasswordUtil.hashPassword(request.password)
 
         userDao.createUser(
-            mapOf(
-                "name" to request.name,
-                "username" to request.username,
-                "password_hash" to passwordHash,
-                "role" to "member",
-                "is_reviewed" to false
+            User(
+                id = 0,
+                name = request.name,
+                username = request.username,
+                passwordHash = passwordHash,
+                role = "member",
+                isReviewed = false,
             )
         )
 
@@ -69,7 +71,7 @@ class AuthRepository(
             email = user.email,
             phone = user.phone,
             address = user.address,
-            birthDate = user.birthDate?.toString(),
+            birthDate = user.birthDate,
             fatherName = user.fatherName,
             isShams = user.isShams,
             profile = user.profile,

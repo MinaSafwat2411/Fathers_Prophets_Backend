@@ -2,12 +2,13 @@ package com.fathersprophets.backend.database.dao
 
 import com.fathersprophets.backend.database.tables.UsersTable
 import com.fathersprophets.backend.models.dto.User
-import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.update
-import org.jetbrains.exposed.sql.selectAll
+import com.fathersprophets.backend.models.request.users.UpdateEmailRequest
+import com.fathersprophets.backend.models.request.users.UpdatePasswordRequest
+import com.fathersprophets.backend.models.request.users.UpdatePhoneRequest
+import com.fathersprophets.backend.models.request.users.UpdateProfileRequest
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.time.LocalDate
 
 class UserDao {
     private fun resultRowToUser(row: ResultRow) = User(
@@ -19,7 +20,7 @@ class UserDao {
         email = row[UsersTable.email],
         phone = row[UsersTable.phone],
         address = row[UsersTable.address],
-        birthDate = row[UsersTable.birthDate],
+        birthDate = row[UsersTable.birthDate].toString(),
         fatherName = row[UsersTable.fatherName],
         isShams = row[UsersTable.isShams],
         profile = row[UsersTable.profile],
@@ -29,7 +30,9 @@ class UserDao {
         token = row[UsersTable.token],
         refreshToken = row[UsersTable.refreshToken],
         fcmToken = row[UsersTable.fcmToken],
+        skipMembership = row[UsersTable.skipMembership]
     )
+
     fun findByUsername(username: String) = transaction {
         UsersTable.selectAll().where { UsersTable.username eq username }
             .singleOrNull()?.let { resultRowToUser(it) }
@@ -40,28 +43,13 @@ class UserDao {
             .singleOrNull()?.let { resultRowToUser(it) }
     }
 
-    fun createUser(data: Map<String, Any?>) = transaction {
+    fun createUser(user: User) = transaction {
         UsersTable.insert {
-            it[UsersTable.name] = data["name"] as String
-            it[UsersTable.username] = data["username"] as String
-            it[UsersTable.passwordHash] = data["password_hash"] as String
-            it[UsersTable.role] = data["role"] as String
-            it[UsersTable.email] = data["email"] as? String
-            it[UsersTable.phone] = data["phone"] as? String
-            it[UsersTable.address] = data["address"] as? String
-            it[UsersTable.birthDate] = data["birth_date"] as? LocalDate
-            it[UsersTable.fatherName] = data["father_name"] as? String
-            it[UsersTable.isShams] = data["is_shams"] as? Boolean
-            it[UsersTable.profile] = data["profile"] as? String
-            it[UsersTable.isReviewed] = data["is_reviewed"] as? Boolean
-            it[UsersTable.fcmToken] = data["fcm_token"] as? String
-            it[UsersTable.classId] = data["class_id"] as? Int
-            it[UsersTable.chats] = data["chats"] as? String
-            it[UsersTable.memberId] = data["member_id"] as? String
-            it[UsersTable.skipMembership] = data["skip_membership"] as? Boolean
-            it[UsersTable.comments] = data["comments"] as? String
-            it[UsersTable.token] = data["token"] as? String
-            it[UsersTable.refreshToken] = data["refresh_token"] as? String
+            it[name] = user.name
+            it[username] = user.username
+            it[passwordHash] = user.passwordHash
+            it[role] = user.role
+            it[isReviewed] = user.isReviewed
         } get UsersTable.id
     }
 
@@ -83,13 +71,69 @@ class UserDao {
         }
     }
 
-    fun findByClassId(classId: Int) = transaction {
-        UsersTable.selectAll().where { UsersTable.classId eq classId }
+    fun findByRole(role: String) = transaction {
+        UsersTable.selectAll().where { UsersTable.role eq role }
             .map { resultRowToUser(it) }
     }
 
-    fun findByRole(role: String) = transaction {
-        UsersTable.selectAll().where { UsersTable.role eq role }
+    fun updateUserByField(user: User) = transaction {
+        UsersTable.update({ UsersTable.id eq user.id }) {
+            it[address] = user.address
+            it[birthDate] = user.birthDate
+            it[fatherName] = user.fatherName
+            it[isShams] = user.isShams
+            it[classId] = user.classId
+            it[memberId] = user.memberId
+            it[skipMembership] = user.skipMembership
+        }
+    }
+
+    fun reviewUser(userId: Int) = transaction {
+        UsersTable.update({ UsersTable.id eq userId }) {
+            it[UsersTable.isReviewed] = true
+        }
+    }
+
+    fun updateEmail(userId: Int, updateEmailRequest: UpdateEmailRequest) = transaction {
+        UsersTable.update({ UsersTable.id eq userId }) {
+            it[UsersTable.email] = updateEmailRequest.email
+        }
+    }
+
+    fun updatePhone(userId: Int, updatePhoneRequest: UpdatePhoneRequest) = transaction {
+        UsersTable.update({ UsersTable.id eq userId }) {
+            it[UsersTable.phone] = updatePhoneRequest.phone
+        }
+    }
+
+    fun updateProfile(userId: Int, updateProfileRequest: UpdateProfileRequest) = transaction {
+        UsersTable.update({ UsersTable.id eq userId }) {
+            it[UsersTable.profile] = updateProfileRequest.profile
+        }
+    }
+
+    fun updatePassword(userId: Int, updatePasswordRequest: UpdatePasswordRequest) = transaction {
+        val isOldRight = UsersTable.selectAll()
+            .where { (UsersTable.id eq userId) and (UsersTable.passwordHash eq updatePasswordRequest.oldPassword) }
+            .count() > 0
+
+        if (isOldRight) {
+            UsersTable.update({ UsersTable.id eq userId }) {
+                it[passwordHash] = updatePasswordRequest.newPassword
+            }
+        }
+    }
+
+    fun deleteUser(userId: Int) = transaction {
+        UsersTable.deleteWhere { UsersTable.id eq userId }
+    }
+
+    fun findAllUsers() = transaction {
+        UsersTable.selectAll().map { resultRowToUser(it) }
+    }
+
+    fun findUnreviewedUsers() = transaction {
+        UsersTable.selectAll().where { UsersTable.isReviewed eq false }
             .map { resultRowToUser(it) }
     }
 }
