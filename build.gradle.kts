@@ -46,4 +46,5 @@ dependencies {
     implementation("io.ktor:ktor-server-auth-jwt:$ktor_version")
 
     implementation("io.ktor:ktor-server-status-pages:$ktor_version")
+    implementation("io.ktor:ktor-server-swagger:$ktor_version")
 }

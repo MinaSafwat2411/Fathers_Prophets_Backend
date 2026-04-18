@@ -3,7 +3,7 @@ package com.fathersprophets.backend.database.repository.auth
 import com.fathersprophets.backend.database.dao.UserDao
 import com.fathersprophets.backend.exceptions.ConflictException
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.dto.User
+import com.fathersprophets.backend.models.dto.users.User
 import com.fathersprophets.backend.models.request.auth.LoginRequest
 import com.fathersprophets.backend.models.request.auth.RefreshRequest
 import com.fathersprophets.backend.models.request.auth.RegisterRequest
@@ -76,7 +76,6 @@ class AuthRepository(
             isShams = user.isShams,
             profile = user.profile,
             isReviewed = user.isReviewed,
-            classId = user.classId,
             memberId = user.memberId
         )
 

@@ -1,9 +1,9 @@
-package com.fathersprophets.backend.models.dto
+package com.fathersprophets.backend.models.request.classes
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Class(
+data class UpdateClassRequest(
     val id: Int,
     val name: String,
     val image: String?

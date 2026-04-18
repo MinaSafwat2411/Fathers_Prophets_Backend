@@ -1,11 +1,12 @@
 package com.fathersprophets.backend.database.dao
 
 import com.fathersprophets.backend.database.tables.UsersTable
-import com.fathersprophets.backend.models.dto.User
+import com.fathersprophets.backend.models.dto.users.User
 import com.fathersprophets.backend.models.request.users.UpdateEmailRequest
 import com.fathersprophets.backend.models.request.users.UpdatePasswordRequest
 import com.fathersprophets.backend.models.request.users.UpdatePhoneRequest
 import com.fathersprophets.backend.models.request.users.UpdateProfileRequest
+import com.fathersprophets.backend.models.request.users.UpdateUserRequest
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -25,7 +26,6 @@ class UserDao {
         isShams = row[UsersTable.isShams],
         profile = row[UsersTable.profile],
         isReviewed = row[UsersTable.isReviewed],
-        classId = row[UsersTable.classId],
         memberId = row[UsersTable.memberId],
         token = row[UsersTable.token],
         refreshToken = row[UsersTable.refreshToken],
@@ -76,16 +76,13 @@ class UserDao {
             .map { resultRowToUser(it) }
     }
 
-    fun updateUserByField(user: User) = transaction {
-        UsersTable.update({ UsersTable.id eq user.id }) {
-            it[address] = user.address
-            it[birthDate] = user.birthDate
-            it[fatherName] = user.fatherName
-            it[isShams] = user.isShams
-            it[classId] = user.classId
-            it[memberId] = user.memberId
-            it[skipMembership] = user.skipMembership
-        }
+    fun updateUserByField(updateUser: UpdateUserRequest) = transaction {
+        UsersTable.update({ UsersTable.id eq updateUser.id }) {
+            it[address] = updateUser.address
+            it[birthDate] = updateUser.birthDate
+            it[fatherName] = updateUser.fatherName
+            it[isShams] = updateUser.isShams
+        }.let { findById(updateUser.id) }
     }
 
     fun reviewUser(userId: Int) = transaction {

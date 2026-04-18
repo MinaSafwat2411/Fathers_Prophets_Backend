@@ -3,7 +3,7 @@ package com.fathersprophets.backend.routes
 import com.fathersprophets.backend.models.request.auth.LoginRequest
 import com.fathersprophets.backend.models.request.auth.RefreshRequest
 import com.fathersprophets.backend.models.request.auth.RegisterRequest
-import com.fathersprophets.backend.services.IAuthService
+import com.fathersprophets.backend.services.auth.IAuthService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*

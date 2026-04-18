@@ -2,7 +2,8 @@ package com.fathersprophets.backend.database.dao
 
 import com.fathersprophets.backend.database.tables.ClassesTable
 import com.fathersprophets.backend.database.tables.UsersTable
-import com.fathersprophets.backend.models.dto.Class
+import com.fathersprophets.backend.models.dto.classes.Class
+import com.fathersprophets.backend.models.request.classes.UpdateClassRequest
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
@@ -34,10 +35,10 @@ class ClassDao {
         } get ClassesTable.id
     }
 
-    fun updateClass(id: Int, data: Map<String, Any?>) = transaction {
+    fun updateClass(id: Int,updateClassRequest: UpdateClassRequest) = transaction {
         ClassesTable.update({ ClassesTable.id eq id }) {
-            data["name"]?.let { name -> it[ClassesTable.name] = name as String }
-            data["image"]?.let { image -> it[ClassesTable.image] = image as String }
+            it[name] = updateClassRequest.name
+            it[image] = updateClassRequest.image
         }
     }
 
@@ -45,11 +46,6 @@ class ClassDao {
         ClassesTable.deleteWhere {
             ClassesTable.id eq id
         }
-    }
-
-    fun getClassMember(classId: Int) = transaction {
-        UsersTable.selectAll().where { UsersTable.classId eq classId }
-            .map { resultRowToClass(it) }
     }
 
 }

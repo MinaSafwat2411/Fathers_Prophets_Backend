@@ -10,3 +10,10 @@ fun ApplicationCall.userRole(): String? {
         ?.getClaim("role")
         ?.asString()
 }
+
+fun ApplicationCall.userReviewed(): Boolean? {
+    return principal<JWTPrincipal>()
+        ?.payload
+        ?.getClaim("isReviewed")
+        ?.asBoolean()
+}

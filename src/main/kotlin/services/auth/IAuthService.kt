@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.services
+package com.fathersprophets.backend.services.auth
 
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.request.auth.LoginRequest

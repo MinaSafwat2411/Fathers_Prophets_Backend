@@ -6,6 +6,7 @@ import com.fathersprophets.backend.plugins.configureDI
 import com.fathersprophets.backend.plugins.configureRouting
 import com.fathersprophets.backend.plugins.configureSerialization
 import com.fathersprophets.backend.plugins.configureStatusPages
+import com.fathersprophets.backend.plugins.configureSwagger
 import com.fathersprophets.backend.utils.Localization
 import io.ktor.server.application.*
 
@@ -21,6 +22,7 @@ fun Application.module() {
     configureSerialization()
     configureAuth()
     configureStatusPages()
+    configureSwagger()
 
     configureRouting()
 }

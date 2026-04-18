@@ -1,0 +1,55 @@
+package com.fathersprophets.backend.routes
+
+import com.fathersprophets.backend.models.request.users.UpdateEmailRequest
+import com.fathersprophets.backend.models.request.users.UpdatePasswordRequest
+import com.fathersprophets.backend.models.request.users.UpdatePhoneRequest
+import com.fathersprophets.backend.models.request.users.UpdateProfileRequest
+import com.fathersprophets.backend.services.users.IUserService
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
+
+fun Route.profileRoutes(userService: IUserService) {
+    route("/profile") {
+        get {
+            val lang = call.request.header("Accept-Language") ?: "en"
+            val principal = call.principal<JWTPrincipal>()
+            val userId = principal?.payload?.getClaim("userId")?.asInt() ?: -1
+
+            val user = userService.getUserById(userId, lang)
+            call.respond(user)
+        }
+
+        put("/email") {
+            val lang = call.request.header("Accept-Language") ?: "en"
+            val principal = call.principal<JWTPrincipal>()
+            val userId = principal?.payload?.getClaim("userId")?.asInt() ?: -1
+            val request = call.receive<UpdateEmailRequest>()
+
+            val result = userService.updateEmail(userId, request, lang)
+            call.respond(result)
+        }
+
+        put("/password") {
+            val lang = call.request.header("Accept-Language") ?: "en"
+            val principal = call.principal<JWTPrincipal>()
+            val userId = principal?.payload?.getClaim("userId")?.asInt() ?: -1
+            val request = call.receive<UpdatePasswordRequest>()
+
+            val result = userService.updatePassword(userId, request, lang)
+            call.respond(result)
+        }
+
+        put("/phone") {
+            val lang = call.request.header("Accept-Language") ?: "en"
+            val principal = call.principal<JWTPrincipal>()
+            val userId = principal?.payload?.getClaim("userId")?.asInt() ?: -1
+            val request = call.receive<UpdatePhoneRequest>()
+
+            val result = userService.updatePhone(userId, request, lang)
+            call.respond(result)
+        }
+    }
+}

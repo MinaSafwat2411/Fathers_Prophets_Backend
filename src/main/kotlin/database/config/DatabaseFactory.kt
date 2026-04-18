@@ -1,6 +1,8 @@
 package com.fathersprophets.backend.database.config
 
+import com.fathersprophets.backend.database.tables.ClassMemberTable
 import com.fathersprophets.backend.database.tables.ClassesTable
+import com.fathersprophets.backend.database.tables.CommentsTable
 import com.fathersprophets.backend.database.tables.UsersTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -18,7 +20,7 @@ object DatabaseFactory {
 
 
         transaction {
-            SchemaUtils.create(UsersTable, ClassesTable)
+            SchemaUtils.create(UsersTable, ClassesTable, CommentsTable, ClassMemberTable)
         }
     }
 }
