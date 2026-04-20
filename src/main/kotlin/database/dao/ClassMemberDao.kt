@@ -24,8 +24,9 @@ class ClassMemberDao {
             .map { resultRowToClassMember(it) }
     }
 
-    fun addMember(classId: Int, userId: Int, isTeacher: Boolean, image: String?) = transaction {
+    fun addMember(classId: Int, userId: Int, isTeacher: Boolean, image: String?, name: String?) = transaction {
         ClassMemberTable.insert {
+            it[ClassMemberTable.name] = name
             it[ClassMemberTable.classId] = classId
             it[ClassMemberTable.userId] = userId
             it[ClassMemberTable.teacher] = isTeacher
