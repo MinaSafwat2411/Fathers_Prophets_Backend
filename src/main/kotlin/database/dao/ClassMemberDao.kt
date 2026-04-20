@@ -16,29 +16,10 @@ class ClassMemberDao {
         isTeacher = row[ClassMemberTable.teacher],
         classId = row[ClassMemberTable.classId]
     )
-    
-    fun findByUserId(userId: Int): List<ClassMemberResponse> = transaction {
-        (ClassMemberTable innerJoin UsersTable)
-            .select(
-                ClassMemberTable.id,
-                UsersTable.name,
-                ClassMemberTable.image,
-                ClassMemberTable.teacher,
-                ClassMemberTable.classId
-            )
-            .where { ClassMemberTable.userId eq userId }
-            .map { resultRowToClassMember(it) }
-    }
 
-    fun findByClassId(classId: Int): List<ClassMemberResponse> = transaction {
+    fun findMemberClass(classId: Int) = transaction {
         (ClassMemberTable innerJoin UsersTable)
-            .select(
-                ClassMemberTable.id,
-                UsersTable.name,
-                ClassMemberTable.image,
-                ClassMemberTable.teacher,
-                ClassMemberTable.classId
-            )
+            .selectAll()
             .where { ClassMemberTable.classId eq classId }
             .map { resultRowToClassMember(it) }
     }
