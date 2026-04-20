@@ -9,7 +9,7 @@ object ClassMemberTable : Table("class_members") {
     val teacher = bool("teacher").default(false)
     val image = varchar("image", 255).nullable()
 
-    val  name = varchar("name", 255).references(UsersTable.name).nullable()
+    val  name = varchar("name", 255).nullable()
 
     override val primaryKey = PrimaryKey(id)
     init {
