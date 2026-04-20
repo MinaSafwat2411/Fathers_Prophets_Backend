@@ -31,5 +31,9 @@
   "class_name_empty": "Class name cannot be empty",
   "username_empty": "Username cannot be empty",
   "password_empty": "Password cannot be empty",
-  "role_empty": "Role cannot be empty"
+  "role_empty": "Role cannot be empty",
+  "class_members_found": "Class members found",
+  "class_member_added": "Class member added successfully",
+  "class_member_updated": "Class member updated successfully",
+  "class_member_deleted": "Class member deleted successfully"
 }

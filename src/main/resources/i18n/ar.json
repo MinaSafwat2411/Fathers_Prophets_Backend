@@ -31,5 +31,9 @@
   "class_name_empty": "اسم الفصل لا يمكن أن يكون فارغًا",
   "username_empty": "اسم المستخدم لا يمكن أن يكون فارغًا",
   "password_empty": "كلمة المرور لا يمكن أن تكون فارغة",
-  "role_empty": "الدور لا يمكن أن يكون فارغًا"
+  "role_empty": "الدور لا يمكن أن يكون فارغًا",
+  "class_members_found": "تم العثور على أعضاء الفصل",
+  "class_member_added": "تمت إضافة عضو الفصل بنجاح",
+  "class_member_updated": "تم تحديث عضو الفصل بنجاح",
+  "class_member_deleted": "تم حذف عضو الفصل بنجاح"
 }

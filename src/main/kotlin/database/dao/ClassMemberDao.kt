@@ -3,6 +3,8 @@ package com.fathersprophets.backend.database.dao
 import com.fathersprophets.backend.database.tables.ClassMemberTable
 import com.fathersprophets.backend.database.tables.UsersTable
 import com.fathersprophets.backend.models.dto.users.User
+import com.fathersprophets.backend.models.request.classmember.AddClassMemberRequest
+import com.fathersprophets.backend.models.request.classmember.UpdateClassMemberRequest
 import com.fathersprophets.backend.models.response.classes.ClassMemberResponse
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -24,20 +26,23 @@ class ClassMemberDao {
             .map { resultRowToClassMember(it) }
     }
 
-    fun addMember(classId: Int, userId: Int, isTeacher: Boolean, image: String?, name: String?) = transaction {
+    fun addMember(addClassMemberRequest: AddClassMemberRequest) = transaction {
         ClassMemberTable.insert {
-            it[ClassMemberTable.name] = name
-            it[ClassMemberTable.classId] = classId
-            it[ClassMemberTable.userId] = userId
-            it[ClassMemberTable.teacher] = isTeacher
-            it[ClassMemberTable.image] = image
+            it[ClassMemberTable.name] = addClassMemberRequest.name
+            it[ClassMemberTable.classId] = addClassMemberRequest.classId
+            it[ClassMemberTable.userId] = addClassMemberRequest.userId
+            it[ClassMemberTable.teacher] = addClassMemberRequest.isTeacher
+            it[ClassMemberTable.image] = addClassMemberRequest.image
         } get ClassMemberTable.id
     }
 
-    fun updateMember(id: Int, isTeacher: Boolean?, image: String?) = transaction {
+    fun updateMember(id: Int, updateClassMemberRequest: UpdateClassMemberRequest) = transaction {
         ClassMemberTable.update({ ClassMemberTable.id eq id }) {
-            isTeacher?.let { t -> it[teacher] = t }
-            image?.let { img -> it[ClassMemberTable.image] = img }
+            it[ClassMemberTable.name] = updateClassMemberRequest.name
+            it[ClassMemberTable.classId] = updateClassMemberRequest.classId
+            it[ClassMemberTable.teacher] = updateClassMemberRequest.isTeacher
+            it[ClassMemberTable.image] = updateClassMemberRequest.image
+            it[ClassMemberTable.userId] = updateClassMemberRequest.userId
         }
     }
 

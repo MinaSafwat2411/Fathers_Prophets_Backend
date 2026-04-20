@@ -1,9 +1,9 @@
-package com.fathersprophets.backend.models.request.classes
+package com.fathersprophets.backend.models.request.classmember
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AddClassMemberRequest(
+data class UpdateClassMemberRequest(
     val userId: Int,
     val classId: Int,
     val isTeacher : Boolean,
