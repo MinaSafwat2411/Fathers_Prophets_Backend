@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.plugins
 
 import com.fathersprophets.backend.exceptions.ConflictException
+import com.fathersprophets.backend.exceptions.ForbiddenException
 import com.fathersprophets.backend.exceptions.UnauthorizedException
 import com.fathersprophets.backend.models.ApiResponse
 import io.ktor.http.*
@@ -48,6 +49,16 @@ fun Application.configureStatusPages() {
                 ApiResponse<Nothing>(
                     success = false,
                     message = cause.message ?: "Conflict"
+                )
+            )
+        }
+
+        exception<ForbiddenException> { call, cause ->
+            call.respond(
+                HttpStatusCode.Forbidden,
+                ApiResponse<Nothing>(
+                    success = false,
+                    message = cause.message ?: "Forbidden"
                 )
             )
         }
