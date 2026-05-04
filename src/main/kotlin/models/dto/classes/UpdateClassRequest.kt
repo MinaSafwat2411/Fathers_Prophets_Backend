@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UpdateClassRequest(
-    val id: Int,
-    val name: String,
-    val image: String?
+    val id: Int? = null,
+    val name: String? = null,
+    val image: String? = null
 )

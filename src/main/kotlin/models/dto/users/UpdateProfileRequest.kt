@@ -1,8 +1,8 @@
-package com.fathersprophets.backend.models.request.users
+package com.fathersprophets.backend.models.dto.users
 
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class UpdateProfileRequest(
-    val profile: String
+    val profile: String? = null
 )

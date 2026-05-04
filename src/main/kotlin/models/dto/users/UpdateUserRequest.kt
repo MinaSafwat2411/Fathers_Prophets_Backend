@@ -1,10 +1,10 @@
-package com.fathersprophets.backend.models.request.users
+package com.fathersprophets.backend.models.dto.users
 
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class UpdateUserRequest(
-    val id: Int,
+    val id: Int? = null,
     val address: String? = null,
     val birthDate: String? = null,
     val fatherName: String? = null,

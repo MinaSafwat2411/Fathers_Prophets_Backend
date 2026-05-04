@@ -2,11 +2,11 @@ package com.fathersprophets.backend.database.dao
 
 import com.fathersprophets.backend.database.tables.UsersTable
 import com.fathersprophets.backend.models.dto.users.User
-import com.fathersprophets.backend.models.request.users.UpdateEmailRequest
-import com.fathersprophets.backend.models.request.users.UpdatePasswordRequest
-import com.fathersprophets.backend.models.request.users.UpdatePhoneRequest
-import com.fathersprophets.backend.models.request.users.UpdateProfileRequest
-import com.fathersprophets.backend.models.request.users.UpdateUserRequest
+import com.fathersprophets.backend.models.dto.users.UpdateEmailRequest
+import com.fathersprophets.backend.models.dto.users.UpdatePasswordRequest
+import com.fathersprophets.backend.models.dto.users.UpdatePhoneRequest
+import com.fathersprophets.backend.models.dto.users.UpdateProfileRequest
+import com.fathersprophets.backend.models.dto.users.UpdateUserRequest
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -77,12 +77,12 @@ class UserDao {
     }
 
     fun updateUserByField(updateUser: UpdateUserRequest) = transaction {
-        UsersTable.update({ UsersTable.id eq updateUser.id }) {
+        UsersTable.update({ UsersTable.id eq updateUser.id!! }) {
             it[address] = updateUser.address
             it[birthDate] = updateUser.birthDate
             it[fatherName] = updateUser.fatherName
             it[isShams] = updateUser.isShams
-        }.let { findById(updateUser.id) }
+        }.let { findById(updateUser.id!!) }
     }
 
     fun reviewUser(userId: Int) = transaction {
@@ -93,30 +93,30 @@ class UserDao {
 
     fun updateEmail(userId: Int, updateEmailRequest: UpdateEmailRequest) = transaction {
         UsersTable.update({ UsersTable.id eq userId }) {
-            it[UsersTable.email] = updateEmailRequest.email
+            it[UsersTable.email] = updateEmailRequest.email!!
         }
     }
 
     fun updatePhone(userId: Int, updatePhoneRequest: UpdatePhoneRequest) = transaction {
         UsersTable.update({ UsersTable.id eq userId }) {
-            it[UsersTable.phone] = updatePhoneRequest.phone
+            it[UsersTable.phone] = updatePhoneRequest.phone!!
         }
     }
 
     fun updateProfile(userId: Int, updateProfileRequest: UpdateProfileRequest) = transaction {
         UsersTable.update({ UsersTable.id eq userId }) {
-            it[UsersTable.profile] = updateProfileRequest.profile
+            it[UsersTable.profile] = updateProfileRequest.profile!!
         }
     }
 
     fun updatePassword(userId: Int, updatePasswordRequest: UpdatePasswordRequest) = transaction {
         val isOldRight = UsersTable.selectAll()
-            .where { (UsersTable.id eq userId) and (UsersTable.passwordHash eq updatePasswordRequest.oldPassword) }
+            .where { (UsersTable.id eq userId) and (UsersTable.passwordHash eq updatePasswordRequest.oldPassword!!) }
             .count() > 0
 
         if (isOldRight) {
             UsersTable.update({ UsersTable.id eq userId }) {
-                it[passwordHash] = updatePasswordRequest.newPassword
+                it[passwordHash] = updatePasswordRequest.newPassword!!
             }
         }
     }

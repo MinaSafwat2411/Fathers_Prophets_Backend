@@ -34,14 +34,14 @@ class VersionDao {
 
     fun addVersion(versionRequest: VersionRequest) = transaction {
         VersionsTable.insert {
-            it[version] = versionRequest.version
-            it[adminPin] = versionRequest.adminPin
+            it[version] = versionRequest.version?:""
+            it[adminPin] = versionRequest.adminPin?:""
         } get VersionsTable.id
     }
 
     fun changePinVersion(adminPinRequest: AdminPinRequest) = transaction {
-        VersionsTable.update({ VersionsTable.version eq adminPinRequest.version }) {
-            it[adminPin] = adminPinRequest.adminPin
+        VersionsTable.update({ VersionsTable.version eq (adminPinRequest.version?:"")}) {
+            it[adminPin] = adminPinRequest.adminPin?:""
         }
     }
 

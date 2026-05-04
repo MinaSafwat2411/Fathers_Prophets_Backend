@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.routes
 
-import com.fathersprophets.backend.models.request.classmember.AddClassMemberRequest
-import com.fathersprophets.backend.models.request.classmember.UpdateClassMemberRequest
+import com.fathersprophets.backend.models.dto.classmember.AddClassMemberRequest
+import com.fathersprophets.backend.models.dto.classmember.UpdateClassMemberRequest
 import com.fathersprophets.backend.plugins.requireRole
 import com.fathersprophets.backend.services.classmember.IClassMemberService
 import io.ktor.http.*
@@ -13,7 +13,6 @@ fun Route.classMemberRoutes(classMemberService: IClassMemberService) {
     route("/class-members") {
         get("/{classId}") {
             val classId = call.parameters["classId"]?.toIntOrNull()
-                ?: return@get call.respond(HttpStatusCode.BadRequest, "Invalid Class ID")
             val lang = call.request.header("Accept-Language") ?: "en"
             
             val result = classMemberService.findMemberClass(classId, lang)

@@ -19,18 +19,18 @@ class AuthRepository(
     private val lang: String = "en"
 ) : IAuthRepository {
     override suspend fun register(request: RegisterRequest): ApiResponse<Nothing> {
-        val existingUser = userDao.findByUsername(request.username)
+        val existingUser = userDao.findByUsername(request.username?:"")
         if (existingUser != null) {
             throw ConflictException(Localization.get("username_exists", lang))
         }
 
-        val passwordHash = PasswordUtil.hashPassword(request.password)
+        val passwordHash = PasswordUtil.hashPassword(request.password?:"")
 
         userDao.createUser(
             User(
                 id = 0,
-                name = request.name,
-                username = request.username,
+                name = request.name?:"",
+                username = request.username?:"",
                 passwordHash = passwordHash,
                 role = "member",
                 isReviewed = false,
@@ -42,11 +42,11 @@ class AuthRepository(
 
     override suspend fun login(request: LoginRequest): ApiResponse<LoginResponse> {
 
-        val user = userDao.findByUsername(request.username)
+        val user = userDao.findByUsername(request.username?:"")
             ?: return ApiResponse(false, Localization.get("invalid_credentials", lang))
 
 
-        if (!PasswordUtil.checkPassword(request.password, user.passwordHash)) {
+        if (!PasswordUtil.checkPassword(request.password?:"", user.passwordHash)) {
             return ApiResponse(false, Localization.get("invalid_credentials", lang))
         }
 
@@ -61,7 +61,7 @@ class AuthRepository(
         userDao.updateToken(user.id, token)
         userDao.updateRefreshToken(user.id, refreshToken)
 
-        userDao.updateFcmToken(user.id, request.fcmToken)
+        userDao.updateFcmToken(user.id, request.fcmToken?:"")
 
         val userResponse = UserResponse(
             id = user.id,
@@ -91,13 +91,14 @@ class AuthRepository(
     }
 
     override suspend fun refreshToken(refresh: RefreshRequest): ApiResponse<RefreshResponse> {
-        val userId = JwtConfig.verifyRefreshToken(refresh.refreshToken)
+        val token = refresh.refreshToken ?: return ApiResponse(false, Localization.get("invalid_token", lang))
+        val userId = JwtConfig.verifyRefreshToken(token)
             ?: return ApiResponse(false, Localization.get("invalid_token", lang))
 
         val user = userDao.findById(userId)
             ?: return ApiResponse(false, Localization.get("user_not_found", lang))
 
-        if (user.refreshToken != refresh.refreshToken) {
+        if (user.refreshToken != token) {
             return ApiResponse(false, Localization.get("invalid_token", lang))
         }
 

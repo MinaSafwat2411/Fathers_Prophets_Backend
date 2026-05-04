@@ -1,43 +1,41 @@
 package com.fathersprophets.backend.services.users
 
 import com.fathersprophets.backend.database.repository.users.IUserRepository
-import com.fathersprophets.backend.exceptions.BadRequestException
 import com.fathersprophets.backend.exceptions.NotFoundException
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.users.User
-import com.fathersprophets.backend.models.request.users.UpdateEmailRequest
-import com.fathersprophets.backend.models.request.users.UpdatePasswordRequest
-import com.fathersprophets.backend.models.request.users.UpdatePhoneRequest
-import com.fathersprophets.backend.models.request.users.UpdateProfileRequest
-import com.fathersprophets.backend.models.request.users.UpdateUserRequest
+import com.fathersprophets.backend.models.dto.users.UpdateEmailRequest
+import com.fathersprophets.backend.models.dto.users.UpdatePasswordRequest
+import com.fathersprophets.backend.models.dto.users.UpdatePhoneRequest
+import com.fathersprophets.backend.models.dto.users.UpdateProfileRequest
+import com.fathersprophets.backend.models.dto.users.UpdateUserRequest
 import com.fathersprophets.backend.models.dto.users.UserResponse
 import com.fathersprophets.backend.utils.Localization
+import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
 
 class UserService(
     private val userRepository: IUserRepository
 ) : IUserService {
-    override suspend fun getUserById(id: Int, lang: String): ApiResponse<UserResponse?> {
-        val userResponse = userRepository.getUserById(id, lang)
-        if (userResponse.data == null) {
-            throw NotFoundException(Localization.get("user_not_found", lang))
-        }
+    override suspend fun getUserById(id: Int?, lang: String): ApiResponse<UserResponse?> {
+        validateRequired(id to "user_id", lang = lang)
+        
+        val userResponse = userRepository.getUserById(id!!, lang)
         return userResponse
     }
 
     override suspend fun addUser(user: User, lang: String): ApiResponse<Nothing> {
-        if (user.username.isBlank()) {
-            throw BadRequestException(Localization.get("username_empty", lang))
-        }
-        if (user.passwordHash.isBlank()) {
-            throw BadRequestException(Localization.get("password_empty", lang))
-        }
-        if (user.role.isBlank()) {
-            throw BadRequestException(Localization.get("role_empty", lang))
-        }
+        validateRequired(
+            user.username to "username",
+            user.passwordHash to "password",
+            user.role to "role",
+            lang = lang
+        )
         return userRepository.addUser(user, lang)
     }
 
     override suspend fun updateReview(id: Int, lang: String): ApiResponse<Nothing> {
+        validateRequired(id to "user_id", lang = lang)
+
         val userExists = userRepository.getUserById(id, lang).data != null
         if (!userExists) {
             throw NotFoundException(Localization.get("user_not_found", lang))
@@ -46,7 +44,9 @@ class UserService(
     }
 
     override suspend fun updateUserByField(updateUser: UpdateUserRequest, lang: String): ApiResponse<UserResponse> {
-        val userExists = userRepository.getUserById(updateUser.id, lang).data != null
+        validateRequired(updateUser.id to "user_id", lang = lang)
+
+        val userExists = userRepository.getUserById(updateUser.id!!, lang).data != null
         if (!userExists) {
             throw NotFoundException(Localization.get("user_not_found", lang))
         }
@@ -54,6 +54,8 @@ class UserService(
     }
 
     override suspend fun deleteUser(id: Int, lang: String): ApiResponse<Nothing> {
+        validateRequired(id to "user_id", lang = lang)
+
         val userExists = userRepository.getUserById(id, lang).data != null
         if (!userExists) {
             throw NotFoundException(Localization.get("user_not_found", lang))
@@ -62,9 +64,7 @@ class UserService(
     }
 
     override suspend fun getUsersByRole(role: String, lang: String): ApiResponse<List<UserResponse>> {
-        if (role.isBlank()) {
-            throw BadRequestException(Localization.get("role_empty", lang))
-        }
+        validateRequired(role to "role", lang = lang)
         return userRepository.getUsersByRole(role, lang)
     }
 
@@ -77,6 +77,12 @@ class UserService(
     }
 
     override suspend fun updateEmail(id: Int, updateEmailRequest: UpdateEmailRequest, lang: String): ApiResponse<Nothing> {
+        validateRequired(
+            id to "user_id",
+            updateEmailRequest.email to "email",
+            lang = lang
+        )
+
         val userExists = userRepository.getUserById(id, lang).data != null
         if (!userExists) {
             throw NotFoundException(Localization.get("user_not_found", lang))
@@ -85,6 +91,13 @@ class UserService(
     }
 
     override suspend fun updatePassword(id: Int, updatePasswordRequest: UpdatePasswordRequest, lang: String): ApiResponse<Nothing> {
+        validateRequired(
+            id to "user_id",
+            updatePasswordRequest.oldPassword to "old_password",
+            updatePasswordRequest.newPassword to "new_password",
+            lang = lang
+        )
+
         val userExists = userRepository.getUserById(id, lang).data != null
         if (!userExists) {
             throw NotFoundException(Localization.get("user_not_found", lang))
@@ -93,6 +106,12 @@ class UserService(
     }
 
     override suspend fun updateProfile(id: Int, updateProfileRequest: UpdateProfileRequest, lang: String): ApiResponse<Nothing> {
+        validateRequired(
+            id to "user_id",
+            updateProfileRequest.profile to "profile",
+            lang = lang
+        )
+
         val userExists = userRepository.getUserById(id, lang).data != null
         if (!userExists) {
             throw NotFoundException(Localization.get("user_not_found", lang))
@@ -101,6 +120,12 @@ class UserService(
     }
 
     override suspend fun updatePhone(id: Int, updatePhoneRequest: UpdatePhoneRequest, lang: String): ApiResponse<Nothing> {
+        validateRequired(
+            id to "user_id",
+            updatePhoneRequest.phone to "phone",
+            lang = lang
+        )
+
         val userExists = userRepository.getUserById(id, lang).data != null
         if (!userExists) {
             throw NotFoundException(Localization.get("user_not_found", lang))

@@ -2,11 +2,11 @@ package com.fathersprophets.backend.database.repository.users
 
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.users.User
-import com.fathersprophets.backend.models.request.users.UpdateEmailRequest
-import com.fathersprophets.backend.models.request.users.UpdatePasswordRequest
-import com.fathersprophets.backend.models.request.users.UpdatePhoneRequest
-import com.fathersprophets.backend.models.request.users.UpdateProfileRequest
-import com.fathersprophets.backend.models.request.users.UpdateUserRequest
+import com.fathersprophets.backend.models.dto.users.UpdateEmailRequest
+import com.fathersprophets.backend.models.dto.users.UpdatePasswordRequest
+import com.fathersprophets.backend.models.dto.users.UpdatePhoneRequest
+import com.fathersprophets.backend.models.dto.users.UpdateProfileRequest
+import com.fathersprophets.backend.models.dto.users.UpdateUserRequest
 import com.fathersprophets.backend.models.dto.users.UserResponse
 
 interface IUserRepository {

@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AdminPinRequest(
-    val version: String,
-    val adminPin: String
+    val version: String? = null,
+    val adminPin: String? = null
 )

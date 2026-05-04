@@ -34,9 +34,9 @@ class ClassDao {
         } get ClassesTable.id
     }
 
-    fun updateClass(id: Int,updateClassRequest: UpdateClassRequest) = transaction {
+    fun updateClass(id: Int, updateClassRequest: UpdateClassRequest) = transaction {
         ClassesTable.update({ ClassesTable.id eq id }) {
-            it[name] = updateClassRequest.name
+            it[name] = updateClassRequest.name ?: ""
             it[image] = updateClassRequest.image
         }
     }

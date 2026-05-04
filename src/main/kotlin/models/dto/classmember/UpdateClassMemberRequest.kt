@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.models.request.classmember
+package com.fathersprophets.backend.models.dto.classmember
 
 import kotlinx.serialization.Serializable
 

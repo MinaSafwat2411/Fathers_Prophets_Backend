@@ -1,8 +1,8 @@
 package com.fathersprophets.backend.database.repository.classmember
 
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.request.classmember.AddClassMemberRequest
-import com.fathersprophets.backend.models.request.classmember.UpdateClassMemberRequest
+import com.fathersprophets.backend.models.dto.classmember.AddClassMemberRequest
+import com.fathersprophets.backend.models.dto.classmember.UpdateClassMemberRequest
 import com.fathersprophets.backend.models.dto.classes.ClassMemberResponse
 
 interface IClassMemberRepository {

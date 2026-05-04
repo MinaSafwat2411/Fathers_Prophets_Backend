@@ -1,13 +1,13 @@
 package com.fathersprophets.backend.services.classes
 
 import com.fathersprophets.backend.database.repository.classes.IClassRepository
-import com.fathersprophets.backend.exceptions.BadRequestException
 import com.fathersprophets.backend.exceptions.NotFoundException
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.classes.CreateClassRequest
 import com.fathersprophets.backend.models.dto.classes.UpdateClassRequest
 import com.fathersprophets.backend.models.dto.classes.ClassResponse
 import com.fathersprophets.backend.utils.Localization
+import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
 
 class ClassService(
     private val classRepository: IClassRepository
@@ -16,8 +16,10 @@ class ClassService(
         return classRepository.getAllClasses(lang)
     }
 
-    override suspend fun getClassById(id: Int, lang: String): ApiResponse<ClassResponse?> {
-        val classResponse = classRepository.getClassById(id, lang)
+    override suspend fun getClassById(id: Int?, lang: String): ApiResponse<ClassResponse?> {
+        validateRequired(id to "class_id", lang = lang)
+        
+        val classResponse = classRepository.getClassById(id!!, lang)
         if (classResponse.data == null) {
             throw NotFoundException(Localization.get("class_not_found", lang))
         }
@@ -25,20 +27,19 @@ class ClassService(
     }
 
     override suspend fun createClass(createClassRequest: CreateClassRequest, lang: String): ApiResponse<Int> {
-        if (createClassRequest.name.isBlank()) {
-            throw BadRequestException(Localization.get("class_name_empty", lang))
-        }
+        validateRequired(createClassRequest.name to "class_name", lang = lang)
         return classRepository.createClass(createClassRequest, lang)
     }
 
     override suspend fun updateClass(updateClassRequest: UpdateClassRequest, lang: String): ApiResponse<Nothing> {
-        val classExists = classRepository.getClassById(updateClassRequest.id, lang).data != null
+        validateRequired(updateClassRequest.name to "class_name",
+            updateClassRequest.id to "class_id", lang = lang)
+        
+        val classExists = classRepository.getClassById(updateClassRequest.id!!, lang).data != null
         if (!classExists) {
             throw NotFoundException(Localization.get("class_not_found", lang))
         }
-        if (updateClassRequest.name.isBlank()) {
-            throw BadRequestException(Localization.get("class_name_empty", lang))
-        }
+
         return classRepository.updateClass(updateClassRequest.id, updateClassRequest, lang)
     }
 

@@ -1,9 +1,8 @@
 package com.fathersprophets.backend.routes
 
-import com.fathersprophets.backend.models.request.users.UpdateEmailRequest
-import com.fathersprophets.backend.models.request.users.UpdatePasswordRequest
-import com.fathersprophets.backend.models.request.users.UpdatePhoneRequest
-import com.fathersprophets.backend.models.request.users.UpdateProfileRequest
+import com.fathersprophets.backend.models.dto.users.UpdateEmailRequest
+import com.fathersprophets.backend.models.dto.users.UpdatePasswordRequest
+import com.fathersprophets.backend.models.dto.users.UpdatePhoneRequest
 import com.fathersprophets.backend.services.users.IUserService
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*

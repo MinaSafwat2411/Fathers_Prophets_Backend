@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class RegisterRequest(
-    val name: String,
-    val username: String,
-    val password: String,
+    val name: String? = null,
+    val username: String? = null,
+    val password: String? = null,
 )

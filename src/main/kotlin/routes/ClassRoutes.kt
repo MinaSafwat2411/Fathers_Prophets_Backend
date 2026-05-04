@@ -20,7 +20,6 @@ fun Route.classRoutes(classService: IClassService) {
         get("/{id}") {
             val lang = call.request.header("Accept-Language") ?: "en"
             val id = call.parameters["id"]?.toIntOrNull()
-                ?: return@get call.respond(HttpStatusCode.BadRequest, "Invalid ID")
 
             val result = classService.getClassById(id, lang)
             if (result.data == null) {

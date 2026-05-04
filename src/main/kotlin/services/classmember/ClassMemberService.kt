@@ -2,24 +2,33 @@ package com.fathersprophets.backend.services.classmember
 
 import com.fathersprophets.backend.database.repository.classmember.IClassMemberRepository
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.request.classmember.AddClassMemberRequest
-import com.fathersprophets.backend.models.request.classmember.UpdateClassMemberRequest
+import com.fathersprophets.backend.models.dto.classmember.AddClassMemberRequest
+import com.fathersprophets.backend.models.dto.classmember.UpdateClassMemberRequest
 import com.fathersprophets.backend.models.dto.classes.ClassMemberResponse
+import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
 
 class ClassMemberService(
     private val repository: IClassMemberRepository
 ): IClassMemberService {
     override suspend fun findMemberClass(
-        classId: Int,
+        classId: Int?,
         lang: String
     ): ApiResponse<List<ClassMemberResponse>> {
-        return repository.findMemberClass(classId, lang)
+        validateRequired(classId to "class_id", lang = lang)
+        return repository.findMemberClass(classId!!, lang)
     }
 
     override suspend fun addMember(
         addClassMemberRequest: AddClassMemberRequest,
         lang: String
     ): ApiResponse<Int> {
+        validateRequired(
+            addClassMemberRequest.userId to "user_id",
+            addClassMemberRequest.classId to "class_id",
+            addClassMemberRequest.isTeacher to "is_teacher",
+            addClassMemberRequest.name to "name",
+            lang = lang
+        )
         return repository.addMember(addClassMemberRequest, lang)
     }
 

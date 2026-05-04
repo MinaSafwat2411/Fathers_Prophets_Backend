@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.routes
 
 import com.fathersprophets.backend.models.dto.users.User
-import com.fathersprophets.backend.models.request.users.UpdateUserRequest
+import com.fathersprophets.backend.models.dto.users.UpdateUserRequest
 import com.fathersprophets.backend.plugins.requireRole
 import com.fathersprophets.backend.services.users.IUserService
 import io.ktor.server.request.header
@@ -42,7 +42,7 @@ fun Route.userRoutes(
         }
 
         get("/{id}") {
-            val userId = call.parameters["id"]?.toIntOrNull() ?: -1
+            val userId = call.parameters["id"]?.toIntOrNull()
             val lang = call.request.header("Accept-Language") ?: "en"
             val user = userService.getUserById(userId, lang)
             call.respond(user)

@@ -40,7 +40,7 @@ fun Route.authRoutes(authService: IAuthService) {
         post("/refresh-token") {
             val request = call.receive<RefreshRequest>()
             val lang = call.request.header("Accept-Language") ?: "en"
-            val result = authService.refreshToken(request.refreshToken, lang)
+            val result = authService.refreshToken(request, lang)
 
             call.respond(
                 HttpStatusCode.OK,
