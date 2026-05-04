@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.models.response.classes
+package com.fathersprophets.backend.models.dto.classes
 
 data class ClassMemberResponse(
     val id: Int,

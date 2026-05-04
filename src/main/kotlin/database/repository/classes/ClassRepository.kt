@@ -2,9 +2,9 @@ package com.fathersprophets.backend.database.repository.classes
 
 import com.fathersprophets.backend.database.dao.ClassDao
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.request.classes.CreateClassRequest
-import com.fathersprophets.backend.models.request.classes.UpdateClassRequest
-import com.fathersprophets.backend.models.response.classes.ClassResponse
+import com.fathersprophets.backend.models.dto.classes.CreateClassRequest
+import com.fathersprophets.backend.models.dto.classes.UpdateClassRequest
+import com.fathersprophets.backend.models.dto.classes.ClassResponse
 import com.fathersprophets.backend.utils.Localization
 
 class ClassRepository(

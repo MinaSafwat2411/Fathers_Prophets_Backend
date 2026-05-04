@@ -10,7 +10,7 @@ import com.fathersprophets.backend.models.request.users.UpdatePasswordRequest
 import com.fathersprophets.backend.models.request.users.UpdatePhoneRequest
 import com.fathersprophets.backend.models.request.users.UpdateProfileRequest
 import com.fathersprophets.backend.models.request.users.UpdateUserRequest
-import com.fathersprophets.backend.models.response.users.UserResponse
+import com.fathersprophets.backend.models.dto.users.UserResponse
 import com.fathersprophets.backend.utils.Localization
 
 class UserService(

@@ -4,9 +4,9 @@ import com.fathersprophets.backend.database.repository.auth.AuthRepository
 import com.fathersprophets.backend.database.repository.auth.IAuthRepository
 import com.fathersprophets.backend.exceptions.BadRequestException
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.request.auth.LoginRequest
-import com.fathersprophets.backend.models.request.auth.RefreshRequest
-import com.fathersprophets.backend.models.request.auth.RegisterRequest
+import com.fathersprophets.backend.models.dto.auth.LoginRequest
+import com.fathersprophets.backend.models.dto.auth.RefreshRequest
+import com.fathersprophets.backend.models.dto.auth.RegisterRequest
 import com.fathersprophets.backend.models.response.auth.LoginResponse
 import com.fathersprophets.backend.models.response.auth.RefreshResponse
 import com.fathersprophets.backend.utils.Localization

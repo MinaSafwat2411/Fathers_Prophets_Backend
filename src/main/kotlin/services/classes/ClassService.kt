@@ -4,9 +4,9 @@ import com.fathersprophets.backend.database.repository.classes.IClassRepository
 import com.fathersprophets.backend.exceptions.BadRequestException
 import com.fathersprophets.backend.exceptions.NotFoundException
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.request.classes.CreateClassRequest
-import com.fathersprophets.backend.models.request.classes.UpdateClassRequest
-import com.fathersprophets.backend.models.response.classes.ClassResponse
+import com.fathersprophets.backend.models.dto.classes.CreateClassRequest
+import com.fathersprophets.backend.models.dto.classes.UpdateClassRequest
+import com.fathersprophets.backend.models.dto.classes.ClassResponse
 import com.fathersprophets.backend.utils.Localization
 
 class ClassService(

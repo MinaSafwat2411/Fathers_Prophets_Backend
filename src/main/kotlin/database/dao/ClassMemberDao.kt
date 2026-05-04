@@ -2,10 +2,9 @@ package com.fathersprophets.backend.database.dao
 
 import com.fathersprophets.backend.database.tables.ClassMemberTable
 import com.fathersprophets.backend.database.tables.UsersTable
-import com.fathersprophets.backend.models.dto.users.User
 import com.fathersprophets.backend.models.request.classmember.AddClassMemberRequest
 import com.fathersprophets.backend.models.request.classmember.UpdateClassMemberRequest
-import com.fathersprophets.backend.models.response.classes.ClassMemberResponse
+import com.fathersprophets.backend.models.dto.classes.ClassMemberResponse
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction

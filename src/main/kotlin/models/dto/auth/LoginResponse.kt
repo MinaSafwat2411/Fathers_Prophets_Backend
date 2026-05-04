@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.models.response.auth
 
-import com.fathersprophets.backend.models.response.users.UserResponse
+import com.fathersprophets.backend.models.dto.users.UserResponse
 import kotlinx.serialization.Serializable
 
 @Serializable

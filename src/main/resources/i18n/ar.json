@@ -35,5 +35,10 @@
   "class_members_found": "تم العثور على أعضاء الفصل",
   "class_member_added": "تمت إضافة عضو الفصل بنجاح",
   "class_member_updated": "تم تحديث عضو الفصل بنجاح",
-  "class_member_deleted": "تم حذف عضو الفصل بنجاح"
+  "class_member_deleted": "تم حذف عضو الفصل بنجاح",
+  "version_found": "تم العثور على الإصدار",
+  "pin_incorrect": "رمز المرور غير صحيح",
+  "pin_correct": "رمز المرور صحيح",
+  "version_added_successfully": "تم إضافة الإصدار بنجاح",
+  "pin_updated_successfully": "تم تحديث رمز المرور بنجاح"
 }

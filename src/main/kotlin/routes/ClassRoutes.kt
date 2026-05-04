@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.routes
 
-import com.fathersprophets.backend.models.request.classes.CreateClassRequest
-import com.fathersprophets.backend.models.request.classes.UpdateClassRequest
+import com.fathersprophets.backend.models.dto.classes.CreateClassRequest
+import com.fathersprophets.backend.models.dto.classes.UpdateClassRequest
 import com.fathersprophets.backend.plugins.requireRole
 import com.fathersprophets.backend.services.classes.IClassService
 import io.ktor.http.*

@@ -4,12 +4,12 @@ import com.fathersprophets.backend.database.dao.UserDao
 import com.fathersprophets.backend.exceptions.ConflictException
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.users.User
-import com.fathersprophets.backend.models.request.auth.LoginRequest
-import com.fathersprophets.backend.models.request.auth.RefreshRequest
-import com.fathersprophets.backend.models.request.auth.RegisterRequest
+import com.fathersprophets.backend.models.dto.auth.LoginRequest
+import com.fathersprophets.backend.models.dto.auth.RefreshRequest
+import com.fathersprophets.backend.models.dto.auth.RegisterRequest
 import com.fathersprophets.backend.models.response.auth.LoginResponse
 import com.fathersprophets.backend.models.response.auth.RefreshResponse
-import com.fathersprophets.backend.models.response.users.UserResponse
+import com.fathersprophets.backend.models.dto.users.UserResponse
 import com.fathersprophets.backend.utils.JwtConfig
 import com.fathersprophets.backend.utils.Localization
 import com.fathersprophets.backend.utils.PasswordUtil

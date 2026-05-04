@@ -4,7 +4,7 @@ import com.fathersprophets.backend.database.dao.ClassMemberDao
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.request.classmember.AddClassMemberRequest
 import com.fathersprophets.backend.models.request.classmember.UpdateClassMemberRequest
-import com.fathersprophets.backend.models.response.classes.ClassMemberResponse
+import com.fathersprophets.backend.models.dto.classes.ClassMemberResponse
 import com.fathersprophets.backend.utils.Localization
 
 class ClassMemberRepository(

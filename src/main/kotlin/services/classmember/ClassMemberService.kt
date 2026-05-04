@@ -4,7 +4,7 @@ import com.fathersprophets.backend.database.repository.classmember.IClassMemberR
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.request.classmember.AddClassMemberRequest
 import com.fathersprophets.backend.models.request.classmember.UpdateClassMemberRequest
-import com.fathersprophets.backend.models.response.classes.ClassMemberResponse
+import com.fathersprophets.backend.models.dto.classes.ClassMemberResponse
 
 class ClassMemberService(
     private val repository: IClassMemberRepository

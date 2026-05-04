@@ -1,9 +1,8 @@
 package com.fathersprophets.backend.database.dao
 
 import com.fathersprophets.backend.database.tables.ClassesTable
-import com.fathersprophets.backend.database.tables.UsersTable
 import com.fathersprophets.backend.models.dto.classes.Class
-import com.fathersprophets.backend.models.request.classes.UpdateClassRequest
+import com.fathersprophets.backend.models.dto.classes.UpdateClassRequest
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
