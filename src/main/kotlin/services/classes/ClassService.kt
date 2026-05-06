@@ -3,9 +3,9 @@ package com.fathersprophets.backend.services.classes
 import com.fathersprophets.backend.database.repository.classes.IClassRepository
 import com.fathersprophets.backend.exceptions.NotFoundException
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.dto.classes.CreateClassRequest
-import com.fathersprophets.backend.models.dto.classes.UpdateClassRequest
-import com.fathersprophets.backend.models.dto.classes.ClassResponse
+import com.fathersprophets.backend.models.classes.CreateClassRequest
+import com.fathersprophets.backend.models.classes.UpdateClassRequest
+import com.fathersprophets.backend.models.classes.ClassResponse
 import com.fathersprophets.backend.utils.Localization
 import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
 
@@ -16,37 +16,44 @@ class ClassService(
         return classRepository.getAllClasses(lang)
     }
 
-    override suspend fun getClassById(id: Int?, lang: String): ApiResponse<ClassResponse?> {
-        validateRequired(id to "class_id", lang = lang)
-        
-        val classResponse = classRepository.getClassById(id!!, lang)
-        if (classResponse.data == null) {
-            throw NotFoundException(Localization.get("class_not_found", lang))
+    override suspend fun getClassById(id: Int?, lang: String): ApiResponse<ClassResponse> {
+
+        if (id == null) {
+            throw IllegalArgumentException(Localization.get("class_id_required", lang))
         }
-        return classResponse
+
+        return classRepository.getClassById(id, lang)
     }
 
-    override suspend fun createClass(createClassRequest: CreateClassRequest, lang: String): ApiResponse<Int> {
-        validateRequired(createClassRequest.name to "class_name", lang = lang)
+    override suspend fun createClass(createClassRequest: CreateClassRequest, lang: String): ApiResponse<ClassResponse> {
+        validateRequired(
+            createClassRequest.name to "class_name",
+            lang = lang
+        )
         return classRepository.createClass(createClassRequest, lang)
     }
 
-    override suspend fun updateClass(updateClassRequest: UpdateClassRequest, lang: String): ApiResponse<Nothing> {
-        validateRequired(updateClassRequest.name to "class_name",
-            updateClassRequest.id to "class_id", lang = lang)
-        
-        val classExists = classRepository.getClassById(updateClassRequest.id!!, lang).data != null
-        if (!classExists) {
-            throw NotFoundException(Localization.get("class_not_found", lang))
+    override suspend fun updateClass(
+        id: Int?,
+        updateClassRequest: UpdateClassRequest,
+        lang: String
+    ): ApiResponse<ClassResponse> {
+
+        if (id == null) {
+            throw IllegalArgumentException(Localization.get("class_id_required", lang))
         }
 
-        return classRepository.updateClass(updateClassRequest.id, updateClassRequest, lang)
+        validateRequired(
+            updateClassRequest.name to "class_name",
+            lang = lang
+        )
+
+        return classRepository.updateClass(id, updateClassRequest, lang)
     }
 
-    override suspend fun deleteClass(id: Int, lang: String): ApiResponse<Nothing> {
-        val classExists = classRepository.getClassById(id, lang).data != null
-        if (!classExists) {
-            throw NotFoundException(Localization.get("class_not_found", lang))
+    override suspend fun deleteClass(id: Int?, lang: String): ApiResponse<Nothing> {
+        if (id == null) {
+            throw IllegalArgumentException(Localization.get("class_id_required", lang))
         }
         return classRepository.deleteClass(id, lang)
     }

@@ -1,9 +1,8 @@
-package com.fathersprophets.backend.models.dto.users
+package com.fathersprophets.backend.models.dto
 
-import kotlinx.serialization.Serializable
+import com.fathersprophets.backend.models.users.UserResponse
 
-@Serializable
-data class User(
+data class UserDto(
     val id: Int,
     val name: String,
     val username: String,

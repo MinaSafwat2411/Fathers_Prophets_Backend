@@ -1,7 +1,8 @@
 package com.fathersprophets.backend.routes
 
-import com.fathersprophets.backend.models.dto.users.User
-import com.fathersprophets.backend.models.dto.users.UpdateUserRequest
+import com.fathersprophets.backend.models.dto.UserDto
+import com.fathersprophets.backend.models.users.AddUserRequest
+import com.fathersprophets.backend.models.users.UpdateUserRequest
 import com.fathersprophets.backend.plugins.requireRole
 import com.fathersprophets.backend.services.users.IUserService
 import io.ktor.server.request.header
@@ -50,32 +51,33 @@ fun Route.userRoutes(
 
         post {
             call.requireRole("admin", "superadmin")
-            val user = call.receive<User>()
+            val request = call.receive<AddUserRequest>()
             val lang = call.request.header("Accept-Language") ?: "en"
-            val result = userService.addUser(user,lang)
+            val result = userService.addUser(request,lang)
             call.respond(result)
         }
 
         put("/{id}/review") {
             call.requireRole("admin", "superadmin")
-            val userId = call.parameters["id"]?.toIntOrNull() ?: -1
+            val userId = call.parameters["id"]?.toIntOrNull()
             val lang = call.request.header("Accept-Language") ?: "en"
             val result = userService.updateReview(userId, lang)
             call.respond(result)
         }
 
-        patch {
+        put("/{id}") {
             call.requireRole("admin", "superadmin")
             val lang = call.request.header("Accept-Language") ?: "en"
-            val user = call.receive<UpdateUserRequest>()
-            val result = userService.updateUserByField(user,lang)
+            val request = call.receive<UpdateUserRequest>()
+            val userId = call.parameters["id"]?.toIntOrNull()
+            val result = userService.updateUserByField(userId,request,lang)
             call.respond(result)
         }
 
         delete("/{id}") {
             call.requireRole("admin", "superadmin")
             val lang = call.request.header("Accept-Language") ?: "en"
-            val userId = call.parameters["id"]?.toIntOrNull() ?: -1
+            val userId = call.parameters["id"]?.toIntOrNull()
             val result = userService.deleteUser(userId,lang)
             call.respond(result)
         }

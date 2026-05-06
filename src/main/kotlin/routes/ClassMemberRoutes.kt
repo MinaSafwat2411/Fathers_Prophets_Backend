@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.routes
 
-import com.fathersprophets.backend.models.dto.classmember.AddClassMemberRequest
-import com.fathersprophets.backend.models.dto.classmember.UpdateClassMemberRequest
+import com.fathersprophets.backend.models.classmember.AddClassMemberRequest
+import com.fathersprophets.backend.models.classmember.UpdateClassMemberRequest
 import com.fathersprophets.backend.plugins.requireRole
 import com.fathersprophets.backend.services.classmember.IClassMemberService
 import io.ktor.http.*
@@ -31,7 +31,6 @@ fun Route.classMemberRoutes(classMemberService: IClassMemberService) {
         put("/{id}") {
             call.requireRole("admin", "superadmin")
             val id = call.parameters["id"]?.toIntOrNull()
-                ?: return@put call.respond(HttpStatusCode.BadRequest, "Invalid ID")
             val request = call.receive<UpdateClassMemberRequest>()
             val lang = call.request.header("Accept-Language") ?: "en"
             
@@ -42,7 +41,6 @@ fun Route.classMemberRoutes(classMemberService: IClassMemberService) {
         delete("/{id}") {
             call.requireRole("admin", "superadmin")
             val id = call.parameters["id"]?.toIntOrNull()
-                ?: return@delete call.respond(HttpStatusCode.BadRequest, "Invalid ID")
             val lang = call.request.header("Accept-Language") ?: "en"
             
             val result = classMemberService.deleteMember(id, lang)

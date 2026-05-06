@@ -2,26 +2,27 @@ package com.fathersprophets.backend.services.classmember
 
 import com.fathersprophets.backend.database.repository.classmember.IClassMemberRepository
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.dto.classmember.AddClassMemberRequest
-import com.fathersprophets.backend.models.dto.classmember.UpdateClassMemberRequest
-import com.fathersprophets.backend.models.dto.classes.ClassMemberResponse
+import com.fathersprophets.backend.models.classmember.AddClassMemberRequest
+import com.fathersprophets.backend.models.classmember.ClassMemberResponse
+import com.fathersprophets.backend.models.classmember.UpdateClassMemberRequest
+import com.fathersprophets.backend.models.dto.ClassMemberDto
 import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
 
 class ClassMemberService(
     private val repository: IClassMemberRepository
-): IClassMemberService {
+) : IClassMemberService {
     override suspend fun findMemberClass(
         classId: Int?,
         lang: String
     ): ApiResponse<List<ClassMemberResponse>> {
-        validateRequired(classId to "class_id", lang = lang)
-        return repository.findMemberClass(classId!!, lang)
+        if (classId == null) throw IllegalArgumentException("class_id_required")
+        return repository.findMemberClass(classId, lang)
     }
 
     override suspend fun addMember(
         addClassMemberRequest: AddClassMemberRequest,
         lang: String
-    ): ApiResponse<Int> {
+    ): ApiResponse<ClassMemberResponse> {
         validateRequired(
             addClassMemberRequest.userId to "user_id",
             addClassMemberRequest.classId to "class_id",
@@ -29,21 +30,28 @@ class ClassMemberService(
             addClassMemberRequest.name to "name",
             lang = lang
         )
+
         return repository.addMember(addClassMemberRequest, lang)
     }
 
     override suspend fun updateMember(
-        id: Int,
+        id: Int?,
         updateClassMemberRequest: UpdateClassMemberRequest,
         lang: String
-    ): ApiResponse<Nothing> {
+    ): ApiResponse<ClassMemberResponse> {
+
+        if (id == null) throw IllegalArgumentException("member_id_required")
+
         return repository.updateMember(id, updateClassMemberRequest, lang)
     }
 
     override suspend fun deleteMember(
-        id: Int,
+        id: Int?,
         lang: String
     ): ApiResponse<Nothing> {
+
+        if (id == null) throw IllegalArgumentException("member_id_required")
+
         return repository.deleteMember(id, lang)
     }
 }

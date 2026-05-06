@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.models.dto.users
+package com.fathersprophets.backend.models.users
 
 import kotlinx.serialization.Serializable
 

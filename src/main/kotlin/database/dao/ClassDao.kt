@@ -1,18 +1,13 @@
 package com.fathersprophets.backend.database.dao
 
 import com.fathersprophets.backend.database.tables.ClassesTable
-import com.fathersprophets.backend.models.dto.classes.Class
-import com.fathersprophets.backend.models.dto.classes.UpdateClassRequest
-import org.jetbrains.exposed.sql.ResultRow
+import com.fathersprophets.backend.models.dto.ClassDto
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.update
 
 class ClassDao {
-    private fun resultRowToClass(row: ResultRow) = Class(
+    private fun resultRowToClass(row: ResultRow) = ClassDto(
         id = row[ClassesTable.id],
         name = row[ClassesTable.name],
         image = row[ClassesTable.image]
@@ -22,28 +17,28 @@ class ClassDao {
         ClassesTable.selectAll().map { resultRowToClass(it) }
     }
 
-    fun findById(id: Int) = transaction {
-        ClassesTable.selectAll().where { ClassesTable.id eq id }
+    fun findById(classDto: ClassDto) = transaction {
+        ClassesTable.selectAll().where { ClassesTable.id eq classDto.id }
             .singleOrNull()?.let { resultRowToClass(it) }
     }
 
-    fun createClass(data: Map<String, Any?>) = transaction {
+    fun createClass(classDto: ClassDto) = transaction {
         ClassesTable.insert {
-            it[ClassesTable.name] = data["name"] as String
-            it[ClassesTable.image] = data["image"] as String?
+            it[name] = classDto.name
+            it[image] = classDto.image
         } get ClassesTable.id
     }
 
-    fun updateClass(id: Int, updateClassRequest: UpdateClassRequest) = transaction {
-        ClassesTable.update({ ClassesTable.id eq id }) {
-            it[name] = updateClassRequest.name ?: ""
-            it[image] = updateClassRequest.image
+    fun updateClass(classDto: ClassDto) = transaction {
+        ClassesTable.update({ ClassesTable.id eq classDto.id }) {
+            it[name] = classDto.name
+            it[image] = classDto.image
         }
     }
 
-    fun deleteClass(id: Int) = transaction {
+    fun deleteClass(classDto: ClassDto) = transaction {
         ClassesTable.deleteWhere {
-            ClassesTable.id eq id
+            ClassesTable.id eq classDto.id
         }
     }
 

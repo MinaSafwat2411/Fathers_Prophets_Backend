@@ -2,15 +2,15 @@ package com.fathersprophets.backend.services.version
 
 import com.fathersprophets.backend.database.repository.version.IVersionRepository
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.dto.version.AdminPinRequest
-import com.fathersprophets.backend.models.dto.version.VersionRequest
-import com.fathersprophets.backend.models.dto.version.VersionResponse
+import com.fathersprophets.backend.models.version.AdminPinRequest
+import com.fathersprophets.backend.models.version.VersionRequest
+import com.fathersprophets.backend.models.dto.VersionDto
 import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
 
 class VersionService(
     private val versionRepository: IVersionRepository
 ) : IVersionService {
-    override suspend fun getLastVersion(lang: String): ApiResponse<VersionResponse> {
+    override suspend fun getLastVersion(lang: String): ApiResponse<VersionDto> {
         return versionRepository.getLastVersion(lang)
     }
 
@@ -35,7 +35,7 @@ class VersionService(
             adminPinRequest.adminPin to "admin_pin",
             lang = lang
         )
-        return versionRepository.getPinByVersion(adminPinRequest, lang)
+        return versionRepository.onValidatePin(adminPinRequest, lang)
     }
 
     override suspend fun changePinVersion(

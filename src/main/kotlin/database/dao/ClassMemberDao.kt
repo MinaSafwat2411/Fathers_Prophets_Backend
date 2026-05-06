@@ -2,50 +2,53 @@ package com.fathersprophets.backend.database.dao
 
 import com.fathersprophets.backend.database.tables.ClassMemberTable
 import com.fathersprophets.backend.database.tables.UsersTable
-import com.fathersprophets.backend.models.dto.classmember.AddClassMemberRequest
-import com.fathersprophets.backend.models.dto.classmember.UpdateClassMemberRequest
-import com.fathersprophets.backend.models.dto.classes.ClassMemberResponse
+import com.fathersprophets.backend.models.dto.ClassMemberDto
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class ClassMemberDao {
-    private fun resultRowToClassMember(row: ResultRow) = ClassMemberResponse(
+    private fun resultRowToClassMember(row: ResultRow) = ClassMemberDto(
         id = row[ClassMemberTable.id],
         name = row[UsersTable.name],
         image = row[ClassMemberTable.image],
         isTeacher = row[ClassMemberTable.teacher],
-        classId = row[ClassMemberTable.classId]
+        classId = row[ClassMemberTable.classId],
+        userId = row[ClassMemberTable.userId]
     )
 
-    fun findMemberClass(classId: Int) = transaction {
+    fun findMemberClass(classMemberDto: ClassMemberDto) = transaction {
         (ClassMemberTable innerJoin UsersTable)
             .selectAll()
-            .where { ClassMemberTable.classId eq classId }
+            .where { ClassMemberTable.classId eq classMemberDto.classId }
             .map { resultRowToClassMember(it) }
     }
 
-    fun addMember(addClassMemberRequest: AddClassMemberRequest) = transaction {
+    fun findById(classMemberDto: ClassMemberDto) = transaction {
+        ClassMemberTable.selectAll().where { ClassMemberTable.id eq classMemberDto.id }
+            .singleOrNull()?.let { resultRowToClassMember(it) }
+    }
+    fun addMember(classMemberDto: ClassMemberDto) = transaction {
         ClassMemberTable.insert {
-            it[ClassMemberTable.name] = addClassMemberRequest.name
-            it[ClassMemberTable.classId] = addClassMemberRequest.classId?:-1
-            it[ClassMemberTable.userId] = addClassMemberRequest.userId ?:-1
-            it[ClassMemberTable.teacher] = addClassMemberRequest.isTeacher ?:false
-            it[ClassMemberTable.image] = addClassMemberRequest.image
+            it[ClassMemberTable.name] = classMemberDto.name
+            it[ClassMemberTable.classId] = classMemberDto.classId
+            it[ClassMemberTable.userId] = classMemberDto.userId
+            it[ClassMemberTable.teacher] = classMemberDto.isTeacher
+            it[ClassMemberTable.image] = classMemberDto.image
         } get ClassMemberTable.id
     }
 
-    fun updateMember(id: Int, updateClassMemberRequest: UpdateClassMemberRequest) = transaction {
-        ClassMemberTable.update({ ClassMemberTable.id eq id }) {
-            it[ClassMemberTable.name] = updateClassMemberRequest.name
-            it[ClassMemberTable.classId] = updateClassMemberRequest.classId
-            it[ClassMemberTable.teacher] = updateClassMemberRequest.isTeacher
-            it[ClassMemberTable.image] = updateClassMemberRequest.image
-            it[ClassMemberTable.userId] = updateClassMemberRequest.userId
+    fun updateMember(classMemberDto: ClassMemberDto) = transaction {
+        ClassMemberTable.update({ ClassMemberTable.id eq classMemberDto.id }) {
+            it[ClassMemberTable.name] = classMemberDto.name
+            it[ClassMemberTable.classId] = classMemberDto.classId
+            it[ClassMemberTable.teacher] = classMemberDto.isTeacher
+            it[ClassMemberTable.image] = classMemberDto.image
+            it[ClassMemberTable.userId] = classMemberDto.userId
         }
     }
 
-    fun deleteMember(id: Int) = transaction {
-        ClassMemberTable.deleteWhere { ClassMemberTable.id eq id }
+    fun deleteMember(classMemberDto: ClassMemberDto) = transaction {
+        ClassMemberTable.deleteWhere { ClassMemberTable.id eq classMemberDto.id }
     }
 }

@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.routes
 
-import com.fathersprophets.backend.models.dto.auth.LoginRequest
-import com.fathersprophets.backend.models.dto.auth.RefreshRequest
-import com.fathersprophets.backend.models.dto.auth.RegisterRequest
+import com.fathersprophets.backend.exceptions.UnauthorizedException
+import com.fathersprophets.backend.models.auth.LoginRequest
+import com.fathersprophets.backend.models.auth.RefreshRequest
+import com.fathersprophets.backend.models.auth.RegisterRequest
 import com.fathersprophets.backend.services.auth.IAuthService
-import io.ktor.http.HttpStatusCode
+import com.fathersprophets.backend.utils.Localization
+import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
@@ -51,10 +53,11 @@ fun Route.authRoutes(authService: IAuthService) {
         authenticate("auth-jwt") {
             post("/logout") {
                 val principal = call.principal<JWTPrincipal>()
-                val userId = principal?.payload?.getClaim("userId")?.asInt()
-                    ?: return@post call.respond(HttpStatusCode.Unauthorized)
-
                 val lang = call.request.header("Accept-Language") ?: "en"
+
+                val userId = principal?.payload?.getClaim("userId")?.asInt()
+                    ?: throw UnauthorizedException(Localization.get("user_need_to_login", lang))
+
                 val result = authService.logout(userId, lang)
 
                 call.respond(HttpStatusCode.OK, result)

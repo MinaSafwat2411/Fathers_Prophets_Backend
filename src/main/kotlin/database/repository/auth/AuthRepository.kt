@@ -2,14 +2,10 @@ package com.fathersprophets.backend.database.repository.auth
 
 import com.fathersprophets.backend.database.dao.UserDao
 import com.fathersprophets.backend.exceptions.ConflictException
+import com.fathersprophets.backend.exceptions.UnauthorizedException
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.dto.users.User
-import com.fathersprophets.backend.models.dto.auth.LoginRequest
-import com.fathersprophets.backend.models.dto.auth.RefreshRequest
-import com.fathersprophets.backend.models.dto.auth.RegisterRequest
-import com.fathersprophets.backend.models.response.auth.LoginResponse
-import com.fathersprophets.backend.models.response.auth.RefreshResponse
-import com.fathersprophets.backend.models.dto.users.UserResponse
+import com.fathersprophets.backend.models.auth.*
+import com.fathersprophets.backend.models.dto.UserDto
 import com.fathersprophets.backend.utils.JwtConfig
 import com.fathersprophets.backend.utils.Localization
 import com.fathersprophets.backend.utils.PasswordUtil
@@ -18,36 +14,54 @@ class AuthRepository(
     val userDao: UserDao,
     private val lang: String = "en"
 ) : IAuthRepository {
-    override suspend fun register(request: RegisterRequest): ApiResponse<Nothing> {
-        val existingUser = userDao.findByUsername(request.username?:"")
+    override suspend fun register(request: RegisterRequest): ApiResponse<RegisterResponse> {
+        val passwordHash = PasswordUtil.hashPassword(request.password ?: "")
+
+        val existingUser = userDao.findByUsername(request.toUserDto(passwordHash))
         if (existingUser != null) {
             throw ConflictException(Localization.get("username_exists", lang))
         }
 
-        val passwordHash = PasswordUtil.hashPassword(request.password?:"")
-
-        userDao.createUser(
-            User(
-                id = 0,
-                name = request.name?:"",
-                username = request.username?:"",
-                passwordHash = passwordHash,
-                role = "member",
-                isReviewed = false,
-            )
+        val newUserId = userDao.createUser(
+            request.toUserDto(passwordHash)
         )
 
-        return ApiResponse(success = true, message = Localization.get("register_success", lang))
+        var user = userDao.findById(request.toUserDto(passwordHash).copy(id = newUserId)) ?: throw ConflictException(
+            Localization.get("register_failed", lang)
+        )
+
+        val token = generateAccessToken(user)
+        val refreshToken = generateRefresh(user)
+
+        user = user.copy(
+            token = token,
+            refreshToken = refreshToken,
+        )
+
+        userDao.updateToken(user)
+        userDao.updateRefreshToken(user)
+
+        return ApiResponse(
+            success = true,
+            message = Localization.get("register_success", lang),
+            data = RegisterResponse(
+                user = user.convertToUserResponse(),
+                token = token,
+                refreshToken = refreshToken
+            )
+        )
     }
 
     override suspend fun login(request: LoginRequest): ApiResponse<LoginResponse> {
 
-        val user = userDao.findByUsername(request.username?:"")
-            ?: return ApiResponse(false, Localization.get("invalid_credentials", lang))
+        val hashPassword = PasswordUtil.hashPassword(request.password ?: "")
+
+        var user = userDao.findByUsername(request.toUserDto(hashPassword))
+            ?: throw ConflictException(Localization.get("user_not_found", lang))
 
 
-        if (!PasswordUtil.checkPassword(request.password?:"", user.passwordHash)) {
-            return ApiResponse(false, Localization.get("invalid_credentials", lang))
+        if (!PasswordUtil.checkPassword(request.password ?: "", user.passwordHash)) {
+            throw ConflictException(Localization.get("invalid_credentials", lang))
         }
 
         val token = JwtConfig.generateAccessToken(
@@ -58,32 +72,20 @@ class AuthRepository(
         )
         val refreshToken = JwtConfig.generateRefreshToken(user.id)
 
-        userDao.updateToken(user.id, token)
-        userDao.updateRefreshToken(user.id, refreshToken)
-
-        userDao.updateFcmToken(user.id, request.fcmToken?:"")
-
-        val userResponse = UserResponse(
-            id = user.id,
-            name = user.name,
-            username = user.username,
-            role = user.role,
-            email = user.email,
-            phone = user.phone,
-            address = user.address,
-            birthDate = user.birthDate,
-            fatherName = user.fatherName,
-            isShams = user.isShams,
-            profile = user.profile,
-            isReviewed = user.isReviewed,
-            memberId = user.memberId
+        user = user.copy(
+            token = token,
+            refreshToken = refreshToken
         )
+
+        userDao.updateToken(user)
+        userDao.updateRefreshToken(user)
+        userDao.updateFcmToken(user)
 
         return ApiResponse(
             success = true,
             message = Localization.get("login_success", lang),
             data = LoginResponse(
-                user = userResponse,
+                user = user.convertToUserResponse(),
                 token = token,
                 refreshToken = refreshToken
             )
@@ -91,27 +93,22 @@ class AuthRepository(
     }
 
     override suspend fun refreshToken(refresh: RefreshRequest): ApiResponse<RefreshResponse> {
-        val token = refresh.refreshToken ?: return ApiResponse(false, Localization.get("invalid_token", lang))
-        val userId = JwtConfig.verifyRefreshToken(token)
-            ?: return ApiResponse(false, Localization.get("invalid_token", lang))
+        val userId = JwtConfig.verifyRefreshToken(refresh.refreshToken ?: "")
+            ?: throw UnauthorizedException(Localization.get("invalid_token", lang))
 
-        val user = userDao.findById(userId)
-            ?: return ApiResponse(false, Localization.get("user_not_found", lang))
+        var user = userDao.findById(refresh.toUserDto().copy(id = userId))
+            ?: throw ConflictException(Localization.get("user_not_found", lang))
 
-        if (user.refreshToken != token) {
-            return ApiResponse(false, Localization.get("invalid_token", lang))
-        }
+        val newToken = generateAccessToken(user)
+        val newRefreshToken = generateRefresh(user)
 
-        val newToken = JwtConfig.generateAccessToken(
-            user.id,
-            user.username,
-            user.role,
-            user.isReviewed == true
+        user = user.copy(
+            token = newToken,
+            refreshToken = newRefreshToken
         )
-        val newRefreshToken = JwtConfig.generateRefreshToken(user.id)
 
-        userDao.updateToken(user.id, newToken)
-        userDao.updateRefreshToken(user.id, newRefreshToken)
+        userDao.updateToken(user)
+        userDao.updateRefreshToken(user)
 
         return ApiResponse(
             success = true,
@@ -124,9 +121,38 @@ class AuthRepository(
     }
 
     override suspend fun logout(userId: Int): ApiResponse<Nothing> {
-        userDao.updateToken(userId, "")
-        userDao.updateRefreshToken(userId, "")
+        val userDto = idToUser(userId).copy(
+            token = null,
+            refreshToken = null,
+            fcmToken = null
+        )
+        userDao.updateToken(userDto)
+        userDao.updateRefreshToken(userDto)
+        userDao.updateFcmToken(userDto)
         return ApiResponse(success = true, message = Localization.get("logout_success", lang))
+    }
+
+    private fun generateAccessToken(userDto: UserDto): String {
+        return JwtConfig.generateAccessToken(
+            userDto.id,
+            userDto.username,
+            userDto.role,
+            userDto.isReviewed == true
+        )
+    }
+
+    private fun generateRefresh(userDto: UserDto): String {
+        return JwtConfig.generateRefreshToken(userDto.id)
+    }
+
+    private fun idToUser(id: Int): UserDto {
+        return UserDto(
+            id = id,
+            name = "",
+            username = "",
+            passwordHash = "",
+            role = "",
+        )
     }
 
 }

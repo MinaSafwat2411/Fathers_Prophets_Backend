@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.models.response.auth
+package com.fathersprophets.backend.models.auth
 
 import kotlinx.serialization.Serializable
 
