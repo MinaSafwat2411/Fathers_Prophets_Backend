@@ -13,7 +13,9 @@ class VersionRepository(
 ) : IVersionRepository {
 
     override suspend fun getLastVersion(lang: String): ApiResponse<VersionDto> {
-        val lastVersion = versionDao.getLastVersion()
+        val lastVersion = versionDao.getLastVersion()?:
+            throw IllegalArgumentException(Localization.get("version_not_found", lang))
+
         return ApiResponse(
             success = true,
             data = lastVersion,

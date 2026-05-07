@@ -48,3 +48,20 @@ dependencies {
     implementation("io.ktor:ktor-server-status-pages:$ktor_version")
     implementation("io.ktor:ktor-server-swagger:$ktor_version")
 }
+
+tasks.register<JavaExec>("generatePostmanSmart") {
+    group = "documentation"
+    description = "Generate Smart Postman Collection based on model classes"
+
+    classpath = sourceSets["main"].runtimeClasspath
+    mainClass.set("com.fathersprophets.backend.utils.SmartPostmanGeneratorKt")
+
+    doFirst {
+        println("🚀 Generating Smart Postman Collection (Model-Based)...")
+    }
+
+    doLast {
+        println("✅ Smart Postman files generated successfully!")
+        println("   Collections include request bodies auto-generated from models!")
+    }
+}

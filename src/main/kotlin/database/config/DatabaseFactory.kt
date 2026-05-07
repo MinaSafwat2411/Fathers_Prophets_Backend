@@ -4,6 +4,7 @@ import com.fathersprophets.backend.database.tables.ClassMemberTable
 import com.fathersprophets.backend.database.tables.ClassesTable
 import com.fathersprophets.backend.database.tables.CommentsTable
 import com.fathersprophets.backend.database.tables.UsersTable
+import com.fathersprophets.backend.database.tables.VersionsTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -20,7 +21,7 @@ object DatabaseFactory {
 
 
         transaction {
-            SchemaUtils.create(UsersTable, ClassesTable, CommentsTable, ClassMemberTable)
+            SchemaUtils.create(UsersTable, ClassesTable, CommentsTable, ClassMemberTable, VersionsTable)
         }
     }
 }

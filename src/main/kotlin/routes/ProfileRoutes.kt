@@ -3,6 +3,7 @@ package com.fathersprophets.backend.routes
 import com.fathersprophets.backend.models.users.UpdateEmailRequest
 import com.fathersprophets.backend.models.users.UpdatePasswordRequest
 import com.fathersprophets.backend.models.users.UpdatePhoneRequest
+import com.fathersprophets.backend.models.users.UpdateProfileRequest
 import com.fathersprophets.backend.services.users.IUserService
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
@@ -48,6 +49,16 @@ fun Route.profileRoutes(userService: IUserService) {
             val request = call.receive<UpdatePhoneRequest>()
 
             val result = userService.updatePhone(userId, request, lang)
+            call.respond(result)
+        }
+
+        put {
+            val lang = call.request.header("Accept-Language") ?: "en"
+            val principal = call.principal<JWTPrincipal>()
+            val userId = principal?.payload?.getClaim("userId")?.asInt()
+            val request = call.receive<UpdateProfileRequest>()
+
+            val result = userService.updateProfile(userId, request, lang)
             call.respond(result)
         }
     }

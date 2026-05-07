@@ -35,7 +35,8 @@ CREATE TABLE IF NOT EXISTS users
             'spiritual',
             'melodies',
             'games',
-            'quiz'
+            'quiz',
+            'parent'
             )
     ),
     fcm_token       VARCHAR(512),
