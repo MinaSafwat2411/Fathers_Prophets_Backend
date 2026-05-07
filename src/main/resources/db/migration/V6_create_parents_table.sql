@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS parents(
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
-    parent_id INT REFERENCES users(id) ON DELETE CASCADE,
-    UNIQUE(user_id, parent_id)
+    mother_phone VARCHAR(255),
+    father_phone VARCHAR(255),
 );

@@ -63,5 +63,10 @@
   "version_not_found": "الإصدار غير موجود",
   "user_need_to_login": "يحتاج المستخدم إلى تسجيل الدخول",
   "id_required": "المعرف لا يمكن أن يكون فارغًا",
-  "member_id_required": "معرف العضو لا يمكن أن يكون فارغًا"
+  "member_id_required": "معرف العضو لا يمكن أن يكون فارغًا",
+  "comment_create_failed": "فشل إنشاء التعليق",
+  "comment_create_success": "تم إنشاء التعليق بنجاح",
+  "comment_update_success": "تم تحديث التعليق بنجاح",
+  "comment_delete_success": "تم حذف التعليق بنجاح",
+  "comments_retrieved_success": "تم استرجاع التعليقات بنجاح"
 }

@@ -13,9 +13,9 @@ import com.fathersprophets.backend.models.classes.CreateClassRequest
 import com.fathersprophets.backend.models.classes.UpdateClassRequest
 import com.fathersprophets.backend.models.classmember.AddClassMemberRequest
 import com.fathersprophets.backend.models.classmember.UpdateClassMemberRequest
-import kotlinx.serialization.Serializable
+import com.fathersprophets.backend.models.comments.AddCommentRequest
+import com.fathersprophets.backend.models.comments.UpdateCommentRequest
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.encodeToString
 import java.io.File
 import kotlin.reflect.KClass
 import kotlin.reflect.full.declaredMemberProperties
@@ -73,7 +73,7 @@ object ExampleValueGenerator {
             // Use kotlinx.serialization to convert to JSON
             val json = Json { prettyPrint = true }
             json.encodeToString(jsonMap)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
     }
@@ -209,6 +209,13 @@ object PostmanEndpoints {
         RequestDefinition("Add Class Member", "POST", "class-members", AddClassMemberRequest::class),
         RequestDefinition("Update Class Member", "PUT", "class-members/1", UpdateClassMemberRequest::class),
         RequestDefinition("Delete Class Member", "DELETE", "class-members/1"),
+
+        // Comments
+        RequestDefinition("Add Comment", "POST", "comments/add", AddCommentRequest::class),
+        RequestDefinition("Update Comment", "PUT", "comments/update", UpdateCommentRequest::class),
+        RequestDefinition("Delete Comment", "DELETE", "comments/delete/1"),
+        RequestDefinition("Get Comments by User ID", "GET", "comments/user/1"),
+        RequestDefinition("Get All Comments", "GET", "comments/all"),
 
         // Settings
         RequestDefinition("Get Last Version", "GET", "setting", requiresAuth = false),

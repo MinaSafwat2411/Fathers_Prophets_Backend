@@ -1,6 +1,8 @@
 package com.fathersprophets.backend.database.dao
 
+import com.fathersprophets.backend.database.tables.ParentsTable
 import com.fathersprophets.backend.database.tables.UsersTable
+import com.fathersprophets.backend.models.dto.ParentsDto
 import com.fathersprophets.backend.models.dto.UserDto
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -25,21 +27,27 @@ class UserDao {
         token = row[UsersTable.token],
         refreshToken = row[UsersTable.refreshToken],
         fcmToken = row[UsersTable.fcmToken],
-        skipMembership = row[UsersTable.skipMembership]
+        skipMembership = row[UsersTable.skipMembership],
+        parents = row.getOrNull(ParentsTable.id)?.let {
+            ParentsDto(
+                motherPhone = row[ParentsTable.motherPhone],
+                fatherPhone = row[ParentsTable.fatherPhone]
+            )
+        }
     )
 
     fun findByUsername(userDto : UserDto) = transaction {
-        UsersTable.selectAll().where { UsersTable.username eq userDto.username }
+        (UsersTable leftJoin ParentsTable).selectAll().where { UsersTable.username eq userDto.username }
             .singleOrNull()?.let { resultRowToUser(it) }
     }
 
     fun findById(userDto : UserDto) = transaction {
-        UsersTable.selectAll().where { UsersTable.id eq userDto.id }
+        (UsersTable leftJoin ParentsTable).selectAll().where { UsersTable.id eq userDto.id }
             .singleOrNull()?.let { resultRowToUser(it) }
     }
 
     fun createUser(userDto: UserDto) = transaction {
-        UsersTable.insert {
+        val id = UsersTable.insert {
             it[name] = userDto.name
             it[username] = userDto.username
             it[passwordHash] = userDto.passwordHash
@@ -47,17 +55,23 @@ class UserDao {
             it[isReviewed] = userDto.isReviewed
             it[fcmToken] = userDto.fcmToken
         } get UsersTable.id
+
+        ParentsTable.insert {
+            it[userId]  = id
+        }
+
+        return@transaction id
     }
 
     fun updateToken(userDto : UserDto) = transaction {
         UsersTable.update({ UsersTable.id eq userDto.id }) {
-            it[UsersTable.token] = token
+            it[UsersTable.token] = userDto.token
         }
     }
 
     fun updateRefreshToken(userDto : UserDto) = transaction {
         UsersTable.update({ UsersTable.id eq userDto.id }) {
-            it[UsersTable.refreshToken] = refreshToken
+            it[UsersTable.refreshToken] = userDto.refreshToken
         }
     }
 
@@ -68,11 +82,15 @@ class UserDao {
     }
 
     fun findByRole(role: String) = transaction {
-        UsersTable.selectAll().where { UsersTable.role eq role }
+        (UsersTable leftJoin ParentsTable).selectAll().where { UsersTable.role eq role }
             .map { resultRowToUser(it) }
     }
 
     fun updateUserByField(userDto: UserDto) = transaction {
+        ParentsTable.update({ ParentsTable.id eq userDto.id }) {
+            it[motherPhone] = userDto.parents?.motherPhone
+            it[fatherPhone] = userDto.parents?.fatherPhone
+        }
         UsersTable.update({ UsersTable.id eq userDto.id }) {
             it[address] = userDto.address
             it[birthDate] = userDto.birthDate
@@ -117,11 +135,11 @@ class UserDao {
     }
 
     fun findAllUsers() = transaction {
-        UsersTable.selectAll().map { resultRowToUser(it) }
+        (UsersTable leftJoin ParentsTable).selectAll().map { resultRowToUser(it) }
     }
 
     fun findUnreviewedUsers() = transaction {
-        UsersTable.selectAll().where { UsersTable.isReviewed eq false }
+        (UsersTable leftJoin ParentsTable).selectAll().where { UsersTable.isReviewed eq false }
             .map { resultRowToUser(it) }
     }
 }

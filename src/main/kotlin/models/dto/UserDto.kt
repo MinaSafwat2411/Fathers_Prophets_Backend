@@ -21,23 +21,23 @@ data class UserDto(
     val refreshToken: String? = null,
     val fcmToken: String? = null,
     val skipMembership: Boolean? = null,
-    val comments: List<String> = emptyList()
+    val comments: List<String> = emptyList(),
+    val parents : ParentsDto? = null,
 ){
-    fun convertToUserResponse(): UserResponse {
-        return UserResponse(
-            id = this.id,
-            name = this.name,
-            username = this.username,
-            role = this.role,
-            email = this.email,
-            phone = this.phone,
-            address = this.address,
-            birthDate = this.birthDate,
-            fatherName = this.fatherName,
-            isShams = this.isShams,
-            profile = this.profile,
-            isReviewed = this.isReviewed,
-            memberId = this.memberId
-        )
-    }
+    fun convertToUserResponse()=UserResponse(
+        id = this.id,
+        name = this.name,
+        username = this.username,
+        role = this.role,
+        email = this.email,
+        phone = this.phone,
+        address = this.address,
+        birthDate = this.birthDate,
+        fatherName = this.fatherName,
+        isShams = this.isShams,
+        profile = this.profile,
+        isReviewed = this.isReviewed,
+        memberId = this.memberId,
+        parents = this.parents?.convertToParentsResponse()
+    )
 }

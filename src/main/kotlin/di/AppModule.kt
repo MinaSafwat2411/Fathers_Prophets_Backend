@@ -2,6 +2,7 @@ package com.fathersprophets.backend.di
 
 import com.fathersprophets.backend.database.dao.ClassDao
 import com.fathersprophets.backend.database.dao.ClassMemberDao
+import com.fathersprophets.backend.database.dao.CommentDao
 import com.fathersprophets.backend.database.dao.UserDao
 import com.fathersprophets.backend.database.dao.VersionDao
 import com.fathersprophets.backend.database.repository.auth.AuthRepository
@@ -10,6 +11,8 @@ import com.fathersprophets.backend.database.repository.classes.ClassRepository
 import com.fathersprophets.backend.database.repository.classes.IClassRepository
 import com.fathersprophets.backend.database.repository.classmember.ClassMemberRepository
 import com.fathersprophets.backend.database.repository.classmember.IClassMemberRepository
+import com.fathersprophets.backend.database.repository.comments.CommentsRepository
+import com.fathersprophets.backend.database.repository.comments.ICommentsRepository
 import com.fathersprophets.backend.database.repository.users.IUserRepository
 import com.fathersprophets.backend.database.repository.users.UserRepository
 import com.fathersprophets.backend.database.repository.version.IVersionRepository
@@ -20,6 +23,8 @@ import com.fathersprophets.backend.services.classes.ClassService
 import com.fathersprophets.backend.services.classes.IClassService
 import com.fathersprophets.backend.services.classmember.ClassMemberService
 import com.fathersprophets.backend.services.classmember.IClassMemberService
+import com.fathersprophets.backend.services.comments.CommentsService
+import com.fathersprophets.backend.services.comments.ICommentsService
 import com.fathersprophets.backend.services.users.IUserService
 import com.fathersprophets.backend.services.users.UserService
 import com.fathersprophets.backend.services.version.IVersionService
@@ -30,6 +35,7 @@ val appModule = module {
     single { UserDao() }
     single { ClassDao() }
     single { ClassMemberDao() }
+    single { CommentDao() }
     single { VersionDao() }
 
     single<IAuthRepository> {
@@ -62,6 +68,14 @@ val appModule = module {
 
     single<IClassMemberService> {
         ClassMemberService(get())
+    }
+
+    single<ICommentsRepository> {
+        CommentsRepository(get())
+    }
+
+    single<ICommentsService> {
+        CommentsService(get())
     }
 
     single<IVersionRepository> {

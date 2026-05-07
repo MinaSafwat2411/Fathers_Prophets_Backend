@@ -63,5 +63,10 @@
   "version_not_found": "Version not found",
   "user_need_to_login": "User needs to log in",
   "id_required": "ID cannot be empty",
-  "member_id_required": "Member ID cannot be empty"
+  "member_id_required": "Member ID cannot be empty",
+  "comment_create_failed": "Failed to create comment",
+  "comment_create_success": "Comment created successfully",
+  "comment_update_success": "Comment updated successfully",
+  "comment_delete_success": "Comment deleted successfully",
+  "comments_retrieved_success": "Comments retrieved successfully"
 }

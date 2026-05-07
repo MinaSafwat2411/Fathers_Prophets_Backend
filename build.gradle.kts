@@ -47,6 +47,9 @@ dependencies {
 
     implementation("io.ktor:ktor-server-status-pages:$ktor_version")
     implementation("io.ktor:ktor-server-swagger:$ktor_version")
+    implementation("io.ktor:ktor-server-websockets:$ktor_version")
+
+    implementation("com.squareup.okhttp3:okhttp:5.3.2")
 }
 
 tasks.register<JavaExec>("generatePostmanSmart") {

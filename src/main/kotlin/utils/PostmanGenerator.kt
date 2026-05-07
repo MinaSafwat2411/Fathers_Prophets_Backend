@@ -103,7 +103,8 @@ object PostmanGenerator {
                 createClassesFolder(),
                 createClassMembersFolder(),
                 createSettingsFolder(),
-                createHealthCheckFolder()
+                createHealthCheckFolder(),
+                createCommentsFolder()
             ),
             variable = listOf(
                 Variable("base_url", "http://localhost:8080"),
@@ -283,6 +284,29 @@ object PostmanGenerator {
             name = "Health Check",
             item = listOf(
                 createRequest("Health Check", "GET", "healthcheck", headers = listOf(Header("Accept-Language", "en")))
+            )
+        )
+    }
+
+    private fun createCommentsFolder(): CollectionFolder {
+        return CollectionFolder(
+            name = "Comments",
+            item = listOf(
+                createRequest(
+                    name = "Add Comment",
+                    method = "POST",
+                    path = "comments/add",
+                    body = """{"userId": 1, "content": "This is a comment", "classId": 1}"""
+                ),
+                createRequest(
+                    name = "Update Comment",
+                    method = "PUT",
+                    path = "comments/update",
+                    body = """{"id": 1, "userId": 1, "content": "Updated comment content", "classId": 1}"""
+                ),
+                createRequest("Delete Comment", "DELETE", "comments/delete/1"),
+                createRequest("Get Comments by User ID", "GET", "comments/user/1"),
+                createRequest("Get All Comments", "GET", "comments/all")
             )
         )
     }
