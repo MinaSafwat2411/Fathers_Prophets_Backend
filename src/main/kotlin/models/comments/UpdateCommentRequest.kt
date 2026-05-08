@@ -5,12 +5,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UpdateCommentRequest(
-    val commentId: Int? = null,
     val comment: String? = null,
     val userId: Int? = null
 ){
-    fun toCommentDto() = CommentDto(
-        id = commentId ?: 0,
+    fun toCommentDto(id : Int) = CommentDto(
+        id = id,
         userId = userId ?: 0,
         comment = comment ?: ""
     )

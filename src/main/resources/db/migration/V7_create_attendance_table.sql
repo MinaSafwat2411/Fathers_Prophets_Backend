@@ -1,0 +1,18 @@
+CREATE TABLE IF NOT EXISTS attendance
+(
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+    user_id INT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    session_id INT NOT NULL REFERENCES sessions (id) ON DELETE CASCADE,
+    name VARCHAR(255) NOT NULL REFERENCES users (name)
+    attended BOOLEAN NOT NULL DEFAULT FALSE,
+    brought_bible BOOLEAN NOT NULL DEFAULT FALSE,
+    shmas BOOLEAN NOT NULL DEFAULT FALSE,
+    odas BOOLEAN NOT NULL DEFAULT FALSE,
+    tnawl BOOLEAN NOT NULL DEFAULT FALSE,
+
+    class_id INT NOT NULL REFERENCES classes (id) ON DELETE CASCADE,
+
+    CONSTRAINT attendance_user_session_unique
+    UNIQUE (user_id, session_id)
+);

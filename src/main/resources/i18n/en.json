@@ -68,5 +68,6 @@
   "comment_create_success": "Comment created successfully",
   "comment_update_success": "Comment updated successfully",
   "comment_delete_success": "Comment deleted successfully",
-  "comments_retrieved_success": "Comments retrieved successfully"
+  "comments_retrieved_success": "Comments retrieved successfully",
+  "comment_id_is_null": "Comment ID is null"
 }

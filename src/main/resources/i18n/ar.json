@@ -68,5 +68,6 @@
   "comment_create_success": "تم إنشاء التعليق بنجاح",
   "comment_update_success": "تم تحديث التعليق بنجاح",
   "comment_delete_success": "تم حذف التعليق بنجاح",
-  "comments_retrieved_success": "تم استرجاع التعليقات بنجاح"
+  "comments_retrieved_success": "تم استرجاع التعليقات بنجاح",
+  "comment_id_is_null": "معرف التعليق فارغ"
 }

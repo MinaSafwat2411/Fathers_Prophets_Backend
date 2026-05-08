@@ -33,15 +33,18 @@ class CommentsService(
     }
 
     override fun updateComment(
+        commentId: Int?,
         comment: UpdateCommentRequest,
         lang: String
     ): ApiResponse<CommentResponse> {
+        if (commentId==null){
+            throw IllegalArgumentException("comment_id_is_null")
+        }
         validateRequired(
-            comment.commentId to "comment_id",
             comment.comment to "comment",
             lang = lang
         )
-        val response = commentsRepository.updateComment(comment, lang)
+        val response = commentsRepository.updateComment(commentId,comment, lang)
         
         // Broadcast to WebSocket clients
         if (response.success && response.data != null) {
@@ -52,9 +55,12 @@ class CommentsService(
     }
 
     override fun deleteComment(
-        commentId: Int,
+        commentId: Int?,
         lang: String
     ): ApiResponse<Nothing> {
+        if(commentId==null){
+            throw IllegalArgumentException("comment_id_is_null")
+        }
         return commentsRepository.deleteComment(commentId, lang)
     }
 

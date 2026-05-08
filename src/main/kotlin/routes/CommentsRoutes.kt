@@ -22,14 +22,15 @@ fun Route.commentRoutes(commentsService: ICommentsService) {
 
         put("/update") {
             val lang = call.request.headers["Accept-Language"] ?: "en"
+            val id = call.parameters["id"]?.toIntOrNull()
             val request = call.receive<UpdateCommentRequest>()
-            val response = commentsService.updateComment(request, lang)
+            val response = commentsService.updateComment(id,request, lang)
             call.respond(response)
         }
 
         delete("/delete/{id}") {
             val lang = call.request.headers["Accept-Language"] ?: "en"
-            val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid ID")
+            val id = call.parameters["id"]?.toIntOrNull()
             val response = commentsService.deleteComment(id, lang)
             call.respond(response)
         }

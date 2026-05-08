@@ -23,8 +23,8 @@ class CommentsRepository (
         )
     }
 
-    override fun updateComment(updateComment: UpdateCommentRequest,lang : String): ApiResponse<CommentResponse> {
-        val updatedComment = commentDao.updateComment(updateComment.toCommentDto())
+    override fun updateComment(commentId: Int,updateComment: UpdateCommentRequest,lang : String): ApiResponse<CommentResponse> {
+        val updatedComment = commentDao.updateComment(updateComment.toCommentDto(commentId))
         return ApiResponse(
             success = true,
             data = updatedComment.convertToCommentResponse(),
