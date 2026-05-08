@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AttendanceResponse(
-    val id: Int? = null,
+    val id: Int,
     val userId: Int,
     val sessionId: Int,
     val name: String,
