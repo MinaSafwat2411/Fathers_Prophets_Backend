@@ -69,5 +69,10 @@
   "comment_update_success": "Comment updated successfully",
   "comment_delete_success": "Comment deleted successfully",
   "comments_retrieved_success": "Comments retrieved successfully",
-  "comment_id_is_null": "Comment ID is null"
+  "comment_id_is_null": "Comment ID is null",
+  "can_not_add_session": "Cannot add session",
+  "session_create_failed": "Failed to create session",
+  "session_added_successfully": "Session added successfully",
+  "session_retrieved_successfully": "Session retrieved successfully",
+  "session_not_found": "Session not found"
 }

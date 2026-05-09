@@ -69,5 +69,10 @@
   "comment_update_success": "تم تحديث التعليق بنجاح",
   "comment_delete_success": "تم حذف التعليق بنجاح",
   "comments_retrieved_success": "تم استرجاع التعليقات بنجاح",
-  "comment_id_is_null": "معرف التعليق فارغ"
+  "comment_id_is_null": "معرف التعليق فارغ",
+  "can_not_add_session": "لا يمكن إضافة الجلسة",
+  "session_create_failed": "فشل إنشاء الجلسة",
+  "session_added_successfully": "تمت إضافة الجلسة بنجاح",
+  "session_retrieved_successfully": "تم استرجاع الجلسة بنجاح",
+  "session_not_found": "الجلسة غير موجودة"
 }

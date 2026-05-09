@@ -1,8 +1,10 @@
 package com.fathersprophets.backend.di
 
+import com.fathersprophets.backend.database.dao.AttendanceDao
 import com.fathersprophets.backend.database.dao.ClassDao
 import com.fathersprophets.backend.database.dao.ClassMemberDao
 import com.fathersprophets.backend.database.dao.CommentDao
+import com.fathersprophets.backend.database.dao.SessionDao
 import com.fathersprophets.backend.database.dao.UserDao
 import com.fathersprophets.backend.database.dao.VersionDao
 import com.fathersprophets.backend.database.repository.auth.AuthRepository
@@ -37,6 +39,8 @@ val appModule = module {
     single { ClassMemberDao() }
     single { CommentDao() }
     single { VersionDao() }
+    single { SessionDao() }
+    single { AttendanceDao() }
 
     single<IAuthRepository> {
         AuthRepository(
