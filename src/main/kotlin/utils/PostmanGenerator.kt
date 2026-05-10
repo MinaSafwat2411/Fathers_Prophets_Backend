@@ -2,7 +2,6 @@ package com.fathersprophets.backend.utils
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.encodeToString
 import java.io.File
 
@@ -104,7 +103,9 @@ object PostmanGenerator {
                 createClassMembersFolder(),
                 createSettingsFolder(),
                 createHealthCheckFolder(),
-                createCommentsFolder()
+                createCommentsFolder(),
+                createSessionFolder(),
+                createAttendanceFolder()
             ),
             variable = listOf(
                 Variable("base_url", "http://localhost:8080"),
@@ -128,7 +129,9 @@ object PostmanGenerator {
                 EnvironmentValue("admin_token", "", true),
                 EnvironmentValue("user_id", "1", true),
                 EnvironmentValue("class_id", "1", true),
-                EnvironmentValue("member_id", "1", true)
+                EnvironmentValue("member_id", "1", true),
+                EnvironmentValue("session_id", "1", true),
+                EnvironmentValue("attendance_id", "1", true)
             )
         )
 
@@ -311,6 +314,87 @@ object PostmanGenerator {
         )
     }
 
+    private fun createSessionFolder(): CollectionFolder{
+        return CollectionFolder(
+            name = "Sessions",
+            item = listOf(
+                createRequest(
+                    name = "Get All Sessions",
+                    method = "GET",
+                    path = "sessions"
+                ),
+                createRequest(
+                    name = "Get Session By ID",
+                    method = "GET",
+                    path = "sessions/{{session_id}}"
+                ),
+                createRequest(
+                    name = "Create Session",
+                    method = "POST",
+                    path = "sessions",
+                    body = """{"dateTime": "2024-10-15T18:00:00"}"""
+                ),
+                createRequest(
+                    name = "Update Session",
+                    method = "PUT",
+                    path = "sessions/{{session_id}}",
+                    body = """{"dateTime": "2024-10-15T19:00:00"}"""
+                ),
+                createRequest(
+                    name = "Delete Session",
+                    method = "DELETE",
+                    path = "sessions/{{session_id}}"
+                )
+            )
+        )
+    }
+
+    private fun createAttendanceFolder(): CollectionFolder {
+        return CollectionFolder(
+            name = "Attendance",
+            item = listOf(
+                createRequest(
+                    name = "Add Attendance",
+                    method = "POST",
+                    path = "attendance",
+                    body = """{"userId": 1, "sessionId": 1, "name": "John Doe", "attended": true, "broughtBible": true, "shmas": false, "odas": true, "tnawl": true, "classId": 1}"""
+                ),
+                createRequest(
+                    name = "Get All Attendance",
+                    method = "GET",
+                    path = "attendance"
+                ),
+                createRequest(
+                    name = "Get Attendance By Session ID",
+                    method = "GET",
+                    path = "attendance/session/{{session_id}}"
+                ),
+                createRequest(
+                    name = "Get Attendance By Member ID",
+                    method = "GET",
+                    path = "attendance/member/{{member_id}}"
+                ),
+                createRequest(
+                    name = "Get Attendance By Class ID",
+                    method = "GET",
+                    path = "attendance/class/{{class_id}}"
+                ),
+                createRequest(
+                    name = "Update Attendance",
+                    method = "PUT",
+                    path = "attendance/{{attendance_id}}",
+                    body = """{"attended": false, "broughtBible": false, "shmas": false, "odas": false, "tnawl": false, "classId": 1}"""
+                ),
+                createRequest(
+                    name = "Delete Attendance",
+                    method = "DELETE",
+                    path = "attendance/{{attendance_id}}"
+                )
+            )
+        )
+    }
+
+
     private fun createRequest(
         name: String,
         method: String,
@@ -370,4 +454,3 @@ fun main() {
 }
 
 operator fun String.times(count: Int): String = this.repeat(count)
-

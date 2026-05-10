@@ -19,6 +19,12 @@ fun Route.attendanceRoutes(attendanceService: IAttendanceService) {
             call.respond(if (response.success) HttpStatusCode.Created else HttpStatusCode.BadRequest, response)
         }
 
+        get {
+            val lang = call.request.header("Accept-Language") ?: "en"
+            val response = attendanceService.getAllAttendance(lang)
+            call.respond(if (response.success) HttpStatusCode.OK else HttpStatusCode.BadRequest, response)
+        }
+
         get("/session/{sessionId}") {
             val sessionId = call.parameters["sessionId"]?.toIntOrNull()
             val lang = call.request.header("Accept-Language") ?: "en"
@@ -30,6 +36,13 @@ fun Route.attendanceRoutes(attendanceService: IAttendanceService) {
             val memberId = call.parameters["memberId"]?.toIntOrNull()
             val lang = call.request.header("Accept-Language") ?: "en"
             val response = attendanceService.getAttendanceByUserId(memberId, lang)
+            call.respond(if (response.success) HttpStatusCode.OK else HttpStatusCode.BadRequest, response)
+        }
+
+        get("/class/{classId}") {
+            val classId = call.parameters["classId"]?.toIntOrNull()
+            val lang = call.request.header("Accept-Language") ?: "en"
+            val response = attendanceService.getAttendanceByClassId(classId, lang)
             call.respond(if (response.success) HttpStatusCode.OK else HttpStatusCode.BadRequest, response)
         }
 

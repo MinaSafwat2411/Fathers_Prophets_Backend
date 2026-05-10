@@ -5,6 +5,7 @@ import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.session.AddSessionRequest
 import com.fathersprophets.backend.models.session.SessionResponse
 import com.fathersprophets.backend.models.session.UpdateSessionRequest
+import com.fathersprophets.backend.utils.Localization
 import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
 
 class SessionService(
@@ -26,7 +27,7 @@ class SessionService(
         lang: String
     ): ApiResponse<SessionResponse> {
         if (sessionId == null) {
-            throw IllegalArgumentException("session_id_is_null")
+            return ApiResponse(success = false, message = Localization.get("invalid_id", lang))
         }
         return sessionRepository.getSessionById(sessionId, lang)
     }
@@ -36,7 +37,7 @@ class SessionService(
         lang: String
     ): ApiResponse<Nothing> {
         if (sessionId == null) {
-            throw IllegalArgumentException("session_id_is_null")
+            return ApiResponse(success = false, message = Localization.get("invalid_id", lang))
         }
         return sessionRepository.deleteSession(sessionId, lang)
     }
@@ -51,7 +52,7 @@ class SessionService(
         lang: String
     ): ApiResponse<SessionResponse> {
         if (sessionId == null) {
-            throw IllegalArgumentException("session_id_is_null")
+            return ApiResponse(success = false, message = Localization.get("invalid_id", lang))
         }
         return sessionRepository.updateSession(sessionId, updateSessionRequest, lang)
     }
