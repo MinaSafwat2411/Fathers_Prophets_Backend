@@ -2,6 +2,7 @@ package com.fathersprophets.backend.routes
 
 import com.fathersprophets.backend.models.comments.AddCommentRequest
 import com.fathersprophets.backend.models.comments.UpdateCommentRequest
+import com.fathersprophets.backend.plugins.requireRole
 import com.fathersprophets.backend.services.comments.ICommentsService
 import com.fathersprophets.backend.utils.CommentEventBroadcaster
 import io.ktor.server.request.*
@@ -14,6 +15,8 @@ import kotlinx.coroutines.launch
 fun Route.commentRoutes(commentsService: ICommentsService) {
     route("/comments") {
         post("/add") {
+            call.requireRole("admin", "superadmin")
+
             val lang = call.request.headers["Accept-Language"] ?: "en"
             val request = call.receive<AddCommentRequest>()
             val response = commentsService.addComment(request, lang)
@@ -21,6 +24,8 @@ fun Route.commentRoutes(commentsService: ICommentsService) {
         }
 
         put("/update") {
+            call.requireRole("admin", "superadmin")
+
             val lang = call.request.headers["Accept-Language"] ?: "en"
             val id = call.parameters["id"]?.toIntOrNull()
             val request = call.receive<UpdateCommentRequest>()
@@ -29,6 +34,8 @@ fun Route.commentRoutes(commentsService: ICommentsService) {
         }
 
         delete("/delete/{id}") {
+            call.requireRole("admin", "superadmin")
+
             val lang = call.request.headers["Accept-Language"] ?: "en"
             val id = call.parameters["id"]?.toIntOrNull()
             val response = commentsService.deleteComment(id, lang)
@@ -36,6 +43,8 @@ fun Route.commentRoutes(commentsService: ICommentsService) {
         }
 
         get("/user/{id}") {
+            call.requireRole("admin", "superadmin")
+
             val lang = call.request.headers["Accept-Language"] ?: "en"
             val userId = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid User ID")
             val response = commentsService.getCommentsByUserId(userId, lang)
@@ -43,6 +52,8 @@ fun Route.commentRoutes(commentsService: ICommentsService) {
         }
 
         webSocket("/user/{id}") {
+            call.requireRole("admin", "superadmin")
+
             try {
                 val lang = call.request.headers["Accept-Language"] ?: "en"
                 val userId = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid User ID")
@@ -75,6 +86,8 @@ fun Route.commentRoutes(commentsService: ICommentsService) {
         }
 
         get("/all") {
+            call.requireRole("admin", "superadmin")
+
             val lang = call.request.headers["Accept-Language"] ?: "en"
             val response = commentsService.getAllComments(lang)
             call.respond(response)

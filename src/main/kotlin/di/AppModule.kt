@@ -7,6 +7,8 @@ import com.fathersprophets.backend.database.dao.CommentDao
 import com.fathersprophets.backend.database.dao.SessionDao
 import com.fathersprophets.backend.database.dao.UserDao
 import com.fathersprophets.backend.database.dao.VersionDao
+import com.fathersprophets.backend.database.repository.attendance.AttendanceRepository
+import com.fathersprophets.backend.database.repository.attendance.IAttendanceRepository
 import com.fathersprophets.backend.database.repository.auth.AuthRepository
 import com.fathersprophets.backend.database.repository.auth.IAuthRepository
 import com.fathersprophets.backend.database.repository.classes.ClassRepository
@@ -15,10 +17,14 @@ import com.fathersprophets.backend.database.repository.classmember.ClassMemberRe
 import com.fathersprophets.backend.database.repository.classmember.IClassMemberRepository
 import com.fathersprophets.backend.database.repository.comments.CommentsRepository
 import com.fathersprophets.backend.database.repository.comments.ICommentsRepository
+import com.fathersprophets.backend.database.repository.sessions.ISessionRepository
+import com.fathersprophets.backend.database.repository.sessions.SessionRepository
 import com.fathersprophets.backend.database.repository.users.IUserRepository
 import com.fathersprophets.backend.database.repository.users.UserRepository
 import com.fathersprophets.backend.database.repository.version.IVersionRepository
 import com.fathersprophets.backend.database.repository.version.VersionRepository
+import com.fathersprophets.backend.services.attendance.AttendanceService
+import com.fathersprophets.backend.services.attendance.IAttendanceService
 import com.fathersprophets.backend.services.auth.AuthService
 import com.fathersprophets.backend.services.auth.IAuthService
 import com.fathersprophets.backend.services.classes.ClassService
@@ -27,6 +33,8 @@ import com.fathersprophets.backend.services.classmember.ClassMemberService
 import com.fathersprophets.backend.services.classmember.IClassMemberService
 import com.fathersprophets.backend.services.comments.CommentsService
 import com.fathersprophets.backend.services.comments.ICommentsService
+import com.fathersprophets.backend.services.session.ISessionService
+import com.fathersprophets.backend.services.session.SessionService
 import com.fathersprophets.backend.services.users.IUserService
 import com.fathersprophets.backend.services.users.UserService
 import com.fathersprophets.backend.services.version.IVersionService
@@ -89,5 +97,22 @@ val appModule = module {
     single<IVersionService> {
         VersionService(get())
     }
+
+    single<ISessionRepository> {
+        SessionRepository(get())
+    }
+
+    single<ISessionService> {
+        SessionService(get())
+    }
+
+    single<IAttendanceRepository>{
+        AttendanceRepository(get())
+    }
+
+    single <IAttendanceService>{
+        AttendanceService(get())
+    }
+
 
 }

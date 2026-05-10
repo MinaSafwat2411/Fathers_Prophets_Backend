@@ -74,5 +74,12 @@
   "session_create_failed": "Failed to create session",
   "session_added_successfully": "Session added successfully",
   "session_retrieved_successfully": "Session retrieved successfully",
-  "session_not_found": "Session not found"
+  "session_not_found": "Session not found",
+  "attendance_create_failed": "Failed to create attendance",
+  "attendance_create_success": "Attendance created successfully",
+  "attendance_delete_success": "Attendance deleted successfully",
+  "attendance_update_success": "Attendance updated successfully",
+  "attendance_retrieved_success": "Attendance retrieved successfully",
+  "session_id_is_null": "Session ID is null",
+  "invalid_id": "Invalid ID"
 }

@@ -6,12 +6,14 @@ import com.fathersprophets.backend.routes.classMemberRoutes
 import com.fathersprophets.backend.routes.classRoutes
 import com.fathersprophets.backend.routes.commentRoutes
 import com.fathersprophets.backend.routes.profileRoutes
+import com.fathersprophets.backend.routes.sessionRoutes
 import com.fathersprophets.backend.routes.settingRoutes
 import com.fathersprophets.backend.routes.userRoutes
 import com.fathersprophets.backend.services.auth.IAuthService
 import com.fathersprophets.backend.services.classes.IClassService
 import com.fathersprophets.backend.services.classmember.IClassMemberService
 import com.fathersprophets.backend.services.comments.ICommentsService
+import com.fathersprophets.backend.services.session.ISessionService
 import com.fathersprophets.backend.services.users.IUserService
 import com.fathersprophets.backend.services.version.IVersionService
 import io.ktor.server.application.*
@@ -27,6 +29,8 @@ fun Application.configureRouting() {
     val classMemberService = get<IClassMemberService>()
     val commentsService = get<ICommentsService>()
     val versionService = get<IVersionService>()
+    val sessionService = get<ISessionService>()
+
 
     routing {
         route("/api/v1") {
@@ -41,6 +45,7 @@ fun Application.configureRouting() {
                 profileRoutes(userService)
                 classMemberRoutes(classMemberService)
                 commentRoutes(commentsService)
+                sessionRoutes(sessionService)
             }
             
             get("/healthcheck") {

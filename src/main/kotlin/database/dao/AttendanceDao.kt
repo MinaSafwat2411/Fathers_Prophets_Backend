@@ -41,7 +41,11 @@ class AttendanceDao {
         AttendanceTable.select { AttendanceTable.sessionId eq attendanceDto.sessionId }.map { rowToAttendanceDto(it) }
     }
 
-    fun AttendanceTable.insertAttendance(attendanceDto: AttendanceDto) = transaction {
+    fun getAttendanceById(attendanceDto: AttendanceDto) = transaction {
+        AttendanceTable.select { AttendanceTable.id eq attendanceDto.id }.map { rowToAttendanceDto(it) }.singleOrNull()
+    }
+
+    fun addAttendance(attendanceDto: AttendanceDto) = transaction {
         AttendanceTable.insert {
             it[userId] = attendanceDto.userId
             it[sessionId] = attendanceDto.sessionId
@@ -52,22 +56,21 @@ class AttendanceDao {
             it[odas] = attendanceDto.odas
             it[tnawl] = attendanceDto.tnawl
             it[classId] = attendanceDto.classId
-        }
+        } get AttendanceTable.id
+    }
 
-
-        fun updateAttendance(attendanceDto: AttendanceDto) = transaction {
-            AttendanceTable.update({ AttendanceTable.id eq attendanceDto.id }) {
-                it[attended] = attendanceDto.attended
-                it[broughtBible] = attendanceDto.broughtBible
-                it[shmas] = attendanceDto.shmas
-                it[odas] = attendanceDto.odas
-                it[tnawl] = attendanceDto.tnawl
-                it[classId] = attendanceDto.classId
-            }
+    fun updateAttendance(attendanceDto: AttendanceDto) = transaction {
+        AttendanceTable.update({ AttendanceTable.id eq attendanceDto.id }) {
+            it[attended] = attendanceDto.attended
+            it[broughtBible] = attendanceDto.broughtBible
+            it[shmas] = attendanceDto.shmas
+            it[odas] = attendanceDto.odas
+            it[tnawl] = attendanceDto.tnawl
+            it[classId] = attendanceDto.classId
         }
+    }
 
-        fun deleteAttendance(attendanceDto: AttendanceDto) =transaction {
-            AttendanceTable.deleteWhere { AttendanceTable.id eq attendanceDto.id }
-        }
+    fun deleteAttendance(attendanceDto: AttendanceDto) =transaction {
+        AttendanceTable.deleteWhere { AttendanceTable.id eq attendanceDto.id }
     }
 }

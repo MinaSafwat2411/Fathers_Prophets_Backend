@@ -74,5 +74,12 @@
   "session_create_failed": "فشل إنشاء الجلسة",
   "session_added_successfully": "تمت إضافة الجلسة بنجاح",
   "session_retrieved_successfully": "تم استرجاع الجلسة بنجاح",
-  "session_not_found": "الجلسة غير موجودة"
+  "session_not_found": "الجلسة غير موجودة",
+  "attendance_create_failed": "فشل تسجيل الحضور",
+  "attendance_create_success": "تم تسجيل الحضور بنجاح",
+  "attendance_delete_success": "تم حذف سجل الحضور بنجاح",
+  "attendance_update_success": "تم تحديث سجل الحضور بنجاح",
+  "attendance_retrieved_success": "تم استرجاع سجلات الحضور بنجاح",
+  "session_id_is_null": "معرف الجلسة فارغ",
+  "invalid_id": "معرف غير صالح"
 }
