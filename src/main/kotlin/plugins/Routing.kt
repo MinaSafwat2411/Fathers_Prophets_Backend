@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.plugins
 
 import com.fathersprophets.backend.models.ApiResponse
+import com.fathersprophets.backend.routes.attendanceRoutes
 import com.fathersprophets.backend.routes.authRoutes
 import com.fathersprophets.backend.routes.classMemberRoutes
 import com.fathersprophets.backend.routes.classRoutes
@@ -9,6 +10,7 @@ import com.fathersprophets.backend.routes.profileRoutes
 import com.fathersprophets.backend.routes.sessionRoutes
 import com.fathersprophets.backend.routes.settingRoutes
 import com.fathersprophets.backend.routes.userRoutes
+import com.fathersprophets.backend.services.attendance.IAttendanceService
 import com.fathersprophets.backend.services.auth.IAuthService
 import com.fathersprophets.backend.services.classes.IClassService
 import com.fathersprophets.backend.services.classmember.IClassMemberService
@@ -30,6 +32,7 @@ fun Application.configureRouting() {
     val commentsService = get<ICommentsService>()
     val versionService = get<IVersionService>()
     val sessionService = get<ISessionService>()
+    val attendanceService = get<IAttendanceService>()
 
 
     routing {
@@ -46,6 +49,7 @@ fun Application.configureRouting() {
                 classMemberRoutes(classMemberService)
                 commentRoutes(commentsService)
                 sessionRoutes(sessionService)
+                attendanceRoutes(attendanceService)
             }
             
             get("/healthcheck") {

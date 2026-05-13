@@ -2,7 +2,7 @@ package com.fathersprophets.backend.routes
 
 import com.fathersprophets.backend.models.attendance.AddAttendanceRequest
 import com.fathersprophets.backend.models.attendance.UpdateAttendanceRequest
-import com.fathersprophets.backend.plugins.requireRole
+import com.fathersprophets.backend.plugins.forbidRoles
 import com.fathersprophets.backend.services.attendance.IAttendanceService
 import io.ktor.http.*
 import io.ktor.server.request.*
@@ -12,7 +12,7 @@ import io.ktor.server.routing.*
 fun Route.attendanceRoutes(attendanceService: IAttendanceService) {
     route("/attendance") {
         post {
-            call.requireRole("admin", "superadmin")
+            call.forbidRoles("member")
             val lang = call.request.header("Accept-Language") ?: "en"
             val request = call.receive<AddAttendanceRequest>()
             val response = attendanceService.addAttendance(request, lang)
@@ -47,7 +47,7 @@ fun Route.attendanceRoutes(attendanceService: IAttendanceService) {
         }
 
         put("/{id}") {
-            call.requireRole("admin", "superadmin")
+            call.forbidRoles("member")
             val id = call.parameters["id"]?.toIntOrNull()
             val lang = call.request.header("Accept-Language") ?: "en"
             val request = call.receive<UpdateAttendanceRequest>()
@@ -56,7 +56,7 @@ fun Route.attendanceRoutes(attendanceService: IAttendanceService) {
         }
 
         delete("/{id}") {
-            call.requireRole("admin", "superadmin")
+            call.forbidRoles("member")
             val id = call.parameters["id"]?.toIntOrNull()
             val lang = call.request.header("Accept-Language") ?: "en"
             val response = attendanceService.deleteAttendance(id, lang)
