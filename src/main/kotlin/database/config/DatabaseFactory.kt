@@ -4,6 +4,8 @@ import com.fathersprophets.backend.database.tables.AttendanceTable
 import com.fathersprophets.backend.database.tables.ClassMemberTable
 import com.fathersprophets.backend.database.tables.ClassesTable
 import com.fathersprophets.backend.database.tables.CommentsTable
+import com.fathersprophets.backend.database.tables.EventMembersTable
+import com.fathersprophets.backend.database.tables.EventsTable
 import com.fathersprophets.backend.database.tables.ParentsTable
 import com.fathersprophets.backend.database.tables.SessionTable
 import com.fathersprophets.backend.database.tables.UsersTable
@@ -32,7 +34,9 @@ object DatabaseFactory {
                 VersionsTable,
                 ParentsTable,
                 SessionTable,
-                AttendanceTable
+                AttendanceTable,
+                EventsTable,
+                EventMembersTable
             )
         }
     }
