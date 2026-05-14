@@ -1,9 +1,11 @@
 package com.fathersprophets.backend.database.config
 
+import com.fathersprophets.backend.database.tables.AttendanceTable
 import com.fathersprophets.backend.database.tables.ClassMemberTable
 import com.fathersprophets.backend.database.tables.ClassesTable
 import com.fathersprophets.backend.database.tables.CommentsTable
 import com.fathersprophets.backend.database.tables.ParentsTable
+import com.fathersprophets.backend.database.tables.SessionTable
 import com.fathersprophets.backend.database.tables.UsersTable
 import com.fathersprophets.backend.database.tables.VersionsTable
 import org.jetbrains.exposed.sql.Database
@@ -29,6 +31,8 @@ object DatabaseFactory {
                 ClassMemberTable,
                 VersionsTable,
                 ParentsTable,
+                SessionTable,
+                AttendanceTable
             )
         }
     }

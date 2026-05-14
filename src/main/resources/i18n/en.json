@@ -81,5 +81,6 @@
   "attendance_update_success": "Attendance updated successfully",
   "attendance_retrieved_success": "Attendance retrieved successfully",
   "session_id_is_null": "Session ID is null",
-  "invalid_id": "Invalid ID"
+  "invalid_id": "Invalid ID",
+  "session_id_required": "Session ID cannot be empty"
 }

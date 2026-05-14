@@ -5,10 +5,17 @@ import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.attendance.AddAttendanceRequest
 import com.fathersprophets.backend.models.attendance.AttendanceResponse
 import com.fathersprophets.backend.models.attendance.UpdateAttendanceRequest
+import com.fathersprophets.backend.utils.AttendanceEventBroadcaster
 import com.fathersprophets.backend.utils.Localization
 import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AttendanceService(private val attendanceRepository: IAttendanceRepository) : IAttendanceService {
+    
+    private val scope = CoroutineScope(Dispatchers.IO)
+    
     override fun addAttendance(
         attendance: AddAttendanceRequest,
         lang: String
@@ -19,7 +26,17 @@ class AttendanceService(private val attendanceRepository: IAttendanceRepository)
             attendance.classId to "attendance_status",
             lang = lang
         )
-        return attendanceRepository.addAttendance(attendance, lang)
+        if(attendance.sessionId == null) {
+            throw IllegalArgumentException(Localization.get("session_id_required", lang))
+        }
+        val result = attendanceRepository.addAttendance(attendance, lang)
+        if (result.success) {
+            val sessionAttendance = attendanceRepository.getAttendanceBySessionId(attendance.sessionId, lang)
+            scope.launch {
+                AttendanceEventBroadcaster.broadcastAttendance(attendance.sessionId, sessionAttendance)
+            }
+        }
+        return result
     }
 
     override fun updateAttendance(
@@ -31,7 +48,15 @@ class AttendanceService(private val attendanceRepository: IAttendanceRepository)
             return ApiResponse(success = false, message = Localization.get("invalid_id", lang))
         }
 
-        return attendanceRepository.updateAttendance(attendanceId, updateAttendance, lang)
+        val result = attendanceRepository.updateAttendance(attendanceId, updateAttendance, lang)
+        if (result.success && result.data != null) {
+            val sessionId = result.data.sessionId
+            val sessionAttendance = attendanceRepository.getAttendanceBySessionId(sessionId, lang)
+            scope.launch {
+                AttendanceEventBroadcaster.broadcastAttendance(sessionId, sessionAttendance)
+            }
+        }
+        return result
     }
 
     override fun deleteAttendance(

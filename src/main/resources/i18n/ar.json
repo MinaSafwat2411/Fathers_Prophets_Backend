@@ -81,5 +81,6 @@
   "attendance_update_success": "تم تحديث سجل الحضور بنجاح",
   "attendance_retrieved_success": "تم استرجاع سجلات الحضور بنجاح",
   "session_id_is_null": "معرف الجلسة فارغ",
-  "invalid_id": "معرف غير صالح"
+  "invalid_id": "معرف غير صالح",
+  "session_id_required": "معرف الجلسة لا يمكن أن يكون فارغًا"
 }
