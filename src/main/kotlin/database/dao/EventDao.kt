@@ -14,8 +14,9 @@ import java.time.LocalDate
 class EventDao {
     private fun rowToEvent(row: ResultRow) = EventDto(
         id = row[EventsTable.id],
-        name = row[EventsTable.name],
+        type = row[EventsTable.type],
         dateTime = row[EventsTable.dateTime].toString(),
+        title = row[EventsTable.title],
         image = row[EventsTable.image] ?: ""
     )
 
@@ -28,13 +29,14 @@ class EventDao {
             .singleOrNull()?.let { rowToEvent(it) }
     }
 
-    fun getEventByName(eventDto: EventDto) = transaction{
-        EventsTable.selectAll().where { EventsTable.name eq eventDto.name }
+    fun getEventByType(eventDto: EventDto) = transaction{
+        EventsTable.selectAll().where { EventsTable.type eq eventDto.type }
     }
 
     fun addEvent(eventDto: EventDto) = transaction{
         EventsTable.insert {
-            it[name] = eventDto.name
+            it[title] = eventDto.title
+            it[type] = eventDto.type
             it[dateTime] = LocalDate.parse(eventDto.dateTime)
             it[image] = eventDto.image
         }
@@ -42,9 +44,10 @@ class EventDao {
 
     fun updateEvent(eventDto: EventDto) = transaction {
         EventsTable.update({ EventsTable.id eq eventDto.id }) {
-            it[name] = eventDto.name
+            it[title] = eventDto.title
             it[dateTime] = LocalDate.parse(eventDto.dateTime)
             it[image] = eventDto.image
+            it[type] = eventDto.type
         }
     }
 

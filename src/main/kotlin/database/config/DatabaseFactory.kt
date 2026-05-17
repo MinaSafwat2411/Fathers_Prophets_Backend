@@ -18,10 +18,10 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object DatabaseFactory {
     fun init() {
         Database.connect(
-            url = "jdbc:postgresql://ep-dawn-feather-amx09fds-pooler.c-5.us-east-1.aws.neon.tech/fathers-prophets?sslmode=require",
+            url = "jdbc:postgresql://localhost:5432/fathers_prophets",
             driver = "org.postgresql.Driver",
             user = "admin",
-            password = "npg_dAu8M9xUKjZr"
+            password = "fathersprophets"
         )
 
 

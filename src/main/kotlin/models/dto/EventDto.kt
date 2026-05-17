@@ -4,14 +4,16 @@ import com.fathersprophets.backend.models.event.EventResponse
 
 data class EventDto(
     val id: Int,
-    val name: String,
+    val type: String,
+    val title: String,
     val dateTime: String,
     val image: String
 ){
     fun convertToEventResponse() = EventResponse(
         id = id,
-        name = name,
+        type = type,
         dateTime = dateTime,
-        image = image
+        image = image,
+        title = title
     )
 }

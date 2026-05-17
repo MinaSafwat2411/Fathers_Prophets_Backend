@@ -5,14 +5,16 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class EventRequest(
-    val name: String? = null,
+    val title: String? = null,
     val dateTime: String? = null,
+    val type: String? = null,
     val image: String? = null
 ){
     fun convertToEventDto(id: Int = 0) = EventDto(
         id = id,
-        name = name ?: "",
+        title = title ?: "",
         dateTime = dateTime ?: "",
-        image = image ?: ""
+        image = image ?: "",
+        type = type ?: ""
     )
 }

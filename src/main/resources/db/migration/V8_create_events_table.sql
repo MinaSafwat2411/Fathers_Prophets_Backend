@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS events
 (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name VARCHAR(255) NOT NULL CHECK
-    (name IN
+    type VARCHAR(255) NOT NULL CHECK
+    (type IN
         (
         'football',
         'volleyball',
@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS events
         'melodies'
         )
     ),
+    title     VARCHAR(255) NOT NULL,
     date_time DATE         NOT NULL,
     image     VARCHAR(255)
 );
