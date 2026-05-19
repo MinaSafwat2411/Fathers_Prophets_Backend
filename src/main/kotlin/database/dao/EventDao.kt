@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.database.dao
 
 import com.fathersprophets.backend.database.tables.EventsTable
+import com.fathersprophets.backend.models.dto.EventCountsDto
 import com.fathersprophets.backend.models.dto.EventDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -53,5 +54,26 @@ class EventDao {
 
     fun deleteEvent(eventDto: EventDto) = transaction {
         EventsTable.deleteWhere { EventsTable.id eq eventDto.id }
+    }
+
+    fun getEventsCount() = transaction {
+        EventCountsDto(
+            total = EventsTable.selectAll().count().toInt(),
+            football = EventsTable.selectAll().count().toInt(),
+            volleyball = EventsTable.selectAll().count().toInt(),
+            chess = EventsTable.selectAll().count().toInt(),
+            pingPong = EventsTable.selectAll().count().toInt(),
+            pray = EventsTable.selectAll().count().toInt(),
+            praise = EventsTable.selectAll().count().toInt(),
+            doctrine = EventsTable.selectAll().count().toInt(),
+            bible = EventsTable.selectAll().count().toInt(),
+            ritual = EventsTable.selectAll().count().toInt(),
+            coptic = EventsTable.selectAll().count().toInt(),
+            choir = EventsTable.selectAll().count().toInt(),
+            mahrgan = EventsTable.selectAll().count().toInt(),
+            odas = EventsTable.selectAll().count().toInt(),
+            shmas = EventsTable.selectAll().count().toInt(),
+            melodies = EventsTable.selectAll().count().toInt()
+        )
     }
 }
