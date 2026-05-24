@@ -4,6 +4,8 @@ import com.fathersprophets.backend.database.dao.AttendanceDao
 import com.fathersprophets.backend.database.dao.ClassDao
 import com.fathersprophets.backend.database.dao.ClassMemberDao
 import com.fathersprophets.backend.database.dao.CommentDao
+import com.fathersprophets.backend.database.dao.EventDao
+import com.fathersprophets.backend.database.dao.EventMemberDao
 import com.fathersprophets.backend.database.dao.SessionDao
 import com.fathersprophets.backend.database.dao.UserDao
 import com.fathersprophets.backend.database.dao.VersionDao
@@ -17,6 +19,10 @@ import com.fathersprophets.backend.database.repository.classmember.ClassMemberRe
 import com.fathersprophets.backend.database.repository.classmember.IClassMemberRepository
 import com.fathersprophets.backend.database.repository.comments.CommentsRepository
 import com.fathersprophets.backend.database.repository.comments.ICommentsRepository
+import com.fathersprophets.backend.database.repository.eventmember.EventMemberRepository
+import com.fathersprophets.backend.database.repository.eventmember.IEventMemberRepository
+import com.fathersprophets.backend.database.repository.events.EventRepository
+import com.fathersprophets.backend.database.repository.events.IEventRepository
 import com.fathersprophets.backend.database.repository.sessions.ISessionRepository
 import com.fathersprophets.backend.database.repository.sessions.SessionRepository
 import com.fathersprophets.backend.database.repository.users.IUserRepository
@@ -33,6 +39,10 @@ import com.fathersprophets.backend.services.classmember.ClassMemberService
 import com.fathersprophets.backend.services.classmember.IClassMemberService
 import com.fathersprophets.backend.services.comments.CommentsService
 import com.fathersprophets.backend.services.comments.ICommentsService
+import com.fathersprophets.backend.services.eventmember.EventMemberService
+import com.fathersprophets.backend.services.eventmember.IEventMemberService
+import com.fathersprophets.backend.services.events.EventService
+import com.fathersprophets.backend.services.events.IEventService
 import com.fathersprophets.backend.services.session.ISessionService
 import com.fathersprophets.backend.services.session.SessionService
 import com.fathersprophets.backend.services.users.IUserService
@@ -49,6 +59,8 @@ val appModule = module {
     single { VersionDao() }
     single { SessionDao() }
     single { AttendanceDao() }
+    single { EventDao() }
+    single { EventMemberDao() }
 
     single<IAuthRepository> {
         AuthRepository(
@@ -114,5 +126,20 @@ val appModule = module {
         AttendanceService(get())
     }
 
+    single<IEventRepository> {
+        EventRepository(get())
+    }
+
+    single<IEventService> {
+        EventService(get())
+    }
+
+    single<IEventMemberRepository> {
+        EventMemberRepository(get())
+    }
+
+    single<IEventMemberService> {
+        EventMemberService(get())
+    }
 
 }

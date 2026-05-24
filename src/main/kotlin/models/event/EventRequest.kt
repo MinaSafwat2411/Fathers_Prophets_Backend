@@ -10,7 +10,7 @@ data class EventRequest(
     val type: String? = null,
     val image: String? = null
 ){
-    fun convertToEventDto(id: Int = 0) = EventDto(
+    fun convertToEventDto(id: Int) = EventDto(
         id = id,
         title = title ?: "",
         dateTime = dateTime ?: "",

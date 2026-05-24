@@ -25,8 +25,8 @@ class EventDao {
         EventsTable.selectAll().map { rowToEvent(it) }
     }
 
-    fun getEventById(eventId: Int) = transaction {
-        EventsTable.selectAll().where { EventsTable.id eq eventId }
+    fun getEventById(eventDto: EventDto) = transaction {
+        EventsTable.selectAll().where { EventsTable.id eq eventDto.id }
             .singleOrNull()?.let { rowToEvent(it) }
     }
 
@@ -40,7 +40,7 @@ class EventDao {
             it[type] = eventDto.type
             it[dateTime] = LocalDate.parse(eventDto.dateTime)
             it[image] = eventDto.image
-        }
+        } get EventsTable.id
     }
 
     fun updateEvent(eventDto: EventDto) = transaction {

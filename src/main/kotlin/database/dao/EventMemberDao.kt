@@ -28,6 +28,13 @@ class EventMemberDao {
         } get EventMembersTable.id
     }
 
+    fun getEventMemberByIdAndEventId(eventMemberDto: EventMemberDto) = transaction {
+        EventMembersTable.select {
+            (EventMembersTable.eventId eq eventMemberDto.eventId) and
+                    (EventMembersTable.userId eq eventMemberDto.userId)
+        }.map { rowToEventMember(it) }.first()
+    }
+
     fun deleteEventMember(eventMemberDto: EventMemberDto) = transaction {
         EventMembersTable.deleteWhere {
             (EventMembersTable.eventId eq eventMemberDto.eventId) and

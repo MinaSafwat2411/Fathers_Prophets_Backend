@@ -82,5 +82,20 @@
   "attendance_retrieved_success": "تم استرجاع سجلات الحضور بنجاح",
   "session_id_is_null": "معرف الجلسة فارغ",
   "invalid_id": "معرف غير صالح",
-  "session_id_required": "معرف الجلسة لا يمكن أن يكون فارغًا"
+  "session_id_required": "معرف الجلسة لا يمكن أن يكون فارغًا",
+  "events_retrieved_successfully": "تم استرجاع الفعاليات بنجاح",
+  "event_retrieved_successfully": "تم استرجاع الفعالية بنجاح",
+  "event_created_successfully": "تم إنشاء الفعالية بنجاح",
+  "event_updated_successfully": "تم تحديث الفعالية بنجاح",
+  "event_deleted_successfully": "تم حذف الفعالية بنجاح",
+  "event_counts_retrieved_successfully": "تم استرجاع عدد الفعاليات بنجاح",
+  "event_member_created_successfully": "تمت إضافة عضو الفعالية بنجاح",
+  "event_member_deleted_successfully": "تم حذف عضو الفعالية بنجاح",
+  "event_members_retrieved_successfully": "تم استرجاع أعضاء الفعالية بنجاح",
+  "event_id_required": "معرف الفعالية لا يمكن أن يكون فارغًا",
+  "title_required": "العنوان لا يمكن أن يكون فارغًا",
+  "date_time_required": "التاريخ والوقت لا يمكن أن يكونا فارغين",
+  "image_required": "الصورة لا يمكن أن تكون فارغة",
+  "type_required": "النوع لا يمكن أن يكون فارغًا",
+  "event_type_required": "نوع الفعالية لا يمكن أن يكون فارغًا"
 }

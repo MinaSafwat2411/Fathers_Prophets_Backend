@@ -1,5 +1,7 @@
 package com.fathersprophets.backend.models.dto
 
+import com.fathersprophets.backend.models.event.EventCountsResponse
+
 data class EventCountsDto(
     val total : Int,
     val football : Int,
@@ -17,4 +19,23 @@ data class EventCountsDto(
     val odas : Int,
     val shmas : Int,
     val melodies : Int,
-)
+){
+    fun convertToEventCountResponse() = EventCountsResponse(
+        total = total,
+        football = football,
+        volleyball = volleyball,
+        chess = chess,
+        pingPong = pingPong,
+        pray = pray,
+        praise = praise,
+        doctrine = doctrine,
+        bible = bible,
+        ritual = ritual,
+        coptic = coptic,
+        choir = choir,
+        mahrgan = mahrgan,
+        odas = odas,
+        shmas = shmas,
+        melodies = melodies
+    )
+}
