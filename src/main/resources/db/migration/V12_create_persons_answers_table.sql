@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS persons_answers (
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    answer TEXT NOT NULL,
+    question_id INT NOT NULL REFERENCES persons_questions(id) ON DELETE CASCADE,
+    user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    is_correct BOOLEAN DEFAULT NULL
+);
