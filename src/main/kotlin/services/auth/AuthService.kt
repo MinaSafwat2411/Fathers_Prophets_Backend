@@ -20,7 +20,6 @@ class AuthService(
             request.username to "username",
             request.password to "password",
             request.name to "name",
-            request.fcmToken to "fcm_token",
             lang = lang
         )
 
@@ -31,7 +30,6 @@ class AuthService(
         validateRequired(
             request.username to "username",
             request.password to "password",
-            request.fcmToken to "fcm_token",
             lang = lang
         )
 

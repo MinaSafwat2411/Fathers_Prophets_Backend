@@ -2,6 +2,7 @@ package com.fathersprophets.backend.database.tables
 
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.date
+import org.postgresql.util.PGobject
 
 enum class EventType {
     football,
@@ -27,7 +28,7 @@ object EventsTable : Table("events") {
         "type",
         "event_type",
         { value -> EventType.valueOf(value as String) },
-        { it.name }
+        { PGobject().apply { type = "event_type"; value = it.name } }
     )
     val title = varchar("title", 255)
     val dateTime = date("date_time")

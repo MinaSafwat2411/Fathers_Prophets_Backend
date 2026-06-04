@@ -2,6 +2,7 @@ package com.fathersprophets.backend.database.tables
 
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
+import org.postgresql.util.PGobject
 
 enum class McqCorrectAnswer {
     `1`,
@@ -21,7 +22,7 @@ object PersonsMcqTable : Table("persons_mcq") {
         "correct_answer",
         "mcq_correct_answer",
         { value -> McqCorrectAnswer.valueOf(value as String) },
-        { it.name }
+        { PGobject().apply { type = "mcq_correct_answer"; value = it.name } }
     )
 
     override val primaryKey = PrimaryKey(id)

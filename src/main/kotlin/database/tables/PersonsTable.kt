@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.database.tables
 
 import org.jetbrains.exposed.sql.Table
+import org.postgresql.util.PGobject
 
 enum class PersonType {
     prophets,
@@ -21,7 +22,7 @@ object PersonsTable : Table("persons") {
         "type",
         "person_type",
         { value -> PersonType.valueOf(value as String) },
-        { it.name }
+        { PGobject().apply { type = "person_type"; value = it.name } }
     )
 
     override val primaryKey = PrimaryKey(id)

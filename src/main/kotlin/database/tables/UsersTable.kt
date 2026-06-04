@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.database.tables
 
 import org.jetbrains.exposed.sql.Table
+import org.postgresql.util.PGobject
 
 enum class UserRole {
     member,
@@ -46,7 +47,7 @@ object UsersTable : Table("users") {
         "role",
         "user_role",
         { value -> UserRole.valueOf(value as String) },
-        { it.name }
+        { PGobject().apply { type = "user_role"; value = it.name } }
     )
     val fcmToken = varchar("fcm_token", 512).nullable()
     val memberId = varchar("member_id", 100).nullable()

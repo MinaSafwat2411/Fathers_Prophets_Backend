@@ -2,6 +2,7 @@ package com.fathersprophets.backend.database.tables
 
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
+import org.postgresql.util.PGobject
 
 enum class QuestionType {
     mcq,
@@ -16,7 +17,7 @@ object PersonsQuestionsTable : Table("persons_questions") {
         "type",
         "question_type",
         { value -> QuestionType.valueOf(value as String) },
-        { it.name }
+        { PGobject().apply { type = "question_type"; value = it.name } }
     )
 
     override val primaryKey = PrimaryKey(id)

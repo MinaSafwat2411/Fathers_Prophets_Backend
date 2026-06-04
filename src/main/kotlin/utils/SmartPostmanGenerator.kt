@@ -1,20 +1,23 @@
 package com.fathersprophets.backend.utils
 
 import com.fathersprophets.backend.models.auth.LoginRequest
-import com.fathersprophets.backend.models.auth.RegisterRequest
 import com.fathersprophets.backend.models.auth.RefreshRequest
-import com.fathersprophets.backend.models.users.AddUserRequest
-import com.fathersprophets.backend.models.users.UpdateUserRequest
-import com.fathersprophets.backend.models.users.UpdateEmailRequest
-import com.fathersprophets.backend.models.users.UpdatePasswordRequest
-import com.fathersprophets.backend.models.users.UpdatePhoneRequest
-import com.fathersprophets.backend.models.users.UpdateProfileRequest
+import com.fathersprophets.backend.models.auth.RegisterRequest
 import com.fathersprophets.backend.models.classes.CreateClassRequest
 import com.fathersprophets.backend.models.classes.UpdateClassRequest
 import com.fathersprophets.backend.models.classmember.AddClassMemberRequest
 import com.fathersprophets.backend.models.classmember.UpdateClassMemberRequest
 import com.fathersprophets.backend.models.comments.AddCommentRequest
 import com.fathersprophets.backend.models.comments.UpdateCommentRequest
+import com.fathersprophets.backend.models.event.EventRequest
+import com.fathersprophets.backend.models.eventmember.EventMemberRequest
+import com.fathersprophets.backend.models.session.AddSessionRequest
+import com.fathersprophets.backend.models.session.UpdateSessionRequest
+import com.fathersprophets.backend.models.attendance.AddAttendanceRequest
+import com.fathersprophets.backend.models.attendance.UpdateAttendanceRequest
+import com.fathersprophets.backend.models.users.*
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
 import kotlin.reflect.KClass
@@ -26,6 +29,84 @@ import kotlin.reflect.jvm.jvmErasure
 /**
  * Generates realistic example values based on field names and types
  */
+
+// ==================== Data Classes ====================
+
+@Serializable
+data class PostmanCollection(
+    val info: CollectionInfo,
+    val item: List<CollectionFolder>,
+    val variable: List<Variable>
+)
+
+@Serializable
+data class CollectionInfo(
+    val _postman_id: String,
+    val name: String,
+    val description: String,
+    val schema: String
+)
+
+@Serializable
+data class CollectionFolder(
+    val name: String,
+    val item: List<RequestItem>
+)
+
+@Serializable
+data class RequestItem(
+    val name: String,
+    val request: Request,
+    val response: List<String> = emptyList()
+)
+
+@Serializable
+data class Request(
+    val method: String,
+    val header: List<Header>,
+    val body: RequestBody? = null,
+    val url: Url
+)
+
+@Serializable
+data class Header(
+    val key: String,
+    val value: String
+)
+
+@Serializable
+data class RequestBody(
+    val mode: String,
+    val raw: String
+)
+
+@Serializable
+data class Url(
+    val raw: String,
+    val host: List<String>,
+    val path: List<String>
+)
+
+@Serializable
+data class Variable(
+    val key: String,
+    val value: String
+)
+
+@Serializable
+data class PostmanEnvironment(
+    val id: String,
+    val name: String,
+    val values: List<EnvironmentValue>
+)
+
+@Serializable
+data class EnvironmentValue(
+    val key: String,
+    val value: String,
+    val enabled: Boolean = true
+)
+
 object ExampleValueGenerator {
     fun generateValue(fieldName: String, fieldType: KClass<*>, isNullable: Boolean = true): Any? {
         return when {
@@ -47,6 +128,7 @@ object ExampleValueGenerator {
             fieldName.contains("pin", ignoreCase = true) -> "1234"
             fieldName.contains("version", ignoreCase = true) -> "1.0.0"
             fieldName.contains("joindate", ignoreCase = true) -> "2024-01-15"
+            fieldName.contains("datetime", ignoreCase = true) -> "2024-10-15T18:00:00"
 
             fieldType == Boolean::class -> false
             fieldType == Int::class -> 1
@@ -59,21 +141,25 @@ object ExampleValueGenerator {
     fun generateJsonFromModel(modelClass: KClass<*>): String? {
         return try {
             val properties = modelClass.declaredMemberProperties
-            val jsonMap = mutableMapOf<String, Any?>()
-
-            for (prop in properties) {
+            val jsonContent = properties.joinToString(",\n    ") { prop ->
                 val returnType = prop.returnType
                 val isNullable = returnType.isMarkedNullable
                 val typeClass = returnType.jvmErasure
 
                 val value = generateValue(prop.name, typeClass, isNullable)
-                jsonMap[prop.name] = value
+
+                val jsonValue = when (value) {
+                    is String -> "\"${value.replace("\"", "\\\"")}\"" // Escape quotes
+                    null -> "null"
+                    else -> value.toString()
+                }
+                "\"${prop.name}\": $jsonValue"
             }
 
-            // Use kotlinx.serialization to convert to JSON
-            val json = Json { prettyPrint = true }
-            json.encodeToString(jsonMap)
-        } catch (_: Exception) {
+            "{\n    $jsonContent\n}"
+        } catch (e: Exception) {
+            println("⚠️ Error generating body for ${modelClass.simpleName}: ${e.message}")
+            e.printStackTrace()
             null
         }
     }
@@ -117,13 +203,42 @@ object EnhancedPostmanGenerator {
             },
             variable = listOf(
                 Variable("base_url", "http://localhost:8080"),
-                Variable("access_token", "")
+                Variable("access_token", ""),
+                Variable("refresh_token", ""),
+                Variable("admin_token", ""),
+                Variable("user_id", "1"),
+                Variable("class_id", "1"),
+                Variable("member_id", "1"),
+                Variable("session_id", "1"),
+                Variable("attendance_id", "1")
             )
         )
 
         val jsonString = json.encodeToString(collection)
         File(outputPath).writeText(jsonString)
         println("✓ Smart Postman Collection generated: $outputPath")
+    }
+
+    fun generateEnvironment(outputPath: String = "Fathers_Prophets_API_Smart.postman_environment.json") {
+        val environment = PostmanEnvironment(
+            id = "fathers-prophets-api-smart-env",
+            name = "Fathers & Prophets Local",
+            values = listOf(
+                EnvironmentValue("base_url", "http://localhost:8080"),
+                EnvironmentValue("access_token", "YOUR_TOKEN_HERE"),
+                EnvironmentValue("refresh_token", ""),
+                EnvironmentValue("admin_token", ""),
+                EnvironmentValue("user_id", "1"),
+                EnvironmentValue("class_id", "1"),
+                EnvironmentValue("member_id", "1"),
+                EnvironmentValue("session_id", "1"),
+                EnvironmentValue("attendance_id", "1")
+            )
+        )
+
+        val jsonString = json.encodeToString(environment)
+        File(outputPath).writeText(jsonString)
+        println("✓ Smart Postman Environment generated: $outputPath")
     }
 
     private fun createSmartRequest(request: RequestDefinition): RequestItem {
@@ -221,7 +336,35 @@ object PostmanEndpoints {
         RequestDefinition("Get Last Version", "GET", "setting", requiresAuth = false),
 
         // Health
-        RequestDefinition("Health Check", "GET", "healthcheck", requiresAuth = false)
+        RequestDefinition("Health Check", "GET", "healthcheck", requiresAuth = false),
+
+        // Events
+        RequestDefinition("Get All Events", "GET", "events"),
+        RequestDefinition("Get Event by ID", "GET", "events/1"),
+        RequestDefinition("Create Event", "POST", "events", EventRequest::class),
+        RequestDefinition("Update Event", "PUT", "events/1", EventRequest::class),
+        RequestDefinition("Delete Event", "DELETE", "events/1"),
+
+        // Event Members
+        RequestDefinition("Get Event Members", "GET", "event-members/1"),
+        RequestDefinition("Add Event Member", "POST", "event-members", EventMemberRequest::class),
+        RequestDefinition("Delete Event Member", "DELETE", "event-members/1"),
+        
+        // Sessions
+        RequestDefinition("Get All Sessions", "GET", "sessions"),
+        RequestDefinition("Get Session By ID", "GET", "sessions/{{session_id}}"),
+        RequestDefinition("Create Session", "POST", "sessions", AddSessionRequest::class),
+        RequestDefinition("Update Session", "PUT", "sessions/{{session_id}}", UpdateSessionRequest::class),
+        RequestDefinition("Delete Session", "DELETE", "sessions/{{session_id}}"),
+        
+        // Attendance
+        RequestDefinition("Get All Attendance", "GET", "attendance"),
+        RequestDefinition("Get Attendance By Session ID", "GET", "attendance/session/{{session_id}}"),
+        RequestDefinition("Get Attendance By Member ID", "GET", "attendance/member/{{member_id}}"),
+        RequestDefinition("Get Attendance By Class ID", "GET", "attendance/class/{{class_id}}"),
+        RequestDefinition("Add Attendance", "POST", "attendance", AddAttendanceRequest::class),
+        RequestDefinition("Update Attendance", "PUT", "attendance/{{attendance_id}}", UpdateAttendanceRequest::class),
+        RequestDefinition("Delete Attendance", "DELETE", "attendance/{{attendance_id}}"),
     )
 }
 
@@ -231,28 +374,27 @@ fun main() {
     println("🚀 Smart Postman Generator (Model-Based)")
     println("=" * 60)
 
-    // Original generator (static bodies)
-    PostmanGenerator.generateCollection()
-    PostmanGenerator.generateEnvironment()
-
     // New smart generator (model-based bodies)
     EnhancedPostmanGenerator.generateCollectionWithModels(
         PostmanEndpoints.allEndpoints,
         "Fathers_Prophets_API_ModelBased.postman_collection.json"
     )
+    EnhancedPostmanGenerator.generateEnvironment(
+        "Fathers_Prophets_API_ModelBased.postman_environment.json"
+    )
 
     println("=" * 60)
     println("✅ Generation complete!")
     println("\nGenerated files:")
-    println("  1. Fathers_Prophets_API.postman_collection.json (original)")
-    println("  2. Fathers_Prophets_API_ModelBased.postman_collection.json (model-based)")
-    println("  3. Fathers_Prophets_API.postman_environment.json")
+    println("  1. Fathers_Prophets_API_ModelBased.postman_collection.json (model-based)")
+    println("  2. Fathers_Prophets_API_ModelBased.postman_environment.json")
     println("\nThe model-based collection will have:")
     println("  ✓ Request bodies auto-generated from models")
     println("  ✓ Realistic example values based on field names")
     println("  ✓ Proper typing and validation")
 }
 
+operator fun String.times(count: Int): String = this.repeat(count)
 
 // ==================== Model Imports (Reference) ====================
 
@@ -276,4 +418,3 @@ fun main() {
 
 // ClassMember Models - referenced via ::class
 // AddClassMemberRequest, UpdateClassMemberRequest - see models/classmember/
-

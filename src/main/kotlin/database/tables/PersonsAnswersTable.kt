@@ -2,6 +2,7 @@ package com.fathersprophets.backend.database.tables
 
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
+import org.postgresql.util.PGobject
 
 enum class AnswerStatus {
     TEACHER_STILL_NOT_CORRECTED,
@@ -18,7 +19,7 @@ object PersonsAnswersTable : Table("persons_answers") {
         "status",
         "answer_status",
         { value -> AnswerStatus.valueOf(value as String) },
-        { it.name }
+        { PGobject().apply { type = "answer_status"; value = it.name } }
     )
 
     override val primaryKey = PrimaryKey(id)

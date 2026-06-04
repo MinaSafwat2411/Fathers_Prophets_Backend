@@ -2,6 +2,7 @@ package com.fathersprophets.backend.database.tables
 
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
+import org.postgresql.util.PGobject
 
 object EventMembersTable : Table("event_members") {
     val id = integer("id").autoIncrement()
@@ -12,7 +13,7 @@ object EventMembersTable : Table("event_members") {
         "event_type",
         "event_type",
         { value -> EventType.valueOf(value as String) },
-        { it.name }
+        { PGobject().apply { type = "event_type"; value = it.name } }
     )
 
     override val primaryKey = PrimaryKey(id)
