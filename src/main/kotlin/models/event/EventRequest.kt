@@ -1,5 +1,6 @@
 package com.fathersprophets.backend.models.event
 
+import com.fathersprophets.backend.database.tables.EventType
 import com.fathersprophets.backend.models.dto.EventDto
 import kotlinx.serialization.Serializable
 
@@ -15,6 +16,10 @@ data class EventRequest(
         title = title ?: "",
         dateTime = dateTime ?: "",
         image = image ?: "",
-        type = type ?: ""
+        type = try {
+            EventType.valueOf(type ?: "bible")
+        } catch (e: Exception) {
+            EventType.bible
+        }
     )
 }

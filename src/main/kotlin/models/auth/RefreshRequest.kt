@@ -1,5 +1,6 @@
 package com.fathersprophets.backend.models.auth
 
+import com.fathersprophets.backend.database.tables.UserRole
 import com.fathersprophets.backend.models.dto.UserDto
 import kotlinx.serialization.Serializable
 
@@ -12,7 +13,7 @@ data class RefreshRequest(
         name = "",
         username = "",
         passwordHash = "",
-        role = "member",
+        role = UserRole.member,
         refreshToken = this.refreshToken
     )
 

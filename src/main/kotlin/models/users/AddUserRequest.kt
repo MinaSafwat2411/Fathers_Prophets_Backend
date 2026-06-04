@@ -1,5 +1,6 @@
 package com.fathersprophets.backend.models.users
 
+import com.fathersprophets.backend.database.tables.UserRole
 import com.fathersprophets.backend.models.dto.UserDto
 import kotlinx.serialization.Serializable
 
@@ -22,7 +23,11 @@ data class AddUserRequest(
         name = this.name,
         username = this.username,
         passwordHash = hashPassword,
-        role = this.role,
+        role = try {
+            UserRole.valueOf(role)
+        } catch (e: Exception) {
+            UserRole.member
+        },
         isReviewed = true,
         phone = this.phone,
         address = this.address,

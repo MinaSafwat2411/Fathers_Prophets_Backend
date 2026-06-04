@@ -1,5 +1,6 @@
 package com.fathersprophets.backend.models.eventmember
 
+import com.fathersprophets.backend.database.tables.EventType
 import com.fathersprophets.backend.models.dto.EventMemberDto
 import kotlinx.serialization.Serializable
 
@@ -15,6 +16,10 @@ data class EventMemberRequest(
         userId = userId,
         eventId = eventId,
         name = name,
-        eventType = eventType
+        eventType = try {
+            EventType.valueOf(eventType)
+        } catch (e: Exception) {
+            EventType.bible
+        }
     )
 }

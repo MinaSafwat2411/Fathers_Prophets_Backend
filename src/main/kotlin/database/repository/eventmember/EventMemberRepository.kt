@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.database.repository.eventmember
 
 import com.fathersprophets.backend.database.dao.EventMemberDao
+import com.fathersprophets.backend.database.tables.EventType
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.EventMemberDto
 import com.fathersprophets.backend.models.eventmember.EventMemberRequest
@@ -52,7 +53,7 @@ class EventMemberRepository(
         eventId = id,
         userId = 0,
         name = "",
-        eventType = ""
+        eventType = EventType.bible
     )
     
     private fun userIdToEventDto(id: Int) = EventMemberDto(
@@ -60,7 +61,7 @@ class EventMemberRepository(
         eventId = 0,
         userId = id,
         name = "",
-        eventType = ""
+        eventType = EventType.bible
     )
 
     private fun idToEventDto(id: Int) = EventMemberDto(
@@ -68,7 +69,7 @@ class EventMemberRepository(
         eventId = 0,
         userId = 0,
         name = "",
-        eventType = ""
+        eventType = EventType.bible
 
     )
     

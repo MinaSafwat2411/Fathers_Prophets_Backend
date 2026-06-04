@@ -1,5 +1,6 @@
 package com.fathersprophets.backend.models.users
 
+import com.fathersprophets.backend.database.tables.UserRole
 import com.fathersprophets.backend.models.dto.UserDto
 import kotlinx.serialization.Serializable
 
@@ -13,6 +14,7 @@ data class UpdatePhoneRequest(
         name = "",
         username = "",
         passwordHash = "",
-        role = "",
+        role = UserRole.member,
+        phone = phone
     )
 }

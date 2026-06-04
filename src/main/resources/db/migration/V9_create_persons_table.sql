@@ -1,3 +1,11 @@
+CREATE TYPE person_type AS ENUM (
+    'prophets',
+    'fathers',
+    'saints',
+    'apostles',
+    'judges'
+);
+
 CREATE TABLE IF NOT EXISTS persons
 (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -6,13 +14,5 @@ CREATE TABLE IF NOT EXISTS persons
     short_story VARCHAR(255),
     full_story  VARCHAR(255),
     image       VARCHAR(255),
-    type VARCHAR(255) NOT NULL CHECK(
-       type IN(
-        'prophets',
-        'fathers',
-        'saints',
-        'apostles',
-        'judges'
-        )
-    )
+    type person_type NOT NULL
 );

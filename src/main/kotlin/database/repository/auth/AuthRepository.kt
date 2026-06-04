@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.database.repository.auth
 
 import com.fathersprophets.backend.database.dao.UserDao
+import com.fathersprophets.backend.database.tables.UserRole
 import com.fathersprophets.backend.exceptions.ConflictException
 import com.fathersprophets.backend.exceptions.UnauthorizedException
 import com.fathersprophets.backend.models.ApiResponse
@@ -67,7 +68,7 @@ class AuthRepository(
         val token = JwtConfig.generateAccessToken(
             user.id,
             user.username,
-            user.role,
+            user.role.name,
             user.isReviewed == true
         )
         val refreshToken = JwtConfig.generateRefreshToken(user.id)
@@ -136,7 +137,7 @@ class AuthRepository(
         return JwtConfig.generateAccessToken(
             userDto.id,
             userDto.username,
-            userDto.role,
+            userDto.role.name,
             userDto.isReviewed == true
         )
     }
@@ -151,7 +152,7 @@ class AuthRepository(
             name = "",
             username = "",
             passwordHash = "",
-            role = "",
+            role = UserRole.member,
         )
     }
 

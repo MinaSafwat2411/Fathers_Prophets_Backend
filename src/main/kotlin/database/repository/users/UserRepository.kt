@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.database.repository.users
 
 import com.fathersprophets.backend.database.dao.UserDao
+import com.fathersprophets.backend.database.tables.UserRole
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.UserDto
 import com.fathersprophets.backend.models.users.AddUserRequest
@@ -135,7 +136,8 @@ class UserRepository(
     }
 
     override suspend fun getUsersByRole(role: String, lang: String): ApiResponse<List<UserResponse>> {
-        val users = userDao.findByRole(role).map { it.convertToUserResponse() }
+        val userRole = getRoleFromString(role)
+        val users = userDao.findByRole(userRole).map { it.convertToUserResponse() }
         return ApiResponse(success = true, data = users, message = Localization.get("users_found", lang))
     }
 
@@ -155,9 +157,17 @@ class UserRepository(
             name = "",
             username = "",
             passwordHash = "",
-            role = "",
+            role = UserRole.bible,
             isReviewed = false,
             fcmToken = ""
         )
+    }
+    
+    private fun getRoleFromString(role: String): UserRole {
+        return try {
+            UserRole.valueOf(role.lowercase())
+        } catch (e: Exception) {
+            UserRole.bible
+        }
     }
 }

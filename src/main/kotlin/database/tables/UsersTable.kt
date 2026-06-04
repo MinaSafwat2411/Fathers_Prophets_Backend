@@ -1,8 +1,33 @@
 package com.fathersprophets.backend.database.tables
 
-import org.jetbrains.exposed.sql.javatime.date
 import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.ReferenceOption
+
+enum class UserRole {
+    member,
+    admin,
+    superadmin,
+    football,
+    teacher,
+    volleyball,
+    chess,
+    pingPong,
+    pray,
+    praise,
+    doctrine,
+    bible,
+    ritual,
+    coptic,
+    choir,
+    mahrgan,
+    odas,
+    shmas,
+    sports,
+    spiritual,
+    melodies,
+    games,
+    quiz,
+    parent
+}
 
 object UsersTable : Table("users") {
 
@@ -17,7 +42,12 @@ object UsersTable : Table("users") {
     val isShams = bool("is_shams").nullable()
     val profile = varchar("profile", 255).nullable()
     val isReviewed = bool("is_reviewed").nullable()
-    val role = varchar("role", 255)
+    val role = customEnumeration(
+        "role",
+        "user_role",
+        { value -> UserRole.valueOf(value as String) },
+        { it.name }
+    )
     val fcmToken = varchar("fcm_token", 512).nullable()
     val memberId = varchar("member_id", 100).nullable()
     val skipMembership = bool("skip_membership").nullable()

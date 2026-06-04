@@ -1,0 +1,28 @@
+package com.fathersprophets.backend.database.tables
+
+import org.jetbrains.exposed.sql.ReferenceOption
+import org.jetbrains.exposed.sql.Table
+
+enum class McqCorrectAnswer {
+    `1`,
+    `2`,
+    `3`,
+    `4`
+}
+
+object PersonsMcqTable : Table("persons_mcq") {
+    val id = integer("id").autoIncrement()
+    val questionId = integer("question_id").references(PersonsQuestionsTable.id, onDelete = ReferenceOption.CASCADE)
+    val first = varchar("first", 255)
+    val second = varchar("second", 255)
+    val third = varchar("third", 255)
+    val fourth = varchar("fourth", 255)
+    val correctAnswer = customEnumeration(
+        "correct_answer",
+        "mcq_correct_answer",
+        { value -> McqCorrectAnswer.valueOf(value as String) },
+        { it.name }
+    )
+
+    override val primaryKey = PrimaryKey(id)
+}

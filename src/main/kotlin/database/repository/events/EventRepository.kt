@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.database.repository.events
 
 import com.fathersprophets.backend.database.dao.EventDao
+import com.fathersprophets.backend.database.tables.EventType
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.EventDto
 import com.fathersprophets.backend.models.event.EventCountsResponse
@@ -71,7 +72,7 @@ class EventRepository(
         title = "",
         dateTime = "",
         image = "",
-        type = ""
+        type = EventType.bible
     )
 
 

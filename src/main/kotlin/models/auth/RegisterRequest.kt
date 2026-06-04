@@ -1,5 +1,6 @@
 package com.fathersprophets.backend.models.auth
 
+import com.fathersprophets.backend.database.tables.UserRole
 import com.fathersprophets.backend.models.dto.UserDto
 import kotlinx.serialization.Serializable
 
@@ -15,7 +16,7 @@ data class RegisterRequest(
         name = this.name ?: "",
         username = this.username ?: "",
         passwordHash = passwordHash,
-        role = "member",
+        role = UserRole.member,
         isReviewed = false,
         fcmToken = this.fcmToken
     )

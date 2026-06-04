@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.database.dao
 
 import com.fathersprophets.backend.database.tables.ParentsTable
+import com.fathersprophets.backend.database.tables.UserRole
 import com.fathersprophets.backend.database.tables.UsersTable
 import com.fathersprophets.backend.models.dto.ParentsDto
 import com.fathersprophets.backend.models.dto.UserDto
@@ -81,7 +82,7 @@ class UserDao {
         }
     }
 
-    fun findByRole(role: String) = transaction {
+    fun findByRole(role: UserRole) = transaction {
         (UsersTable leftJoin ParentsTable).selectAll().where { UsersTable.role eq role }
             .map { resultRowToUser(it) }
     }

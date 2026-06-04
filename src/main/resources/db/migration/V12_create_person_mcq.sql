@@ -1,3 +1,5 @@
+CREATE TYPE mcq_correct_answer AS ENUM ('1', '2', '3', '4');
+
 CREATE TABLE IF NOT EXISTS persons_mcq (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     question_id INT NOT NULL REFERENCES persons_questions(id) ON DELETE CASCADE,
@@ -5,12 +7,5 @@ CREATE TABLE IF NOT EXISTS persons_mcq (
     second VARCHAR(255) NOT NULL,
     third VARCHAR(255) NOT NULL,
     fourth VARCHAR(255) NOT NULL,
-    correct_answer INT NOT NULL CHECK (
-        correct_answer IN(
-            1,
-            2,
-            3,
-            4
-        )
-    )
+    correct_answer mcq_correct_answer NOT NULL
 );

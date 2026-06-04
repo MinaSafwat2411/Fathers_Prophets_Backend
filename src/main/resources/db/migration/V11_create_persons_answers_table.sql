@@ -1,7 +1,9 @@
+CREATE TYPE answer_status AS ENUM ('TEACHER_STILL_NOT_CORRECTED', 'IS_TRUE', 'IS_FALSE');
+
 CREATE TABLE IF NOT EXISTS persons_answers (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     answer TEXT NOT NULL,
     question_id INT NOT NULL REFERENCES persons_questions(id) ON DELETE CASCADE,
     user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    is_correct BOOLEAN DEFAULT NULL
+    status answer_status NOT NULL
 );

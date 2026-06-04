@@ -1,5 +1,6 @@
 package com.fathersprophets.backend.models.dto
 
+import com.fathersprophets.backend.database.tables.UserRole
 import com.fathersprophets.backend.models.users.UserResponse
 
 data class UserDto(
@@ -7,7 +8,7 @@ data class UserDto(
     val name: String,
     val username: String,
     val passwordHash: String,
-    val role: String,
+    val role: UserRole,
     val isReviewed: Boolean? = null,
     val email: String? = null,
     val phone: String? = null,
@@ -22,13 +23,13 @@ data class UserDto(
     val fcmToken: String? = null,
     val skipMembership: Boolean? = null,
     val comments: List<String> = emptyList(),
-    val parents : ParentsDto? = null,
+    val parents: ParentsDto? = null,
 ){
-    fun convertToUserResponse()=UserResponse(
+    fun convertToUserResponse() = UserResponse(
         id = this.id,
         name = this.name,
         username = this.username,
-        role = this.role,
+        role = this.role.name,
         email = this.email,
         phone = this.phone,
         address = this.address,
