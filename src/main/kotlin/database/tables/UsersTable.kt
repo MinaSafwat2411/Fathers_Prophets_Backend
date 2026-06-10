@@ -42,13 +42,13 @@ object UsersTable : Table("users") {
     val fatherName = varchar("father_name", 255).nullable()
     val isShams = bool("is_shams").nullable()
     val profile = varchar("profile", 255).nullable()
-    val isReviewed = bool("is_reviewed").nullable()
+    val isReviewed = bool("is_reviewed").nullable().index("idx_users_is_reviewed")
     val role = customEnumeration(
         "role",
         "user_role",
         { value -> UserRole.valueOf(value as String) },
         { PGobject().apply { type = "user_role"; value = it.name } }
-    )
+    ).index("idx_users_role")
     val fcmToken = varchar("fcm_token", 512).nullable()
     val memberId = varchar("member_id", 100).nullable()
     val skipMembership = bool("skip_membership").nullable()

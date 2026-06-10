@@ -23,7 +23,7 @@ object PersonsTable : Table("persons") {
         "person_type",
         { value -> PersonType.valueOf(value as String) },
         { PGobject().apply { type = "person_type"; value = it.name } }
-    )
+    ).index("idx_persons_type")
 
     override val primaryKey = PrimaryKey(id)
 }

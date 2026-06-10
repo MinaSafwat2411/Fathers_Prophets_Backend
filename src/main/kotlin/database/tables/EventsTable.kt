@@ -29,9 +29,9 @@ object EventsTable : Table("events") {
         "event_type",
         { value -> EventType.valueOf(value as String) },
         { PGobject().apply { type = "event_type"; value = it.name } }
-    )
+    ).index("idx_events_type")
     val title = varchar("title", 255)
-    val dateTime = date("date_time")
+    val dateTime = date("date_time").index("idx_events_date_time")
     val image = varchar("image", 255).nullable()
 
     override val primaryKey = PrimaryKey(id)

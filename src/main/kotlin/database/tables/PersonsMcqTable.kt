@@ -13,7 +13,7 @@ enum class McqCorrectAnswer {
 
 object PersonsMcqTable : Table("persons_mcq") {
     val id = integer("id").autoIncrement()
-    val questionId = integer("question_id").references(PersonsQuestionsTable.id, onDelete = ReferenceOption.CASCADE)
+    val questionId = reference("question_id", PersonsQuestionsTable.id, onDelete = ReferenceOption.CASCADE).index("idx_persons_mcq_question_id")
     val first = varchar("first", 255)
     val second = varchar("second", 255)
     val third = varchar("third", 255)

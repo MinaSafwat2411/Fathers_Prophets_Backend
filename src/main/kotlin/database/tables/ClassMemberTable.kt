@@ -1,15 +1,15 @@
 package com.fathersprophets.backend.database.tables
 
+import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 
 object ClassMemberTable : Table("class_members") {
     val id = integer("id").autoIncrement()
-    val classId = integer("class_id").references(ClassesTable.id)
-    val userId = integer("user_id").references(UsersTable.id)
+    val classId = reference("class_id", ClassesTable.id, onDelete = ReferenceOption.CASCADE).index("idx_class_members_class_id")
+    val userId = reference("user_id", UsersTable.id, onDelete = ReferenceOption.CASCADE).index("idx_class_members_user_id")
     val teacher = bool("teacher").default(false)
     val image = varchar("image", 255).nullable()
-
-    val  name = varchar("name", 255).nullable()
+    val name = varchar("name", 255)
 
     override val primaryKey = PrimaryKey(id)
     init {

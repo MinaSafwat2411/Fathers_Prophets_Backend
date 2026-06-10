@@ -13,14 +13,14 @@ enum class AnswerStatus {
 object PersonsAnswersTable : Table("persons_answers") {
     val id = integer("id").autoIncrement()
     val answer = text("answer")
-    val questionId = integer("question_id").references(PersonsQuestionsTable.id, onDelete = ReferenceOption.CASCADE)
-    val userId = integer("user_id").references(UsersTable.id, onDelete = ReferenceOption.CASCADE)
+    val questionId = reference("question_id", PersonsQuestionsTable.id, onDelete = ReferenceOption.CASCADE).index("idx_persons_answers_question_id")
+    val userId = reference("user_id", UsersTable.id, onDelete = ReferenceOption.CASCADE).index("idx_persons_answers_user_id")
     val status = customEnumeration(
         "status",
         "answer_status",
         { value -> AnswerStatus.valueOf(value as String) },
         { PGobject().apply { type = "answer_status"; value = it.name } }
-    )
+    ).index("idx_persons_answers_status")
 
     override val primaryKey = PrimaryKey(id)
 }

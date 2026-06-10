@@ -1,13 +1,12 @@
 package com.fathersprophets.backend.database.tables
 
+import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.postgresql.util.PGobject
 
-enum class McqCorrectAnswer { `1`, `2`, `3`, `4` }
-
 object QuizDayQuestionsTable : Table("quiz_day_questions") {
     val id = integer("id").autoIncrement()
-    val quizDayId = reference("quiz_day_id", QuizDayTable.id)
+    val quizDayId = reference("quiz_day_id", QuizDayTable.id, onDelete = ReferenceOption.CASCADE).index("idx_quiz_day_questions_quiz_day_id")
     val question = text("question")
     val choice1 = varchar("choice_1", 255)
     val choice2 = varchar("choice_2", 255)
