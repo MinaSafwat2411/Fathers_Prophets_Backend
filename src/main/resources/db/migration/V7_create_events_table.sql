@@ -24,3 +24,6 @@ CREATE TABLE IF NOT EXISTS events
     date_time DATE         NOT NULL,
     image     VARCHAR(255)
 );
+
+CREATE INDEX IF NOT EXISTS idx_events_type ON events(type);
+CREATE INDEX IF NOT EXISTS idx_events_date_time ON events(date_time);

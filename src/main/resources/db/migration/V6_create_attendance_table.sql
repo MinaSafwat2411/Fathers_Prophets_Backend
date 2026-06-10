@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS attendance
 
     user_id INT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
     session_id INT NOT NULL REFERENCES sessions (id) ON DELETE CASCADE,
-    name VARCHAR(255) NOT NULL REFERENCES users (name)
+    name VARCHAR(255) NOT NULL,
     attended BOOLEAN NOT NULL DEFAULT FALSE,
     brought_bible BOOLEAN NOT NULL DEFAULT FALSE,
     shmas BOOLEAN NOT NULL DEFAULT FALSE,
@@ -16,3 +16,7 @@ CREATE TABLE IF NOT EXISTS attendance
     CONSTRAINT attendance_user_session_unique
     UNIQUE (user_id, session_id)
 );
+
+CREATE INDEX IF NOT EXISTS idx_attendance_user_id ON attendance(user_id);
+CREATE INDEX IF NOT EXISTS idx_attendance_session_id ON attendance(session_id);
+CREATE INDEX IF NOT EXISTS idx_attendance_class_id ON attendance(class_id);

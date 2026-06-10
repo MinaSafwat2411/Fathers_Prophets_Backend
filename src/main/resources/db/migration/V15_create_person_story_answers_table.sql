@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS stories_members
+CREATE TABLE IF NOT EXISTS stories_answers
 (
     id       INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     story_id INT NOT NULL REFERENCES persons_stories(id) ON DELETE CASCADE,
@@ -7,3 +7,6 @@ CREATE TABLE IF NOT EXISTS stories_members
     status answer_status NOT NULL,
     UNIQUE (story_id, user_id)
 );
+
+CREATE INDEX IF NOT EXISTS idx_stories_answers_story_id ON stories_answers(story_id);
+CREATE INDEX IF NOT EXISTS idx_stories_answers_user_id ON stories_answers(user_id);

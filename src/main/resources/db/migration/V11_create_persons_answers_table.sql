@@ -7,3 +7,7 @@ CREATE TABLE IF NOT EXISTS persons_answers (
     user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     status answer_status NOT NULL
 );
+
+CREATE INDEX IF NOT EXISTS idx_persons_answers_question_id ON persons_answers(question_id);
+CREATE INDEX IF NOT EXISTS idx_persons_answers_user_id ON persons_answers(user_id);
+CREATE INDEX IF NOT EXISTS idx_persons_answers_status ON persons_answers(status);

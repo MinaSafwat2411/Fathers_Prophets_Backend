@@ -7,3 +7,7 @@ CREATE TABLE IF NOT EXISTS event_members
     event_type event_type NOT NULL,
     UNIQUE(event_id,user_id)
 );
+
+CREATE INDEX IF NOT EXISTS idx_event_members_event_id ON event_members(event_id);
+CREATE INDEX IF NOT EXISTS idx_event_members_user_id ON event_members(user_id);
+CREATE INDEX IF NOT EXISTS idx_event_members_event_type ON event_members(event_type);

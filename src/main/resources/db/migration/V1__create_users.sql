@@ -46,3 +46,6 @@ CREATE TABLE IF NOT EXISTS users
     token           VARCHAR(512),
     refresh_token   VARCHAR(512)
 );
+
+CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);
+CREATE INDEX IF NOT EXISTS idx_users_is_reviewed ON users(is_reviewed);

@@ -9,3 +9,5 @@ CREATE TABLE IF NOT EXISTS persons_mcq (
     fourth VARCHAR(255) NOT NULL,
     correct_answer mcq_correct_answer NOT NULL
 );
+
+CREATE INDEX IF NOT EXISTS idx_persons_mcq_question_id ON persons_mcq(question_id);

@@ -16,3 +16,5 @@ CREATE TABLE IF NOT EXISTS persons
     image       VARCHAR(255),
     type person_type NOT NULL
 );
+
+CREATE INDEX IF NOT EXISTS idx_persons_type ON persons(type);
