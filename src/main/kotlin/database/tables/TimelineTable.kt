@@ -8,7 +8,7 @@ object TimelineTable : Table("timeline") {
     val event2 = varchar("event_2", 255)
     val event3 = varchar("event_3", 255)
     val event4 = varchar("event_4", 255)
-    val correctOrder = integerArray("correct_order")
+    val correctOrder = array<Int>("correct_order")
 
     override val primaryKey = PrimaryKey(id)
 }
