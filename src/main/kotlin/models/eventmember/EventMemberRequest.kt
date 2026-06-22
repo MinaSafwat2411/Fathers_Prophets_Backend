@@ -6,18 +6,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class EventMemberRequest(
-    val userId: Int,
-    val eventId: Int,
-    val name: String,
-    val eventType: String
+    val userId: Int? = null,
+    val eventId: Int? = null,
+    val name: String? = null,
+    val eventType: String? = null
 ){
     fun toEventMemberDto(id: Int) = EventMemberDto(
         id = id,
-        userId = userId,
-        eventId = eventId,
-        name = name,
+        userId = userId?:0,
+        eventId = eventId?:0,
+        name = name?:"",
         eventType = try {
-            EventType.valueOf(eventType)
+            EventType.valueOf(eventType?:"")
         } catch (e: Exception) {
             EventType.bible
         }
