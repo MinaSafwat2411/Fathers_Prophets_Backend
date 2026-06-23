@@ -13,8 +13,8 @@ data class CreatePersonRequest(
     val image: String?,
     val type: String?
 ){
-    fun toPersonDto(id: Int) = PersonDto(
-        id = id,
+    fun toPersonDto() = PersonDto(
+        id = 0,
         name = name?:"",
         nickname = nickname?:"",
         shortStory = shortStory?:"",

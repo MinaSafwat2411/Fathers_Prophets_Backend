@@ -97,5 +97,13 @@
   "date_time_required": "Date and time cannot be empty",
   "image_required": "Image cannot be empty",
   "type_required": "Type cannot be empty",
-  "event_type_required": "Event type cannot be empty"
+  "event_type_required": "Event type cannot be empty",
+  "persons_retrieved_successfully": "Persons retrieved successfully",
+  "person_retrieved_successfully": "Person retrieved successfully",
+  "person_created_successfully": "Person created successfully",
+  "person_deleted_successfully": "Person deleted successfully",
+  "saint_name_required": "Saint name cannot be empty",
+  "feast_date_required": "Feast date cannot be empty",
+  "person_id_required": "Person ID cannot be empty",
+  "required_field" : "required field"
 }

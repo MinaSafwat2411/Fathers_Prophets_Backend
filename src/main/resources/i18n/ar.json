@@ -97,5 +97,13 @@
   "date_time_required": "التاريخ والوقت لا يمكن أن يكونا فارغين",
   "image_required": "الصورة لا يمكن أن تكون فارغة",
   "type_required": "النوع لا يمكن أن يكون فارغًا",
-  "event_type_required": "نوع الفعالية لا يمكن أن يكون فارغًا"
+  "event_type_required": "نوع الفعالية لا يمكن أن يكون فارغًا",
+  "persons_retrieved_successfully": "تم استرجاع الأشخاص بنجاح",
+  "person_retrieved_successfully": "تم استرجاع الشخص بنجاح",
+  "person_created_successfully": "تم إنشاء الشخص بنجاح",
+  "person_deleted_successfully": "تم حذف الشخص بنجاح",
+  "saint_name_required": "اسم القديس لا يمكن أن يكون فارغًا",
+  "feast_date_required": "تاريخ العيد لا يمكن أن يكون فارغًا",
+  "person_id_required": "معرف الشخص لا يمكن أن يكون فارغًا",
+  "required_field" : "هذا الحقل مطلوب"
 }
