@@ -27,6 +27,15 @@ fun ApplicationCall.forbidRoles(vararg forbidden: String) {
     }
 }
 
+fun ApplicationCall.requireAdminOrType(vararg types: String?) {
+    val role = userRole()
+    val lang = request.headers["Accept-Language"] ?: "en"
+    val allowed = listOf("admin", "superadmin") + types.filterNotNull()
+    if (role == null || role !in allowed) {
+        throw ForbiddenException(Localization.get("access_denied", lang))
+    }
+}
+
 fun ApplicationCall.requireReviewed(){
     val isReviewed = this.userReviewed()
 

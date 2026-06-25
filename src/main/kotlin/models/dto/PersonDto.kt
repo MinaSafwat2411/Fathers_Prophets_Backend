@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.models.dto
 
 import com.fathersprophets.backend.database.tables.PersonType
-import com.fathersprophets.backend.models.persons.PersonResponse
+import com.fathersprophets.backend.models.person.PersonResponse
 
 data class PersonDto(
     val id: Int,

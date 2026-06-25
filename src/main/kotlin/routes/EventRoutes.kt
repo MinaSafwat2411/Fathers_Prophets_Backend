@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.routes
 
 import com.fathersprophets.backend.models.event.EventRequest
+import com.fathersprophets.backend.plugins.requireAdminOrType
 import com.fathersprophets.backend.services.events.IEventService
 import com.fathersprophets.backend.utils.EventBroadcaster
 import io.ktor.server.request.*
@@ -47,14 +48,16 @@ fun Route.eventRoutes(
         post {
             val lang = call.request.header("Accept-Language") ?: "en"
             val request = call.receive<EventRequest>()
+            call.requireAdminOrType(request.type)
             val response = eventService.addEvent(request, lang)
             EventBroadcaster.broadcastEvents(eventService.getAllEvents(lang))
             call.respond(response)
         }
         put("/{id}") {
-            val id = call.parameters["id"]?.toIntOrNull()
             val lang = call.request.header("Accept-Language") ?: "en"
             val request = call.receive<EventRequest>()
+            call.requireAdminOrType(request.type)
+            val id = call.parameters["id"]?.toIntOrNull()
             val response = eventService.updateEvent(id, request, lang)
             EventBroadcaster.broadcastEvents(eventService.getAllEvents(lang))
             call.respond(response)
@@ -62,6 +65,8 @@ fun Route.eventRoutes(
         delete("/{id}") {
             val id = call.parameters["id"]?.toIntOrNull()
             val lang = call.request.header("Accept-Language") ?: "en"
+            val eventType = eventService.getEventById(id, lang).data?.type
+            call.requireAdminOrType(eventType)
             val response = eventService.deleteEvent(id, lang)
             EventBroadcaster.broadcastEvents(eventService.getAllEvents(lang))
             call.respond(response)

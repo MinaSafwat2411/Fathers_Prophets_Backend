@@ -1,6 +1,9 @@
 package com.fathersprophets.backend.routes
 
 import com.fathersprophets.backend.models.eventmember.EventMemberRequest
+import com.fathersprophets.backend.plugins.forbidRoles
+import com.fathersprophets.backend.plugins.requireAdminOrType
+import com.fathersprophets.backend.plugins.requireRole
 import com.fathersprophets.backend.services.eventmember.IEventMemberService
 import com.fathersprophets.backend.utils.EventMemberBroadcaster
 import io.ktor.server.request.*
@@ -18,9 +21,11 @@ fun Route.eventMemberRoutes(
         post {
             val lang = call.request.header("Accept-Language") ?: "en"
             val request = call.receive<EventMemberRequest>()
+
+            call.requireAdminOrType(request.eventType)
             val response = eventMemberService.addEventMember(request, lang)
 
-            request.eventId.let { eventId ->
+            request.eventId?.let { eventId ->
                 EventMemberBroadcaster.broadcastEventMembers(
                     eventId,
                     eventMemberService.getEventMembersByEventId(eventId, lang)
@@ -30,6 +35,7 @@ fun Route.eventMemberRoutes(
             call.respond(response)
         }
         delete("/{eventId}") {
+            call.requireRole("admin", "superadmin")
             val eventId = call.parameters["eventId"]?.toIntOrNull()
             val lang = call.request.header("Accept-Language") ?: "en"
             val response = eventMemberService.deleteEventMember(eventId, lang)
@@ -45,6 +51,7 @@ fun Route.eventMemberRoutes(
         }
         webSocket("/event/{eventId}") {
             try {
+                call.forbidRoles("member")
                 val eventId = call.parameters["eventId"]?.toIntOrNull()
                 val lang = call.request.header("Accept-Language") ?: "en"
 
@@ -77,6 +84,7 @@ fun Route.eventMemberRoutes(
             }
         }
         get("/user/{userId}") {
+            call.forbidRoles("member")
             val userId = call.parameters["userId"]?.toIntOrNull()
             val lang = call.request.header("Accept-Language") ?: "en"
             call.respond(eventMemberService.getEventMembersByUserId(userId, lang))

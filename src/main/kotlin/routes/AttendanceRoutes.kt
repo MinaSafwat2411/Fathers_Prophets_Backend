@@ -25,6 +25,8 @@ fun Route.attendanceRoutes(attendanceService: IAttendanceService) {
         }
 
         get {
+            call.forbidRoles("member")
+
             val lang = call.request.header("Accept-Language") ?: "en"
             val response = attendanceService.getAllAttendance(lang)
             call.respond(if (response.success) HttpStatusCode.OK else HttpStatusCode.BadRequest, response)

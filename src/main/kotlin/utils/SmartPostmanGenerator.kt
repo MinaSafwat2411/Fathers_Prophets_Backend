@@ -15,6 +15,7 @@ import com.fathersprophets.backend.models.session.AddSessionRequest
 import com.fathersprophets.backend.models.session.UpdateSessionRequest
 import com.fathersprophets.backend.models.attendance.AddAttendanceRequest
 import com.fathersprophets.backend.models.attendance.UpdateAttendanceRequest
+import com.fathersprophets.backend.models.person.UpdatePersonRequest
 import com.fathersprophets.backend.models.users.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -357,6 +358,13 @@ object PostmanEndpoints {
         RequestDefinition("Update Session", "PUT", "sessions/{{session_id}}", UpdateSessionRequest::class),
         RequestDefinition("Delete Session", "DELETE", "sessions/{{session_id}}"),
         
+        // Person
+        RequestDefinition("Get All Persons", "GET", "person"),
+        RequestDefinition("Get Person by ID", "GET", "person/1"),
+        RequestDefinition("Add Person", "POST", "person", UpdatePersonRequest::class),
+        RequestDefinition("Update Person", "PUT", "person/1", UpdatePersonRequest::class),
+        RequestDefinition("Delete Person", "DELETE", "person/1"),
+
         // Attendance
         RequestDefinition("Get All Attendance", "GET", "attendance"),
         RequestDefinition("Get Attendance By Session ID", "GET", "attendance/session/{{session_id}}"),
