@@ -133,5 +133,11 @@
   "person_of_day_updated_successfully": "تم تحديث شخص اليوم بنجاح",
   "person_of_day_deleted_successfully": "تم حذف شخص اليوم بنجاح",
   "person_of_day_id_required": "معرف شخص اليوم لا يمكن أن يكون فارغًا",
-  "date_required": "التاريخ لا يمكن أن يكون فارغًا"
+  "date_required": "التاريخ لا يمكن أن يكون فارغًا",
+  "person_stories_retrieved_successfully": "تم استرجاع قصص الشخص بنجاح",
+  "person_story_retrieved_successfully": "تم استرجاع قصة الشخص بنجاح",
+  "person_story_created_successfully": "تم إنشاء قصة الشخص بنجاح",
+  "person_story_updated_successfully": "تم تحديث قصة الشخص بنجاح",
+  "person_story_deleted_successfully": "تم حذف قصة الشخص بنجاح",
+  "person_story_id_required": "معرف قصة الشخص لا يمكن أن يكون فارغًا"
 }

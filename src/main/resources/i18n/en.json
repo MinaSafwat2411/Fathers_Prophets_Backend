@@ -133,5 +133,11 @@
   "person_of_day_updated_successfully": "Person of day updated successfully",
   "person_of_day_deleted_successfully": "Person of day deleted successfully",
   "person_of_day_id_required": "Person of day ID cannot be empty",
-  "date_required": "Date cannot be empty"
+  "date_required": "Date cannot be empty",
+  "person_stories_retrieved_successfully": "Person stories retrieved successfully",
+  "person_story_retrieved_successfully": "Person story retrieved successfully",
+  "person_story_created_successfully": "Person story created successfully",
+  "person_story_updated_successfully": "Person story updated successfully",
+  "person_story_deleted_successfully": "Person story deleted successfully",
+  "person_story_id_required": "Person story ID cannot be empty"
 }

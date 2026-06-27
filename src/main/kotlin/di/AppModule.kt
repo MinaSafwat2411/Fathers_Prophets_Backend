@@ -11,6 +11,7 @@ import com.fathersprophets.backend.database.dao.PersonDao
 import com.fathersprophets.backend.database.dao.PersonMcqDao
 import com.fathersprophets.backend.database.dao.PersonOfDayDao
 import com.fathersprophets.backend.database.dao.PersonQuestionDao
+import com.fathersprophets.backend.database.dao.PersonStoryDao
 import com.fathersprophets.backend.database.dao.SessionDao
 import com.fathersprophets.backend.database.dao.UserDao
 import com.fathersprophets.backend.database.dao.VersionDao
@@ -36,6 +37,8 @@ import com.fathersprophets.backend.database.repository.personmcq.IPersonMcqRepos
 import com.fathersprophets.backend.database.repository.personmcq.PersonMcqRepository
 import com.fathersprophets.backend.database.repository.personofday.IPersonOfDayRepository
 import com.fathersprophets.backend.database.repository.personofday.PersonOfDayRepository
+import com.fathersprophets.backend.database.repository.personstory.IPersonStoryRepository
+import com.fathersprophets.backend.database.repository.personstory.PersonStoryRepository
 import com.fathersprophets.backend.database.repository.personquestion.IPersonQuestionRepository
 import com.fathersprophets.backend.database.repository.personquestion.PersonQuestionRepository
 import com.fathersprophets.backend.database.repository.sessions.ISessionRepository
@@ -66,6 +69,8 @@ import com.fathersprophets.backend.services.personmcq.IPersonMcqService
 import com.fathersprophets.backend.services.personmcq.PersonMcqService
 import com.fathersprophets.backend.services.personofday.IPersonOfDayService
 import com.fathersprophets.backend.services.personofday.PersonOfDayService
+import com.fathersprophets.backend.services.personstory.IPersonStoryService
+import com.fathersprophets.backend.services.personstory.PersonStoryService
 import com.fathersprophets.backend.services.personquestion.IPersonQuestionService
 import com.fathersprophets.backend.services.personquestion.PersonQuestionService
 import com.fathersprophets.backend.services.session.ISessionService
@@ -88,6 +93,7 @@ val appModule = module {
     single { EventMemberDao() }
     single { PersonDao() }
     single { PersonOfDayDao() }
+    single { PersonStoryDao() }
     single { PersonQuestionDao() }
     single { PersonMcqDao() }
     single { PersonAnswerDao() }
@@ -210,6 +216,14 @@ val appModule = module {
 
     single<IPersonOfDayService> {
         PersonOfDayService(get())
+    }
+
+    single<IPersonStoryRepository> {
+        PersonStoryRepository(get())
+    }
+
+    single<IPersonStoryService> {
+        PersonStoryService(get())
     }
 
 }
