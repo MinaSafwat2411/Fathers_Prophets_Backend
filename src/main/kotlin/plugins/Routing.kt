@@ -10,6 +10,7 @@ import com.fathersprophets.backend.routes.eventMemberRoutes
 import com.fathersprophets.backend.routes.eventRoutes
 import com.fathersprophets.backend.routes.personAnswerRoutes
 import com.fathersprophets.backend.routes.personMcqRoutes
+import com.fathersprophets.backend.routes.personOfDayRoutes
 import com.fathersprophets.backend.routes.personQuestionRoutes
 import com.fathersprophets.backend.routes.personRoutes
 import com.fathersprophets.backend.routes.profileRoutes
@@ -25,6 +26,7 @@ import com.fathersprophets.backend.services.eventmember.IEventMemberService
 import com.fathersprophets.backend.services.events.IEventService
 import com.fathersprophets.backend.services.person.IPersonService
 import com.fathersprophets.backend.services.personanswer.IPersonAnswerService
+import com.fathersprophets.backend.services.personofday.IPersonOfDayService
 import com.fathersprophets.backend.services.personmcq.IPersonMcqService
 import com.fathersprophets.backend.services.personquestion.IPersonQuestionService
 import com.fathersprophets.backend.services.session.ISessionService
@@ -51,8 +53,7 @@ fun Application.configureRouting() {
     val personQuestionService = get<IPersonQuestionService>()
     val personMcqService = get<IPersonMcqService>()
     val personAnswerService = get<IPersonAnswerService>()
-
-
+    val personOfDayService = get<IPersonOfDayService>()
 
     routing {
         route("/api/v1") {
@@ -75,6 +76,7 @@ fun Application.configureRouting() {
                 personQuestionRoutes(personQuestionService)
                 personMcqRoutes(personMcqService)
                 personAnswerRoutes(personAnswerService)
+                personOfDayRoutes(personOfDayService)
             }
             
             get("/healthcheck") {

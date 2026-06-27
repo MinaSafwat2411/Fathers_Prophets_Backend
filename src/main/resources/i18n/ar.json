@@ -126,5 +126,12 @@
   "person_answer_deleted_successfully": "تم حذف إجابة الشخص بنجاح",
   "person_answer_id_required": "معرف إجابة الشخص لا يمكن أن يكون فارغًا",
   "status_required": "الحالة لا يمكن أن تكون فارغة",
-  "required_field" : "هذا الحقل مطلوب"
+  "required_field" : "هذا الحقل مطلوب",
+  "persons_of_day_retrieved_successfully": "تم استرجاع أشخاص اليوم بنجاح",
+  "person_of_day_retrieved_successfully": "تم استرجاع شخص اليوم بنجاح",
+  "person_of_day_created_successfully": "تم إنشاء شخص اليوم بنجاح",
+  "person_of_day_updated_successfully": "تم تحديث شخص اليوم بنجاح",
+  "person_of_day_deleted_successfully": "تم حذف شخص اليوم بنجاح",
+  "person_of_day_id_required": "معرف شخص اليوم لا يمكن أن يكون فارغًا",
+  "date_required": "التاريخ لا يمكن أن يكون فارغًا"
 }

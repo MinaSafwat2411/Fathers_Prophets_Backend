@@ -126,5 +126,12 @@
   "person_answer_deleted_successfully": "Person answer deleted successfully",
   "person_answer_id_required": "Person answer ID cannot be empty",
   "status_required": "Status cannot be empty",
-  "required_field" : "required field"
+  "required_field" : "required field",
+  "persons_of_day_retrieved_successfully": "Persons of day retrieved successfully",
+  "person_of_day_retrieved_successfully": "Person of day retrieved successfully",
+  "person_of_day_created_successfully": "Person of day created successfully",
+  "person_of_day_updated_successfully": "Person of day updated successfully",
+  "person_of_day_deleted_successfully": "Person of day deleted successfully",
+  "person_of_day_id_required": "Person of day ID cannot be empty",
+  "date_required": "Date cannot be empty"
 }
