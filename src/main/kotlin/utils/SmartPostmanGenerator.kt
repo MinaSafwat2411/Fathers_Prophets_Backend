@@ -16,6 +16,13 @@ import com.fathersprophets.backend.models.session.UpdateSessionRequest
 import com.fathersprophets.backend.models.attendance.AddAttendanceRequest
 import com.fathersprophets.backend.models.attendance.UpdateAttendanceRequest
 import com.fathersprophets.backend.models.person.UpdatePersonRequest
+import com.fathersprophets.backend.models.personquestion.CreateQuestionRequest
+import com.fathersprophets.backend.models.personquestion.UpdateQuestionRequest
+import com.fathersprophets.backend.models.personmcq.CreatePersonMcqRequest
+import com.fathersprophets.backend.models.personmcq.UpdatePersonMcqRequest
+import com.fathersprophets.backend.models.personanswer.CreatePersonAnswerRequest
+import com.fathersprophets.backend.models.personanswer.UpdatePersonAnswerRequest
+import com.fathersprophets.backend.models.personanswer.UpdateAnswerStatusRequest
 import com.fathersprophets.backend.models.users.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -55,9 +62,22 @@ data class CollectionFolder(
 )
 
 @Serializable
+data class PostmanScript(
+    val type: String = "text/javascript",
+    val exec: List<String>
+)
+
+@Serializable
+data class PostmanEvent(
+    val listen: String,
+    val script: PostmanScript
+)
+
+@Serializable
 data class RequestItem(
     val name: String,
     val request: Request,
+    val event: List<PostmanEvent> = emptyList(),
     val response: List<String> = emptyList()
 )
 
@@ -168,12 +188,45 @@ object ExampleValueGenerator {
 
 // ==================== Enhanced Request Builder ====================
 
+object PostmanScripts {
+    val statusCheck = listOf(
+        "pm.test(\"Status is 200\", function () {",
+        "    pm.response.to.have.status(200);",
+        "});"
+    )
+
+    val captureTokens = listOf(
+        "var jsonData = pm.response.json();",
+        "pm.test(\"Status is 200\", function () {",
+        "    pm.response.to.have.status(200);",
+        "});",
+        "if (jsonData.success && jsonData.data) {",
+        "    pm.environment.set(\"access_token\", jsonData.data.token);",
+        "    pm.environment.set(\"refresh_token\", jsonData.data.refreshToken);",
+        "    console.log(\"Tokens captured successfully\");",
+        "}"
+    )
+
+    val captureRefreshedTokens = listOf(
+        "var jsonData = pm.response.json();",
+        "pm.test(\"Status is 200\", function () {",
+        "    pm.response.to.have.status(200);",
+        "});",
+        "if (jsonData.success && jsonData.data) {",
+        "    pm.environment.set(\"access_token\", jsonData.data.token);",
+        "    pm.environment.set(\"refresh_token\", jsonData.data.refreshToken);",
+        "    console.log(\"Tokens refreshed successfully\");",
+        "}"
+    )
+}
+
 data class RequestDefinition(
     val name: String,
     val method: String,
     val path: String,
     val requestBodyModel: KClass<*>? = null,
-    val requiresAuth: Boolean = true
+    val requiresAuth: Boolean = true,
+    val testScript: List<String>? = null
 )
 
 object EnhancedPostmanGenerator {
@@ -270,6 +323,14 @@ object EnhancedPostmanGenerator {
         val url = "{{base_url}}/api/v1/${request.path}"
         val pathList = request.path.split("/")
 
+        val scriptLines = request.testScript ?: PostmanScripts.statusCheck
+        val events = listOf(
+            PostmanEvent(
+                listen = "test",
+                script = PostmanScript(exec = scriptLines)
+            )
+        )
+
         return RequestItem(
             name = request.name,
             request = Request(
@@ -281,7 +342,8 @@ object EnhancedPostmanGenerator {
                     host = listOf("{{base_url}}"),
                     path = listOf("api", "v1") + pathList
                 )
-            )
+            ),
+            event = events
         )
     }
 }
@@ -291,9 +353,9 @@ object EnhancedPostmanGenerator {
 object PostmanEndpoints {
     val allEndpoints = listOf(
         // Auth
-        RequestDefinition("Login", "POST", "auth/login", LoginRequest::class, requiresAuth = false),
-        RequestDefinition("Register", "POST", "auth/register", RegisterRequest::class, requiresAuth = false),
-        RequestDefinition("Refresh Token", "POST", "auth/refresh-token", RefreshRequest::class, requiresAuth = false),
+        RequestDefinition("Login", "POST", "auth/login", LoginRequest::class, requiresAuth = false, testScript = PostmanScripts.captureTokens),
+        RequestDefinition("Register", "POST", "auth/register", RegisterRequest::class, requiresAuth = false, testScript = PostmanScripts.captureTokens),
+        RequestDefinition("Refresh Token", "POST", "auth/refresh-token", RefreshRequest::class, requiresAuth = false, testScript = PostmanScripts.captureRefreshedTokens),
         RequestDefinition("Logout", "POST", "auth/logout"),
 
         // Users
@@ -364,6 +426,32 @@ object PostmanEndpoints {
         RequestDefinition("Add Person", "POST", "person", UpdatePersonRequest::class),
         RequestDefinition("Update Person", "PUT", "person/1", UpdatePersonRequest::class),
         RequestDefinition("Delete Person", "DELETE", "person/1"),
+
+        // Person Question
+        RequestDefinition("Get All Person Questions", "GET", "person-question"),
+        RequestDefinition("Get Person Question by ID", "GET", "person-question/1"),
+        RequestDefinition("Get Person Questions by Person ID", "GET", "person-question/person/1"),
+        RequestDefinition("Create Person Question", "POST", "person-question", CreateQuestionRequest::class),
+        RequestDefinition("Update Person Question", "PUT", "person-question/1", UpdateQuestionRequest::class),
+        RequestDefinition("Delete Person Question", "DELETE", "person-question/1"),
+
+        // Person MCQ
+        RequestDefinition("Get All Person MCQs", "GET", "person-mcq"),
+        RequestDefinition("Get Person MCQ by ID", "GET", "person-mcq/1"),
+        RequestDefinition("Get Person MCQs by Question ID", "GET", "person-mcq/question/1"),
+        RequestDefinition("Create Person MCQ", "POST", "person-mcq", CreatePersonMcqRequest::class),
+        RequestDefinition("Update Person MCQ", "PUT", "person-mcq/1", UpdatePersonMcqRequest::class),
+        RequestDefinition("Delete Person MCQ", "DELETE", "person-mcq/1"),
+
+        // Person Answer
+        RequestDefinition("Get All Person Answers", "GET", "person-answer"),
+        RequestDefinition("Get Person Answer by ID", "GET", "person-answer/1"),
+        RequestDefinition("Get Person Answers by Question ID", "GET", "person-answer/question/1"),
+        RequestDefinition("Get Person Answers by User ID", "GET", "person-answer/user/1"),
+        RequestDefinition("Create Person Answer", "POST", "person-answer", CreatePersonAnswerRequest::class),
+        RequestDefinition("Update Person Answer", "PUT", "person-answer/1", UpdatePersonAnswerRequest::class),
+        RequestDefinition("Update Person Answer Status", "PATCH", "person-answer/1/status", UpdateAnswerStatusRequest::class),
+        RequestDefinition("Delete Person Answer", "DELETE", "person-answer/1"),
 
         // Attendance
         RequestDefinition("Get All Attendance", "GET", "attendance"),

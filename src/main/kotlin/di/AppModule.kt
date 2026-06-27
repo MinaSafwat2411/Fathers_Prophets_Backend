@@ -6,6 +6,10 @@ import com.fathersprophets.backend.database.dao.ClassMemberDao
 import com.fathersprophets.backend.database.dao.CommentDao
 import com.fathersprophets.backend.database.dao.EventDao
 import com.fathersprophets.backend.database.dao.EventMemberDao
+import com.fathersprophets.backend.database.dao.PersonAnswerDao
+import com.fathersprophets.backend.database.dao.PersonDao
+import com.fathersprophets.backend.database.dao.PersonMcqDao
+import com.fathersprophets.backend.database.dao.PersonQuestionDao
 import com.fathersprophets.backend.database.dao.SessionDao
 import com.fathersprophets.backend.database.dao.UserDao
 import com.fathersprophets.backend.database.dao.VersionDao
@@ -23,6 +27,14 @@ import com.fathersprophets.backend.database.repository.eventmember.EventMemberRe
 import com.fathersprophets.backend.database.repository.eventmember.IEventMemberRepository
 import com.fathersprophets.backend.database.repository.events.EventRepository
 import com.fathersprophets.backend.database.repository.events.IEventRepository
+import com.fathersprophets.backend.database.repository.person.IPersonRepository
+import com.fathersprophets.backend.database.repository.person.PersonRepository
+import com.fathersprophets.backend.database.repository.personanswer.IPersonAnswerRepository
+import com.fathersprophets.backend.database.repository.personanswer.PersonAnswerRepository
+import com.fathersprophets.backend.database.repository.personmcq.IPersonMcqRepository
+import com.fathersprophets.backend.database.repository.personmcq.PersonMcqRepository
+import com.fathersprophets.backend.database.repository.personquestion.IPersonQuestionRepository
+import com.fathersprophets.backend.database.repository.personquestion.PersonQuestionRepository
 import com.fathersprophets.backend.database.repository.sessions.ISessionRepository
 import com.fathersprophets.backend.database.repository.sessions.SessionRepository
 import com.fathersprophets.backend.database.repository.users.IUserRepository
@@ -43,6 +55,14 @@ import com.fathersprophets.backend.services.eventmember.EventMemberService
 import com.fathersprophets.backend.services.eventmember.IEventMemberService
 import com.fathersprophets.backend.services.events.EventService
 import com.fathersprophets.backend.services.events.IEventService
+import com.fathersprophets.backend.services.person.IPersonService
+import com.fathersprophets.backend.services.person.PersonService
+import com.fathersprophets.backend.services.personanswer.IPersonAnswerService
+import com.fathersprophets.backend.services.personanswer.PersonAnswerService
+import com.fathersprophets.backend.services.personmcq.IPersonMcqService
+import com.fathersprophets.backend.services.personmcq.PersonMcqService
+import com.fathersprophets.backend.services.personquestion.IPersonQuestionService
+import com.fathersprophets.backend.services.personquestion.PersonQuestionService
 import com.fathersprophets.backend.services.session.ISessionService
 import com.fathersprophets.backend.services.session.SessionService
 import com.fathersprophets.backend.services.users.IUserService
@@ -61,6 +81,10 @@ val appModule = module {
     single { AttendanceDao() }
     single { EventDao() }
     single { EventMemberDao() }
+    single { PersonDao() }
+    single { PersonQuestionDao() }
+    single { PersonMcqDao() }
+    single { PersonAnswerDao() }
 
     single<IAuthRepository> {
         AuthRepository(
@@ -140,6 +164,38 @@ val appModule = module {
 
     single<IEventMemberService> {
         EventMemberService(get())
+    }
+
+    single<IPersonRepository> {
+        PersonRepository(get())
+    }
+
+    single<IPersonService> {
+        PersonService(get())
+    }
+
+    single<IPersonQuestionRepository> {
+        PersonQuestionRepository(get())
+    }
+
+    single<IPersonQuestionService> {
+        PersonQuestionService(get())
+    }
+
+    single<IPersonMcqRepository> {
+        PersonMcqRepository(get())
+    }
+
+    single<IPersonMcqService> {
+        PersonMcqService(get())
+    }
+
+    single<IPersonAnswerRepository> {
+        PersonAnswerRepository(get())
+    }
+
+    single<IPersonAnswerService> {
+        PersonAnswerService(get())
     }
 
 }

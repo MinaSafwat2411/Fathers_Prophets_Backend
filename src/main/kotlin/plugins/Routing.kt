@@ -8,6 +8,10 @@ import com.fathersprophets.backend.routes.classRoutes
 import com.fathersprophets.backend.routes.commentRoutes
 import com.fathersprophets.backend.routes.eventMemberRoutes
 import com.fathersprophets.backend.routes.eventRoutes
+import com.fathersprophets.backend.routes.personAnswerRoutes
+import com.fathersprophets.backend.routes.personMcqRoutes
+import com.fathersprophets.backend.routes.personQuestionRoutes
+import com.fathersprophets.backend.routes.personRoutes
 import com.fathersprophets.backend.routes.profileRoutes
 import com.fathersprophets.backend.routes.sessionRoutes
 import com.fathersprophets.backend.routes.settingRoutes
@@ -19,6 +23,10 @@ import com.fathersprophets.backend.services.classmember.IClassMemberService
 import com.fathersprophets.backend.services.comments.ICommentsService
 import com.fathersprophets.backend.services.eventmember.IEventMemberService
 import com.fathersprophets.backend.services.events.IEventService
+import com.fathersprophets.backend.services.person.IPersonService
+import com.fathersprophets.backend.services.personanswer.IPersonAnswerService
+import com.fathersprophets.backend.services.personmcq.IPersonMcqService
+import com.fathersprophets.backend.services.personquestion.IPersonQuestionService
 import com.fathersprophets.backend.services.session.ISessionService
 import com.fathersprophets.backend.services.users.IUserService
 import com.fathersprophets.backend.services.version.IVersionService
@@ -39,6 +47,10 @@ fun Application.configureRouting() {
     val attendanceService = get<IAttendanceService>()
     val eventService = get<IEventService>()
     val eventMemberService = get<IEventMemberService>()
+    val personService = get<IPersonService>()
+    val personQuestionService = get<IPersonQuestionService>()
+    val personMcqService = get<IPersonMcqService>()
+    val personAnswerService = get<IPersonAnswerService>()
 
 
 
@@ -59,6 +71,10 @@ fun Application.configureRouting() {
                 attendanceRoutes(attendanceService)
                 eventRoutes(eventService)
                 eventMemberRoutes(eventMemberService)
+                personRoutes(personService)
+                personQuestionRoutes(personQuestionService)
+                personMcqRoutes(personMcqService)
+                personAnswerRoutes(personAnswerService)
             }
             
             get("/healthcheck") {
