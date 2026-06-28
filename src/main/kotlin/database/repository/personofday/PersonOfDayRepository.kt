@@ -3,8 +3,9 @@ package com.fathersprophets.backend.database.repository.personofday
 import com.fathersprophets.backend.database.dao.PersonOfDayDao
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.PersonOfDayDto
-import com.fathersprophets.backend.models.personofday.PersonOfDayRequest
+import com.fathersprophets.backend.models.personofday.CreatePersonOfDayRequest
 import com.fathersprophets.backend.models.personofday.PersonOfDayResponse
+import com.fathersprophets.backend.models.personofday.UpdatePersonOfDayRequest
 import com.fathersprophets.backend.utils.Localization
 import java.time.LocalDate
 
@@ -40,7 +41,7 @@ class PersonOfDayRepository(
         )
     }
 
-    override fun addPersonOfDay(request: PersonOfDayRequest, lang: String): ApiResponse<PersonOfDayResponse> {
+    override fun addPersonOfDay(request: CreatePersonOfDayRequest, lang: String): ApiResponse<PersonOfDayResponse> {
         val dto = PersonOfDayDto(
             id = 0,
             personId = request.personId!!,
@@ -57,7 +58,7 @@ class PersonOfDayRepository(
         )
     }
 
-    override fun updatePersonOfDay(id: Int, request: PersonOfDayRequest, lang: String): ApiResponse<PersonOfDayResponse> {
+    override fun updatePersonOfDay(id: Int, request: UpdatePersonOfDayRequest, lang: String): ApiResponse<PersonOfDayResponse> {
         val existing = personOfDayDao.getPersonOfDayById(id)
         val dto = PersonOfDayDto(
             id = id,

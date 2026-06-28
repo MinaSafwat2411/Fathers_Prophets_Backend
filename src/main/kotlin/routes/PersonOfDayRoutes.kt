@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.routes
 
-import com.fathersprophets.backend.models.personofday.PersonOfDayRequest
+import com.fathersprophets.backend.models.personofday.CreatePersonOfDayRequest
+import com.fathersprophets.backend.models.personofday.UpdatePersonOfDayRequest
 import com.fathersprophets.backend.plugins.requireRole
 import com.fathersprophets.backend.services.personofday.IPersonOfDayService
 import io.ktor.server.request.*
@@ -32,7 +33,7 @@ fun Route.personOfDayRoutes(personOfDayService: IPersonOfDayService) {
         post {
             call.requireRole("admin", "superadmin", "games")
             val lang = call.request.headers["Accept-Language"] ?: "en"
-            val request = call.receive<PersonOfDayRequest>()
+            val request = call.receive<CreatePersonOfDayRequest>()
             val response = personOfDayService.addPersonOfDay(request, lang)
             call.respond(response)
         }
@@ -41,7 +42,7 @@ fun Route.personOfDayRoutes(personOfDayService: IPersonOfDayService) {
             call.requireRole("admin", "superadmin", "games")
             val lang = call.request.headers["Accept-Language"] ?: "en"
             val id = call.parameters["id"]?.toIntOrNull()
-            val request = call.receive<PersonOfDayRequest>()
+            val request = call.receive<UpdatePersonOfDayRequest>()
             val response = personOfDayService.updatePersonOfDay(id, request, lang)
             call.respond(response)
         }

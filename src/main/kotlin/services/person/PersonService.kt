@@ -2,6 +2,7 @@ package com.fathersprophets.backend.services.person
 
 import com.fathersprophets.backend.database.repository.person.IPersonRepository
 import com.fathersprophets.backend.models.ApiResponse
+import com.fathersprophets.backend.models.person.CreatePersonRequest
 import com.fathersprophets.backend.models.person.PersonResponse
 import com.fathersprophets.backend.models.person.UpdatePersonRequest
 import com.fathersprophets.backend.utils.Localization
@@ -23,7 +24,7 @@ class PersonService(
     }
 
     override fun addPerson(
-        person: UpdatePersonRequest,
+        person: CreatePersonRequest,
         lang: String
     ): ApiResponse<PersonResponse> {
         validateRequired(

@@ -1,5 +1,6 @@
 package com.fathersprophets.backend.routes
 
+import com.fathersprophets.backend.models.person.CreatePersonRequest
 import com.fathersprophets.backend.models.person.UpdatePersonRequest
 import com.fathersprophets.backend.plugins.requireRole
 import com.fathersprophets.backend.services.person.IPersonService
@@ -26,8 +27,8 @@ fun Route.personRoutes(personService: IPersonService) {
         post {
             call.requireRole("admin", "superadmin","games")
             val lang = call.request.headers["Accept-Language"] ?: "en"
-            val updatePersonRequest = call.receive<UpdatePersonRequest>()
-            val response = personService.addPerson(updatePersonRequest, lang)
+            val createPersonRequest = call.receive<CreatePersonRequest>()
+            val response = personService.addPerson(createPersonRequest, lang)
             call.respond(response)
         }
 

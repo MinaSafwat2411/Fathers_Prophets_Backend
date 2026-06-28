@@ -2,8 +2,9 @@ package com.fathersprophets.backend.services.personofday
 
 import com.fathersprophets.backend.database.repository.personofday.IPersonOfDayRepository
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.personofday.PersonOfDayRequest
+import com.fathersprophets.backend.models.personofday.CreatePersonOfDayRequest
 import com.fathersprophets.backend.models.personofday.PersonOfDayResponse
+import com.fathersprophets.backend.models.personofday.UpdatePersonOfDayRequest
 import com.fathersprophets.backend.utils.Localization
 import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
 
@@ -25,7 +26,7 @@ class PersonOfDayService(
         return personOfDayRepository.getPersonOfDayByDate(date, lang)
     }
 
-    override fun addPersonOfDay(request: PersonOfDayRequest, lang: String): ApiResponse<PersonOfDayResponse> {
+    override fun addPersonOfDay(request: CreatePersonOfDayRequest, lang: String): ApiResponse<PersonOfDayResponse> {
         validateRequired(
             request.personId to "personId",
             request.message to "message",
@@ -36,7 +37,7 @@ class PersonOfDayService(
         return personOfDayRepository.addPersonOfDay(request, lang)
     }
 
-    override fun updatePersonOfDay(id: Int?, request: PersonOfDayRequest, lang: String): ApiResponse<PersonOfDayResponse> {
+    override fun updatePersonOfDay(id: Int?, request: UpdatePersonOfDayRequest, lang: String): ApiResponse<PersonOfDayResponse> {
         if (id == null) throw IllegalArgumentException(Localization.get("person_of_day_id_required", lang))
         return personOfDayRepository.updatePersonOfDay(id, request, lang)
     }

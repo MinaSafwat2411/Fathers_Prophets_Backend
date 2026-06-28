@@ -3,6 +3,7 @@ package com.fathersprophets.backend.database.repository.person
 import com.fathersprophets.backend.database.dao.PersonDao
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.PersonDto
+import com.fathersprophets.backend.models.person.CreatePersonRequest
 import com.fathersprophets.backend.models.person.PersonResponse
 import com.fathersprophets.backend.models.person.UpdatePersonRequest
 import com.fathersprophets.backend.utils.Localization
@@ -32,10 +33,10 @@ class PersonRepository(
     }
 
     override fun addPerson(
-        person: UpdatePersonRequest,
+        person: CreatePersonRequest,
         lang: String
     ): ApiResponse<PersonResponse> {
-        val id = personDao.addPerson(person.toPersonDto(0))
+        val id = personDao.addPerson(person.toPersonDto())
         val createdPerson = personDao.getPersonById(idToDto(id))
         return ApiResponse(
             success = true,
