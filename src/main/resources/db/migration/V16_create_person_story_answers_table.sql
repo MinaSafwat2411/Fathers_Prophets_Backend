@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS stories_answers
     story_id INT NOT NULL REFERENCES persons_stories(id) ON DELETE CASCADE,
     user_id  INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     answered VARCHAR(255) NOT NULL,
+    question_id INT NOT NULL REFERENCES persons_story_questions(id) ON DELETE CASCADE,
     status answer_status NOT NULL,
     UNIQUE (story_id, user_id)
 );

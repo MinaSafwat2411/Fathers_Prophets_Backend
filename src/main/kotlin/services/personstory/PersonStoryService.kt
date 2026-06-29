@@ -31,7 +31,6 @@ class PersonStoryService(
             request.personId to "personId",
             request.title to "title",
             request.content to "content",
-            request.question to "question",
             lang = lang
         )
         return personStoryRepository.addStory(request, lang)

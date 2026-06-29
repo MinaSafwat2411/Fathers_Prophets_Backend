@@ -14,10 +14,12 @@ object PersonStoryAnswersTable : Table("stories_answers") {
         { value -> AnswerStatus.valueOf(value as String) },
         { PGobject().apply { type = "answer_status"; value = it.name } }
     )
+    val questionId = reference("question_id", PersonStoryQuestionsTable.id)
+
 
     override val primaryKey = PrimaryKey(id)
 
     init {
-        uniqueIndex(storyId, userId)
+        uniqueIndex(userId, questionId)
     }
 }

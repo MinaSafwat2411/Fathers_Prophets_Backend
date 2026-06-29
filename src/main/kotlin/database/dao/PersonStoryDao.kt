@@ -13,7 +13,7 @@ class PersonStoryDao {
         title = row[PersonStoryTable.title],
         content = row[PersonStoryTable.content],
         image = row[PersonStoryTable.image],
-        question = row[PersonStoryTable.question]
+        video = row[PersonStoryTable.video]
     )
 
     fun findAll() = transaction {
@@ -36,7 +36,7 @@ class PersonStoryDao {
             it[title] = dto.title
             it[content] = dto.content
             it[image] = dto.image
-            it[question] = dto.question
+            it[video] = dto.video
         } get PersonStoryTable.id
     }
 
@@ -46,7 +46,7 @@ class PersonStoryDao {
             it[title] = dto.title
             it[content] = dto.content
             it[image] = dto.image
-            it[question] = dto.question
+            it[video] = dto.video
         } > 0
     }
 

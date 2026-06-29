@@ -8,7 +8,7 @@ data class PersonStoryDto(
     val title: String,
     val content: String,
     val image: String?,
-    val question: String
+    val video: String?
 ) {
     fun convertToPersonStoryResponse() = PersonStoryResponse(
         id = id,
@@ -16,6 +16,6 @@ data class PersonStoryDto(
         title = title,
         content = content,
         image = image,
-        question = question
+        video = video
     )
 }

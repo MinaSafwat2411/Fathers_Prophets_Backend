@@ -8,7 +8,7 @@ data class UpdatePersonStoryRequest(
     val title: String? = null,
     val content: String? = null,
     val image: String? = null,
-    val question: String? = null,
+    val video: String? = null,
 ){
     fun convertToPersonStoryDto(id: Int, personId: Int) = PersonStoryDto(
         id = id,
@@ -16,6 +16,6 @@ data class UpdatePersonStoryRequest(
         title = this.title ?: "",
         content = this.content ?: "",
         image = this.image,
-        question = this.question ?: ""
+        video = this.video
     )
 }

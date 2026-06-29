@@ -8,7 +8,7 @@ object PersonStoryTable : Table("persons_stories") {
     val title = varchar("title", 255)
     val content = text("content")
     val image = varchar("image", 255).nullable()
-    val question = varchar("question", 255)
+    val video = varchar("video", 255).nullable()
 
     override val primaryKey = PrimaryKey(id)
 }

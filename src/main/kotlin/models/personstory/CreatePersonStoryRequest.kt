@@ -8,5 +8,5 @@ data class CreatePersonStoryRequest(
     val title: String? = null,
     val content: String? = null,
     val image: String? = null,
-    val question: String? = null
+    val video: String? = null
 )

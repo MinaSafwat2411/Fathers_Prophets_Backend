@@ -9,5 +9,5 @@ data class PersonStoryResponse(
     val title: String,
     val content: String,
     val image: String?,
-    val question: String
+    val video: String?
 )

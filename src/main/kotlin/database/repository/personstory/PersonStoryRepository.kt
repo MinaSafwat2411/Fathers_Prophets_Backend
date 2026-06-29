@@ -42,11 +42,11 @@ class PersonStoryRepository(
     override fun addStory(request: CreatePersonStoryRequest, lang: String): ApiResponse<PersonStoryResponse> {
         val dto = PersonStoryDto(
             id = 0,
-            personId = request.personId!!,
-            title = request.title!!,
-            content = request.content!!,
+            personId = request.personId?:0,
+            title = request.title?:"",
+            content = request.content?:"",
             image = request.image,
-            question = request.question!!
+            video = request.video
         )
         val id = personStoryDao.create(dto)
         val created = personStoryDao.findById(id)
@@ -58,7 +58,11 @@ class PersonStoryRepository(
     }
 
     override fun updateStory(id: Int, request: UpdatePersonStoryRequest, lang: String): ApiResponse<PersonStoryResponse> {
-        val existing = personStoryDao.findById(id)!!
+        val existing = personStoryDao.findById(id)?:return ApiResponse(
+            success = false,
+            data = null,
+            message = Localization.get("person_story_not_found", lang)
+        )
         val dto = request.convertToPersonStoryDto(id, existing.personId)
         personStoryDao.update(dto)
         val updated = personStoryDao.findById(id)
@@ -70,7 +74,7 @@ class PersonStoryRepository(
     }
 
     override fun deleteStory(id: Int, lang: String): ApiResponse<Nothing> {
-        val dto = PersonStoryDto(id = id, personId = 0, title = "", content = "", image = null, question = "")
+        val dto = PersonStoryDto(id = id, personId = 0, title = "", content = "", image = null, video = null)
         personStoryDao.delete(dto)
         return ApiResponse(
             success = true,
