@@ -8,6 +8,7 @@ import com.fathersprophets.backend.database.dao.EventDao
 import com.fathersprophets.backend.database.dao.EventMemberDao
 import com.fathersprophets.backend.database.dao.PersonAnswerDao
 import com.fathersprophets.backend.database.dao.PersonDao
+import com.fathersprophets.backend.database.dao.PersonMcqAnswerDao
 import com.fathersprophets.backend.database.dao.PersonMcqDao
 import com.fathersprophets.backend.database.dao.PersonOfDayDao
 import com.fathersprophets.backend.database.dao.PersonQuestionDao
@@ -35,6 +36,8 @@ import com.fathersprophets.backend.database.repository.personanswer.IPersonAnswe
 import com.fathersprophets.backend.database.repository.personanswer.PersonAnswerRepository
 import com.fathersprophets.backend.database.repository.personmcq.IPersonMcqRepository
 import com.fathersprophets.backend.database.repository.personmcq.PersonMcqRepository
+import com.fathersprophets.backend.database.repository.personmcqanswer.IPersonMcqAnswerRepository
+import com.fathersprophets.backend.database.repository.personmcqanswer.PersonMcqAnswerRepository
 import com.fathersprophets.backend.database.repository.personofday.IPersonOfDayRepository
 import com.fathersprophets.backend.database.repository.personofday.PersonOfDayRepository
 import com.fathersprophets.backend.database.repository.personstory.IPersonStoryRepository
@@ -67,6 +70,8 @@ import com.fathersprophets.backend.services.personanswer.IPersonAnswerService
 import com.fathersprophets.backend.services.personanswer.PersonAnswerService
 import com.fathersprophets.backend.services.personmcq.IPersonMcqService
 import com.fathersprophets.backend.services.personmcq.PersonMcqService
+import com.fathersprophets.backend.services.personmcqanswer.IPersonMcqAnswerService
+import com.fathersprophets.backend.services.personmcqanswer.PersonMcqAnswerService
 import com.fathersprophets.backend.services.personofday.IPersonOfDayService
 import com.fathersprophets.backend.services.personofday.PersonOfDayService
 import com.fathersprophets.backend.services.personstory.IPersonStoryService
@@ -97,6 +102,7 @@ val appModule = module {
     single { PersonQuestionDao() }
     single { PersonMcqDao() }
     single { PersonAnswerDao() }
+    single { PersonMcqAnswerDao() }
 
     single<IAuthRepository> {
         AuthRepository(
@@ -208,6 +214,14 @@ val appModule = module {
 
     single<IPersonAnswerService> {
         PersonAnswerService(get())
+    }
+
+    single<IPersonMcqAnswerRepository> {
+        PersonMcqAnswerRepository(get(), get())
+    }
+
+    single<IPersonMcqAnswerService> {
+        PersonMcqAnswerService(get())
     }
 
     single<IPersonOfDayRepository> {

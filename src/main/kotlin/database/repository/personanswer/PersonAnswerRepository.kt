@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.database.repository.personanswer
 
 import com.fathersprophets.backend.database.dao.PersonAnswerDao
+import com.fathersprophets.backend.database.dao.PersonMcqDao
 import com.fathersprophets.backend.database.tables.AnswerStatus
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.PersonAnswerDto
@@ -11,7 +12,7 @@ import com.fathersprophets.backend.models.personanswer.UpdatePersonAnswerRequest
 import com.fathersprophets.backend.utils.Localization
 
 class PersonAnswerRepository(
-    private val personAnswerDao: PersonAnswerDao
+    private val personAnswerDao: PersonAnswerDao,
 ) : IPersonAnswerRepository {
 
     override fun getAllPersonAnswers(lang: String): ApiResponse<List<PersonAnswerResponse>> {
@@ -51,7 +52,11 @@ class PersonAnswerRepository(
     }
 
     override fun createPersonAnswer(request: CreatePersonAnswerRequest, lang: String): ApiResponse<PersonAnswerResponse> {
+        val existing = personAnswerDao.findByQuestionIdAndUserId(request.questionId, request.userId)
+        if (existing != null) throw IllegalStateException(Localization.get("person_answer_already_exists", lang))
+
         val id = personAnswerDao.create(request.convertToPersonAnswerDto())
+
         val created = personAnswerDao.findById(id)
         return ApiResponse(
             success = true,

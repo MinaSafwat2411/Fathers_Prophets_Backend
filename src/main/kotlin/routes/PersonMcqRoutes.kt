@@ -24,13 +24,6 @@ fun Route.personMcqRoutes(personMcqService: IPersonMcqService) {
             call.respond(response)
         }
 
-        get("/question/{questionId}") {
-            val lang = call.request.headers["Accept-Language"] ?: "en"
-            val questionId = call.parameters["questionId"]?.toIntOrNull()
-            val response = personMcqService.getPersonMcqsByQuestionId(questionId, lang)
-            call.respond(response)
-        }
-
         post {
             call.requireRole("admin", "superadmin", "games")
             val lang = call.request.headers["Accept-Language"] ?: "en"

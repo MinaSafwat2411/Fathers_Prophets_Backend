@@ -16,7 +16,6 @@ data class UpdatePersonMcqRequest(
 ) {
     fun convertToPersonMcqDto(id: Int) = PersonMcqDto(
         id = id,
-        questionId = this.questionId,
         question = this.question,
         first = this.first,
         second = this.second,

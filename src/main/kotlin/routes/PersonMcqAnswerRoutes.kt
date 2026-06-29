@@ -1,48 +1,48 @@
 package com.fathersprophets.backend.routes
 
-import com.fathersprophets.backend.models.personanswer.CreatePersonAnswerRequest
-import com.fathersprophets.backend.models.personanswer.UpdateAnswerStatusRequest
-import com.fathersprophets.backend.models.personanswer.UpdatePersonAnswerRequest
+import com.fathersprophets.backend.models.personmcqanswer.CreatePersonMcqAnswerRequest
+import com.fathersprophets.backend.models.personmcqanswer.UpdateMcqAnswerStatusRequest
+import com.fathersprophets.backend.models.personmcqanswer.UpdatePersonMcqAnswerRequest
 import com.fathersprophets.backend.plugins.requireRole
-import com.fathersprophets.backend.services.personanswer.IPersonAnswerService
+import com.fathersprophets.backend.services.personmcqanswer.IPersonMcqAnswerService
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.personAnswerRoutes(personAnswerService: IPersonAnswerService) {
-    route("/person-answer") {
+fun Route.personMcqAnswerRoutes(personMcqAnswerService: IPersonMcqAnswerService) {
+    route("/person-mcq-answer") {
 
         get {
             val lang = call.request.headers["Accept-Language"] ?: "en"
-            val response = personAnswerService.getAllPersonAnswers(lang)
+            val response = personMcqAnswerService.getAllPersonMcqAnswers(lang)
             call.respond(response)
         }
 
         get("/{id}") {
             val lang = call.request.headers["Accept-Language"] ?: "en"
             val id = call.parameters["id"]?.toIntOrNull()
-            val response = personAnswerService.getPersonAnswerById(id, lang)
+            val response = personMcqAnswerService.getPersonMcqAnswerById(id, lang)
             call.respond(response)
         }
 
         get("/question/{questionId}") {
             val lang = call.request.headers["Accept-Language"] ?: "en"
             val questionId = call.parameters["questionId"]?.toIntOrNull()
-            val response = personAnswerService.getPersonAnswersByQuestionId(questionId, lang)
+            val response = personMcqAnswerService.getPersonMcqAnswersByQuestionId(questionId, lang)
             call.respond(response)
         }
 
         get("/user/{userId}") {
             val lang = call.request.headers["Accept-Language"] ?: "en"
             val userId = call.parameters["userId"]?.toIntOrNull()
-            val response = personAnswerService.getPersonAnswersByUserId(userId, lang)
+            val response = personMcqAnswerService.getPersonMcqAnswersByUserId(userId, lang)
             call.respond(response)
         }
 
         post {
             val lang = call.request.headers["Accept-Language"] ?: "en"
-            val request = call.receive<CreatePersonAnswerRequest>()
-            val response = personAnswerService.createPersonAnswer(request, lang)
+            val request = call.receive<CreatePersonMcqAnswerRequest>()
+            val response = personMcqAnswerService.createPersonMcqAnswer(request, lang)
             call.respond(response)
         }
 
@@ -50,17 +50,17 @@ fun Route.personAnswerRoutes(personAnswerService: IPersonAnswerService) {
             call.requireRole("superadmin")
             val lang = call.request.headers["Accept-Language"] ?: "en"
             val id = call.parameters["id"]?.toIntOrNull()
-            val request = call.receive<UpdatePersonAnswerRequest>()
-            val response = personAnswerService.updatePersonAnswer(id, request, lang)
+            val request = call.receive<UpdatePersonMcqAnswerRequest>()
+            val response = personMcqAnswerService.updatePersonMcqAnswer(id, request, lang)
             call.respond(response)
         }
 
         patch("/{id}/status") {
-            call.requireRole("admin", "superadmin", "games")
+            call.requireRole("superadmin")
             val lang = call.request.headers["Accept-Language"] ?: "en"
             val id = call.parameters["id"]?.toIntOrNull()
-            val request = call.receive<UpdateAnswerStatusRequest>()
-            val response = personAnswerService.updatePersonAnswerStatus(id, request, lang)
+            val request = call.receive<UpdateMcqAnswerStatusRequest>()
+            val response = personMcqAnswerService.updatePersonMcqAnswerStatus(id, request, lang)
             call.respond(response)
         }
 
@@ -68,7 +68,7 @@ fun Route.personAnswerRoutes(personAnswerService: IPersonAnswerService) {
             call.requireRole("superadmin")
             val lang = call.request.headers["Accept-Language"] ?: "en"
             val id = call.parameters["id"]?.toIntOrNull()
-            val response = personAnswerService.deletePersonAnswer(id, lang)
+            val response = personMcqAnswerService.deletePersonMcqAnswer(id, lang)
             call.respond(response)
         }
     }

@@ -5,7 +5,6 @@ import com.fathersprophets.backend.models.personmcq.PersonMcqResponse
 
 data class PersonMcqDto(
     val id: Int,
-    val questionId: Int,
     val question: String,
     val first: String,
     val second: String,
@@ -15,12 +14,10 @@ data class PersonMcqDto(
 ) {
     fun convertToPersonMcqResponse() = PersonMcqResponse(
         id = this.id,
-        questionId = this.questionId,
         question = this.question,
         first = this.first,
         second = this.second,
         third = this.third,
         fourth = this.fourth,
-        correctAnswer = this.correctAnswer.name
     )
 }

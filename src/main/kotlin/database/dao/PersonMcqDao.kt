@@ -9,7 +9,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 class PersonMcqDao {
     private fun resultRowToPersonMcq(row: ResultRow) = PersonMcqDto(
         id = row[PersonsMcqTable.id],
-        questionId = row[PersonsMcqTable.questionId],
         question = row[PersonsMcqTable.question],
         first = row[PersonsMcqTable.first],
         second = row[PersonsMcqTable.second],
@@ -27,14 +26,8 @@ class PersonMcqDao {
             .singleOrNull()?.let { resultRowToPersonMcq(it) }
     }
 
-    fun findByQuestionId(questionId: Int) = transaction {
-        PersonsMcqTable.selectAll().where { PersonsMcqTable.questionId eq questionId }
-            .map { resultRowToPersonMcq(it) }
-    }
-
     fun create(dto: PersonMcqDto) = transaction {
         PersonsMcqTable.insert {
-            it[questionId] = dto.questionId
             it[question] = dto.question
             it[first] = dto.first
             it[second] = dto.second
@@ -46,7 +39,6 @@ class PersonMcqDao {
 
     fun update(dto: PersonMcqDto) = transaction {
         PersonsMcqTable.update({ PersonsMcqTable.id eq dto.id }) {
-            it[questionId] = dto.questionId
             it[question] = dto.question
             it[first] = dto.first
             it[second] = dto.second

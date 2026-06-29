@@ -6,6 +6,8 @@ CREATE TABLE IF NOT EXISTS persons_answers (
     question_id INT NOT NULL REFERENCES persons_questions(id) ON DELETE CASCADE,
     user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     status answer_status NOT NULL
+
+    CONSTRAINT uq_persons_answers_question_user UNIQUE (question_id, user_id)
 );
 
 CREATE INDEX IF NOT EXISTS idx_persons_answers_question_id ON persons_answers(question_id);

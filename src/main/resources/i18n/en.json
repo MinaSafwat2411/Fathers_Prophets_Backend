@@ -139,5 +139,15 @@
   "person_story_created_successfully": "Person story created successfully",
   "person_story_updated_successfully": "Person story updated successfully",
   "person_story_deleted_successfully": "Person story deleted successfully",
-  "person_story_id_required": "Person story ID cannot be empty"
+  "person_story_id_required": "Person story ID cannot be empty",
+  "person_answer_already_exists": "You have already submitted an answer for this question",
+  "person_mcq_answers_retrieved_successfully": "Person MCQ answers retrieved successfully",
+  "person_mcq_answer_retrieved_successfully": "Person MCQ answer retrieved successfully",
+  "person_mcq_answer_created_successfully": "Person MCQ answer created successfully",
+  "person_mcq_answer_updated_successfully": "Person MCQ answer updated successfully",
+  "person_mcq_answer_status_updated_successfully": "Person MCQ answer status updated successfully",
+  "person_mcq_answer_deleted_successfully": "Person MCQ answer deleted successfully",
+  "person_mcq_answer_id_required": "Person MCQ answer ID cannot be empty",
+  "person_mcq_answer_already_exists": "You have already submitted an answer for this MCQ question",
+  "person_mcq_not_found": "Person MCQ question not found"
 }

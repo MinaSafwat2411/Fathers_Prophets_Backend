@@ -34,6 +34,12 @@ class PersonAnswerDao {
             .map { resultRowToPersonAnswer(it) }
     }
 
+    fun findByQuestionIdAndUserId(questionId: Int, userId: Int) = transaction {
+        PersonsAnswersTable.selectAll()
+            .where { (PersonsAnswersTable.questionId eq questionId) and (PersonsAnswersTable.userId eq userId) }
+            .singleOrNull()?.let { resultRowToPersonAnswer(it) }
+    }
+
     fun create(dto: PersonAnswerDto) = transaction {
         PersonsAnswersTable.insert {
             it[answer] = dto.answer

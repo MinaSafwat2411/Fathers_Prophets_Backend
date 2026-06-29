@@ -139,5 +139,15 @@
   "person_story_created_successfully": "تم إنشاء قصة الشخص بنجاح",
   "person_story_updated_successfully": "تم تحديث قصة الشخص بنجاح",
   "person_story_deleted_successfully": "تم حذف قصة الشخص بنجاح",
-  "person_story_id_required": "معرف قصة الشخص لا يمكن أن يكون فارغًا"
+  "person_story_id_required": "معرف قصة الشخص لا يمكن أن يكون فارغًا",
+  "person_answer_already_exists": "لقد قمت بالفعل بإرسال إجابة لهذا السؤال",
+  "person_mcq_answers_retrieved_successfully": "تم استرجاع إجابات الاختيار من متعدد بنجاح",
+  "person_mcq_answer_retrieved_successfully": "تم استرجاع إجابة الاختيار من متعدد بنجاح",
+  "person_mcq_answer_created_successfully": "تم إنشاء إجابة الاختيار من متعدد بنجاح",
+  "person_mcq_answer_updated_successfully": "تم تحديث إجابة الاختيار من متعدد بنجاح",
+  "person_mcq_answer_status_updated_successfully": "تم تحديث حالة إجابة الاختيار من متعدد بنجاح",
+  "person_mcq_answer_deleted_successfully": "تم حذف إجابة الاختيار من متعدد بنجاح",
+  "person_mcq_answer_id_required": "معرف إجابة الاختيار من متعدد لا يمكن أن يكون فارغًا",
+  "person_mcq_answer_already_exists": "لقد قمت بالفعل بإرسال إجابة لهذا السؤال",
+  "person_mcq_not_found": "سؤال الاختيار من متعدد غير موجود"
 }

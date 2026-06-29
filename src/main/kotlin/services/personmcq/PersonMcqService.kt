@@ -21,11 +21,6 @@ class PersonMcqService(
         return personMcqRepository.getPersonMcqById(id, lang)
     }
 
-    override fun getPersonMcqsByQuestionId(questionId: Int?, lang: String): ApiResponse<List<PersonMcqResponse>> {
-        if (questionId == null) throw IllegalArgumentException(Localization.get("question_id_required", lang))
-        return personMcqRepository.getPersonMcqsByQuestionId(questionId, lang)
-    }
-
     override fun createPersonMcq(request: CreatePersonMcqRequest, lang: String): ApiResponse<PersonMcqResponse> {
         validateRequired(
             request.question to "question",

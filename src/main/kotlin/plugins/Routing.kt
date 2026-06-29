@@ -9,6 +9,7 @@ import com.fathersprophets.backend.routes.commentRoutes
 import com.fathersprophets.backend.routes.eventMemberRoutes
 import com.fathersprophets.backend.routes.eventRoutes
 import com.fathersprophets.backend.routes.personAnswerRoutes
+import com.fathersprophets.backend.routes.personMcqAnswerRoutes
 import com.fathersprophets.backend.routes.personMcqRoutes
 import com.fathersprophets.backend.routes.personOfDayRoutes
 import com.fathersprophets.backend.routes.personQuestionRoutes
@@ -27,6 +28,7 @@ import com.fathersprophets.backend.services.eventmember.IEventMemberService
 import com.fathersprophets.backend.services.events.IEventService
 import com.fathersprophets.backend.services.person.IPersonService
 import com.fathersprophets.backend.services.personanswer.IPersonAnswerService
+import com.fathersprophets.backend.services.personmcqanswer.IPersonMcqAnswerService
 import com.fathersprophets.backend.services.personofday.IPersonOfDayService
 import com.fathersprophets.backend.services.personstory.IPersonStoryService
 import com.fathersprophets.backend.services.personmcq.IPersonMcqService
@@ -55,6 +57,7 @@ fun Application.configureRouting() {
     val personQuestionService = get<IPersonQuestionService>()
     val personMcqService = get<IPersonMcqService>()
     val personAnswerService = get<IPersonAnswerService>()
+    val personMcqAnswerService = get<IPersonMcqAnswerService>()
     val personOfDayService = get<IPersonOfDayService>()
     val personStoryService = get<IPersonStoryService>()
 
@@ -79,6 +82,7 @@ fun Application.configureRouting() {
                 personQuestionRoutes(personQuestionService)
                 personMcqRoutes(personMcqService)
                 personAnswerRoutes(personAnswerService)
+                personMcqAnswerRoutes(personMcqAnswerService)
                 personOfDayRoutes(personOfDayService)
                 personStoryRoutes(personStoryService)
             }

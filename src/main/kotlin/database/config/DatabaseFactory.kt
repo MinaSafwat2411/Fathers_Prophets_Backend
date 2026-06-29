@@ -22,6 +22,7 @@ import com.fathersprophets.backend.database.tables.MatchingPairTable
 import com.fathersprophets.backend.database.tables.ParentsTable
 import com.fathersprophets.backend.database.tables.PersonOfDayTable
 import com.fathersprophets.backend.database.tables.PersonsAnswersTable
+import com.fathersprophets.backend.database.tables.PersonsMcqAnswersTable
 import com.fathersprophets.backend.database.tables.PersonsMcqTable
 import com.fathersprophets.backend.database.tables.PersonsQuestionsTable
 import com.fathersprophets.backend.database.tables.PersonsTable
@@ -81,6 +82,7 @@ object DatabaseFactory {
                 PersonsQuestionsTable,
                 PersonsMcqTable,
                 PersonsAnswersTable,
+                PersonsMcqAnswersTable,
                 AnonymousChatMessagesTable,
                 AnonymousChatsTable,
                 ChatMessageReadReceiptsTable,
