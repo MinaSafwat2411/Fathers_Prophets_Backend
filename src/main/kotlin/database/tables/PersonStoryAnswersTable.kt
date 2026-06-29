@@ -20,6 +20,6 @@ object PersonStoryAnswersTable : Table("stories_answers") {
     override val primaryKey = PrimaryKey(id)
 
     init {
-        uniqueIndex(userId, questionId)
+        uniqueIndex(storyId, userId, questionId)
     }
 }
