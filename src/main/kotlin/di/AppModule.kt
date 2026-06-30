@@ -13,6 +13,7 @@ import com.fathersprophets.backend.database.dao.PersonMcqDao
 import com.fathersprophets.backend.database.dao.PersonOfDayDao
 import com.fathersprophets.backend.database.dao.PersonQuestionDao
 import com.fathersprophets.backend.database.dao.PersonStoryDao
+import com.fathersprophets.backend.database.dao.PersonStoryQuestionDao
 import com.fathersprophets.backend.database.dao.SessionDao
 import com.fathersprophets.backend.database.dao.UserDao
 import com.fathersprophets.backend.database.dao.VersionDao
@@ -42,6 +43,8 @@ import com.fathersprophets.backend.database.repository.personofday.IPersonOfDayR
 import com.fathersprophets.backend.database.repository.personofday.PersonOfDayRepository
 import com.fathersprophets.backend.database.repository.personstory.IPersonStoryRepository
 import com.fathersprophets.backend.database.repository.personstory.PersonStoryRepository
+import com.fathersprophets.backend.database.repository.personstoryquestion.IPersonStoryQuestionRepository
+import com.fathersprophets.backend.database.repository.personstoryquestion.PersonStoryQuestionRepository
 import com.fathersprophets.backend.database.repository.personquestion.IPersonQuestionRepository
 import com.fathersprophets.backend.database.repository.personquestion.PersonQuestionRepository
 import com.fathersprophets.backend.database.repository.sessions.ISessionRepository
@@ -76,6 +79,8 @@ import com.fathersprophets.backend.services.personofday.IPersonOfDayService
 import com.fathersprophets.backend.services.personofday.PersonOfDayService
 import com.fathersprophets.backend.services.personstory.IPersonStoryService
 import com.fathersprophets.backend.services.personstory.PersonStoryService
+import com.fathersprophets.backend.services.personstoryquestion.IPersonStoryQuestionService
+import com.fathersprophets.backend.services.personstoryquestion.PersonStoryQuestionService
 import com.fathersprophets.backend.services.personquestion.IPersonQuestionService
 import com.fathersprophets.backend.services.personquestion.PersonQuestionService
 import com.fathersprophets.backend.services.session.ISessionService
@@ -99,6 +104,7 @@ val appModule = module {
     single { PersonDao() }
     single { PersonOfDayDao() }
     single { PersonStoryDao() }
+    single { PersonStoryQuestionDao() }
     single { PersonQuestionDao() }
     single { PersonMcqDao() }
     single { PersonAnswerDao() }
@@ -238,6 +244,14 @@ val appModule = module {
 
     single<IPersonStoryService> {
         PersonStoryService(get())
+    }
+
+    single<IPersonStoryQuestionRepository> {
+        PersonStoryQuestionRepository(get())
+    }
+
+    single<IPersonStoryQuestionService> {
+        PersonStoryQuestionService(get())
     }
 
 }

@@ -44,10 +44,10 @@ class PersonOfDayRepository(
     override fun addPersonOfDay(request: CreatePersonOfDayRequest, lang: String): ApiResponse<PersonOfDayResponse> {
         val dto = PersonOfDayDto(
             id = 0,
-            personId = request.personId!!,
-            message = request.message!!,
-            verse = request.verse!!,
-            date = LocalDate.parse(request.date!!)
+            personId = request.personId?:0,
+            message = request.message?:"",
+            verse = request.verse?:"",
+            date = LocalDate.parse(request.date?:"")
         )
         val id = personOfDayDao.addPersonOfDay(dto)
         val created = personOfDayDao.getPersonOfDayById(id)
@@ -59,13 +59,17 @@ class PersonOfDayRepository(
     }
 
     override fun updatePersonOfDay(id: Int, request: UpdatePersonOfDayRequest, lang: String): ApiResponse<PersonOfDayResponse> {
-        val existing = personOfDayDao.getPersonOfDayById(id)
+        val existing = personOfDayDao.getPersonOfDayById(id)?: return ApiResponse(
+            success = false,
+            data = null,
+            message = Localization.get("person_of_day_not_found", lang)
+        )
         val dto = PersonOfDayDto(
             id = id,
-            personId = request.personId ?: existing!!.personId,
-            message = request.message ?: existing!!.message,
-            verse = request.verse ?: existing!!.verse,
-            date = if (request.date != null) LocalDate.parse(request.date) else existing!!.date
+            personId = request.personId ?: existing.personId,
+            message = request.message ?: existing.message,
+            verse = request.verse ?: existing.verse,
+            date = if (request.date != null) LocalDate.parse(request.date) else existing.date
         )
         personOfDayDao.updatePersonOfDay(dto)
         val updated = personOfDayDao.getPersonOfDayById(id)

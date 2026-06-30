@@ -19,7 +19,7 @@ class UserService(
     override suspend fun getUserById(id: Int?, lang: String): ApiResponse<UserResponse> {
         validateRequired(id to "user_id", lang = lang)
         
-        val userResponse = userRepository.getUserById(id!!, lang)
+        val userResponse = userRepository.getUserById(id?:0, lang)
         return userResponse
     }
 

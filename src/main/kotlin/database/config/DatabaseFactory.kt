@@ -27,6 +27,7 @@ import com.fathersprophets.backend.database.tables.PersonsMcqTable
 import com.fathersprophets.backend.database.tables.PersonsQuestionsTable
 import com.fathersprophets.backend.database.tables.PersonsTable
 import com.fathersprophets.backend.database.tables.PersonStoryAnswersTable
+import com.fathersprophets.backend.database.tables.PersonStoryQuestionsTable
 import com.fathersprophets.backend.database.tables.PersonStoryTable
 import com.fathersprophets.backend.database.tables.QuizAnswersTable
 import com.fathersprophets.backend.database.tables.QuizDayQuestionsTable
@@ -83,29 +84,30 @@ object DatabaseFactory {
                 PersonsMcqTable,
                 PersonsAnswersTable,
                 PersonsMcqAnswersTable,
-                AnonymousChatMessagesTable,
-                AnonymousChatsTable,
-                ChatMessageReadReceiptsTable,
-                ChatMessagesTable,
-                ChatRoomMembersTable,
-                ChatRoomsTable,
-                EscapeEgyptAnswersTable,
-                EscapeEgyptQuestionsTable,
-                EscapeEgyptTable,
-                GuessPersonAnswersTable,
-                GuessPersonTable,
-                MatchingPairAnswersTable,
-                MatchingPairTable,
                 PersonOfDayTable,
                 PersonStoryAnswersTable,
                 PersonStoryTable,
-                QuizAnswersTable,
-                QuizDayQuestionsTable,
-                QuizDayTable,
-                QuizTable,
-                TimelineAnswersTable,
-                TimelineTable,
-                UserProgressQuizTable
+                PersonStoryQuestionsTable,
+//                AnonymousChatMessagesTable,
+//                AnonymousChatsTable,
+//                ChatMessageReadReceiptsTable,
+//                ChatMessagesTable,
+//                ChatRoomMembersTable,
+//                ChatRoomsTable,
+//                EscapeEgyptAnswersTable,
+//                EscapeEgyptQuestionsTable,
+//                EscapeEgyptTable,
+//                GuessPersonAnswersTable,
+//                GuessPersonTable,
+//                MatchingPairAnswersTable,
+//                MatchingPairTable,
+//                QuizAnswersTable,
+//                QuizDayQuestionsTable,
+//                QuizDayTable,
+//                QuizTable,
+//                TimelineAnswersTable,
+//                TimelineTable,
+//                UserProgressQuizTable
             )
         }
     }
