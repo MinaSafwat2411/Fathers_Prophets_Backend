@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS timeline_answers
     timeline_id INT           NOT NULL REFERENCES timeline (id) ON DELETE CASCADE,
     user_id INT           NOT NULL REFERENCES users (id) ON DELETE CASCADE,
     status  answer_status NOT NULL,
+    order   INT[]         NOT NULL,
     UNIQUE (timeline_id, user_id)
 );
 

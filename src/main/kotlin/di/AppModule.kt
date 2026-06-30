@@ -8,6 +8,7 @@ import com.fathersprophets.backend.database.dao.EventDao
 import com.fathersprophets.backend.database.dao.EventMemberDao
 import com.fathersprophets.backend.database.dao.PersonAnswerDao
 import com.fathersprophets.backend.database.dao.PersonDao
+import com.fathersprophets.backend.database.dao.GuessPersonAnswerDao
 import com.fathersprophets.backend.database.dao.GuessPersonQuestionDao
 import com.fathersprophets.backend.database.dao.PersonMcqAnswerDao
 import com.fathersprophets.backend.database.dao.PersonMcqDao
@@ -38,6 +39,8 @@ import com.fathersprophets.backend.database.repository.personanswer.IPersonAnswe
 import com.fathersprophets.backend.database.repository.personanswer.PersonAnswerRepository
 import com.fathersprophets.backend.database.repository.guessperson.GuessPersonQuestionRepository
 import com.fathersprophets.backend.database.repository.guessperson.IGuessPersonQuestionRepository
+import com.fathersprophets.backend.database.repository.guesspersonanswer.GuessPersonAnswerRepository
+import com.fathersprophets.backend.database.repository.guesspersonanswer.IGuessPersonAnswerRepository
 import com.fathersprophets.backend.database.repository.personmcq.IPersonMcqRepository
 import com.fathersprophets.backend.database.repository.personmcq.PersonMcqRepository
 import com.fathersprophets.backend.database.repository.personmcqanswer.IPersonMcqAnswerRepository
@@ -76,6 +79,8 @@ import com.fathersprophets.backend.services.personanswer.IPersonAnswerService
 import com.fathersprophets.backend.services.personanswer.PersonAnswerService
 import com.fathersprophets.backend.services.guessperson.GuessPersonQuestionService
 import com.fathersprophets.backend.services.guessperson.IGuessPersonQuestionService
+import com.fathersprophets.backend.services.guesspersonanswer.GuessPersonAnswerService
+import com.fathersprophets.backend.services.guesspersonanswer.IGuessPersonAnswerService
 import com.fathersprophets.backend.services.personmcq.IPersonMcqService
 import com.fathersprophets.backend.services.personmcq.PersonMcqService
 import com.fathersprophets.backend.services.personmcqanswer.IPersonMcqAnswerService
@@ -114,6 +119,7 @@ val appModule = module {
     single { PersonMcqDao() }
     single { PersonAnswerDao() }
     single { GuessPersonQuestionDao() }
+    single { GuessPersonAnswerDao() }
     single { PersonMcqAnswerDao() }
 
     single<IAuthRepository> {
@@ -266,6 +272,14 @@ val appModule = module {
 
     single<IGuessPersonQuestionService> {
         GuessPersonQuestionService(get())
+    }
+
+    single<IGuessPersonAnswerRepository> {
+        GuessPersonAnswerRepository(get(), get())
+    }
+
+    single<IGuessPersonAnswerService> {
+        GuessPersonAnswerService(get())
     }
 
 }

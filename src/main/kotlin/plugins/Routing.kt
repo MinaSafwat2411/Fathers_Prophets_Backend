@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.plugins
 
 import com.fathersprophets.backend.models.ApiResponse
+import com.fathersprophets.backend.routes.guessPersonAnswerRoutes
 import com.fathersprophets.backend.routes.guessPersonQuestionRoutes
 import com.fathersprophets.backend.routes.attendanceRoutes
 import com.fathersprophets.backend.routes.authRoutes
@@ -34,6 +35,7 @@ import com.fathersprophets.backend.services.personmcqanswer.IPersonMcqAnswerServ
 import com.fathersprophets.backend.services.personofday.IPersonOfDayService
 import com.fathersprophets.backend.services.personstory.IPersonStoryService
 import com.fathersprophets.backend.services.guessperson.IGuessPersonQuestionService
+import com.fathersprophets.backend.services.guesspersonanswer.IGuessPersonAnswerService
 import com.fathersprophets.backend.services.personstoryquestion.IPersonStoryQuestionService
 import com.fathersprophets.backend.services.personmcq.IPersonMcqService
 import com.fathersprophets.backend.services.personquestion.IPersonQuestionService
@@ -66,6 +68,7 @@ fun Application.configureRouting() {
     val personStoryService = get<IPersonStoryService>()
     val personStoryQuestionService = get<IPersonStoryQuestionService>()
     val guessPersonQuestionService = get<IGuessPersonQuestionService>()
+    val guessPersonAnswerService = get<IGuessPersonAnswerService>()
 
     routing {
         route("/api/v1") {
@@ -93,6 +96,7 @@ fun Application.configureRouting() {
                 personStoryRoutes(personStoryService)
                 personStoryQuestionRoutes(personStoryQuestionService)
                 guessPersonQuestionRoutes(guessPersonQuestionService)
+                guessPersonAnswerRoutes(guessPersonAnswerService)
             }
             
             get("/healthcheck") {
