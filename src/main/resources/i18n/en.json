@@ -155,5 +155,20 @@
   "person_story_question_created_successfully": "Person story question created successfully",
   "person_story_question_updated_successfully": "Person story question updated successfully",
   "person_story_question_deleted_successfully": "Person story question deleted successfully",
-  "person_story_question_id_required": "Person story question ID cannot be empty"
+  "person_story_question_id_required": "Person story question ID cannot be empty",
+  "pair_id_required": "Pair ID cannot be empty",
+  "matching_pair_id_required": "Matching pair ID cannot be empty",
+  "matching_pairs_retrieved_successfully": "Matching pairs retrieved successfully",
+  "matching_pair_retrieved_successfully": "Matching pair retrieved successfully",
+  "matching_pair_created_successfully": "Matching pair created successfully",
+  "matching_pair_updated_successfully": "Matching pair updated successfully",
+  "matching_pair_deleted_successfully": "Matching pair deleted successfully",
+  "matching_pair_not_found": "Matching pair not found",
+  "matching_pair_answer_id_required": "Matching pair answer ID cannot be empty",
+  "matching_pair_answers_retrieved_successfully": "Matching pair answers retrieved successfully",
+  "matching_pair_answer_retrieved_successfully": "Matching pair answer retrieved successfully",
+  "matching_pair_answer_created_successfully": "Matching pair answer created successfully",
+  "matching_pair_answer_updated_successfully": "Matching pair answer updated successfully",
+  "matching_pair_answer_deleted_successfully": "Matching pair answer deleted successfully",
+  "matching_pair_answer_already_exists": "You have already submitted an answer for this matching pair"
 }

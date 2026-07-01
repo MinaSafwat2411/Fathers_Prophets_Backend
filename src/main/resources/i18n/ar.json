@@ -155,5 +155,20 @@
   "person_story_question_created_successfully": "تم إنشاء سؤال قصة الشخص بنجاح",
   "person_story_question_updated_successfully": "تم تحديث سؤال قصة الشخص بنجاح",
   "person_story_question_deleted_successfully": "تم حذف سؤال قصة الشخص بنجاح",
-  "person_story_question_id_required": "معرف سؤال قصة الشخص لا يمكن أن يكون فارغًا"
+  "person_story_question_id_required": "معرف سؤال قصة الشخص لا يمكن أن يكون فارغًا",
+  "pair_id_required": "معرف الزوج لا يمكن أن يكون فارغًا",
+  "matching_pair_id_required": "معرف زوج المطابقة لا يمكن أن يكون فارغًا",
+  "matching_pairs_retrieved_successfully": "تم استرجاع أزواج المطابقة بنجاح",
+  "matching_pair_retrieved_successfully": "تم استرجاع زوج المطابقة بنجاح",
+  "matching_pair_created_successfully": "تم إنشاء زوج المطابقة بنجاح",
+  "matching_pair_updated_successfully": "تم تحديث زوج المطابقة بنجاح",
+  "matching_pair_deleted_successfully": "تم حذف زوج المطابقة بنجاح",
+  "matching_pair_not_found": "زوج المطابقة غير موجود",
+  "matching_pair_answer_id_required": "معرف إجابة زوج المطابقة لا يمكن أن يكون فارغًا",
+  "matching_pair_answers_retrieved_successfully": "تم استرجاع إجابات أزواج المطابقة بنجاح",
+  "matching_pair_answer_retrieved_successfully": "تم استرجاع إجابة زوج المطابقة بنجاح",
+  "matching_pair_answer_created_successfully": "تم إنشاء إجابة زوج المطابقة بنجاح",
+  "matching_pair_answer_updated_successfully": "تم تحديث إجابة زوج المطابقة بنجاح",
+  "matching_pair_answer_deleted_successfully": "تم حذف إجابة زوج المطابقة بنجاح",
+  "matching_pair_answer_already_exists": "لقد قمت بالفعل بإرسال إجابة لهذا زوج المطابقة"
 }

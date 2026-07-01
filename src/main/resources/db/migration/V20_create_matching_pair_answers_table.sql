@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS matching_pairs_answers
     id         INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     pair_id    INT           NOT NULL REFERENCES matching_pairs (id) ON DELETE CASCADE,
     user_id    INT           NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    user_pair JSON           NOT NULL,
     status     answer_status NOT NULL,
     UNIQUE (pair_id, user_id)
 );

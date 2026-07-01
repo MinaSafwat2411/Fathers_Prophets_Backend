@@ -10,6 +10,8 @@ import com.fathersprophets.backend.database.dao.PersonAnswerDao
 import com.fathersprophets.backend.database.dao.PersonDao
 import com.fathersprophets.backend.database.dao.GuessPersonAnswerDao
 import com.fathersprophets.backend.database.dao.GuessPersonQuestionDao
+import com.fathersprophets.backend.database.dao.MatchingPairAnswerDao
+import com.fathersprophets.backend.database.dao.MatchingPairDao
 import com.fathersprophets.backend.database.dao.PersonMcqAnswerDao
 import com.fathersprophets.backend.database.dao.PersonMcqDao
 import com.fathersprophets.backend.database.dao.PersonOfDayDao
@@ -41,6 +43,10 @@ import com.fathersprophets.backend.database.repository.guessperson.GuessPersonQu
 import com.fathersprophets.backend.database.repository.guessperson.IGuessPersonQuestionRepository
 import com.fathersprophets.backend.database.repository.guesspersonanswer.GuessPersonAnswerRepository
 import com.fathersprophets.backend.database.repository.guesspersonanswer.IGuessPersonAnswerRepository
+import com.fathersprophets.backend.database.repository.matchingpair.IMatchingPairRepository
+import com.fathersprophets.backend.database.repository.matchingpair.MatchingPairRepository
+import com.fathersprophets.backend.database.repository.matchingpairanswer.IMatchingPairAnswerRepository
+import com.fathersprophets.backend.database.repository.matchingpairanswer.MatchingPairAnswerRepository
 import com.fathersprophets.backend.database.repository.personmcq.IPersonMcqRepository
 import com.fathersprophets.backend.database.repository.personmcq.PersonMcqRepository
 import com.fathersprophets.backend.database.repository.personmcqanswer.IPersonMcqAnswerRepository
@@ -81,6 +87,10 @@ import com.fathersprophets.backend.services.guessperson.GuessPersonQuestionServi
 import com.fathersprophets.backend.services.guessperson.IGuessPersonQuestionService
 import com.fathersprophets.backend.services.guesspersonanswer.GuessPersonAnswerService
 import com.fathersprophets.backend.services.guesspersonanswer.IGuessPersonAnswerService
+import com.fathersprophets.backend.services.matchingpair.IMatchingPairService
+import com.fathersprophets.backend.services.matchingpair.MatchingPairService
+import com.fathersprophets.backend.services.matchingpairanswer.IMatchingPairAnswerService
+import com.fathersprophets.backend.services.matchingpairanswer.MatchingPairAnswerService
 import com.fathersprophets.backend.services.personmcq.IPersonMcqService
 import com.fathersprophets.backend.services.personmcq.PersonMcqService
 import com.fathersprophets.backend.services.personmcqanswer.IPersonMcqAnswerService
@@ -121,6 +131,8 @@ val appModule = module {
     single { GuessPersonQuestionDao() }
     single { GuessPersonAnswerDao() }
     single { PersonMcqAnswerDao() }
+    single { MatchingPairDao() }
+    single { MatchingPairAnswerDao() }
 
     single<IAuthRepository> {
         AuthRepository(
@@ -280,6 +292,22 @@ val appModule = module {
 
     single<IGuessPersonAnswerService> {
         GuessPersonAnswerService(get())
+    }
+
+    single<IMatchingPairRepository> {
+        MatchingPairRepository(get())
+    }
+
+    single<IMatchingPairService> {
+        MatchingPairService(get())
+    }
+
+    single<IMatchingPairAnswerRepository> {
+        MatchingPairAnswerRepository(get(), get())
+    }
+
+    single<IMatchingPairAnswerService> {
+        MatchingPairAnswerService(get())
     }
 
 }

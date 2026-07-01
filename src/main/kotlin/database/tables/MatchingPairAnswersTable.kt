@@ -7,6 +7,7 @@ object MatchingPairAnswersTable : Table("matching_pairs_answers") {
     val id = integer("id").autoIncrement()
     val pairId = reference("pair_id", MatchingPairTable.id)
     val userId = reference("user_id", UsersTable.id)
+    val userPair = json("user_pair")
     val status = customEnumeration(
         "status",
         "answer_status",
