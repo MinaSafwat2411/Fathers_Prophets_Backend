@@ -4,6 +4,9 @@ import com.fathersprophets.backend.database.dao.AttendanceDao
 import com.fathersprophets.backend.database.dao.ClassDao
 import com.fathersprophets.backend.database.dao.ClassMemberDao
 import com.fathersprophets.backend.database.dao.CommentDao
+import com.fathersprophets.backend.database.dao.EscapeEgyptAnswerDao
+import com.fathersprophets.backend.database.dao.EscapeEgyptDao
+import com.fathersprophets.backend.database.dao.EscapeEgyptQuestionDao
 import com.fathersprophets.backend.database.dao.EventDao
 import com.fathersprophets.backend.database.dao.EventMemberDao
 import com.fathersprophets.backend.database.dao.PersonAnswerDao
@@ -31,6 +34,12 @@ import com.fathersprophets.backend.database.repository.classmember.ClassMemberRe
 import com.fathersprophets.backend.database.repository.classmember.IClassMemberRepository
 import com.fathersprophets.backend.database.repository.comments.CommentsRepository
 import com.fathersprophets.backend.database.repository.comments.ICommentsRepository
+import com.fathersprophets.backend.database.repository.escapeegypt.EscapeEgyptRepository
+import com.fathersprophets.backend.database.repository.escapeegypt.IEscapeEgyptRepository
+import com.fathersprophets.backend.database.repository.escapeegyptanswer.EscapeEgyptAnswerRepository
+import com.fathersprophets.backend.database.repository.escapeegyptanswer.IEscapeEgyptAnswerRepository
+import com.fathersprophets.backend.database.repository.escapeegyptquestion.EscapeEgyptQuestionRepository
+import com.fathersprophets.backend.database.repository.escapeegyptquestion.IEscapeEgyptQuestionRepository
 import com.fathersprophets.backend.database.repository.eventmember.EventMemberRepository
 import com.fathersprophets.backend.database.repository.eventmember.IEventMemberRepository
 import com.fathersprophets.backend.database.repository.events.EventRepository
@@ -75,6 +84,12 @@ import com.fathersprophets.backend.services.classmember.ClassMemberService
 import com.fathersprophets.backend.services.classmember.IClassMemberService
 import com.fathersprophets.backend.services.comments.CommentsService
 import com.fathersprophets.backend.services.comments.ICommentsService
+import com.fathersprophets.backend.services.escapeegypt.EscapeEgyptService
+import com.fathersprophets.backend.services.escapeegypt.IEscapeEgyptService
+import com.fathersprophets.backend.services.escapeegyptanswer.EscapeEgyptAnswerService
+import com.fathersprophets.backend.services.escapeegyptanswer.IEscapeEgyptAnswerService
+import com.fathersprophets.backend.services.escapeegyptquestion.EscapeEgyptQuestionService
+import com.fathersprophets.backend.services.escapeegyptquestion.IEscapeEgyptQuestionService
 import com.fathersprophets.backend.services.eventmember.EventMemberService
 import com.fathersprophets.backend.services.eventmember.IEventMemberService
 import com.fathersprophets.backend.services.events.EventService
@@ -133,6 +148,9 @@ val appModule = module {
     single { PersonMcqAnswerDao() }
     single { MatchingPairDao() }
     single { MatchingPairAnswerDao() }
+    single { EscapeEgyptDao() }
+    single { EscapeEgyptQuestionDao() }
+    single { EscapeEgyptAnswerDao() }
 
     single<IAuthRepository> {
         AuthRepository(
@@ -308,6 +326,30 @@ val appModule = module {
 
     single<IMatchingPairAnswerService> {
         MatchingPairAnswerService(get())
+    }
+
+    single<IEscapeEgyptRepository> {
+        EscapeEgyptRepository(get())
+    }
+
+    single<IEscapeEgyptService> {
+        EscapeEgyptService(get())
+    }
+
+    single<IEscapeEgyptQuestionRepository> {
+        EscapeEgyptQuestionRepository(get())
+    }
+
+    single<IEscapeEgyptQuestionService> {
+        EscapeEgyptQuestionService(get())
+    }
+
+    single<IEscapeEgyptAnswerRepository> {
+        EscapeEgyptAnswerRepository(get(), get())
+    }
+
+    single<IEscapeEgyptAnswerService> {
+        EscapeEgyptAnswerService(get())
     }
 
 }

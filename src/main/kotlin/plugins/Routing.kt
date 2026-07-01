@@ -5,6 +5,9 @@ import com.fathersprophets.backend.routes.guessPersonAnswerRoutes
 import com.fathersprophets.backend.routes.guessPersonQuestionRoutes
 import com.fathersprophets.backend.routes.matchingPairRoutes
 import com.fathersprophets.backend.routes.matchingPairAnswerRoutes
+import com.fathersprophets.backend.routes.escapeEgyptRoutes
+import com.fathersprophets.backend.routes.escapeEgyptQuestionRoutes
+import com.fathersprophets.backend.routes.escapeEgyptAnswerRoutes
 import com.fathersprophets.backend.routes.attendanceRoutes
 import com.fathersprophets.backend.routes.authRoutes
 import com.fathersprophets.backend.routes.classMemberRoutes
@@ -40,6 +43,9 @@ import com.fathersprophets.backend.services.guessperson.IGuessPersonQuestionServ
 import com.fathersprophets.backend.services.guesspersonanswer.IGuessPersonAnswerService
 import com.fathersprophets.backend.services.matchingpair.IMatchingPairService
 import com.fathersprophets.backend.services.matchingpairanswer.IMatchingPairAnswerService
+import com.fathersprophets.backend.services.escapeegypt.IEscapeEgyptService
+import com.fathersprophets.backend.services.escapeegyptquestion.IEscapeEgyptQuestionService
+import com.fathersprophets.backend.services.escapeegyptanswer.IEscapeEgyptAnswerService
 import com.fathersprophets.backend.services.personstoryquestion.IPersonStoryQuestionService
 import com.fathersprophets.backend.services.personmcq.IPersonMcqService
 import com.fathersprophets.backend.services.personquestion.IPersonQuestionService
@@ -75,6 +81,9 @@ fun Application.configureRouting() {
     val guessPersonAnswerService = get<IGuessPersonAnswerService>()
     val matchingPairService = get<IMatchingPairService>()
     val matchingPairAnswerService = get<IMatchingPairAnswerService>()
+    val escapeEgyptService = get<IEscapeEgyptService>()
+    val escapeEgyptQuestionService = get<IEscapeEgyptQuestionService>()
+    val escapeEgyptAnswerService = get<IEscapeEgyptAnswerService>()
 
     routing {
         route("/api/v1") {
@@ -105,6 +114,9 @@ fun Application.configureRouting() {
                 guessPersonAnswerRoutes(guessPersonAnswerService)
                 matchingPairRoutes(matchingPairService)
                 matchingPairAnswerRoutes(matchingPairAnswerService)
+                escapeEgyptRoutes(escapeEgyptService)
+                escapeEgyptQuestionRoutes(escapeEgyptQuestionService)
+                escapeEgyptAnswerRoutes(escapeEgyptAnswerService)
             }
             
             get("/healthcheck") {
