@@ -8,6 +8,8 @@ import com.fathersprophets.backend.routes.matchingPairAnswerRoutes
 import com.fathersprophets.backend.routes.escapeEgyptRoutes
 import com.fathersprophets.backend.routes.escapeEgyptQuestionRoutes
 import com.fathersprophets.backend.routes.escapeEgyptAnswerRoutes
+import com.fathersprophets.backend.routes.timelineRoutes
+import com.fathersprophets.backend.routes.timelineAnswerRoutes
 import com.fathersprophets.backend.routes.attendanceRoutes
 import com.fathersprophets.backend.routes.authRoutes
 import com.fathersprophets.backend.routes.classMemberRoutes
@@ -46,6 +48,8 @@ import com.fathersprophets.backend.services.matchingpairanswer.IMatchingPairAnsw
 import com.fathersprophets.backend.services.escapeegypt.IEscapeEgyptService
 import com.fathersprophets.backend.services.escapeegyptquestion.IEscapeEgyptQuestionService
 import com.fathersprophets.backend.services.escapeegyptanswer.IEscapeEgyptAnswerService
+import com.fathersprophets.backend.services.timeline.ITimelineService
+import com.fathersprophets.backend.services.timelineanswer.ITimelineAnswerService
 import com.fathersprophets.backend.services.personstoryquestion.IPersonStoryQuestionService
 import com.fathersprophets.backend.services.personmcq.IPersonMcqService
 import com.fathersprophets.backend.services.personquestion.IPersonQuestionService
@@ -84,6 +88,8 @@ fun Application.configureRouting() {
     val escapeEgyptService = get<IEscapeEgyptService>()
     val escapeEgyptQuestionService = get<IEscapeEgyptQuestionService>()
     val escapeEgyptAnswerService = get<IEscapeEgyptAnswerService>()
+    val timelineService = get<ITimelineService>()
+    val timelineAnswerService = get<ITimelineAnswerService>()
 
     routing {
         route("/api/v1") {
@@ -117,6 +123,8 @@ fun Application.configureRouting() {
                 escapeEgyptRoutes(escapeEgyptService)
                 escapeEgyptQuestionRoutes(escapeEgyptQuestionService)
                 escapeEgyptAnswerRoutes(escapeEgyptAnswerService)
+                timelineRoutes(timelineService)
+                timelineAnswerRoutes(timelineAnswerService)
             }
             
             get("/healthcheck") {

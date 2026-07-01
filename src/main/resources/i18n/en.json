@@ -192,5 +192,22 @@
   "escape_egypt_answer_updated_successfully": "Escape Egypt answer updated successfully",
   "escape_egypt_answer_status_updated_successfully": "Escape Egypt answer status updated successfully",
   "escape_egypt_answer_deleted_successfully": "Escape Egypt answer deleted successfully",
-  "escape_egypt_answer_already_exists": "You have already submitted an answer for this question"
+  "escape_egypt_answer_already_exists": "You have already submitted an answer for this question",
+  "timeline_id_required": "Timeline ID cannot be empty",
+  "timelines_retrieved_successfully": "Timelines retrieved successfully",
+  "timeline_retrieved_successfully": "Timeline retrieved successfully",
+  "timeline_created_successfully": "Timeline created successfully",
+  "timeline_updated_successfully": "Timeline updated successfully",
+  "timeline_deleted_successfully": "Timeline deleted successfully",
+  "timeline_not_found": "Timeline not found",
+  "timeline_correct_order_invalid": "Correct order must contain exactly 4 event positions",
+  "timeline_answer_id_required": "Timeline answer ID cannot be empty",
+  "timeline_answer_order_required": "Order cannot be empty",
+  "timeline_answers_retrieved_successfully": "Timeline answers retrieved successfully",
+  "timeline_answer_retrieved_successfully": "Timeline answer retrieved successfully",
+  "timeline_answer_created_successfully": "Timeline answer created successfully",
+  "timeline_answer_updated_successfully": "Timeline answer updated successfully",
+  "timeline_answer_status_updated_successfully": "Timeline answer status updated successfully",
+  "timeline_answer_deleted_successfully": "Timeline answer deleted successfully",
+  "timeline_answer_already_exists": "You have already submitted an answer for this timeline"
 }

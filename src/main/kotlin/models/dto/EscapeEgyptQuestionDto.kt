@@ -11,7 +11,6 @@ data class EscapeEgyptQuestionDto(
     fun convertToResponse() = EscapeEgyptQuestionResponse(
         id = id,
         escapeEgyptId = escapeEgyptId,
-        question = question,
-        correctAnswer = correctAnswer
+        question = question
     )
 }

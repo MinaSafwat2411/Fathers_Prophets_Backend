@@ -192,5 +192,22 @@
   "escape_egypt_answer_updated_successfully": "تم تحديث إجابة الهروب من مصر بنجاح",
   "escape_egypt_answer_status_updated_successfully": "تم تحديث حالة إجابة الهروب من مصر بنجاح",
   "escape_egypt_answer_deleted_successfully": "تم حذف إجابة الهروب من مصر بنجاح",
-  "escape_egypt_answer_already_exists": "لقد قمت بالفعل بإرسال إجابة لهذا السؤال"
+  "escape_egypt_answer_already_exists": "لقد قمت بالفعل بإرسال إجابة لهذا السؤال",
+  "timeline_id_required": "معرف الخط الزمني لا يمكن أن يكون فارغًا",
+  "timelines_retrieved_successfully": "تم استرجاع الخطوط الزمنية بنجاح",
+  "timeline_retrieved_successfully": "تم استرجاع الخط الزمني بنجاح",
+  "timeline_created_successfully": "تم إنشاء الخط الزمني بنجاح",
+  "timeline_updated_successfully": "تم تحديث الخط الزمني بنجاح",
+  "timeline_deleted_successfully": "تم حذف الخط الزمني بنجاح",
+  "timeline_not_found": "الخط الزمني غير موجود",
+  "timeline_correct_order_invalid": "يجب أن يحتوي الترتيب الصحيح على 4 مواقع أحداث بالضبط",
+  "timeline_answer_id_required": "معرف إجابة الخط الزمني لا يمكن أن يكون فارغًا",
+  "timeline_answer_order_required": "الترتيب لا يمكن أن يكون فارغًا",
+  "timeline_answers_retrieved_successfully": "تم استرجاع إجابات الخط الزمني بنجاح",
+  "timeline_answer_retrieved_successfully": "تم استرجاع إجابة الخط الزمني بنجاح",
+  "timeline_answer_created_successfully": "تم إنشاء إجابة الخط الزمني بنجاح",
+  "timeline_answer_updated_successfully": "تم تحديث إجابة الخط الزمني بنجاح",
+  "timeline_answer_status_updated_successfully": "تم تحديث حالة إجابة الخط الزمني بنجاح",
+  "timeline_answer_deleted_successfully": "تم حذف إجابة الخط الزمني بنجاح",
+  "timeline_answer_already_exists": "لقد قمت بالفعل بإرسال إجابة لهذا الخط الزمني"
 }

@@ -22,6 +22,8 @@ import com.fathersprophets.backend.database.dao.PersonQuestionDao
 import com.fathersprophets.backend.database.dao.PersonStoryDao
 import com.fathersprophets.backend.database.dao.PersonStoryQuestionDao
 import com.fathersprophets.backend.database.dao.SessionDao
+import com.fathersprophets.backend.database.dao.TimelineAnswerDao
+import com.fathersprophets.backend.database.dao.TimelineDao
 import com.fathersprophets.backend.database.dao.UserDao
 import com.fathersprophets.backend.database.dao.VersionDao
 import com.fathersprophets.backend.database.repository.attendance.AttendanceRepository
@@ -70,6 +72,10 @@ import com.fathersprophets.backend.database.repository.personquestion.IPersonQue
 import com.fathersprophets.backend.database.repository.personquestion.PersonQuestionRepository
 import com.fathersprophets.backend.database.repository.sessions.ISessionRepository
 import com.fathersprophets.backend.database.repository.sessions.SessionRepository
+import com.fathersprophets.backend.database.repository.timeline.ITimelineRepository
+import com.fathersprophets.backend.database.repository.timeline.TimelineRepository
+import com.fathersprophets.backend.database.repository.timelineanswer.ITimelineAnswerRepository
+import com.fathersprophets.backend.database.repository.timelineanswer.TimelineAnswerRepository
 import com.fathersprophets.backend.database.repository.users.IUserRepository
 import com.fathersprophets.backend.database.repository.users.UserRepository
 import com.fathersprophets.backend.database.repository.version.IVersionRepository
@@ -120,6 +126,10 @@ import com.fathersprophets.backend.services.personquestion.IPersonQuestionServic
 import com.fathersprophets.backend.services.personquestion.PersonQuestionService
 import com.fathersprophets.backend.services.session.ISessionService
 import com.fathersprophets.backend.services.session.SessionService
+import com.fathersprophets.backend.services.timeline.ITimelineService
+import com.fathersprophets.backend.services.timeline.TimelineService
+import com.fathersprophets.backend.services.timelineanswer.ITimelineAnswerService
+import com.fathersprophets.backend.services.timelineanswer.TimelineAnswerService
 import com.fathersprophets.backend.services.users.IUserService
 import com.fathersprophets.backend.services.users.UserService
 import com.fathersprophets.backend.services.version.IVersionService
@@ -151,6 +161,8 @@ val appModule = module {
     single { EscapeEgyptDao() }
     single { EscapeEgyptQuestionDao() }
     single { EscapeEgyptAnswerDao() }
+    single { TimelineDao() }
+    single { TimelineAnswerDao() }
 
     single<IAuthRepository> {
         AuthRepository(
@@ -350,6 +362,22 @@ val appModule = module {
 
     single<IEscapeEgyptAnswerService> {
         EscapeEgyptAnswerService(get())
+    }
+
+    single<ITimelineRepository> {
+        TimelineRepository(get())
+    }
+
+    single<ITimelineService> {
+        TimelineService(get())
+    }
+
+    single<ITimelineAnswerRepository> {
+        TimelineAnswerRepository(get(), get())
+    }
+
+    single<ITimelineAnswerService> {
+        TimelineAnswerService(get())
     }
 
 }
