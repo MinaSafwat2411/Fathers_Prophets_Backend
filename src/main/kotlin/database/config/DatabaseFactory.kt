@@ -95,6 +95,8 @@ object DatabaseFactory {
                 EscapeEgyptAnswersTable,
                 EscapeEgyptQuestionsTable,
                 EscapeEgyptTable,
+                TimelineAnswersTable,
+                TimelineTable,
 //                AnonymousChatMessagesTable,
 //                AnonymousChatsTable,
 //                ChatMessageReadReceiptsTable,
@@ -105,8 +107,6 @@ object DatabaseFactory {
 //                QuizDayQuestionsTable,
 //                QuizDayTable,
 //                QuizTable,
-//                TimelineAnswersTable,
-//                TimelineTable,
 //                UserProgressQuizTable
             )
         }

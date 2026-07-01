@@ -7,5 +7,4 @@ data class EscapeEgyptQuestionResponse(
     val id: Int,
     val escapeEgyptId: Int,
     val question: String,
-    val correctAnswer: String
 )
