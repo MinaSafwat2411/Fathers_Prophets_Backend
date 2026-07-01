@@ -23,6 +23,36 @@ import com.fathersprophets.backend.models.personmcq.UpdatePersonMcqRequest
 import com.fathersprophets.backend.models.personanswer.CreatePersonAnswerRequest
 import com.fathersprophets.backend.models.personanswer.UpdatePersonAnswerRequest
 import com.fathersprophets.backend.models.personanswer.UpdateAnswerStatusRequest
+import com.fathersprophets.backend.models.personofday.CreatePersonOfDayRequest
+import com.fathersprophets.backend.models.personofday.UpdatePersonOfDayRequest
+import com.fathersprophets.backend.models.personstory.CreatePersonStoryRequest
+import com.fathersprophets.backend.models.personstory.UpdatePersonStoryRequest
+import com.fathersprophets.backend.models.personstoryquestion.CreatePersonStoryQuestionRequest
+import com.fathersprophets.backend.models.personstoryquestion.UpdatePersonStoryQuestionRequest
+import com.fathersprophets.backend.models.guessperson.CreateGuessPersonQuestionRequest
+import com.fathersprophets.backend.models.guessperson.UpdateGuessPersonQuestionRequest
+import com.fathersprophets.backend.models.guesspersonanswer.CreateGuessPersonAnswerRequest
+import com.fathersprophets.backend.models.guesspersonanswer.UpdateGuessPersonAnswerRequest
+import com.fathersprophets.backend.models.guesspersonanswer.UpdateGuessPersonAnswerStatusRequest
+import com.fathersprophets.backend.models.personmcqanswer.CreatePersonMcqAnswerRequest
+import com.fathersprophets.backend.models.personmcqanswer.UpdatePersonMcqAnswerRequest
+import com.fathersprophets.backend.models.personmcqanswer.UpdateMcqAnswerStatusRequest
+import com.fathersprophets.backend.models.matchingpair.CreateMatchingPairRequest
+import com.fathersprophets.backend.models.matchingpair.UpdateMatchingPairRequest
+import com.fathersprophets.backend.models.matchingpairanswer.CreateMatchingPairAnswerRequest
+import com.fathersprophets.backend.models.matchingpairanswer.UpdateMatchingPairAnswerRequest
+import com.fathersprophets.backend.models.escapeegypt.CreateEscapeEgyptRequest
+import com.fathersprophets.backend.models.escapeegypt.UpdateEscapeEgyptRequest
+import com.fathersprophets.backend.models.escapeegyptquestion.CreateEscapeEgyptQuestionRequest
+import com.fathersprophets.backend.models.escapeegyptquestion.UpdateEscapeEgyptQuestionRequest
+import com.fathersprophets.backend.models.escapeegyptanswer.CreateEscapeEgyptAnswerRequest
+import com.fathersprophets.backend.models.escapeegyptanswer.UpdateEscapeEgyptAnswerRequest
+import com.fathersprophets.backend.models.escapeegyptanswer.UpdateEscapeEgyptAnswerStatusRequest
+import com.fathersprophets.backend.models.timeline.CreateTimelineRequest
+import com.fathersprophets.backend.models.timeline.UpdateTimelineRequest
+import com.fathersprophets.backend.models.timelineanswer.CreateTimelineAnswerRequest
+import com.fathersprophets.backend.models.timelineanswer.UpdateTimelineAnswerRequest
+import com.fathersprophets.backend.models.timelineanswer.UpdateTimelineAnswerStatusRequest
 import com.fathersprophets.backend.models.users.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -150,6 +180,11 @@ object ExampleValueGenerator {
             fieldName.contains("version", ignoreCase = true) -> "1.0.0"
             fieldName.contains("joindate", ignoreCase = true) -> "2024-01-15"
             fieldName.contains("datetime", ignoreCase = true) -> "2024-10-15T18:00:00"
+            fieldName.contains("order", ignoreCase = true) -> listOf(1, 2, 3, 4)
+            fieldName.contains("question", ignoreCase = true) && fieldType == String::class -> "Sample question?"
+            fieldName.contains("answer", ignoreCase = true) && fieldType == String::class -> "Sample answer"
+            fieldName == "status" -> "TEACHER_STILL_NOT_CORRECTED"
+            fieldName == "type" -> "from"
 
             fieldType == Boolean::class -> false
             fieldType == Int::class -> 1
@@ -232,6 +267,32 @@ data class RequestDefinition(
 object EnhancedPostmanGenerator {
     private val json = Json { prettyPrint = true }
 
+    // Single source of truth for id/token variables shared by the collection and the environment file
+    private val sharedVariables = listOf(
+        "base_url" to "http://localhost:8080",
+        "access_token" to "",
+        "refresh_token" to "",
+        "admin_token" to "",
+        "user_id" to "1",
+        "class_id" to "1",
+        "member_id" to "1",
+        "session_id" to "1",
+        "attendance_id" to "1",
+        "person_of_day_id" to "1",
+        "person_story_id" to "1",
+        "person_story_question_id" to "1",
+        "guess_person_question_id" to "1",
+        "guess_person_answer_id" to "1",
+        "person_mcq_answer_id" to "1",
+        "matching_pair_id" to "1",
+        "matching_pair_answer_id" to "1",
+        "escape_egypt_id" to "1",
+        "escape_egypt_question_id" to "1",
+        "escape_egypt_answer_id" to "1",
+        "timeline_id" to "1",
+        "timeline_answer_id" to "1"
+    )
+
     fun generateCollectionWithModels(
         requests: List<RequestDefinition>,
         outputPath: String = "Fathers_Prophets_API_Smart.postman_collection.json"
@@ -255,17 +316,7 @@ object EnhancedPostmanGenerator {
             item = folders.map { (name, items) ->
                 CollectionFolder(name = name, item = items)
             },
-            variable = listOf(
-                Variable("base_url", "http://localhost:8080"),
-                Variable("access_token", ""),
-                Variable("refresh_token", ""),
-                Variable("admin_token", ""),
-                Variable("user_id", "1"),
-                Variable("class_id", "1"),
-                Variable("member_id", "1"),
-                Variable("session_id", "1"),
-                Variable("attendance_id", "1")
-            )
+            variable = sharedVariables.map { (key, value) -> Variable(key, value) }
         )
 
         val jsonString = json.encodeToString(collection)
@@ -277,17 +328,9 @@ object EnhancedPostmanGenerator {
         val environment = PostmanEnvironment(
             id = "fathers-prophets-api-smart-env",
             name = "Fathers & Prophets Local",
-            values = listOf(
-                EnvironmentValue("base_url", "http://localhost:8080"),
-                EnvironmentValue("access_token", "YOUR_TOKEN_HERE"),
-                EnvironmentValue("refresh_token", ""),
-                EnvironmentValue("admin_token", ""),
-                EnvironmentValue("user_id", "1"),
-                EnvironmentValue("class_id", "1"),
-                EnvironmentValue("member_id", "1"),
-                EnvironmentValue("session_id", "1"),
-                EnvironmentValue("attendance_id", "1")
-            )
+            values = sharedVariables.map { (key, value) ->
+                EnvironmentValue(key, if (key == "access_token") "YOUR_TOKEN_HERE" else value)
+            }
         )
 
         val jsonString = json.encodeToString(environment)
@@ -461,6 +504,116 @@ object PostmanEndpoints {
         RequestDefinition("Add Attendance", "POST", "attendance", AddAttendanceRequest::class),
         RequestDefinition("Update Attendance", "PUT", "attendance/{{attendance_id}}", UpdateAttendanceRequest::class),
         RequestDefinition("Delete Attendance", "DELETE", "attendance/{{attendance_id}}"),
+
+        // Person Of Day
+        RequestDefinition("Get All Persons Of Day", "GET", "person-of-day"),
+        RequestDefinition("Get Person Of Day By ID", "GET", "person-of-day/{{person_of_day_id}}"),
+        RequestDefinition("Get Person Of Day By Date", "GET", "person-of-day/date/2024-01-15"),
+        RequestDefinition("Add Person Of Day", "POST", "person-of-day", CreatePersonOfDayRequest::class),
+        RequestDefinition("Update Person Of Day", "PUT", "person-of-day/{{person_of_day_id}}", UpdatePersonOfDayRequest::class),
+        RequestDefinition("Delete Person Of Day", "DELETE", "person-of-day/{{person_of_day_id}}"),
+
+        // Person Story
+        RequestDefinition("Get All Person Stories", "GET", "person-story"),
+        RequestDefinition("Get Person Story By ID", "GET", "person-story/{{person_story_id}}"),
+        RequestDefinition("Get Person Stories By Person ID", "GET", "person-story/person/1"),
+        RequestDefinition("Create Person Story", "POST", "person-story", CreatePersonStoryRequest::class),
+        RequestDefinition("Update Person Story", "PUT", "person-story/{{person_story_id}}", UpdatePersonStoryRequest::class),
+        RequestDefinition("Delete Person Story", "DELETE", "person-story/{{person_story_id}}"),
+
+        // Person Story Question
+        RequestDefinition("Get All Person Story Questions", "GET", "person-story-question"),
+        RequestDefinition("Get Person Story Question By ID", "GET", "person-story-question/{{person_story_question_id}}"),
+        RequestDefinition("Get Person Story Questions By Story ID", "GET", "person-story-question/story/{{person_story_id}}"),
+        RequestDefinition("Create Person Story Question", "POST", "person-story-question", CreatePersonStoryQuestionRequest::class),
+        RequestDefinition("Update Person Story Question", "PUT", "person-story-question/{{person_story_question_id}}", UpdatePersonStoryQuestionRequest::class),
+        RequestDefinition("Delete Person Story Question", "DELETE", "person-story-question/{{person_story_question_id}}"),
+
+        // Guess Person Question
+        RequestDefinition("Get All Guess Person Questions", "GET", "guess-person-questions"),
+        RequestDefinition("Get Guess Person Question By ID", "GET", "guess-person-questions/{{guess_person_question_id}}"),
+        RequestDefinition("Create Guess Person Question", "POST", "guess-person-questions", CreateGuessPersonQuestionRequest::class),
+        RequestDefinition("Update Guess Person Question", "PUT", "guess-person-questions/{{guess_person_question_id}}", UpdateGuessPersonQuestionRequest::class),
+        RequestDefinition("Delete Guess Person Question", "DELETE", "guess-person-questions/{{guess_person_question_id}}"),
+
+        // Guess Person Answer
+        RequestDefinition("Get All Guess Person Answers", "GET", "guess-person-answers"),
+        RequestDefinition("Get Guess Person Answer By ID", "GET", "guess-person-answers/{{guess_person_answer_id}}"),
+        RequestDefinition("Get Guess Person Answers By Question ID", "GET", "guess-person-answers/question/{{guess_person_question_id}}"),
+        RequestDefinition("Get Guess Person Answers By User ID", "GET", "guess-person-answers/user/{{user_id}}"),
+        RequestDefinition("Create Guess Person Answer", "POST", "guess-person-answers", CreateGuessPersonAnswerRequest::class),
+        RequestDefinition("Update Guess Person Answer", "PUT", "guess-person-answers/{{guess_person_answer_id}}", UpdateGuessPersonAnswerRequest::class),
+        RequestDefinition("Update Guess Person Answer Status", "PATCH", "guess-person-answers/{{guess_person_answer_id}}/status", UpdateGuessPersonAnswerStatusRequest::class),
+        RequestDefinition("Delete Guess Person Answer", "DELETE", "guess-person-answers/{{guess_person_answer_id}}"),
+
+        // Person MCQ Answer
+        RequestDefinition("Get All Person MCQ Answers", "GET", "person-mcq-answer"),
+        RequestDefinition("Get Person MCQ Answer By ID", "GET", "person-mcq-answer/{{person_mcq_answer_id}}"),
+        RequestDefinition("Get Person MCQ Answers By Question ID", "GET", "person-mcq-answer/question/1"),
+        RequestDefinition("Get Person MCQ Answers By User ID", "GET", "person-mcq-answer/user/{{user_id}}"),
+        RequestDefinition("Create Person MCQ Answer", "POST", "person-mcq-answer", CreatePersonMcqAnswerRequest::class),
+        RequestDefinition("Update Person MCQ Answer", "PUT", "person-mcq-answer/{{person_mcq_answer_id}}", UpdatePersonMcqAnswerRequest::class),
+        RequestDefinition("Update Person MCQ Answer Status", "PATCH", "person-mcq-answer/{{person_mcq_answer_id}}/status", UpdateMcqAnswerStatusRequest::class),
+        RequestDefinition("Delete Person MCQ Answer", "DELETE", "person-mcq-answer/{{person_mcq_answer_id}}"),
+
+        // Matching Pair
+        RequestDefinition("Get All Matching Pairs", "GET", "matching-pairs"),
+        RequestDefinition("Get Matching Pair By ID", "GET", "matching-pairs/{{matching_pair_id}}"),
+        RequestDefinition("Create Matching Pair", "POST", "matching-pairs", CreateMatchingPairRequest::class),
+        RequestDefinition("Update Matching Pair", "PUT", "matching-pairs/{{matching_pair_id}}", UpdateMatchingPairRequest::class),
+        RequestDefinition("Delete Matching Pair", "DELETE", "matching-pairs/{{matching_pair_id}}"),
+
+        // Matching Pair Answer
+        RequestDefinition("Get All Matching Pair Answers", "GET", "matching-pair-answers"),
+        RequestDefinition("Get Matching Pair Answer By ID", "GET", "matching-pair-answers/{{matching_pair_answer_id}}"),
+        RequestDefinition("Get Matching Pair Answers By Pair ID", "GET", "matching-pair-answers/pair/{{matching_pair_id}}"),
+        RequestDefinition("Get Matching Pair Answers By User ID", "GET", "matching-pair-answers/user/{{user_id}}"),
+        RequestDefinition("Create Matching Pair Answer", "POST", "matching-pair-answers", CreateMatchingPairAnswerRequest::class),
+        RequestDefinition("Update Matching Pair Answer", "PUT", "matching-pair-answers/{{matching_pair_answer_id}}", UpdateMatchingPairAnswerRequest::class),
+        RequestDefinition("Delete Matching Pair Answer", "DELETE", "matching-pair-answers/{{matching_pair_answer_id}}"),
+
+        // Escape Egypt
+        RequestDefinition("Get All Escape Egypt", "GET", "escape-egypt"),
+        RequestDefinition("Get Escape Egypt By ID", "GET", "escape-egypt/{{escape_egypt_id}}"),
+        RequestDefinition("Create Escape Egypt", "POST", "escape-egypt", CreateEscapeEgyptRequest::class),
+        RequestDefinition("Update Escape Egypt", "PUT", "escape-egypt/{{escape_egypt_id}}", UpdateEscapeEgyptRequest::class),
+        RequestDefinition("Delete Escape Egypt", "DELETE", "escape-egypt/{{escape_egypt_id}}"),
+
+        // Escape Egypt Question
+        RequestDefinition("Get All Escape Egypt Questions", "GET", "escape-egypt-questions"),
+        RequestDefinition("Get Escape Egypt Question By ID", "GET", "escape-egypt-questions/{{escape_egypt_question_id}}"),
+        RequestDefinition("Get Escape Egypt Questions By Escape Egypt ID", "GET", "escape-egypt-questions/escape-egypt/{{escape_egypt_id}}"),
+        RequestDefinition("Create Escape Egypt Question", "POST", "escape-egypt-questions", CreateEscapeEgyptQuestionRequest::class),
+        RequestDefinition("Update Escape Egypt Question", "PUT", "escape-egypt-questions/{{escape_egypt_question_id}}", UpdateEscapeEgyptQuestionRequest::class),
+        RequestDefinition("Delete Escape Egypt Question", "DELETE", "escape-egypt-questions/{{escape_egypt_question_id}}"),
+
+        // Escape Egypt Answer
+        RequestDefinition("Get All Escape Egypt Answers", "GET", "escape-egypt-answers"),
+        RequestDefinition("Get Escape Egypt Answer By ID", "GET", "escape-egypt-answers/{{escape_egypt_answer_id}}"),
+        RequestDefinition("Get Escape Egypt Answers By Escape Egypt ID", "GET", "escape-egypt-answers/escape-egypt/{{escape_egypt_id}}"),
+        RequestDefinition("Get Escape Egypt Answers By Question ID", "GET", "escape-egypt-answers/question/{{escape_egypt_question_id}}"),
+        RequestDefinition("Get Escape Egypt Answers By User ID", "GET", "escape-egypt-answers/user/{{user_id}}"),
+        RequestDefinition("Create Escape Egypt Answer", "POST", "escape-egypt-answers", CreateEscapeEgyptAnswerRequest::class),
+        RequestDefinition("Update Escape Egypt Answer", "PUT", "escape-egypt-answers/{{escape_egypt_answer_id}}", UpdateEscapeEgyptAnswerRequest::class),
+        RequestDefinition("Update Escape Egypt Answer Status", "PATCH", "escape-egypt-answers/{{escape_egypt_answer_id}}/status", UpdateEscapeEgyptAnswerStatusRequest::class),
+        RequestDefinition("Delete Escape Egypt Answer", "DELETE", "escape-egypt-answers/{{escape_egypt_answer_id}}"),
+
+        // Timeline
+        RequestDefinition("Get All Timelines", "GET", "timeline"),
+        RequestDefinition("Get Timeline By ID", "GET", "timeline/{{timeline_id}}"),
+        RequestDefinition("Create Timeline", "POST", "timeline", CreateTimelineRequest::class),
+        RequestDefinition("Update Timeline", "PUT", "timeline/{{timeline_id}}", UpdateTimelineRequest::class),
+        RequestDefinition("Delete Timeline", "DELETE", "timeline/{{timeline_id}}"),
+
+        // Timeline Answer
+        RequestDefinition("Get All Timeline Answers", "GET", "timeline-answers"),
+        RequestDefinition("Get Timeline Answer By ID", "GET", "timeline-answers/{{timeline_answer_id}}"),
+        RequestDefinition("Get Timeline Answers By Timeline ID", "GET", "timeline-answers/timeline/{{timeline_id}}"),
+        RequestDefinition("Get Timeline Answers By User ID", "GET", "timeline-answers/user/{{user_id}}"),
+        RequestDefinition("Create Timeline Answer", "POST", "timeline-answers", CreateTimelineAnswerRequest::class),
+        RequestDefinition("Update Timeline Answer", "PUT", "timeline-answers/{{timeline_answer_id}}", UpdateTimelineAnswerRequest::class),
+        RequestDefinition("Update Timeline Answer Status", "PATCH", "timeline-answers/{{timeline_answer_id}}/status", UpdateTimelineAnswerStatusRequest::class),
+        RequestDefinition("Delete Timeline Answer", "DELETE", "timeline-answers/{{timeline_answer_id}}"),
     )
 }
 
