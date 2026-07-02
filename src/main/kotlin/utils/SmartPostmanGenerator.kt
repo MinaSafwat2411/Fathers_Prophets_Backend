@@ -53,6 +53,16 @@ import com.fathersprophets.backend.models.timeline.UpdateTimelineRequest
 import com.fathersprophets.backend.models.timelineanswer.CreateTimelineAnswerRequest
 import com.fathersprophets.backend.models.timelineanswer.UpdateTimelineAnswerRequest
 import com.fathersprophets.backend.models.timelineanswer.UpdateTimelineAnswerStatusRequest
+import com.fathersprophets.backend.models.quiz.CreateQuizRequest
+import com.fathersprophets.backend.models.quiz.UpdateQuizRequest
+import com.fathersprophets.backend.models.quizday.CreateQuizDayRequest
+import com.fathersprophets.backend.models.quizday.UpdateQuizDayRequest
+import com.fathersprophets.backend.models.quizdayquestion.CreateQuizDayQuestionRequest
+import com.fathersprophets.backend.models.quizdayquestion.UpdateQuizDayQuestionRequest
+import com.fathersprophets.backend.models.quizanswer.CreateQuizAnswerRequest
+import com.fathersprophets.backend.models.quizanswer.UpdateQuizAnswerRequest
+import com.fathersprophets.backend.models.userprogressquiz.CreateUserProgressQuizRequest
+import com.fathersprophets.backend.models.userprogressquiz.UpdateUserProgressQuizRequest
 import com.fathersprophets.backend.models.users.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -182,9 +192,16 @@ object ExampleValueGenerator {
             fieldName.contains("datetime", ignoreCase = true) -> "2024-10-15T18:00:00"
             fieldName.contains("order", ignoreCase = true) -> listOf(1, 2, 3, 4)
             fieldName.contains("question", ignoreCase = true) && fieldType == String::class -> "Sample question?"
+            fieldName == "correctAnswer" -> "1"
+            fieldName.contains("choice", ignoreCase = true) -> "Sample choice"
             fieldName.contains("answer", ignoreCase = true) && fieldType == String::class -> "Sample answer"
             fieldName == "status" -> "TEACHER_STILL_NOT_CORRECTED"
             fieldName == "type" -> "from"
+            fieldName == "dayName" -> "SAT"
+            fieldName == "typeDay" -> "MCQ"
+            fieldName.equals("startAt", ignoreCase = true) -> "2026-07-02T00:00:00Z"
+            fieldName.equals("endAt", ignoreCase = true) -> "2026-07-09T00:00:00Z"
+            fieldName.contains("book", ignoreCase = true) -> "Genesis"
 
             fieldType == Boolean::class -> false
             fieldType == Int::class -> 1
@@ -261,7 +278,8 @@ data class RequestDefinition(
     val path: String,
     val requestBodyModel: KClass<*>? = null,
     val requiresAuth: Boolean = true,
-    val testScript: List<String>? = null
+    val testScript: List<String>? = null,
+    val isBulk: Boolean = false
 )
 
 object EnhancedPostmanGenerator {
@@ -290,7 +308,12 @@ object EnhancedPostmanGenerator {
         "escape_egypt_question_id" to "1",
         "escape_egypt_answer_id" to "1",
         "timeline_id" to "1",
-        "timeline_answer_id" to "1"
+        "timeline_answer_id" to "1",
+        "quiz_id" to "1",
+        "quiz_day_id" to "1",
+        "quiz_day_question_id" to "1",
+        "quiz_answer_id" to "1",
+        "user_progress_quiz_id" to "1"
     )
 
     fun generateCollectionWithModels(
@@ -353,7 +376,7 @@ object EnhancedPostmanGenerator {
             if (request.requestBodyModel != null) {
                 val generatedBody = ExampleValueGenerator.generateJsonFromModel(request.requestBodyModel)
                 if (generatedBody != null) {
-                    body = RequestBody("raw", generatedBody)
+                    body = RequestBody("raw", if (request.isBulk) "[\n    $generatedBody\n]" else generatedBody)
                 }
             }
         }
@@ -614,6 +637,52 @@ object PostmanEndpoints {
         RequestDefinition("Update Timeline Answer", "PUT", "timeline-answers/{{timeline_answer_id}}", UpdateTimelineAnswerRequest::class),
         RequestDefinition("Update Timeline Answer Status", "PATCH", "timeline-answers/{{timeline_answer_id}}/status", UpdateTimelineAnswerStatusRequest::class),
         RequestDefinition("Delete Timeline Answer", "DELETE", "timeline-answers/{{timeline_answer_id}}"),
+
+        // Quiz
+        RequestDefinition("Get All Quizzes", "GET", "quiz"),
+        RequestDefinition("Get Quiz By ID", "GET", "quiz/{{quiz_id}}"),
+        RequestDefinition("Create Quiz", "POST", "quiz", CreateQuizRequest::class),
+        RequestDefinition("Update Quiz", "PUT", "quiz/{{quiz_id}}", UpdateQuizRequest::class),
+        RequestDefinition("Delete Quiz", "DELETE", "quiz/{{quiz_id}}"),
+
+        // Quiz Day
+        RequestDefinition("Get All Quiz Days", "GET", "quiz-day"),
+        RequestDefinition("Get Quiz Day By ID", "GET", "quiz-day/{{quiz_day_id}}"),
+        RequestDefinition("Get Quiz Days By Quiz ID", "GET", "quiz-day/quiz/{{quiz_id}}"),
+        RequestDefinition("Create Quiz Day", "POST", "quiz-day", CreateQuizDayRequest::class),
+        RequestDefinition("Update Quiz Day", "PUT", "quiz-day/{{quiz_day_id}}", UpdateQuizDayRequest::class),
+        RequestDefinition("Delete Quiz Day", "DELETE", "quiz-day/{{quiz_day_id}}"),
+
+        // Quiz Day Question
+        RequestDefinition("Get All Quiz Day Questions", "GET", "quiz-day-questions"),
+        RequestDefinition("Get Quiz Day Question By ID", "GET", "quiz-day-questions/{{quiz_day_question_id}}"),
+        RequestDefinition("Get Quiz Day Questions By Quiz Day ID", "GET", "quiz-day-questions/quiz-day/{{quiz_day_id}}"),
+        RequestDefinition("Create Quiz Day Question", "POST", "quiz-day-questions", CreateQuizDayQuestionRequest::class),
+        RequestDefinition("Create Quiz Day Questions (Bulk)", "POST", "quiz-day-questions/bulk", CreateQuizDayQuestionRequest::class, isBulk = true),
+        RequestDefinition("Update Quiz Day Question", "PUT", "quiz-day-questions/{{quiz_day_question_id}}", UpdateQuizDayQuestionRequest::class),
+        RequestDefinition("Delete Quiz Day Question", "DELETE", "quiz-day-questions/{{quiz_day_question_id}}"),
+
+        // Quiz Answer
+        RequestDefinition("Get All Quiz Answers", "GET", "quiz-answers"),
+        RequestDefinition("Get Quiz Answer By ID", "GET", "quiz-answers/{{quiz_answer_id}}"),
+        RequestDefinition("Get Quiz Answers By Question ID", "GET", "quiz-answers/question/{{quiz_day_question_id}}"),
+        RequestDefinition("Get Quiz Answers By User ID", "GET", "quiz-answers/user/{{user_id}}"),
+        RequestDefinition("Get Quiz Answers By Day ID", "GET", "quiz-answers/day/{{quiz_day_id}}"),
+        RequestDefinition("Get Quiz Answers By Quiz ID", "GET", "quiz-answers/quiz/{{quiz_id}}"),
+        RequestDefinition("Create Quiz Answer", "POST", "quiz-answers", CreateQuizAnswerRequest::class),
+        RequestDefinition("Create Quiz Answers (Bulk)", "POST", "quiz-answers/bulk", CreateQuizAnswerRequest::class, isBulk = true),
+        RequestDefinition("Update Quiz Answer", "PUT", "quiz-answers/{{quiz_answer_id}}", UpdateQuizAnswerRequest::class),
+        RequestDefinition("Delete Quiz Answer", "DELETE", "quiz-answers/{{quiz_answer_id}}"),
+
+        // User Progress Quiz
+        RequestDefinition("Get All User Progress", "GET", "user-progress-quiz"),
+        RequestDefinition("Get User Progress By ID", "GET", "user-progress-quiz/{{user_progress_quiz_id}}"),
+        RequestDefinition("Get User Progress By User ID", "GET", "user-progress-quiz/user/{{user_id}}"),
+        RequestDefinition("Get User Progress By Quiz ID", "GET", "user-progress-quiz/quiz/{{quiz_id}}"),
+        RequestDefinition("Get User Progress By User/Quiz/Day", "GET", "user-progress-quiz/user/{{user_id}}/quiz/{{quiz_id}}/day/{{quiz_day_id}}"),
+        RequestDefinition("Create User Progress", "POST", "user-progress-quiz", CreateUserProgressQuizRequest::class),
+        RequestDefinition("Update User Progress", "PUT", "user-progress-quiz/{{user_progress_quiz_id}}", UpdateUserProgressQuizRequest::class),
+        RequestDefinition("Delete User Progress", "DELETE", "user-progress-quiz/{{user_progress_quiz_id}}"),
     )
 }
 

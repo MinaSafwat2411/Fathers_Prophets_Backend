@@ -29,7 +29,7 @@ if ($LASTEXITCODE -ne 0) {
 
 Write-Host ""
 Write-Host "🔧 Generating Postman Collection and Environment..." -ForegroundColor Yellow
-& .\gradlew.bat generatePostman
+& .\gradlew.bat generatePostmanSmart
 if ($LASTEXITCODE -ne 0) {
     Write-Host "❌ Generation failed!" -ForegroundColor Red
     Read-Host "Press Enter to exit"
@@ -40,8 +40,8 @@ Write-Host ""
 Write-Host "✅ Generation completed successfully!" -ForegroundColor Green
 Write-Host ""
 Write-Host "📁 Generated files:" -ForegroundColor Cyan
-Write-Host "   - Fathers_Prophets_API.postman_collection.json"
-Write-Host "   - Fathers_Prophets_API.postman_environment.json"
+Write-Host "   - Fathers_Prophets_API_ModelBased.postman_collection.json"
+Write-Host "   - Fathers_Prophets_API_ModelBased.postman_environment.json"
 Write-Host ""
 Write-Host "📋 Next steps:" -ForegroundColor Cyan
 Write-Host "   1. Open Postman"
@@ -50,7 +50,7 @@ Write-Host "   3. Select both JSON files"
 Write-Host "   4. Start testing!"
 Write-Host ""
 
-$files = Get-Item -Path "Fathers_Prophets_API.postman_*.json" -ErrorAction SilentlyContinue
+$files = Get-Item -Path "Fathers_Prophets_API_ModelBased.postman_*.json" -ErrorAction SilentlyContinue
 if ($files) {
     Write-Host "📊 File sizes:" -ForegroundColor Cyan
     foreach ($file in $files) {

@@ -26,7 +26,7 @@ if %errorlevel% neq 0 (
 
 echo.
 echo 🔧 Generating Postman Collection and Environment...
-call .\gradlew.bat generatePostman
+call .\gradlew.bat generatePostmanSmart
 if %errorlevel% neq 0 (
     echo ❌ Generation failed!
     pause
@@ -37,8 +37,8 @@ echo.
 echo ✅ Generation completed successfully!
 echo.
 echo 📁 Generated files:
-echo    - Fathers_Prophets_API.postman_collection.json
-echo    - Fathers_Prophets_API.postman_environment.json
+echo    - Fathers_Prophets_API_ModelBased.postman_collection.json
+echo    - Fathers_Prophets_API_ModelBased.postman_environment.json
 echo.
 echo 📋 Next steps:
 echo    1. Open Postman
