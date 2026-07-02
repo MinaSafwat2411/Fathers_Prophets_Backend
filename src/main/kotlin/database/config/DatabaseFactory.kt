@@ -101,13 +101,13 @@ object DatabaseFactory {
                 QuizDayQuestionsTable,
                 QuizDayTable,
                 QuizTable,
+                UserProgressQuizTable
 //                AnonymousChatMessagesTable,
 //                AnonymousChatsTable,
 //                ChatMessageReadReceiptsTable,
 //                ChatMessagesTable,
 //                ChatRoomMembersTable,
 //                ChatRoomsTable,
-//                UserProgressQuizTable
             )
         }
     }

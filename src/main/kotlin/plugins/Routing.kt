@@ -11,6 +11,10 @@ import com.fathersprophets.backend.routes.escapeEgyptAnswerRoutes
 import com.fathersprophets.backend.routes.timelineRoutes
 import com.fathersprophets.backend.routes.timelineAnswerRoutes
 import com.fathersprophets.backend.routes.quizRoutes
+import com.fathersprophets.backend.routes.quizAnswerRoutes
+import com.fathersprophets.backend.routes.userProgressQuizRoutes
+import com.fathersprophets.backend.routes.quizDayRoutes
+import com.fathersprophets.backend.routes.quizDayQuestionRoutes
 import com.fathersprophets.backend.routes.attendanceRoutes
 import com.fathersprophets.backend.routes.authRoutes
 import com.fathersprophets.backend.routes.classMemberRoutes
@@ -52,6 +56,10 @@ import com.fathersprophets.backend.services.escapeegyptanswer.IEscapeEgyptAnswer
 import com.fathersprophets.backend.services.timeline.ITimelineService
 import com.fathersprophets.backend.services.timelineanswer.ITimelineAnswerService
 import com.fathersprophets.backend.services.quiz.IQuizService
+import com.fathersprophets.backend.services.quizanswer.IQuizAnswerService
+import com.fathersprophets.backend.services.userprogressquiz.IUserProgressQuizService
+import com.fathersprophets.backend.services.quizday.IQuizDayService
+import com.fathersprophets.backend.services.quizdayquestion.IQuizDayQuestionService
 import com.fathersprophets.backend.services.personstoryquestion.IPersonStoryQuestionService
 import com.fathersprophets.backend.services.personmcq.IPersonMcqService
 import com.fathersprophets.backend.services.personquestion.IPersonQuestionService
@@ -93,6 +101,10 @@ fun Application.configureRouting() {
     val timelineService = get<ITimelineService>()
     val timelineAnswerService = get<ITimelineAnswerService>()
     val quizService = get<IQuizService>()
+    val quizAnswerService = get<IQuizAnswerService>()
+    val userProgressQuizService = get<IUserProgressQuizService>()
+    val quizDayService = get<IQuizDayService>()
+    val quizDayQuestionService = get<IQuizDayQuestionService>()
 
     routing {
         route("/api/v1") {
@@ -129,6 +141,10 @@ fun Application.configureRouting() {
                 timelineRoutes(timelineService)
                 timelineAnswerRoutes(timelineAnswerService)
                 quizRoutes(quizService)
+                quizAnswerRoutes(quizAnswerService)
+                userProgressQuizRoutes(userProgressQuizService)
+                quizDayRoutes(quizDayService)
+                quizDayQuestionRoutes(quizDayQuestionService)
             }
             
             get("/healthcheck") {

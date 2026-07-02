@@ -21,8 +21,12 @@ import com.fathersprophets.backend.database.dao.PersonOfDayDao
 import com.fathersprophets.backend.database.dao.PersonQuestionDao
 import com.fathersprophets.backend.database.dao.PersonStoryDao
 import com.fathersprophets.backend.database.dao.PersonStoryQuestionDao
+import com.fathersprophets.backend.database.dao.QuizAnswerDao
 import com.fathersprophets.backend.database.dao.QuizDao
+import com.fathersprophets.backend.database.dao.QuizDayDao
+import com.fathersprophets.backend.database.dao.QuizDayQuestionDao
 import com.fathersprophets.backend.database.dao.SessionDao
+import com.fathersprophets.backend.database.dao.UserProgressQuizDao
 import com.fathersprophets.backend.database.dao.TimelineAnswerDao
 import com.fathersprophets.backend.database.dao.TimelineDao
 import com.fathersprophets.backend.database.dao.UserDao
@@ -73,8 +77,16 @@ import com.fathersprophets.backend.database.repository.personquestion.IPersonQue
 import com.fathersprophets.backend.database.repository.personquestion.PersonQuestionRepository
 import com.fathersprophets.backend.database.repository.quiz.IQuizRepository
 import com.fathersprophets.backend.database.repository.quiz.QuizRepository
+import com.fathersprophets.backend.database.repository.quizanswer.IQuizAnswerRepository
+import com.fathersprophets.backend.database.repository.quizanswer.QuizAnswerRepository
+import com.fathersprophets.backend.database.repository.quizday.IQuizDayRepository
+import com.fathersprophets.backend.database.repository.quizday.QuizDayRepository
+import com.fathersprophets.backend.database.repository.quizdayquestion.IQuizDayQuestionRepository
+import com.fathersprophets.backend.database.repository.quizdayquestion.QuizDayQuestionRepository
 import com.fathersprophets.backend.database.repository.sessions.ISessionRepository
 import com.fathersprophets.backend.database.repository.sessions.SessionRepository
+import com.fathersprophets.backend.database.repository.userprogressquiz.IUserProgressQuizRepository
+import com.fathersprophets.backend.database.repository.userprogressquiz.UserProgressQuizRepository
 import com.fathersprophets.backend.database.repository.timeline.ITimelineRepository
 import com.fathersprophets.backend.database.repository.timeline.TimelineRepository
 import com.fathersprophets.backend.database.repository.timelineanswer.ITimelineAnswerRepository
@@ -129,8 +141,16 @@ import com.fathersprophets.backend.services.personquestion.IPersonQuestionServic
 import com.fathersprophets.backend.services.personquestion.PersonQuestionService
 import com.fathersprophets.backend.services.quiz.IQuizService
 import com.fathersprophets.backend.services.quiz.QuizService
+import com.fathersprophets.backend.services.quizanswer.IQuizAnswerService
+import com.fathersprophets.backend.services.quizanswer.QuizAnswerService
+import com.fathersprophets.backend.services.quizday.IQuizDayService
+import com.fathersprophets.backend.services.quizday.QuizDayService
+import com.fathersprophets.backend.services.quizdayquestion.IQuizDayQuestionService
+import com.fathersprophets.backend.services.quizdayquestion.QuizDayQuestionService
 import com.fathersprophets.backend.services.session.ISessionService
 import com.fathersprophets.backend.services.session.SessionService
+import com.fathersprophets.backend.services.userprogressquiz.IUserProgressQuizService
+import com.fathersprophets.backend.services.userprogressquiz.UserProgressQuizService
 import com.fathersprophets.backend.services.timeline.ITimelineService
 import com.fathersprophets.backend.services.timeline.TimelineService
 import com.fathersprophets.backend.services.timelineanswer.ITimelineAnswerService
@@ -169,6 +189,10 @@ val appModule = module {
     single { TimelineDao() }
     single { TimelineAnswerDao() }
     single { QuizDao() }
+    single { QuizAnswerDao() }
+    single { UserProgressQuizDao() }
+    single { QuizDayDao() }
+    single { QuizDayQuestionDao() }
 
     single<IAuthRepository> {
         AuthRepository(
@@ -392,6 +416,38 @@ val appModule = module {
 
     single<IQuizService> {
         QuizService(get())
+    }
+
+    single<IQuizAnswerRepository> {
+        QuizAnswerRepository(get(), get(), get())
+    }
+
+    single<IQuizAnswerService> {
+        QuizAnswerService(get())
+    }
+
+    single<IUserProgressQuizRepository> {
+        UserProgressQuizRepository(get())
+    }
+
+    single<IUserProgressQuizService> {
+        UserProgressQuizService(get())
+    }
+
+    single<IQuizDayRepository> {
+        QuizDayRepository(get())
+    }
+
+    single<IQuizDayService> {
+        QuizDayService(get())
+    }
+
+    single<IQuizDayQuestionRepository> {
+        QuizDayQuestionRepository(get())
+    }
+
+    single<IQuizDayQuestionService> {
+        QuizDayQuestionService(get())
     }
 
 }
