@@ -21,6 +21,7 @@ import com.fathersprophets.backend.database.dao.PersonOfDayDao
 import com.fathersprophets.backend.database.dao.PersonQuestionDao
 import com.fathersprophets.backend.database.dao.PersonStoryDao
 import com.fathersprophets.backend.database.dao.PersonStoryQuestionDao
+import com.fathersprophets.backend.database.dao.QuizDao
 import com.fathersprophets.backend.database.dao.SessionDao
 import com.fathersprophets.backend.database.dao.TimelineAnswerDao
 import com.fathersprophets.backend.database.dao.TimelineDao
@@ -70,6 +71,8 @@ import com.fathersprophets.backend.database.repository.personstoryquestion.IPers
 import com.fathersprophets.backend.database.repository.personstoryquestion.PersonStoryQuestionRepository
 import com.fathersprophets.backend.database.repository.personquestion.IPersonQuestionRepository
 import com.fathersprophets.backend.database.repository.personquestion.PersonQuestionRepository
+import com.fathersprophets.backend.database.repository.quiz.IQuizRepository
+import com.fathersprophets.backend.database.repository.quiz.QuizRepository
 import com.fathersprophets.backend.database.repository.sessions.ISessionRepository
 import com.fathersprophets.backend.database.repository.sessions.SessionRepository
 import com.fathersprophets.backend.database.repository.timeline.ITimelineRepository
@@ -124,6 +127,8 @@ import com.fathersprophets.backend.services.personstoryquestion.IPersonStoryQues
 import com.fathersprophets.backend.services.personstoryquestion.PersonStoryQuestionService
 import com.fathersprophets.backend.services.personquestion.IPersonQuestionService
 import com.fathersprophets.backend.services.personquestion.PersonQuestionService
+import com.fathersprophets.backend.services.quiz.IQuizService
+import com.fathersprophets.backend.services.quiz.QuizService
 import com.fathersprophets.backend.services.session.ISessionService
 import com.fathersprophets.backend.services.session.SessionService
 import com.fathersprophets.backend.services.timeline.ITimelineService
@@ -163,6 +168,7 @@ val appModule = module {
     single { EscapeEgyptAnswerDao() }
     single { TimelineDao() }
     single { TimelineAnswerDao() }
+    single { QuizDao() }
 
     single<IAuthRepository> {
         AuthRepository(
@@ -378,6 +384,14 @@ val appModule = module {
 
     single<ITimelineAnswerService> {
         TimelineAnswerService(get())
+    }
+
+    single<IQuizRepository> {
+        QuizRepository(get())
+    }
+
+    single<IQuizService> {
+        QuizService(get())
     }
 
 }

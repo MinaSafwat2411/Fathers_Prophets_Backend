@@ -209,5 +209,13 @@
   "timeline_answer_updated_successfully": "Timeline answer updated successfully",
   "timeline_answer_status_updated_successfully": "Timeline answer status updated successfully",
   "timeline_answer_deleted_successfully": "Timeline answer deleted successfully",
-  "timeline_answer_already_exists": "You have already submitted an answer for this timeline"
+  "timeline_answer_already_exists": "You have already submitted an answer for this timeline",
+  "quiz_id_required": "Quiz ID cannot be empty",
+  "quizzes_retrieved_successfully": "Quizzes retrieved successfully",
+  "quiz_retrieved_successfully": "Quiz retrieved successfully",
+  "quiz_created_successfully": "Quiz created successfully",
+  "quiz_updated_successfully": "Quiz updated successfully",
+  "quiz_deleted_successfully": "Quiz deleted successfully",
+  "quiz_not_found": "Quiz not found",
+  "quiz_date_range_invalid": "Start date must be before end date"
 }

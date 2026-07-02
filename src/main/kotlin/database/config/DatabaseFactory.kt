@@ -97,16 +97,16 @@ object DatabaseFactory {
                 EscapeEgyptTable,
                 TimelineAnswersTable,
                 TimelineTable,
+                QuizAnswersTable,
+                QuizDayQuestionsTable,
+                QuizDayTable,
+                QuizTable,
 //                AnonymousChatMessagesTable,
 //                AnonymousChatsTable,
 //                ChatMessageReadReceiptsTable,
 //                ChatMessagesTable,
 //                ChatRoomMembersTable,
 //                ChatRoomsTable,
-//                QuizAnswersTable,
-//                QuizDayQuestionsTable,
-//                QuizDayTable,
-//                QuizTable,
 //                UserProgressQuizTable
             )
         }

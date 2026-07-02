@@ -209,5 +209,13 @@
   "timeline_answer_updated_successfully": "تم تحديث إجابة الخط الزمني بنجاح",
   "timeline_answer_status_updated_successfully": "تم تحديث حالة إجابة الخط الزمني بنجاح",
   "timeline_answer_deleted_successfully": "تم حذف إجابة الخط الزمني بنجاح",
-  "timeline_answer_already_exists": "لقد قمت بالفعل بإرسال إجابة لهذا الخط الزمني"
+  "timeline_answer_already_exists": "لقد قمت بالفعل بإرسال إجابة لهذا الخط الزمني",
+  "quiz_id_required": "معرف الكويز لا يمكن أن يكون فارغًا",
+  "quizzes_retrieved_successfully": "تم استرجاع الكويزات بنجاح",
+  "quiz_retrieved_successfully": "تم استرجاع الكويز بنجاح",
+  "quiz_created_successfully": "تم إنشاء الكويز بنجاح",
+  "quiz_updated_successfully": "تم تحديث الكويز بنجاح",
+  "quiz_deleted_successfully": "تم حذف الكويز بنجاح",
+  "quiz_not_found": "الكويز غير موجود",
+  "quiz_date_range_invalid": "يجب أن يكون تاريخ البدء قبل تاريخ الانتهاء"
 }
