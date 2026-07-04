@@ -2,6 +2,7 @@ package com.fathersprophets.backend.plugins
 
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.routes.anonymousChatRoutes
+import com.fathersprophets.backend.routes.anonymousChatMessageRoutes
 import com.fathersprophets.backend.routes.guessPersonAnswerRoutes
 import com.fathersprophets.backend.routes.guessPersonQuestionRoutes
 import com.fathersprophets.backend.routes.matchingPairRoutes
@@ -36,6 +37,7 @@ import com.fathersprophets.backend.routes.sessionRoutes
 import com.fathersprophets.backend.routes.settingRoutes
 import com.fathersprophets.backend.routes.userRoutes
 import com.fathersprophets.backend.services.anonymouschat.IAnonymousChatService
+import com.fathersprophets.backend.services.anonymouschatmessage.IAnonymousChatMessageService
 import com.fathersprophets.backend.services.attendance.IAttendanceService
 import com.fathersprophets.backend.services.auth.IAuthService
 import com.fathersprophets.backend.services.classes.IClassService
@@ -108,6 +110,7 @@ fun Application.configureRouting() {
     val quizDayService = get<IQuizDayService>()
     val quizDayQuestionService = get<IQuizDayQuestionService>()
     val anonymousChatService = get<IAnonymousChatService>()
+    val anonymousChatMessageService = get<IAnonymousChatMessageService>()
 
     routing {
         route("/api/v1") {
@@ -149,6 +152,7 @@ fun Application.configureRouting() {
                 quizDayRoutes(quizDayService)
                 quizDayQuestionRoutes(quizDayQuestionService)
                 anonymousChatRoutes(anonymousChatService)
+                anonymousChatMessageRoutes(anonymousChatMessageService)
             }
             
             get("/healthcheck") {

@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.di
 
 import com.fathersprophets.backend.database.dao.AnonymousChatDao
+import com.fathersprophets.backend.database.dao.AnonymousChatMessageDao
 import com.fathersprophets.backend.database.dao.AttendanceDao
 import com.fathersprophets.backend.database.dao.ClassDao
 import com.fathersprophets.backend.database.dao.ClassMemberDao
@@ -34,6 +35,8 @@ import com.fathersprophets.backend.database.dao.UserDao
 import com.fathersprophets.backend.database.dao.VersionDao
 import com.fathersprophets.backend.database.repository.anonymouschat.AnonymousChatRepository
 import com.fathersprophets.backend.database.repository.anonymouschat.IAnonymousChatRepository
+import com.fathersprophets.backend.database.repository.anonymouschatmessage.AnonymousChatMessageRepository
+import com.fathersprophets.backend.database.repository.anonymouschatmessage.IAnonymousChatMessageRepository
 import com.fathersprophets.backend.database.repository.attendance.AttendanceRepository
 import com.fathersprophets.backend.database.repository.attendance.IAttendanceRepository
 import com.fathersprophets.backend.database.repository.auth.AuthRepository
@@ -100,6 +103,8 @@ import com.fathersprophets.backend.database.repository.version.IVersionRepositor
 import com.fathersprophets.backend.database.repository.version.VersionRepository
 import com.fathersprophets.backend.services.anonymouschat.AnonymousChatService
 import com.fathersprophets.backend.services.anonymouschat.IAnonymousChatService
+import com.fathersprophets.backend.services.anonymouschatmessage.AnonymousChatMessageService
+import com.fathersprophets.backend.services.anonymouschatmessage.IAnonymousChatMessageService
 import com.fathersprophets.backend.services.attendance.AttendanceService
 import com.fathersprophets.backend.services.attendance.IAttendanceService
 import com.fathersprophets.backend.services.auth.AuthService
@@ -199,6 +204,7 @@ val appModule = module {
     single { QuizDayDao() }
     single { QuizDayQuestionDao() }
     single { AnonymousChatDao() }
+    single { AnonymousChatMessageDao() }
 
     single<IAuthRepository> {
         AuthRepository(
@@ -462,6 +468,14 @@ val appModule = module {
 
     single<IAnonymousChatService> {
         AnonymousChatService(get())
+    }
+
+    single<IAnonymousChatMessageRepository> {
+        AnonymousChatMessageRepository(get(), get())
+    }
+
+    single<IAnonymousChatMessageService> {
+        AnonymousChatMessageService(get())
     }
 
 }

@@ -63,6 +63,10 @@ import com.fathersprophets.backend.models.quizanswer.CreateQuizAnswerRequest
 import com.fathersprophets.backend.models.quizanswer.UpdateQuizAnswerRequest
 import com.fathersprophets.backend.models.userprogressquiz.CreateUserProgressQuizRequest
 import com.fathersprophets.backend.models.userprogressquiz.UpdateUserProgressQuizRequest
+import com.fathersprophets.backend.models.anonymouschat.CreateAnonymousChatRequest
+import com.fathersprophets.backend.models.anonymouschat.UpdateAnonymousChatRequest
+import com.fathersprophets.backend.models.anonymouschatmessage.CreateAnonymousChatMessageRequest
+import com.fathersprophets.backend.models.anonymouschatmessage.UpdateAnonymousChatMessageRequest
 import com.fathersprophets.backend.models.users.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -313,7 +317,9 @@ object EnhancedPostmanGenerator {
         "quiz_day_id" to "1",
         "quiz_day_question_id" to "1",
         "quiz_answer_id" to "1",
-        "user_progress_quiz_id" to "1"
+        "user_progress_quiz_id" to "1",
+        "anonymous_chat_id" to "1",
+        "anonymous_chat_message_id" to "1"
     )
 
     fun generateCollectionWithModels(
@@ -683,6 +689,21 @@ object PostmanEndpoints {
         RequestDefinition("Create User Progress", "POST", "user-progress-quiz", CreateUserProgressQuizRequest::class),
         RequestDefinition("Update User Progress", "PUT", "user-progress-quiz/{{user_progress_quiz_id}}", UpdateUserProgressQuizRequest::class),
         RequestDefinition("Delete User Progress", "DELETE", "user-progress-quiz/{{user_progress_quiz_id}}"),
+
+        // Anonymous Chat
+        RequestDefinition("Get All Anonymous Chats", "GET", "anonymous-chats"),
+        RequestDefinition("Get Anonymous Chat By ID", "GET", "anonymous-chats/{{anonymous_chat_id}}"),
+        RequestDefinition("Create Anonymous Chat", "POST", "anonymous-chats", CreateAnonymousChatRequest::class),
+        RequestDefinition("Update Anonymous Chat", "PUT", "anonymous-chats/{{anonymous_chat_id}}", UpdateAnonymousChatRequest::class),
+        RequestDefinition("Delete Anonymous Chat", "DELETE", "anonymous-chats/{{anonymous_chat_id}}"),
+
+        // Anonymous Chat Message
+        RequestDefinition("Get All Anonymous Chat Messages", "GET", "anonymous-chat-messages"),
+        RequestDefinition("Get Anonymous Chat Message By ID", "GET", "anonymous-chat-messages/{{anonymous_chat_message_id}}"),
+        RequestDefinition("Get Anonymous Chat Messages By Chat ID", "GET", "anonymous-chat-messages/chat/{{anonymous_chat_id}}"),
+        RequestDefinition("Create Anonymous Chat Message", "POST", "anonymous-chat-messages", CreateAnonymousChatMessageRequest::class),
+        RequestDefinition("Update Anonymous Chat Message", "PUT", "anonymous-chat-messages/{{anonymous_chat_message_id}}", UpdateAnonymousChatMessageRequest::class),
+        RequestDefinition("Delete Anonymous Chat Message", "DELETE", "anonymous-chat-messages/{{anonymous_chat_message_id}}"),
     )
 }
 
