@@ -1,5 +1,6 @@
 package com.fathersprophets.backend.di
 
+import com.fathersprophets.backend.database.dao.AnonymousChatDao
 import com.fathersprophets.backend.database.dao.AttendanceDao
 import com.fathersprophets.backend.database.dao.ClassDao
 import com.fathersprophets.backend.database.dao.ClassMemberDao
@@ -31,6 +32,8 @@ import com.fathersprophets.backend.database.dao.TimelineAnswerDao
 import com.fathersprophets.backend.database.dao.TimelineDao
 import com.fathersprophets.backend.database.dao.UserDao
 import com.fathersprophets.backend.database.dao.VersionDao
+import com.fathersprophets.backend.database.repository.anonymouschat.AnonymousChatRepository
+import com.fathersprophets.backend.database.repository.anonymouschat.IAnonymousChatRepository
 import com.fathersprophets.backend.database.repository.attendance.AttendanceRepository
 import com.fathersprophets.backend.database.repository.attendance.IAttendanceRepository
 import com.fathersprophets.backend.database.repository.auth.AuthRepository
@@ -95,6 +98,8 @@ import com.fathersprophets.backend.database.repository.users.IUserRepository
 import com.fathersprophets.backend.database.repository.users.UserRepository
 import com.fathersprophets.backend.database.repository.version.IVersionRepository
 import com.fathersprophets.backend.database.repository.version.VersionRepository
+import com.fathersprophets.backend.services.anonymouschat.AnonymousChatService
+import com.fathersprophets.backend.services.anonymouschat.IAnonymousChatService
 import com.fathersprophets.backend.services.attendance.AttendanceService
 import com.fathersprophets.backend.services.attendance.IAttendanceService
 import com.fathersprophets.backend.services.auth.AuthService
@@ -193,6 +198,7 @@ val appModule = module {
     single { UserProgressQuizDao() }
     single { QuizDayDao() }
     single { QuizDayQuestionDao() }
+    single { AnonymousChatDao() }
 
     single<IAuthRepository> {
         AuthRepository(
@@ -448,6 +454,14 @@ val appModule = module {
 
     single<IQuizDayQuestionService> {
         QuizDayQuestionService(get())
+    }
+
+    single<IAnonymousChatRepository> {
+        AnonymousChatRepository(get())
+    }
+
+    single<IAnonymousChatService> {
+        AnonymousChatService(get())
     }
 
 }
