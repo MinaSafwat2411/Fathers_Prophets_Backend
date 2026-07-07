@@ -24,6 +24,7 @@ import com.fathersprophets.backend.routes.classRoutes
 import com.fathersprophets.backend.routes.commentRoutes
 import com.fathersprophets.backend.routes.eventMemberRoutes
 import com.fathersprophets.backend.routes.eventRoutes
+import com.fathersprophets.backend.routes.notificationRoutes
 import com.fathersprophets.backend.routes.personAnswerRoutes
 import com.fathersprophets.backend.routes.personMcqAnswerRoutes
 import com.fathersprophets.backend.routes.personMcqRoutes
@@ -45,6 +46,7 @@ import com.fathersprophets.backend.services.classmember.IClassMemberService
 import com.fathersprophets.backend.services.comments.ICommentsService
 import com.fathersprophets.backend.services.eventmember.IEventMemberService
 import com.fathersprophets.backend.services.events.IEventService
+import com.fathersprophets.backend.services.notification.INotificationService
 import com.fathersprophets.backend.services.person.IPersonService
 import com.fathersprophets.backend.services.personanswer.IPersonAnswerService
 import com.fathersprophets.backend.services.personmcqanswer.IPersonMcqAnswerService
@@ -87,6 +89,7 @@ fun Application.configureRouting() {
     val attendanceService = get<IAttendanceService>()
     val eventService = get<IEventService>()
     val eventMemberService = get<IEventMemberService>()
+    val notificationService = get<INotificationService>()
     val personService = get<IPersonService>()
     val personQuestionService = get<IPersonQuestionService>()
     val personMcqService = get<IPersonMcqService>()
@@ -129,6 +132,7 @@ fun Application.configureRouting() {
                 attendanceRoutes(attendanceService)
                 eventRoutes(eventService)
                 eventMemberRoutes(eventMemberService)
+                notificationRoutes(notificationService)
                 personRoutes(personService)
                 personQuestionRoutes(personQuestionService)
                 personMcqRoutes(personMcqService)

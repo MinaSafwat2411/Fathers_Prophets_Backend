@@ -39,6 +39,7 @@ object DatabaseFactory {
                 AttendanceTable,
                 EventsTable,
                 EventMembersTable,
+                NotificationsTable,
                 PersonsTable,
                 PersonsQuestionsTable,
                 PersonsMcqTable,

@@ -7,6 +7,7 @@ import com.fathersprophets.backend.models.users.UpdateEmailRequest
 import com.fathersprophets.backend.models.users.UpdatePasswordRequest
 import com.fathersprophets.backend.models.users.UpdatePhoneRequest
 import com.fathersprophets.backend.models.users.UpdateProfileRequest
+import com.fathersprophets.backend.models.users.UpcomingBirthdayResponse
 import com.fathersprophets.backend.models.users.UpdateUserRequest
 import com.fathersprophets.backend.models.users.UserResponse
 
@@ -27,4 +28,6 @@ interface IUserRepository {
     suspend fun getUnReviewedUsers(lang: String): ApiResponse<List<UserResponse>>
 
     suspend fun getAllUsers(lang: String): ApiResponse<List<UserResponse>>
+
+    suspend fun getUpcomingBirthdays(lang: String): ApiResponse<List<UpcomingBirthdayResponse>>
 }

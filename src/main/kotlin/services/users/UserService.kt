@@ -8,6 +8,7 @@ import com.fathersprophets.backend.models.users.UpdateEmailRequest
 import com.fathersprophets.backend.models.users.UpdatePasswordRequest
 import com.fathersprophets.backend.models.users.UpdatePhoneRequest
 import com.fathersprophets.backend.models.users.UpdateProfileRequest
+import com.fathersprophets.backend.models.users.UpcomingBirthdayResponse
 import com.fathersprophets.backend.models.users.UpdateUserRequest
 import com.fathersprophets.backend.models.users.UserResponse
 import com.fathersprophets.backend.utils.Localization
@@ -77,6 +78,10 @@ class UserService(
 
     override suspend fun getAllUsers(lang: String): ApiResponse<List<UserResponse>> {
         return userRepository.getAllUsers(lang)
+    }
+
+    override suspend fun getUpcomingBirthdays(lang: String): ApiResponse<List<UpcomingBirthdayResponse>> {
+        return userRepository.getUpcomingBirthdays(lang)
     }
 
     override suspend fun updateEmail(id: Int?, updateEmailRequest: UpdateEmailRequest, lang: String): ApiResponse<Nothing> {

@@ -75,5 +75,9 @@ fun Route.eventRoutes(
             val lang = call.request.header("Accept-Language") ?: "en"
             call.respond(eventService.getEventsCount(lang))
         }
+        get("/upcoming") {
+            val lang = call.request.header("Accept-Language") ?: "en"
+            call.respond(eventService.getUpcomingEvents(lang))
+        }
     }
 }

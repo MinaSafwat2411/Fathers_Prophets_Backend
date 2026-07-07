@@ -35,6 +35,12 @@ fun Route.userRoutes(
 
 
 
+        get("/birthdays/upcoming") {
+            val lang = call.request.header("Accept-Language") ?: "en"
+            val users = userService.getUpcomingBirthdays(lang)
+            call.respond(users)
+        }
+
         get("/role/{role}") {
             val role = call.parameters["role"] ?: ""
             val lang = call.request.header("Accept-Language") ?: "en"

@@ -44,4 +44,8 @@ class EventService(
     override fun getEventsCount(lang: String): ApiResponse<EventCountsResponse> {
         return eventRepository.getEventsCount(lang)
     }
+
+    override fun getUpcomingEvents(lang: String): ApiResponse<List<EventResponse>> {
+        return eventRepository.getUpcomingEvents(lang)
+    }
 }

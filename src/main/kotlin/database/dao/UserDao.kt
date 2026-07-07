@@ -143,4 +143,9 @@ class UserDao {
         (UsersTable leftJoin ParentsTable).selectAll().where { UsersTable.isReviewed eq false }
             .map { resultRowToUser(it) }
     }
+
+    fun findUsersWithBirthDate() = transaction {
+        (UsersTable leftJoin ParentsTable).selectAll().where { UsersTable.birthDate.isNotNull() }
+            .map { resultRowToUser(it) }
+    }
 }

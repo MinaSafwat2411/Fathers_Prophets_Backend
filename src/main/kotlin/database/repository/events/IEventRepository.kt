@@ -12,4 +12,5 @@ interface IEventRepository {
     fun updateEvent(eventId : Int ,update: EventRequest, lang: String): ApiResponse<EventResponse>
     fun deleteEvent(eventId: Int, lang: String): ApiResponse<Nothing>
     fun getEventsCount(lang: String): ApiResponse<EventCountsResponse>
+    fun getUpcomingEvents(lang: String): ApiResponse<List<EventResponse>>
 }

@@ -11,6 +11,7 @@ import com.fathersprophets.backend.database.dao.EscapeEgyptDao
 import com.fathersprophets.backend.database.dao.EscapeEgyptQuestionDao
 import com.fathersprophets.backend.database.dao.EventDao
 import com.fathersprophets.backend.database.dao.EventMemberDao
+import com.fathersprophets.backend.database.dao.NotificationDao
 import com.fathersprophets.backend.database.dao.PersonAnswerDao
 import com.fathersprophets.backend.database.dao.PersonDao
 import com.fathersprophets.backend.database.dao.GuessPersonAnswerDao
@@ -57,6 +58,8 @@ import com.fathersprophets.backend.database.repository.eventmember.EventMemberRe
 import com.fathersprophets.backend.database.repository.eventmember.IEventMemberRepository
 import com.fathersprophets.backend.database.repository.events.EventRepository
 import com.fathersprophets.backend.database.repository.events.IEventRepository
+import com.fathersprophets.backend.database.repository.notification.INotificationRepository
+import com.fathersprophets.backend.database.repository.notification.NotificationRepository
 import com.fathersprophets.backend.database.repository.person.IPersonRepository
 import com.fathersprophets.backend.database.repository.person.PersonRepository
 import com.fathersprophets.backend.database.repository.personanswer.IPersonAnswerRepository
@@ -125,6 +128,8 @@ import com.fathersprophets.backend.services.eventmember.EventMemberService
 import com.fathersprophets.backend.services.eventmember.IEventMemberService
 import com.fathersprophets.backend.services.events.EventService
 import com.fathersprophets.backend.services.events.IEventService
+import com.fathersprophets.backend.services.notification.INotificationService
+import com.fathersprophets.backend.services.notification.NotificationService
 import com.fathersprophets.backend.services.person.IPersonService
 import com.fathersprophets.backend.services.person.PersonService
 import com.fathersprophets.backend.services.personanswer.IPersonAnswerService
@@ -181,6 +186,7 @@ val appModule = module {
     single { AttendanceDao() }
     single { EventDao() }
     single { EventMemberDao() }
+    single { NotificationDao() }
     single { PersonDao() }
     single { PersonOfDayDao() }
     single { PersonStoryDao() }
@@ -271,7 +277,7 @@ val appModule = module {
     }
 
     single<IEventRepository> {
-        EventRepository(get())
+        EventRepository(get(), get())
     }
 
     single<IEventService> {
@@ -284,6 +290,14 @@ val appModule = module {
 
     single<IEventMemberService> {
         EventMemberService(get())
+    }
+
+    single<INotificationRepository> {
+        NotificationRepository(get(), get())
+    }
+
+    single<INotificationService> {
+        NotificationService(get())
     }
 
     single<IPersonRepository> {

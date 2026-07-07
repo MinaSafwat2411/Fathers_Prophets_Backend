@@ -9,10 +9,15 @@ import com.fathersprophets.backend.models.users.UpdateEmailRequest
 import com.fathersprophets.backend.models.users.UpdatePasswordRequest
 import com.fathersprophets.backend.models.users.UpdatePhoneRequest
 import com.fathersprophets.backend.models.users.UpdateProfileRequest
+import com.fathersprophets.backend.models.users.UpcomingBirthdayResponse
 import com.fathersprophets.backend.models.users.UpdateUserRequest
 import com.fathersprophets.backend.models.users.UserResponse
 import com.fathersprophets.backend.utils.Localization
 import com.fathersprophets.backend.utils.PasswordUtil
+import java.time.LocalDate
+import java.time.MonthDay
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 class UserRepository(
     val userDao: UserDao,
@@ -149,6 +154,39 @@ class UserRepository(
     override suspend fun getAllUsers(lang: String): ApiResponse<List<UserResponse>> {
         val users = userDao.findAllUsers().map { it.convertToUserResponse() }
         return ApiResponse(success = true, data = users, message = Localization.get("users_found", lang))
+    }
+
+    override suspend fun getUpcomingBirthdays(lang: String): ApiResponse<List<UpcomingBirthdayResponse>> {
+        val today = LocalDate.now()
+
+        val upcoming = userDao.findUsersWithBirthDate()
+            .mapNotNull { user ->
+                val birthDate = user.birthDate?.let { runCatching { LocalDate.parse(it) }.getOrNull() }
+                if (birthDate == null) return@mapNotNull null
+
+                val monthDay = MonthDay.of(birthDate.month, birthDate.dayOfMonth)
+                var nextBirthday = monthDay.atYear(today.year)
+                if (nextBirthday.isBefore(today)) {
+                    nextBirthday = monthDay.atYear(today.year + 1)
+                }
+
+                UpcomingBirthdayResponse(
+                    id = user.id,
+                    name = user.name,
+                    username = user.username,
+                    profile = user.profile,
+                    birthDate = birthDate.format(DateTimeFormatter.ISO_LOCAL_DATE),
+                    nextBirthdayDate = nextBirthday.format(DateTimeFormatter.ISO_LOCAL_DATE),
+                    daysUntil = ChronoUnit.DAYS.between(today, nextBirthday)
+                )
+            }
+            .sortedBy { it.daysUntil }
+
+        return ApiResponse(
+            success = true,
+            data = upcoming,
+            message = Localization.get("upcoming_birthdays_retrieved_successfully", lang)
+        )
     }
 
     private fun idToUser(id: Int): UserDto {

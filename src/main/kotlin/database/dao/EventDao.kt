@@ -5,6 +5,7 @@ import com.fathersprophets.backend.models.dto.EventCountsDto
 import com.fathersprophets.backend.models.dto.EventDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.greaterEq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
@@ -32,6 +33,12 @@ class EventDao {
 
     fun getEventByType(eventDto: EventDto) = transaction{
         EventsTable.selectAll().where { EventsTable.type eq eventDto.type }
+    }
+
+    fun getUpcomingEvents() = transaction {
+        EventsTable.selectAll().where { EventsTable.dateTime greaterEq LocalDate.now() }
+            .orderBy(EventsTable.dateTime)
+            .map { rowToEvent(it) }
     }
 
     fun addEvent(eventDto: EventDto) = transaction{
