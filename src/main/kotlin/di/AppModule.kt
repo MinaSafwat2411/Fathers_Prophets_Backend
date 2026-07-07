@@ -128,6 +128,9 @@ import com.fathersprophets.backend.services.eventmember.EventMemberService
 import com.fathersprophets.backend.services.eventmember.IEventMemberService
 import com.fathersprophets.backend.services.events.EventService
 import com.fathersprophets.backend.services.events.IEventService
+import com.fathersprophets.backend.services.notification.BirthdayReminderScheduler
+import com.fathersprophets.backend.services.notification.FirebaseMessagingService
+import com.fathersprophets.backend.services.notification.IFirebaseMessagingService
 import com.fathersprophets.backend.services.notification.INotificationService
 import com.fathersprophets.backend.services.notification.NotificationService
 import com.fathersprophets.backend.services.person.IPersonService
@@ -292,13 +295,17 @@ val appModule = module {
         EventMemberService(get())
     }
 
+    single<IFirebaseMessagingService> { FirebaseMessagingService() }
+
     single<INotificationRepository> {
-        NotificationRepository(get(), get())
+        NotificationRepository(get(), get(), get(), get())
     }
 
     single<INotificationService> {
         NotificationService(get())
     }
+
+    single { BirthdayReminderScheduler(get(), get(), get()) }
 
     single<IPersonRepository> {
         PersonRepository(get())
@@ -485,7 +492,7 @@ val appModule = module {
     }
 
     single<IAnonymousChatMessageRepository> {
-        AnonymousChatMessageRepository(get(), get())
+        AnonymousChatMessageRepository(get(), get(), get(), get())
     }
 
     single<IAnonymousChatMessageService> {

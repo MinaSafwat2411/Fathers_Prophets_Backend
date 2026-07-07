@@ -2,16 +2,22 @@ package com.fathersprophets.backend.database.repository.anonymouschatmessage
 
 import com.fathersprophets.backend.database.dao.AnonymousChatDao
 import com.fathersprophets.backend.database.dao.AnonymousChatMessageDao
+import com.fathersprophets.backend.database.dao.UserDao
+import com.fathersprophets.backend.database.tables.UserRole
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.anonymouschatmessage.AnonymousChatMessageResponse
 import com.fathersprophets.backend.models.anonymouschatmessage.CreateAnonymousChatMessageRequest
 import com.fathersprophets.backend.models.anonymouschatmessage.UpdateAnonymousChatMessageRequest
 import com.fathersprophets.backend.models.dto.AnonymousChatMessageDto
+import com.fathersprophets.backend.models.dto.UserDto
+import com.fathersprophets.backend.services.notification.IFirebaseMessagingService
 import com.fathersprophets.backend.utils.Localization
 
 class AnonymousChatMessageRepository(
     private val messageDao: AnonymousChatMessageDao,
-    private val chatDao: AnonymousChatDao
+    private val chatDao: AnonymousChatDao,
+    private val userDao: UserDao,
+    private val firebaseMessagingService: IFirebaseMessagingService
 ) : IAnonymousChatMessageRepository {
 
     override fun getAllMessages(lang: String): ApiResponse<List<AnonymousChatMessageResponse>> {
@@ -47,6 +53,29 @@ class AnonymousChatMessageRepository(
 
         val id = messageDao.create(request.toAnonymousChatMessageDto())
         val created = messageDao.findById(id)
+        val member = userDao.findById(idToUserDto(request.memberId ?: 0))?: throw IllegalArgumentException(Localization.get("member_not_found", lang))
+        val servant = userDao.findById(idToUserDto(request.servantId ?: 0))?: throw IllegalArgumentException(Localization.get("servant_not_found", lang))
+
+        if (created != null) {
+            val tokens = listOfNotNull(
+                userDao.findFcmTokenById(created.memberId),
+                userDao.findFcmTokenById(created.servantId)
+            )
+            val data = mapOf(
+                "type" to "chat_message",
+                "id" to created.id.toString(),
+                "chatId" to created.chatId.toString(),
+                "memberId" to created.memberId.toString(),
+                "servantId" to created.servantId.toString(),
+                "message" to created.message,
+                "memberName" to member.name,
+                "servantName" to servant.name,
+                "isRead" to created.isRead.toString(),
+                "createdAt" to created.createdAt
+            )
+            firebaseMessagingService.sendToTokens(tokens, "New message", created.message, data)
+        }
+
         return ApiResponse(
             success = true,
             data = created?.convertToResponse(),
@@ -81,5 +110,13 @@ class AnonymousChatMessageRepository(
         message = "",
         isRead = false,
         createdAt = ""
+    )
+
+    private fun idToUserDto(id : Int) = UserDto(
+        id = id,
+        name = "",
+        username = "",
+        passwordHash = "",
+        role = UserRole.member
     )
 }

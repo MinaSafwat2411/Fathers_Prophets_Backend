@@ -5,6 +5,8 @@ CREATE TABLE IF NOT EXISTS anonymous_chats
     member_id   INT                  NOT NULL REFERENCES users (id) ON DELETE CASCADE,
     servant_id  INT                  NOT NULL REFERENCES users (id) ON DELETE CASCADE,
     last_message VARCHAR(255),
+    servant_name VARCHAR(255),
+    member_name VARCHAR(255),
     created_at  TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at  TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
 

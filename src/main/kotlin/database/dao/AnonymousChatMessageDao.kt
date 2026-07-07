@@ -14,6 +14,8 @@ class AnonymousChatMessageDao {
         memberId = row[AnonymousChatMessagesTable.memberId],
         servantId = row[AnonymousChatMessagesTable.servantId],
         message = row[AnonymousChatMessagesTable.message],
+        memberName = row[AnonymousChatMessagesTable.memberName],
+        servantName = row[AnonymousChatMessagesTable.servantName],
         isRead = row[AnonymousChatMessagesTable.isRead],
         createdAt = row[AnonymousChatMessagesTable.createdAt].toString()
     )
@@ -39,6 +41,8 @@ class AnonymousChatMessageDao {
             it[memberId] = dto.memberId
             it[servantId] = dto.servantId
             it[message] = dto.message
+            it[memberName] = dto.memberName
+            it[servantName] = dto.servantName
             it[isRead] = dto.isRead
         } get AnonymousChatMessagesTable.id
     }

@@ -50,6 +50,8 @@ dependencies {
     implementation("io.ktor:ktor-server-websockets:$ktor_version")
 
     implementation("com.squareup.okhttp3:okhttp:5.3.2")
+
+    implementation("com.google.firebase:firebase-admin:9.4.3")
 }
 
 tasks.register<JavaExec>("generatePostmanSmart") {

@@ -145,7 +145,19 @@ class UserDao {
     }
 
     fun findUsersWithBirthDate() = transaction {
-        (UsersTable leftJoin ParentsTable).selectAll().where { UsersTable.birthDate.isNotNull() }
-            .map { resultRowToUser(it) }
+        (UsersTable leftJoin ParentsTable).selectAll().where {
+            UsersTable.birthDate.isNotNull()
+            UsersTable.isReviewed.eq(true)
+        }.map { resultRowToUser(it) }
+    }
+
+    fun findAllFcmTokens() = transaction {
+        UsersTable.selectAll().where { UsersTable.fcmToken.isNotNull() }
+            .mapNotNull { it[UsersTable.fcmToken] }
+    }
+
+    fun findFcmTokenById(id: Int) = transaction {
+        UsersTable.selectAll().where { UsersTable.id eq id }
+            .singleOrNull()?.get(UsersTable.fcmToken)
     }
 }

@@ -8,7 +8,9 @@ data class CreateAnonymousChatMessageRequest(
     val chatId: Int? = null,
     val memberId: Int? = null,
     val servantId: Int? = null,
-    val message: String? = null
+    val message: String? = null,
+    val memberName: String? = null,
+    val servantName: String? = null
 ) {
     fun toAnonymousChatMessageDto() = AnonymousChatMessageDto(
         id = 0,
@@ -16,6 +18,8 @@ data class CreateAnonymousChatMessageRequest(
         memberId = memberId ?: 0,
         servantId = servantId ?: 0,
         message = message ?: "",
+        memberName = memberName,
+        servantName = servantName,
         isRead = false,
         createdAt = ""
     )

@@ -2,6 +2,7 @@ package com.fathersprophets.backend.database.repository.notification
 
 import com.fathersprophets.backend.database.dao.EventDao
 import com.fathersprophets.backend.database.dao.NotificationDao
+import com.fathersprophets.backend.database.dao.UserDao
 import com.fathersprophets.backend.database.tables.EventType
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.EventDto
@@ -9,11 +10,14 @@ import com.fathersprophets.backend.models.dto.NotificationDto
 import com.fathersprophets.backend.models.notification.CreateNotificationRequest
 import com.fathersprophets.backend.models.notification.NotificationResponse
 import com.fathersprophets.backend.models.notification.UpdateNotificationRequest
+import com.fathersprophets.backend.services.notification.IFirebaseMessagingService
 import com.fathersprophets.backend.utils.Localization
 
 class NotificationRepository(
     private val notificationDao: NotificationDao,
-    private val eventDao: EventDao
+    private val eventDao: EventDao,
+    private val userDao: UserDao,
+    private val firebaseMessagingService: IFirebaseMessagingService
 ) : INotificationRepository {
 
     override fun getAllNotifications(lang: String): ApiResponse<List<NotificationResponse>> {
@@ -49,6 +53,12 @@ class NotificationRepository(
 
         val id = notificationDao.create(request.toNotificationDto())
         val created = notificationDao.findById(id)
+
+        if (created != null) {
+            val tokens = userDao.findAllFcmTokens()
+            firebaseMessagingService.sendToTokens(tokens, created.title, created.message ?: "")
+        }
+
         return ApiResponse(
             success = true,
             data = created?.convertToResponse(),

@@ -1,9 +1,11 @@
 package com.fathersprophets.backend
 
 import com.fathersprophets.backend.database.config.DatabaseFactory
+import com.fathersprophets.backend.firebase.FirebaseFactory
 import com.fathersprophets.backend.plugins.configureAuth
 import com.fathersprophets.backend.plugins.configureDI
 import com.fathersprophets.backend.plugins.configureRouting
+import com.fathersprophets.backend.plugins.configureScheduledJobs
 import com.fathersprophets.backend.plugins.configureSerialization
 import com.fathersprophets.backend.plugins.configureStatusPages
 import com.fathersprophets.backend.plugins.configureSwagger
@@ -18,6 +20,7 @@ fun main(args: Array<String>) {
 fun Application.module() {
     Localization.load()
     DatabaseFactory.init()
+    FirebaseFactory.init()
 
     configureDI()
     configureSerialization()
@@ -27,4 +30,5 @@ fun Application.module() {
     configureWebSockets()
 
     configureRouting()
+    configureScheduledJobs()
 }

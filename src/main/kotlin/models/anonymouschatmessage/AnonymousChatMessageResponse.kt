@@ -9,6 +9,8 @@ data class AnonymousChatMessageResponse(
     val memberId: Int,
     val servantId: Int,
     val message: String,
+    val memberName: String? = null,
+    val servantName: String? = null,
     val isRead: Boolean,
     val createdAt: String
 )

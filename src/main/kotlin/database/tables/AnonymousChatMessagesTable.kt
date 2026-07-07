@@ -9,6 +9,8 @@ object AnonymousChatMessagesTable : Table("anonymous_chat_messages") {
     val memberId = reference("member_id", UsersTable.id)
     val servantId = reference("servant_id", UsersTable.id)
     val message = text("message")
+    val servantName = varchar("servant_name", 255).nullable()
+    val memberName = varchar("member_name", 255).nullable()
     val isRead = bool("is_read").default(false)
     val createdAt = timestamp("created_at")
 

@@ -67,6 +67,8 @@ import com.fathersprophets.backend.models.anonymouschat.CreateAnonymousChatReque
 import com.fathersprophets.backend.models.anonymouschat.UpdateAnonymousChatRequest
 import com.fathersprophets.backend.models.anonymouschatmessage.CreateAnonymousChatMessageRequest
 import com.fathersprophets.backend.models.anonymouschatmessage.UpdateAnonymousChatMessageRequest
+import com.fathersprophets.backend.models.notification.CreateNotificationRequest
+import com.fathersprophets.backend.models.notification.UpdateNotificationRequest
 import com.fathersprophets.backend.models.users.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -319,7 +321,8 @@ object EnhancedPostmanGenerator {
         "quiz_answer_id" to "1",
         "user_progress_quiz_id" to "1",
         "anonymous_chat_id" to "1",
-        "anonymous_chat_message_id" to "1"
+        "anonymous_chat_message_id" to "1",
+        "notification_id" to "1"
     )
 
     fun generateCollectionWithModels(
@@ -433,6 +436,7 @@ object PostmanEndpoints {
         // Users
         RequestDefinition("Get All Users", "GET", "users"),
         RequestDefinition("Get Unreviewed Users", "GET", "users/unreviewed"),
+        RequestDefinition("Get Upcoming Birthdays", "GET", "users/birthdays/upcoming"),
         RequestDefinition("Get Users by Role", "GET", "users/role/admin"),
         RequestDefinition("Get User by ID", "GET", "users/1"),
         RequestDefinition("Add User", "POST", "users", AddUserRequest::class),
@@ -704,6 +708,14 @@ object PostmanEndpoints {
         RequestDefinition("Create Anonymous Chat Message", "POST", "anonymous-chat-messages", CreateAnonymousChatMessageRequest::class),
         RequestDefinition("Update Anonymous Chat Message", "PUT", "anonymous-chat-messages/{{anonymous_chat_message_id}}", UpdateAnonymousChatMessageRequest::class),
         RequestDefinition("Delete Anonymous Chat Message", "DELETE", "anonymous-chat-messages/{{anonymous_chat_message_id}}"),
+
+        // Notifications
+        RequestDefinition("Get All Notifications", "GET", "notifications"),
+        RequestDefinition("Get Notification By ID", "GET", "notifications/{{notification_id}}"),
+        RequestDefinition("Get Notifications By Event ID", "GET", "notifications/event/1"),
+        RequestDefinition("Create Notification", "POST", "notifications", CreateNotificationRequest::class),
+        RequestDefinition("Update Notification", "PUT", "notifications/{{notification_id}}", UpdateNotificationRequest::class),
+        RequestDefinition("Delete Notification", "DELETE", "notifications/{{notification_id}}"),
     )
 }
 
