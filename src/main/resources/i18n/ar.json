@@ -294,5 +294,15 @@
   "super_event_booking_not_found": "لا يوجد حجز لهذا الحدث",
   "super_event_booking_already_cancelled": "تم إلغاء هذا الحجز بالفعل",
   "super_event_booking_cancelled_successfully": "تم إلغاء الحجز بنجاح",
-  "super_event_bookings_retrieved_successfully": "تم استرجاع الحجوزات بنجاح"
+  "super_event_bookings_retrieved_successfully": "تم استرجاع الحجوزات بنجاح",
+
+  "super_event_booking_id_required": "معرف الحجز لا يمكن أن يكون فارغًا",
+  "total_paid_required": "المبلغ المدفوع لا يمكن أن يكون فارغًا",
+  "total_paid_invalid": "المبلغ المدفوع يجب أن يكون صفر أو أكبر",
+  "super_event_booking_paid_for_cancelled": "لا يمكن تحديث الدفع لحجز ملغى",
+  "super_event_booking_paid_updated_successfully": "تم تحديث المبلغ المدفوع للحجز بنجاح",
+  "super_event_booking_pay_forbidden": "فقط المدرس المخصص لهذا الحجز يمكنه تأكيد الدفع",
+  "teacher_id_required": "معرف المدرس لا يمكن أن يكون فارغًا",
+  "super_event_booking_teacher_invalid": "المستخدم المحدد ليس مدرسًا",
+  "super_event_booking_teacher_assigned_successfully": "تم تعيين المدرس للحجز بنجاح"
 }

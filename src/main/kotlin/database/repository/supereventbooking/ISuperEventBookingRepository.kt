@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.database.repository.supereventbooking
 
 import com.fathersprophets.backend.models.ApiResponse
+import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingPaymentRequest
 import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingResponse
 
 interface ISuperEventBookingRepository {
@@ -8,4 +9,8 @@ interface ISuperEventBookingRepository {
     fun cancelBooking(superEventId: Int, userId: Int, lang: String): ApiResponse<Nothing>
     fun getBookingsBySuperEventId(superEventId: Int, lang: String): ApiResponse<List<SuperEventBookingResponse>>
     fun getBookingsByUserId(userId: Int, lang: String): ApiResponse<List<SuperEventBookingResponse>>
+    fun updateBookingPaidAmount(
+        paymentRequest: SuperEventBookingPaymentRequest,
+        lang: String
+    ): ApiResponse<SuperEventBookingResponse>
 }

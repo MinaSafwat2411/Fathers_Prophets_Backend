@@ -18,7 +18,7 @@ object JwtConfig {
         .withAudience(audience)
         .build()
 
-    fun generateAccessToken(userId: Int, username: String, role: String,isReviewed: Boolean): String {
+    fun generateAccessToken(userId: Int, username: String, role: String,isReviewed: Boolean, name: String): String {
         return JWT.create()
             .withIssuer(issuer)
             .withAudience(audience)
@@ -26,6 +26,7 @@ object JwtConfig {
             .withClaim("username", username)
             .withClaim("role", role)
             .withClaim("isReviewed", isReviewed)
+            .withClaim("name", name)
             .withExpiresAt(Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hour
             .sign(algorithm)
     }

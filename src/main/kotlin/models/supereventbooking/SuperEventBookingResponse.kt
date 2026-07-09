@@ -7,7 +7,9 @@ data class SuperEventBookingResponse(
     val id: Int,
     val superEventId: Int,
     val userId: Int,
-    val userName: String,
+    val name: String,
+    val totalPaid: Int,
     val status: String,
-    val createdAt: String
+    val createdAt: String,
+    val teacherId: Int?
 )

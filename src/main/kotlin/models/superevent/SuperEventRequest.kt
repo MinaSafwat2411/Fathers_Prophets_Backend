@@ -13,7 +13,8 @@ data class SuperEventRequest(
     val lastBookingDate: String? = null,
     val totalSeats: Int? = null,
     val waitingListLimit: Int? = null,
-    val image: String? = null
+    val image: String? = null,
+    val teachers : List<SuperEventTeacher>? = null
 ) {
     fun convertToDto(id: Int) = SuperEventDto(
         id = id,
@@ -26,6 +27,7 @@ data class SuperEventRequest(
         totalSeats = totalSeats ?: 0,
         waitingListLimit = waitingListLimit ?: 0,
         image = image,
-        createdAt = ""
+        createdAt = "",
+        teachers = teachers ?: emptyList()
     )
 }

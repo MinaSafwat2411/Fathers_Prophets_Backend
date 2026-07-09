@@ -2,6 +2,8 @@ package com.fathersprophets.backend.database.dao
 
 import com.fathersprophets.backend.database.tables.SuperEventsTable
 import com.fathersprophets.backend.models.dto.SuperEventDto
+import com.fathersprophets.backend.models.superevent.SuperEventTeacher
+import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.greaterEq
@@ -25,7 +27,8 @@ class SuperEventDao {
         totalSeats = row[SuperEventsTable.totalSeats],
         waitingListLimit = row[SuperEventsTable.waitingListLimit],
         image = row[SuperEventsTable.image],
-        createdAt = row[SuperEventsTable.createdAt].toString()
+        createdAt = row[SuperEventsTable.createdAt].toString(),
+        teachers = Json.decodeFromString<List<SuperEventTeacher>>(row[SuperEventsTable.teachers])
     )
 
     fun findAll() = transaction {
@@ -56,6 +59,7 @@ class SuperEventDao {
             it[totalSeats] = dto.totalSeats
             it[waitingListLimit] = dto.waitingListLimit
             it[image] = dto.image
+            it[teachers] = Json.encodeToString(dto.teachers)
         } get SuperEventsTable.id
     }
 

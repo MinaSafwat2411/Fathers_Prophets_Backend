@@ -294,5 +294,15 @@
   "super_event_booking_not_found": "Booking not found for this event",
   "super_event_booking_already_cancelled": "This booking has already been cancelled",
   "super_event_booking_cancelled_successfully": "Booking cancelled successfully",
-  "super_event_bookings_retrieved_successfully": "Bookings retrieved successfully"
+  "super_event_bookings_retrieved_successfully": "Bookings retrieved successfully",
+
+  "super_event_booking_id_required": "Booking ID cannot be empty",
+  "total_paid_required": "Total paid amount cannot be empty",
+  "total_paid_invalid": "Total paid amount must be zero or greater",
+  "super_event_booking_paid_for_cancelled": "Cannot update payment for a cancelled booking",
+  "super_event_booking_paid_updated_successfully": "Booking paid amount updated successfully",
+  "super_event_booking_pay_forbidden": "Only the teacher assigned to this booking can confirm payment",
+  "teacher_id_required": "Teacher ID cannot be empty",
+  "super_event_booking_teacher_invalid": "Selected user is not a teacher",
+  "super_event_booking_teacher_assigned_successfully": "Teacher assigned to booking successfully"
 }

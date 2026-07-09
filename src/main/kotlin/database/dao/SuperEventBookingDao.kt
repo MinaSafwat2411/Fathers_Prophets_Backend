@@ -18,10 +18,17 @@ class SuperEventBookingDao {
         id = row[SuperEventBookingsTable.id],
         superEventId = row[SuperEventBookingsTable.superEventId],
         userId = row[SuperEventBookingsTable.userId],
-        userName = row[SuperEventBookingsTable.userName],
+        name = row[SuperEventBookingsTable.name],
+        totalPaid = row[SuperEventBookingsTable.totalPaid],
         status = row[SuperEventBookingsTable.status],
-        createdAt = row[SuperEventBookingsTable.createdAt].toString()
+        createdAt = row[SuperEventBookingsTable.createdAt].toString(),
+        teacherId = row[SuperEventBookingsTable.teacherId]
     )
+
+    fun findById(id: Int) = transaction {
+        SuperEventBookingsTable.selectAll().where { SuperEventBookingsTable.id eq id }
+            .singleOrNull()?.let { rowToDto(it) }
+    }
 
     fun findByEventAndUser(superEventId: Int, userId: Int) = transaction {
         SuperEventBookingsTable.selectAll().where {
@@ -62,14 +69,21 @@ class SuperEventBookingDao {
         SuperEventBookingsTable.insert {
             it[superEventId] = dto.superEventId
             it[userId] = dto.userId
-            it[userName] = dto.userName
+            it[name] = dto.name
             it[status] = dto.status
+            it[teacherId] = dto.teacherId
         } get SuperEventBookingsTable.id
     }
 
     fun updateStatus(id: Int, status: SuperEventBookingStatus) = transaction {
         SuperEventBookingsTable.update({ SuperEventBookingsTable.id eq id }) {
             it[SuperEventBookingsTable.status] = status
+        } > 0
+    }
+
+    fun updateTotalPaid(id: Int, totalPaid: Int) = transaction {
+        SuperEventBookingsTable.update({ SuperEventBookingsTable.id eq id }) {
+            it[SuperEventBookingsTable.totalPaid] = totalPaid
         } > 0
     }
 }

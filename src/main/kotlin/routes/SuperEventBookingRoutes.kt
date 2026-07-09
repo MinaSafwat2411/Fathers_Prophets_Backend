@@ -1,6 +1,10 @@
 package com.fathersprophets.backend.routes
 
+import com.fathersprophets.backend.exceptions.userRole
+import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingPaymentRequest
 import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingRequest
+import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingTeacherRequest
+import com.fathersprophets.backend.plugins.forbidRoles
 import com.fathersprophets.backend.plugins.requireRole
 import com.fathersprophets.backend.services.supereventbooking.ISuperEventBookingService
 import io.ktor.server.auth.*
@@ -46,6 +50,18 @@ fun Route.superEventBookingRoutes(superEventBookingService: ISuperEventBookingSe
             val principal = call.principal<JWTPrincipal>()
             val userId = principal?.payload?.getClaim("userId")?.asInt()
             call.respond(superEventBookingService.getBookingsByUserId(userId, lang))
+        }
+
+        put("/{id}/pay") {
+            call.forbidRoles("members")
+            val lang = call.request.header("Accept-Language") ?: "en"
+            val principal = call.principal<JWTPrincipal>()
+            val request = call.receive<SuperEventBookingPaymentRequest>()
+            call.respond(
+                superEventBookingService.updateBookingPaidAmount(request.copy(
+                    teacherId = principal?.payload?.getClaim("userId")?.asInt()
+                ), lang)
+            )
         }
     }
 }

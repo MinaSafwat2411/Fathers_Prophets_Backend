@@ -6,10 +6,12 @@ import com.fathersprophets.backend.database.dao.UserDao
 import com.fathersprophets.backend.database.tables.SuperEventBookingStatus
 import com.fathersprophets.backend.database.tables.UserRole
 import com.fathersprophets.backend.exceptions.ConflictException
+import com.fathersprophets.backend.exceptions.ForbiddenException
 import com.fathersprophets.backend.exceptions.NotFoundException
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.SuperEventBookingDto
 import com.fathersprophets.backend.models.dto.UserDto
+import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingPaymentRequest
 import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingResponse
 import com.fathersprophets.backend.utils.Localization
 import java.time.LocalDate
@@ -56,7 +58,8 @@ class SuperEventBookingRepository(
                     id = 0,
                     superEventId = superEventId,
                     userId = userId,
-                    userName = user.name,
+                    name = user.name,
+                    totalPaid = 0,
                     status = status,
                     createdAt = ""
                 )
@@ -77,8 +80,8 @@ class SuperEventBookingRepository(
         )
     }
 
-    override fun cancelBooking(superEventId: Int, userId: Int, lang: String): ApiResponse<Nothing> {
-        val booking = superEventBookingDao.findByEventAndUser(superEventId, userId)
+    override fun cancelBooking(bookingId: Int, userId: Int, lang: String): ApiResponse<Nothing> {
+        val booking = superEventBookingDao.findByEventAndUser(bookingId, userId)
             ?: throw NotFoundException(Localization.get("super_event_booking_not_found", lang))
 
         if (booking.status == SuperEventBookingStatus.cancelled) {
@@ -113,6 +116,26 @@ class SuperEventBookingRepository(
             success = true,
             data = superEventBookingDao.findByUserId(userId).map { it.convertToResponse() },
             message = Localization.get("super_event_bookings_retrieved_successfully", lang)
+        )
+    }
+
+    override fun updateBookingPaidAmount(
+        paymentRequest: SuperEventBookingPaymentRequest,
+        lang: String
+    ): ApiResponse<SuperEventBookingResponse> {
+        val superEvent = superEventDao.findById(paymentRequest.bookingId?:0)
+            ?: throw NotFoundException(Localization.get("super_event_booking_not_found", lang))
+
+        val  teacher = superEvent.teachers
+            .find { it.id == paymentRequest.teacherId }
+            ?: throw NotFoundException(Localization.get("teacher_not_found", lang))
+
+        superEventBookingDao.updateTotalPaid(paymentRequest.bookingId?:0, paymentRequest.totalPaid?:0)
+
+        return ApiResponse(
+            success = true,
+            data = superEventBookingDao.findById(paymentRequest.bookingId?:0)?.convertToResponse(),
+            message = Localization.get("super_event_booking_paid_updated_successfully", lang)
         )
     }
 }

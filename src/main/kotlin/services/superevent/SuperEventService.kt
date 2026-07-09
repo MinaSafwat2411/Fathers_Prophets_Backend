@@ -32,6 +32,10 @@ class SuperEventService(
             request.endDate to "end_date",
             request.lastBookingDate to "last_booking_date",
             request.totalSeats to "total_seats",
+            request.waitingListLimit to "waiting_list_limit",
+            request.teachers to "teachers",
+            request.description to "description",
+            request.location to "location",
             lang = lang
         )
         return superEventRepository.createSuperEvent(request, lang)
@@ -45,6 +49,10 @@ class SuperEventService(
             request.endDate to "end_date",
             request.lastBookingDate to "last_booking_date",
             request.totalSeats to "total_seats",
+            request.waitingListLimit to "waiting_list_limit",
+            request.teachers to "teachers",
+            request.description to "description",
+            request.location to "location",
             lang = lang
         )
         return superEventRepository.updateSuperEvent(id, request, lang)

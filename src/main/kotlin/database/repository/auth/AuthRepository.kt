@@ -69,7 +69,8 @@ class AuthRepository(
             user.id,
             user.username,
             user.role.name,
-            user.isReviewed == true
+            user.isReviewed == true,
+            user.name
         )
         val refreshToken = JwtConfig.generateRefreshToken(user.id)
 
@@ -138,7 +139,8 @@ class AuthRepository(
             userDto.id,
             userDto.username,
             userDto.role.name,
-            userDto.isReviewed == true
+            userDto.isReviewed == true,
+            userDto.name
         )
     }
 

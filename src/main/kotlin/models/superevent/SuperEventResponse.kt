@@ -14,5 +14,6 @@ data class SuperEventResponse(
     val totalSeats: Int,
     val waitingListLimit: Int,
     val image: String?,
-    val createdAt: String
+    val createdAt: String,
+    val teachers : List<SuperEventTeacher>?
 )

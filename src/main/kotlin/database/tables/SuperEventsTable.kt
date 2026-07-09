@@ -17,6 +17,7 @@ object SuperEventsTable : Table("super_events") {
     val waitingListLimit = integer("waiting_list_limit").default(0)
     val image = varchar("image", 255).nullable()
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
+    val teachers = json("teachers").default("[]")
 
     override val primaryKey = PrimaryKey(id)
 }

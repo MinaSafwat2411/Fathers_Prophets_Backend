@@ -18,7 +18,8 @@ object SuperEventBookingsTable : Table("super_event_bookings") {
         .index("idx_super_event_bookings_event_id")
     val userId = reference("user_id", UsersTable.id, onDelete = ReferenceOption.CASCADE)
         .index("idx_super_event_bookings_user_id")
-    val userName = varchar("user_name", 255)
+    val name = varchar("name", 255)
+    val totalPaid = integer("total_paid").default(0)
     val status = customEnumeration(
         "status",
         "super_event_booking_status",
@@ -26,6 +27,9 @@ object SuperEventBookingsTable : Table("super_event_bookings") {
         { PGobject().apply { type = "super_event_booking_status"; value = it.name } }
     ).index("idx_super_event_bookings_status")
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
+    val teacherId = reference("teacher_id", UsersTable.id, onDelete = ReferenceOption.SET_NULL)
+        .nullable()
+        .index("idx_super_event_bookings_teacher_id")
 
     override val primaryKey = PrimaryKey(id)
 

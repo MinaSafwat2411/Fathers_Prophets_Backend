@@ -70,7 +70,9 @@ import com.fathersprophets.backend.models.anonymouschatmessage.UpdateAnonymousCh
 import com.fathersprophets.backend.models.notification.CreateNotificationRequest
 import com.fathersprophets.backend.models.notification.UpdateNotificationRequest
 import com.fathersprophets.backend.models.superevent.SuperEventRequest
+import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingPaymentRequest
 import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingRequest
+import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingTeacherRequest
 import com.fathersprophets.backend.models.users.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -202,6 +204,7 @@ object ExampleValueGenerator {
             fieldName.contains("enddate", ignoreCase = true) -> "2026-08-05"
             fieldName.contains("lastbookingdate", ignoreCase = true) -> "2026-07-25"
             fieldName.contains("totalseats", ignoreCase = true) -> 120
+            fieldName.contains("totalpaid", ignoreCase = true) -> 500
             fieldName.contains("waitinglistlimit", ignoreCase = true) -> 30
             fieldName.contains("location", ignoreCase = true) -> "St. Mark Church Hall"
             fieldName.contains("description", ignoreCase = true) -> "Sample description"
@@ -332,7 +335,8 @@ object EnhancedPostmanGenerator {
         "anonymous_chat_id" to "1",
         "anonymous_chat_message_id" to "1",
         "notification_id" to "1",
-        "super_event_id" to "1"
+        "super_event_id" to "1",
+        "super_event_booking_id" to "1"
     )
 
     fun generateCollectionWithModels(
@@ -741,6 +745,8 @@ object PostmanEndpoints {
         RequestDefinition("Cancel Super Event Booking", "DELETE", "super-event-bookings/{{super_event_id}}"),
         RequestDefinition("Get Super Event Bookings By Event ID", "GET", "super-event-bookings/event/{{super_event_id}}"),
         RequestDefinition("Get My Super Event Bookings", "GET", "super-event-bookings/me"),
+        RequestDefinition("Update Super Event Booking Paid Amount", "PUT", "super-event-bookings/{{super_event_booking_id}}/pay", SuperEventBookingPaymentRequest::class),
+        RequestDefinition("Assign Teacher To Super Event Booking", "PUT", "super-event-bookings/{{super_event_booking_id}}/teacher", SuperEventBookingTeacherRequest::class),
     )
 }
 

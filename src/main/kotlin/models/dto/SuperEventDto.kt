@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.models.dto
 
 import com.fathersprophets.backend.models.superevent.SuperEventResponse
+import com.fathersprophets.backend.models.superevent.SuperEventTeacher
 
 data class SuperEventDto(
     val id: Int,
@@ -13,7 +14,8 @@ data class SuperEventDto(
     val totalSeats: Int,
     val waitingListLimit: Int,
     val image: String?,
-    val createdAt: String
+    val createdAt: String,
+    val teachers : List<SuperEventTeacher>
 ) {
     fun convertToResponse() = SuperEventResponse(
         id = id,
@@ -26,6 +28,7 @@ data class SuperEventDto(
         totalSeats = totalSeats,
         waitingListLimit = waitingListLimit,
         image = image,
-        createdAt = createdAt
+        createdAt = createdAt,
+        teachers = teachers
     )
 }

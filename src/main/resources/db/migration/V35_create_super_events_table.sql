@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS super_events
     total_seats       INT                      NOT NULL,
     waiting_list_limit INT                     NOT NULL DEFAULT 0,
     image             VARCHAR(255),
+    teachers          JSONB                    NOT NULL DEFAULT '[]'::JSONB,
     created_at        TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
