@@ -21,15 +21,15 @@ class ClassMemberDao {
         userId = row[ClassMemberTable.userId]
     )
 
-    fun findMemberClass(classMemberDto: ClassMemberDto) = transaction {
+    fun findMemberClass(classId : Int) = transaction {
         (ClassMemberTable innerJoin UsersTable)
             .selectAll()
-            .where { ClassMemberTable.classId eq classMemberDto.classId }
+            .where { ClassMemberTable.classId eq classId }
             .map { resultRowToClassMember(it) }
     }
 
-    fun findById(classMemberDto: ClassMemberDto) = transaction {
-        ClassMemberTable.selectAll().where { ClassMemberTable.id eq classMemberDto.id }
+    fun findById(classMemberId: Int) = transaction {
+        ClassMemberTable.selectAll().where { ClassMemberTable.id eq classMemberId }
             .singleOrNull()?.let { resultRowToClassMember(it) }
     }
     fun addMember(classMemberDto: ClassMemberDto) = transaction {
