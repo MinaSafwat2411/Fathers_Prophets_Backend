@@ -276,5 +276,23 @@
   "user_progress_quiz_updated_successfully": "تم تحديث تقدم المستخدم بنجاح",
   "user_progress_quiz_deleted_successfully": "تم حذف تقدم المستخدم بنجاح",
   "user_progress_quiz_not_found": "تقدم المستخدم غير موجود",
-  "user_progress_quiz_already_exists": "تقدم المستخدم موجود بالفعل لهذا اليوم من الكويز"
+  "user_progress_quiz_already_exists": "تقدم المستخدم موجود بالفعل لهذا اليوم من الكويز",
+
+  "super_event_id_required": "معرف الرحلة/المؤتمر لا يمكن أن يكون فارغًا",
+  "super_events_retrieved_successfully": "تم استرجاع الرحلات والمؤتمرات بنجاح",
+  "super_event_retrieved_successfully": "تم استرجاع الرحلة/المؤتمر بنجاح",
+  "super_event_created_successfully": "تم إنشاء الرحلة/المؤتمر بنجاح",
+  "super_event_updated_successfully": "تم تحديث الرحلة/المؤتمر بنجاح",
+  "super_event_deleted_successfully": "تم حذف الرحلة/المؤتمر بنجاح",
+  "super_event_not_found": "الرحلة/المؤتمر غير موجود",
+  "super_event_availability_retrieved_successfully": "تم استرجاع بيانات الأماكن المتاحة بنجاح",
+  "super_event_booking_closed": "الحجز لهذه الرحلة/المؤتمر مغلق",
+  "super_event_already_booked": "لديك بالفعل مقعد أو مكان في قائمة الانتظار لهذا الحدث",
+  "super_event_full": "هذا الحدث مكتمل العدد وقائمة الانتظار مكتملة أيضًا",
+  "super_event_seat_booked_successfully": "تم حجز المقعد بنجاح",
+  "super_event_added_to_waiting_list": "الحدث مكتمل العدد، تم إضافتك إلى قائمة الانتظار",
+  "super_event_booking_not_found": "لا يوجد حجز لهذا الحدث",
+  "super_event_booking_already_cancelled": "تم إلغاء هذا الحجز بالفعل",
+  "super_event_booking_cancelled_successfully": "تم إلغاء الحجز بنجاح",
+  "super_event_bookings_retrieved_successfully": "تم استرجاع الحجوزات بنجاح"
 }

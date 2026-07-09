@@ -276,5 +276,23 @@
   "user_progress_quiz_updated_successfully": "User progress updated successfully",
   "user_progress_quiz_deleted_successfully": "User progress deleted successfully",
   "user_progress_quiz_not_found": "User progress not found",
-  "user_progress_quiz_already_exists": "User progress already exists for this quiz day"
+  "user_progress_quiz_already_exists": "User progress already exists for this quiz day",
+
+  "super_event_id_required": "Super event ID cannot be empty",
+  "super_events_retrieved_successfully": "Super events retrieved successfully",
+  "super_event_retrieved_successfully": "Super event retrieved successfully",
+  "super_event_created_successfully": "Super event created successfully",
+  "super_event_updated_successfully": "Super event updated successfully",
+  "super_event_deleted_successfully": "Super event deleted successfully",
+  "super_event_not_found": "Super event not found",
+  "super_event_availability_retrieved_successfully": "Super event availability retrieved successfully",
+  "super_event_booking_closed": "Booking for this event is closed",
+  "super_event_already_booked": "You already have a seat or waiting list spot for this event",
+  "super_event_full": "This event is fully booked and the waiting list is full",
+  "super_event_seat_booked_successfully": "Seat booked successfully",
+  "super_event_added_to_waiting_list": "Event is full, you have been added to the waiting list",
+  "super_event_booking_not_found": "Booking not found for this event",
+  "super_event_booking_already_cancelled": "This booking has already been cancelled",
+  "super_event_booking_cancelled_successfully": "Booking cancelled successfully",
+  "super_event_bookings_retrieved_successfully": "Bookings retrieved successfully"
 }

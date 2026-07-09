@@ -29,6 +29,8 @@ import com.fathersprophets.backend.database.dao.QuizDao
 import com.fathersprophets.backend.database.dao.QuizDayDao
 import com.fathersprophets.backend.database.dao.QuizDayQuestionDao
 import com.fathersprophets.backend.database.dao.SessionDao
+import com.fathersprophets.backend.database.dao.SuperEventDao
+import com.fathersprophets.backend.database.dao.SuperEventBookingDao
 import com.fathersprophets.backend.database.dao.UserProgressQuizDao
 import com.fathersprophets.backend.database.dao.TimelineAnswerDao
 import com.fathersprophets.backend.database.dao.TimelineDao
@@ -94,6 +96,10 @@ import com.fathersprophets.backend.database.repository.quizdayquestion.IQuizDayQ
 import com.fathersprophets.backend.database.repository.quizdayquestion.QuizDayQuestionRepository
 import com.fathersprophets.backend.database.repository.sessions.ISessionRepository
 import com.fathersprophets.backend.database.repository.sessions.SessionRepository
+import com.fathersprophets.backend.database.repository.superevent.ISuperEventRepository
+import com.fathersprophets.backend.database.repository.superevent.SuperEventRepository
+import com.fathersprophets.backend.database.repository.supereventbooking.ISuperEventBookingRepository
+import com.fathersprophets.backend.database.repository.supereventbooking.SuperEventBookingRepository
 import com.fathersprophets.backend.database.repository.userprogressquiz.IUserProgressQuizRepository
 import com.fathersprophets.backend.database.repository.userprogressquiz.UserProgressQuizRepository
 import com.fathersprophets.backend.database.repository.timeline.ITimelineRepository
@@ -167,6 +173,10 @@ import com.fathersprophets.backend.services.quizdayquestion.IQuizDayQuestionServ
 import com.fathersprophets.backend.services.quizdayquestion.QuizDayQuestionService
 import com.fathersprophets.backend.services.session.ISessionService
 import com.fathersprophets.backend.services.session.SessionService
+import com.fathersprophets.backend.services.superevent.ISuperEventService
+import com.fathersprophets.backend.services.superevent.SuperEventService
+import com.fathersprophets.backend.services.supereventbooking.ISuperEventBookingService
+import com.fathersprophets.backend.services.supereventbooking.SuperEventBookingService
 import com.fathersprophets.backend.services.userprogressquiz.IUserProgressQuizService
 import com.fathersprophets.backend.services.userprogressquiz.UserProgressQuizService
 import com.fathersprophets.backend.services.timeline.ITimelineService
@@ -214,6 +224,8 @@ val appModule = module {
     single { QuizDayQuestionDao() }
     single { AnonymousChatDao() }
     single { AnonymousChatMessageDao() }
+    single { SuperEventDao() }
+    single { SuperEventBookingDao() }
 
     single<IAuthRepository> {
         AuthRepository(
@@ -497,6 +509,22 @@ val appModule = module {
 
     single<IAnonymousChatMessageService> {
         AnonymousChatMessageService(get())
+    }
+
+    single<ISuperEventRepository> {
+        SuperEventRepository(get(), get())
+    }
+
+    single<ISuperEventService> {
+        SuperEventService(get())
+    }
+
+    single<ISuperEventBookingRepository> {
+        SuperEventBookingRepository(get(), get(), get())
+    }
+
+    single<ISuperEventBookingService> {
+        SuperEventBookingService(get())
     }
 
 }

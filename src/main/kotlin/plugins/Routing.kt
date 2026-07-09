@@ -36,6 +36,8 @@ import com.fathersprophets.backend.routes.personRoutes
 import com.fathersprophets.backend.routes.profileRoutes
 import com.fathersprophets.backend.routes.sessionRoutes
 import com.fathersprophets.backend.routes.settingRoutes
+import com.fathersprophets.backend.routes.superEventRoutes
+import com.fathersprophets.backend.routes.superEventBookingRoutes
 import com.fathersprophets.backend.routes.userRoutes
 import com.fathersprophets.backend.services.anonymouschat.IAnonymousChatService
 import com.fathersprophets.backend.services.anonymouschatmessage.IAnonymousChatMessageService
@@ -70,6 +72,8 @@ import com.fathersprophets.backend.services.personstoryquestion.IPersonStoryQues
 import com.fathersprophets.backend.services.personmcq.IPersonMcqService
 import com.fathersprophets.backend.services.personquestion.IPersonQuestionService
 import com.fathersprophets.backend.services.session.ISessionService
+import com.fathersprophets.backend.services.superevent.ISuperEventService
+import com.fathersprophets.backend.services.supereventbooking.ISuperEventBookingService
 import com.fathersprophets.backend.services.users.IUserService
 import com.fathersprophets.backend.services.version.IVersionService
 import io.ktor.server.application.*
@@ -114,6 +118,8 @@ fun Application.configureRouting() {
     val quizDayQuestionService = get<IQuizDayQuestionService>()
     val anonymousChatService = get<IAnonymousChatService>()
     val anonymousChatMessageService = get<IAnonymousChatMessageService>()
+    val superEventService = get<ISuperEventService>()
+    val superEventBookingService = get<ISuperEventBookingService>()
 
     routing {
         route("/api/v1") {
@@ -157,6 +163,8 @@ fun Application.configureRouting() {
                 quizDayQuestionRoutes(quizDayQuestionService)
                 anonymousChatRoutes(anonymousChatService)
                 anonymousChatMessageRoutes(anonymousChatMessageService)
+                superEventRoutes(superEventService)
+                superEventBookingRoutes(superEventBookingService)
             }
             
             get("/healthcheck") {

@@ -27,6 +27,7 @@ object DatabaseFactory {
             exec("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'escape_egypt_type') THEN CREATE TYPE escape_egypt_type AS ENUM ('from', 'to'); END IF; END $$;")
             exec("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'day_of_week') THEN CREATE TYPE day_of_week AS ENUM ('SAT', 'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI'); END IF; END $$;")
             exec("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'quiz_day_type') THEN CREATE TYPE quiz_day_type AS ENUM ('TRUE_FALSE', 'MCQ'); END IF; END $$;")
+            exec("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'super_event_booking_status') THEN CREATE TYPE super_event_booking_status AS ENUM ('booked', 'waiting', 'cancelled'); END IF; END $$;")
 
             SchemaUtils.create(
                 UsersTable,
@@ -65,6 +66,8 @@ object DatabaseFactory {
                 UserProgressQuizTable,
                 AnonymousChatMessagesTable,
                 AnonymousChatsTable,
+                SuperEventsTable,
+                SuperEventBookingsTable,
             )
         }
     }

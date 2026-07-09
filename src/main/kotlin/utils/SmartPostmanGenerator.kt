@@ -69,6 +69,8 @@ import com.fathersprophets.backend.models.anonymouschatmessage.CreateAnonymousCh
 import com.fathersprophets.backend.models.anonymouschatmessage.UpdateAnonymousChatMessageRequest
 import com.fathersprophets.backend.models.notification.CreateNotificationRequest
 import com.fathersprophets.backend.models.notification.UpdateNotificationRequest
+import com.fathersprophets.backend.models.superevent.SuperEventRequest
+import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingRequest
 import com.fathersprophets.backend.models.users.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -196,6 +198,13 @@ object ExampleValueGenerator {
             fieldName.contains("version", ignoreCase = true) -> "1.0.0"
             fieldName.contains("joindate", ignoreCase = true) -> "2024-01-15"
             fieldName.contains("datetime", ignoreCase = true) -> "2024-10-15T18:00:00"
+            fieldName.contains("startdate", ignoreCase = true) -> "2026-08-01"
+            fieldName.contains("enddate", ignoreCase = true) -> "2026-08-05"
+            fieldName.contains("lastbookingdate", ignoreCase = true) -> "2026-07-25"
+            fieldName.contains("totalseats", ignoreCase = true) -> 120
+            fieldName.contains("waitinglistlimit", ignoreCase = true) -> 30
+            fieldName.contains("location", ignoreCase = true) -> "St. Mark Church Hall"
+            fieldName.contains("description", ignoreCase = true) -> "Sample description"
             fieldName.contains("order", ignoreCase = true) -> listOf(1, 2, 3, 4)
             fieldName.contains("question", ignoreCase = true) && fieldType == String::class -> "Sample question?"
             fieldName == "correctAnswer" -> "1"
@@ -322,7 +331,8 @@ object EnhancedPostmanGenerator {
         "user_progress_quiz_id" to "1",
         "anonymous_chat_id" to "1",
         "anonymous_chat_message_id" to "1",
-        "notification_id" to "1"
+        "notification_id" to "1",
+        "super_event_id" to "1"
     )
 
     fun generateCollectionWithModels(
@@ -716,6 +726,21 @@ object PostmanEndpoints {
         RequestDefinition("Create Notification", "POST", "notifications", CreateNotificationRequest::class),
         RequestDefinition("Update Notification", "PUT", "notifications/{{notification_id}}", UpdateNotificationRequest::class),
         RequestDefinition("Delete Notification", "DELETE", "notifications/{{notification_id}}"),
+
+        // Super Events
+        RequestDefinition("Get All Super Events", "GET", "super-events"),
+        RequestDefinition("Get Upcoming Super Events", "GET", "super-events/upcoming"),
+        RequestDefinition("Get Super Event By ID", "GET", "super-events/{{super_event_id}}"),
+        RequestDefinition("Get Super Event Availability", "GET", "super-events/{{super_event_id}}/availability"),
+        RequestDefinition("Create Super Event", "POST", "super-events", SuperEventRequest::class),
+        RequestDefinition("Update Super Event", "PUT", "super-events/{{super_event_id}}", SuperEventRequest::class),
+        RequestDefinition("Delete Super Event", "DELETE", "super-events/{{super_event_id}}"),
+
+        // Super Event Bookings
+        RequestDefinition("Book Super Event Seat", "POST", "super-event-bookings", SuperEventBookingRequest::class),
+        RequestDefinition("Cancel Super Event Booking", "DELETE", "super-event-bookings/{{super_event_id}}"),
+        RequestDefinition("Get Super Event Bookings By Event ID", "GET", "super-event-bookings/event/{{super_event_id}}"),
+        RequestDefinition("Get My Super Event Bookings", "GET", "super-event-bookings/me"),
     )
 }
 
