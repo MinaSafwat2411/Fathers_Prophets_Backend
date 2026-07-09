@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.repository.anonymouschatmessage
 
-import com.fathersprophets.backend.database.dao.AnonymousChatDao
-import com.fathersprophets.backend.database.dao.AnonymousChatMessageDao
+import com.fathersprophets.backend.database.dao.chat.AnonymousChatDao
+import com.fathersprophets.backend.database.dao.chat.AnonymousChatMessageDao
 import com.fathersprophets.backend.database.dao.UserDao
 import com.fathersprophets.backend.database.tables.UserRole
 import com.fathersprophets.backend.models.ApiResponse

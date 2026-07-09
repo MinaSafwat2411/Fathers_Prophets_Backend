@@ -1,10 +1,14 @@
-package com.fathersprophets.backend.database.dao
+package com.fathersprophets.backend.database.dao.chat
 
 import com.fathersprophets.backend.database.tables.AnonymousChatsTable
 import com.fathersprophets.backend.models.dto.AnonymousChatDto
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 
 class AnonymousChatDao {
 
@@ -21,6 +25,16 @@ class AnonymousChatDao {
         AnonymousChatsTable.selectAll().map { rowToDto(it) }
     }
 
+    fun findChatByMemberId(memberId: Int) = transaction {
+        AnonymousChatsTable.selectAll().where { AnonymousChatsTable.memberId eq memberId }
+            .singleOrNull()?.let { rowToDto(it) }
+    }
+
+    fun findChatByServantId(servantId: Int) = transaction {
+        AnonymousChatsTable.selectAll().where { AnonymousChatsTable.servantId eq servantId }
+            .singleOrNull()?.let { rowToDto(it) }
+    }
+
     fun findById(id: Int) = transaction {
         AnonymousChatsTable.selectAll().where { AnonymousChatsTable.id eq id }
             .singleOrNull()?.let { rowToDto(it) }
@@ -34,13 +48,13 @@ class AnonymousChatDao {
         } get AnonymousChatsTable.id
     }
 
-    fun update(dto: AnonymousChatDto) = transaction {
-        AnonymousChatsTable.update({ AnonymousChatsTable.id eq dto.id }) {
+    fun update(id: Int, dto: AnonymousChatDto) = transaction {
+        AnonymousChatsTable.update({ AnonymousChatsTable.id eq id }) {
             it[lastMessage] = dto.lastMessage
         } > 0
     }
 
-    fun delete(dto: AnonymousChatDto) = transaction {
-        AnonymousChatsTable.deleteWhere { AnonymousChatsTable.id eq dto.id } > 0
+    fun delete(id: Int) = transaction {
+        AnonymousChatsTable.deleteWhere { AnonymousChatsTable.id eq id } > 0
     }
 }

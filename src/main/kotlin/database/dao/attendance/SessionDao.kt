@@ -1,10 +1,14 @@
-package com.fathersprophets.backend.database.dao
+package com.fathersprophets.backend.database.dao.attendance
 
 import com.fathersprophets.backend.database.tables.SessionTable
 import com.fathersprophets.backend.models.dto.SessionDto
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 import java.time.LocalDateTime
 
 class SessionDao {
@@ -13,7 +17,7 @@ class SessionDao {
         dateTime = row[SessionTable.dateTime].toString(),
         createdAt = row[SessionTable.createdAt].toString()
     )
-    
+
     fun addSession(session: SessionDto) = transaction {
         SessionTable.insert {
             it[dateTime] = LocalDateTime.parse(session.dateTime)
@@ -24,11 +28,10 @@ class SessionDao {
         SessionTable.update({ SessionTable.id eq session.id }) {
             it[dateTime] = LocalDateTime.parse(session.dateTime)
         }
-        return@transaction session
     }
 
-    fun deleteSession(session: SessionDto) = transaction {
-        SessionTable.deleteWhere { SessionTable.id eq session.id }
+    fun deleteSession(sessionId: Int) = transaction {
+        SessionTable.deleteWhere { SessionTable.id eq sessionId }
     }
 
     fun getSessionById(sessionId: Int) = transaction {

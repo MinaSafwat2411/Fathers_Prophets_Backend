@@ -1,10 +1,10 @@
 package com.fathersprophets.backend.di
 
-import com.fathersprophets.backend.database.dao.AnonymousChatDao
-import com.fathersprophets.backend.database.dao.AnonymousChatMessageDao
-import com.fathersprophets.backend.database.dao.AttendanceDao
-import com.fathersprophets.backend.database.dao.ClassDao
-import com.fathersprophets.backend.database.dao.ClassMemberDao
+import com.fathersprophets.backend.database.dao.chat.AnonymousChatDao
+import com.fathersprophets.backend.database.dao.chat.AnonymousChatMessageDao
+import com.fathersprophets.backend.database.dao.attendance.AttendanceDao
+import com.fathersprophets.backend.database.dao.classes.ClassDao
+import com.fathersprophets.backend.database.dao.classes.ClassMemberDao
 import com.fathersprophets.backend.database.dao.CommentDao
 import com.fathersprophets.backend.database.dao.EscapeEgyptAnswerDao
 import com.fathersprophets.backend.database.dao.EscapeEgyptDao
@@ -28,7 +28,7 @@ import com.fathersprophets.backend.database.dao.QuizAnswerDao
 import com.fathersprophets.backend.database.dao.QuizDao
 import com.fathersprophets.backend.database.dao.QuizDayDao
 import com.fathersprophets.backend.database.dao.QuizDayQuestionDao
-import com.fathersprophets.backend.database.dao.SessionDao
+import com.fathersprophets.backend.database.dao.attendance.SessionDao
 import com.fathersprophets.backend.database.dao.SuperEventDao
 import com.fathersprophets.backend.database.dao.SuperEventBookingDao
 import com.fathersprophets.backend.database.dao.UserProgressQuizDao

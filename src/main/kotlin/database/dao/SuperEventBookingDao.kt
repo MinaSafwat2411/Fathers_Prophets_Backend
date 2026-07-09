@@ -24,41 +24,33 @@ class SuperEventBookingDao {
         createdAt = row[SuperEventBookingsTable.createdAt].toString(),
         teacherId = row[SuperEventBookingsTable.teacherId]
     )
-
-    fun findById(id: Int) = transaction {
-        SuperEventBookingsTable.selectAll().where { SuperEventBookingsTable.id eq id }
-            .singleOrNull()?.let { rowToDto(it) }
-    }
-
-    fun findByEventAndUser(superEventId: Int, userId: Int) = transaction {
+    fun findByEventAndUser(dto : SuperEventBookingDto) = transaction {
         SuperEventBookingsTable.selectAll().where {
-            (SuperEventBookingsTable.superEventId eq superEventId) and
-                (SuperEventBookingsTable.userId eq userId)
+            (SuperEventBookingsTable.superEventId eq dto.superEventId) and (SuperEventBookingsTable.userId eq dto.userId)
         }.singleOrNull()?.let { rowToDto(it) }
     }
 
-    fun findByEventId(superEventId: Int) = transaction {
-        SuperEventBookingsTable.selectAll().where { SuperEventBookingsTable.superEventId eq superEventId }
+    fun findById(dto : SuperEventBookingDto) = transaction {
+        SuperEventBookingsTable.selectAll().where { SuperEventBookingsTable.id eq dto.id }
+            .singleOrNull()?.let { rowToDto(it) }
+    }
+
+    fun findByEventId(dto : SuperEventBookingDto) = transaction {
+        SuperEventBookingsTable.selectAll().where { SuperEventBookingsTable.superEventId eq dto.superEventId }
             .orderBy(SuperEventBookingsTable.createdAt, SortOrder.ASC)
             .map { rowToDto(it) }
     }
 
-    fun findByUserId(userId: Int) = transaction {
-        SuperEventBookingsTable.selectAll().where { SuperEventBookingsTable.userId eq userId }
-            .orderBy(SuperEventBookingsTable.createdAt, SortOrder.DESC)
-            .map { rowToDto(it) }
-    }
-
-    fun countByStatus(superEventId: Int, status: SuperEventBookingStatus) = transaction {
+    fun countByStatus(dto : SuperEventBookingDto) = transaction {
         SuperEventBookingsTable.selectAll().where {
-            (SuperEventBookingsTable.superEventId eq superEventId) and
-                (SuperEventBookingsTable.status eq status)
+            (SuperEventBookingsTable.superEventId eq dto.superEventId) and
+                (SuperEventBookingsTable.status eq dto.status)
         }.count().toInt()
     }
 
-    fun findOldestWaiting(superEventId: Int) = transaction {
+    fun findOldestWaiting(dto : SuperEventBookingDto) = transaction {
         SuperEventBookingsTable.selectAll().where {
-            (SuperEventBookingsTable.superEventId eq superEventId) and
+            (SuperEventBookingsTable.superEventId eq dto.superEventId) and
                 (SuperEventBookingsTable.status eq SuperEventBookingStatus.waiting)
         }.orderBy(SuperEventBookingsTable.createdAt, SortOrder.ASC)
             .limit(1)
@@ -71,19 +63,19 @@ class SuperEventBookingDao {
             it[userId] = dto.userId
             it[name] = dto.name
             it[status] = dto.status
-            it[teacherId] = dto.teacherId
         } get SuperEventBookingsTable.id
     }
 
-    fun updateStatus(id: Int, status: SuperEventBookingStatus) = transaction {
-        SuperEventBookingsTable.update({ SuperEventBookingsTable.id eq id }) {
-            it[SuperEventBookingsTable.status] = status
+    fun updateStatus(dto : SuperEventBookingDto) = transaction {
+        SuperEventBookingsTable.update({ SuperEventBookingsTable.id eq dto.id }) {
+            it[SuperEventBookingsTable.status] = dto.status
         } > 0
     }
 
-    fun updateTotalPaid(id: Int, totalPaid: Int) = transaction {
-        SuperEventBookingsTable.update({ SuperEventBookingsTable.id eq id }) {
-            it[SuperEventBookingsTable.totalPaid] = totalPaid
+    fun updateTotalPaid(dto : SuperEventBookingDto) = transaction {
+        SuperEventBookingsTable.update({ SuperEventBookingsTable.id eq dto.id }) {
+            it[SuperEventBookingsTable.totalPaid] = dto.totalPaid
+            it[SuperEventBookingsTable.teacherId] = dto.teacherId
         } > 0
     }
 }

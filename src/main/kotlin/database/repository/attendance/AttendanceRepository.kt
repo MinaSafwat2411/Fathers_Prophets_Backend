@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.repository.attendance
 
-import com.fathersprophets.backend.database.dao.AttendanceDao
+import com.fathersprophets.backend.database.dao.attendance.AttendanceDao
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.attendance.AddAttendanceRequest
 import com.fathersprophets.backend.models.attendance.AttendanceResponse

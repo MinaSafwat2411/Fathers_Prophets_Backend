@@ -1,10 +1,14 @@
-package com.fathersprophets.backend.database.dao
+package com.fathersprophets.backend.database.dao.chat
 
 import com.fathersprophets.backend.database.tables.AnonymousChatMessagesTable
 import com.fathersprophets.backend.models.dto.AnonymousChatMessageDto
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 
 class AnonymousChatMessageDao {
 
@@ -47,13 +51,13 @@ class AnonymousChatMessageDao {
         } get AnonymousChatMessagesTable.id
     }
 
-    fun update(dto: AnonymousChatMessageDto) = transaction {
-        AnonymousChatMessagesTable.update({ AnonymousChatMessagesTable.id eq dto.id }) {
+    fun update(messageId : Int, dto: AnonymousChatMessageDto) = transaction {
+        AnonymousChatMessagesTable.update({ AnonymousChatMessagesTable.id eq messageId }) {
             it[isRead] = dto.isRead
         } > 0
     }
 
-    fun delete(dto: AnonymousChatMessageDto) = transaction {
-        AnonymousChatMessagesTable.deleteWhere { AnonymousChatMessagesTable.id eq dto.id } > 0
+    fun delete(id: Int) = transaction {
+        AnonymousChatMessagesTable.deleteWhere { AnonymousChatMessagesTable.id eq id } > 0
     }
 }

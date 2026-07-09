@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.dao
+package com.fathersprophets.backend.database.dao.attendance
 
 import com.fathersprophets.backend.database.tables.AttendanceTable
 import com.fathersprophets.backend.models.dto.AttendanceDto
@@ -29,20 +29,20 @@ class AttendanceDao {
         AttendanceTable.selectAll().map { rowToAttendanceDto(it) }
     }
 
-    fun getAllAttendanceByUserId(attendanceDto: AttendanceDto) = transaction {
-        AttendanceTable.select { AttendanceTable.userId eq attendanceDto.userId }.map { rowToAttendanceDto(it) }
+    fun getAllAttendanceByUserId(userId : Int) = transaction {
+        AttendanceTable.select { AttendanceTable.userId eq userId }.map { rowToAttendanceDto(it) }
     }
 
-    fun getAllAttendanceByClassId(attendanceDto: AttendanceDto) = transaction {
-        AttendanceTable.select { AttendanceTable.classId eq attendanceDto.classId }.map { rowToAttendanceDto(it) }
+    fun getAllAttendanceByClassId(classId: Int) = transaction {
+        AttendanceTable.select { AttendanceTable.classId eq classId }.map { rowToAttendanceDto(it) }
     }
 
-    fun getAllAttendanceBySessionId(attendanceDto: AttendanceDto) = transaction {
-        AttendanceTable.select { AttendanceTable.sessionId eq attendanceDto.sessionId }.map { rowToAttendanceDto(it) }
+    fun getAllAttendanceBySessionId(sessionId: Int) = transaction {
+        AttendanceTable.select { AttendanceTable.sessionId eq sessionId }.map { rowToAttendanceDto(it) }
     }
 
-    fun getAttendanceById(attendanceDto: AttendanceDto) = transaction {
-        AttendanceTable.select { AttendanceTable.id eq attendanceDto.id }.map { rowToAttendanceDto(it) }.singleOrNull()
+    fun getAttendanceById(id: Int) = transaction {
+        AttendanceTable.select { AttendanceTable.id eq id }.map { rowToAttendanceDto(it) }.singleOrNull()
     }
 
     fun addAttendance(attendanceDto: AttendanceDto) = transaction {
@@ -59,8 +59,8 @@ class AttendanceDao {
         } get AttendanceTable.id
     }
 
-    fun updateAttendance(attendanceDto: AttendanceDto) = transaction {
-        AttendanceTable.update({ AttendanceTable.id eq attendanceDto.id }) {
+    fun updateAttendance(attendanceId: Int, attendanceDto: AttendanceDto) = transaction {
+        AttendanceTable.update({ AttendanceTable.id eq attendanceId }) {
             it[attended] = attendanceDto.attended
             it[broughtBible] = attendanceDto.broughtBible
             it[shmas] = attendanceDto.shmas
@@ -70,7 +70,7 @@ class AttendanceDao {
         }
     }
 
-    fun deleteAttendance(attendanceDto: AttendanceDto) =transaction {
-        AttendanceTable.deleteWhere { AttendanceTable.id eq attendanceDto.id }
+    fun deleteAttendance(attendanceId: Int) = transaction {
+        AttendanceTable.deleteWhere { AttendanceTable.id eq attendanceId }
     }
 }

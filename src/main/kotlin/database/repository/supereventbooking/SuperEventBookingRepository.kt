@@ -6,12 +6,12 @@ import com.fathersprophets.backend.database.dao.UserDao
 import com.fathersprophets.backend.database.tables.SuperEventBookingStatus
 import com.fathersprophets.backend.database.tables.UserRole
 import com.fathersprophets.backend.exceptions.ConflictException
-import com.fathersprophets.backend.exceptions.ForbiddenException
 import com.fathersprophets.backend.exceptions.NotFoundException
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.SuperEventBookingDto
 import com.fathersprophets.backend.models.dto.UserDto
 import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingPaymentRequest
+import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingRequest
 import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingResponse
 import com.fathersprophets.backend.utils.Localization
 import java.time.LocalDate
@@ -22,24 +22,25 @@ class SuperEventBookingRepository(
     private val userDao: UserDao
 ) : ISuperEventBookingRepository {
 
-    override fun bookSeat(superEventId: Int, userId: Int, lang: String): ApiResponse<SuperEventBookingResponse> {
-        val superEvent = superEventDao.findById(superEventId)
+    override fun bookSeat(request: SuperEventBookingRequest, lang: String): ApiResponse<SuperEventBookingResponse> {
+        val superEvent = superEventDao.findById(request.superEventId ?: 0)
             ?: throw NotFoundException(Localization.get("super_event_not_found", lang))
 
         if (LocalDate.now().isAfter(LocalDate.parse(superEvent.lastBookingDate))) {
             throw ConflictException(Localization.get("super_event_booking_closed", lang))
         }
 
-        val existing = superEventBookingDao.findByEventAndUser(superEventId, userId)
+        val bookingDto = superEventIdToBookingDto(request.superEventId ?: 0, request.userId ?: 0)
+        val existing = superEventBookingDao.findByEventAndUser(bookingDto)
         if (existing != null && existing.status != SuperEventBookingStatus.cancelled) {
             throw ConflictException(Localization.get("super_event_already_booked", lang))
         }
 
-        val bookedCount = superEventBookingDao.countByStatus(superEventId, SuperEventBookingStatus.booked)
+        val bookedCount = superEventBookingDao.countByStatus(bookingDto)
         val status = if (bookedCount < superEvent.totalSeats) {
             SuperEventBookingStatus.booked
         } else {
-            val waitingCount = superEventBookingDao.countByStatus(superEventId, SuperEventBookingStatus.waiting)
+            val waitingCount = superEventBookingDao.countByStatus(bookingDto.copy(status = SuperEventBookingStatus.waiting))
             if (waitingCount < superEvent.waitingListLimit) {
                 SuperEventBookingStatus.waiting
             } else {
@@ -47,17 +48,17 @@ class SuperEventBookingRepository(
             }
         }
 
-        val user = userDao.findById(UserDto(id = userId, name = "", username = "", passwordHash = "", role = UserRole.member))
+        val user = userDao.findById(UserDto(id = request.userId ?: 0, name = "", username = "", passwordHash = "", role = UserRole.member))
             ?: throw NotFoundException(Localization.get("user_not_found", lang))
 
         if (existing != null) {
-            superEventBookingDao.updateStatus(existing.id, status)
+            superEventBookingDao.updateStatus(existing.copy(status = status))
         } else {
             superEventBookingDao.create(
                 SuperEventBookingDto(
                     id = 0,
-                    superEventId = superEventId,
-                    userId = userId,
+                    superEventId = request.superEventId ?: 0,
+                    userId = request.userId ?: 0,
                     name = user.name,
                     totalPaid = 0,
                     status = status,
@@ -66,7 +67,7 @@ class SuperEventBookingRepository(
             )
         }
 
-        val booking = superEventBookingDao.findByEventAndUser(superEventId, userId)
+        val booking = superEventBookingDao.findByEventAndUser(bookingDto)
         val messageKey = if (status == SuperEventBookingStatus.booked) {
             "super_event_seat_booked_successfully"
         } else {
@@ -80,19 +81,20 @@ class SuperEventBookingRepository(
         )
     }
 
-    override fun cancelBooking(bookingId: Int, userId: Int, lang: String): ApiResponse<Nothing> {
-        val booking = superEventBookingDao.findByEventAndUser(bookingId, userId)
+    override fun cancelBooking(superEventId: Int, userId: Int, lang: String): ApiResponse<Nothing> {
+        val bookingDto = superEventIdToBookingDto(superEventId, userId)
+        val booking = superEventBookingDao.findByEventAndUser(bookingDto)
             ?: throw NotFoundException(Localization.get("super_event_booking_not_found", lang))
 
         if (booking.status == SuperEventBookingStatus.cancelled) {
             throw ConflictException(Localization.get("super_event_booking_already_cancelled", lang))
         }
 
-        superEventBookingDao.updateStatus(booking.id, SuperEventBookingStatus.cancelled)
+        superEventBookingDao.updateStatus(booking.copy(status = SuperEventBookingStatus.cancelled))
 
         if (booking.status == SuperEventBookingStatus.booked) {
-            superEventBookingDao.findOldestWaiting(superEventId)?.let {
-                superEventBookingDao.updateStatus(it.id, SuperEventBookingStatus.booked)
+            superEventBookingDao.findOldestWaiting(superEventIdToBookingDto(superEventId, 0))?.let {
+                superEventBookingDao.updateStatus(it.copy(status = SuperEventBookingStatus.booked))
             }
         }
 
@@ -106,15 +108,7 @@ class SuperEventBookingRepository(
     override fun getBookingsBySuperEventId(superEventId: Int, lang: String): ApiResponse<List<SuperEventBookingResponse>> {
         return ApiResponse(
             success = true,
-            data = superEventBookingDao.findByEventId(superEventId).map { it.convertToResponse() },
-            message = Localization.get("super_event_bookings_retrieved_successfully", lang)
-        )
-    }
-
-    override fun getBookingsByUserId(userId: Int, lang: String): ApiResponse<List<SuperEventBookingResponse>> {
-        return ApiResponse(
-            success = true,
-            data = superEventBookingDao.findByUserId(userId).map { it.convertToResponse() },
+            data = superEventBookingDao.findByEventId(superEventIdToBookingDto(superEventId, 0)).map { it.convertToResponse() },
             message = Localization.get("super_event_bookings_retrieved_successfully", lang)
         )
     }
@@ -123,19 +117,32 @@ class SuperEventBookingRepository(
         paymentRequest: SuperEventBookingPaymentRequest,
         lang: String
     ): ApiResponse<SuperEventBookingResponse> {
-        val superEvent = superEventDao.findById(paymentRequest.bookingId?:0)
+        val bookingDto = paymentRequest.superEventIdToDto()
+        val existingBooking = superEventBookingDao.findById(bookingDto)
             ?: throw NotFoundException(Localization.get("super_event_booking_not_found", lang))
 
-        val  teacher = superEvent.teachers
-            .find { it.id == paymentRequest.teacherId }
+        val superEvent = superEventDao.findById(existingBooking.superEventId)
+            ?: throw NotFoundException(Localization.get("super_event_not_found", lang))
+
+        superEvent.teachers.find { it.id == paymentRequest.teacherId }
             ?: throw NotFoundException(Localization.get("teacher_not_found", lang))
 
-        superEventBookingDao.updateTotalPaid(paymentRequest.bookingId?:0, paymentRequest.totalPaid?:0)
+        superEventBookingDao.updateTotalPaid(bookingDto.copy(teacherId = paymentRequest.teacherId))
 
         return ApiResponse(
             success = true,
-            data = superEventBookingDao.findById(paymentRequest.bookingId?:0)?.convertToResponse(),
+            data = superEventBookingDao.findById(bookingDto)?.convertToResponse(),
             message = Localization.get("super_event_booking_paid_updated_successfully", lang)
         )
     }
+
+    private fun superEventIdToBookingDto(superEventId: Int, userId: Int) = SuperEventBookingDto(
+        id = 0,
+        superEventId = superEventId,
+        name = "",
+        totalPaid = 0,
+        status = SuperEventBookingStatus.booked,
+        createdAt = "",
+        userId = userId
+    )
 }

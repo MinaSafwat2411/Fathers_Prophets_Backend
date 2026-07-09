@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.repository.classmember
 
-import com.fathersprophets.backend.database.dao.ClassMemberDao
+import com.fathersprophets.backend.database.dao.classes.ClassMemberDao
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.classmember.AddClassMemberRequest
 import com.fathersprophets.backend.models.classmember.ClassMemberResponse

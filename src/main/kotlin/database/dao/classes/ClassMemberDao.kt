@@ -1,11 +1,15 @@
-package com.fathersprophets.backend.database.dao
+package com.fathersprophets.backend.database.dao.classes
 
 import com.fathersprophets.backend.database.tables.ClassMemberTable
 import com.fathersprophets.backend.database.tables.UsersTable
 import com.fathersprophets.backend.models.dto.ClassMemberDto
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 
 class ClassMemberDao {
     private fun resultRowToClassMember(row: ResultRow) = ClassMemberDto(
