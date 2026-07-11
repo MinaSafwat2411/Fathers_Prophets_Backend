@@ -1,5 +1,6 @@
 package com.fathersprophets.backend.database.repository.events
 
+import com.fathersprophets.backend.database.tables.EventType
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.event.EventCountsResponse
 import com.fathersprophets.backend.models.event.EventRequest
@@ -13,4 +14,6 @@ interface IEventRepository {
     fun deleteEvent(eventId: Int, lang: String): ApiResponse<Nothing>
     fun getEventsCount(lang: String): ApiResponse<EventCountsResponse>
     fun getUpcomingEvents(lang: String): ApiResponse<List<EventResponse>>
+
+    fun getEventByEventType(eventType: EventType, lang: String) : ApiResponse<List<EventResponse>>
 }

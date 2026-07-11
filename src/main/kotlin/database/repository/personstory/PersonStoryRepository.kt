@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.repository.personstory
 
-import com.fathersprophets.backend.database.dao.PersonStoryDao
+import com.fathersprophets.backend.database.dao.activity.story.PersonStoryDao
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.PersonStoryDto
 import com.fathersprophets.backend.models.personstory.CreatePersonStoryRequest

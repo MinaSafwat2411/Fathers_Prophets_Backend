@@ -1,12 +1,11 @@
 package com.fathersprophets.backend.database.repository.notification
 
-import com.fathersprophets.backend.database.dao.EventDao
-import com.fathersprophets.backend.database.dao.NotificationDao
-import com.fathersprophets.backend.database.dao.UserDao
+import com.fathersprophets.backend.database.dao.event.EventDao
+import com.fathersprophets.backend.database.dao.notification.NotificationDao
+import com.fathersprophets.backend.database.dao.users.UserDao
 import com.fathersprophets.backend.database.tables.EventType
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.EventDto
-import com.fathersprophets.backend.models.dto.NotificationDto
 import com.fathersprophets.backend.models.notification.CreateNotificationRequest
 import com.fathersprophets.backend.models.notification.NotificationResponse
 import com.fathersprophets.backend.models.notification.UpdateNotificationRequest

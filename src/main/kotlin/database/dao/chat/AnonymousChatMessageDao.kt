@@ -51,13 +51,13 @@ class AnonymousChatMessageDao {
         } get AnonymousChatMessagesTable.id
     }
 
-    fun update(messageId : Int, dto: AnonymousChatMessageDto) = transaction {
-        AnonymousChatMessagesTable.update({ AnonymousChatMessagesTable.id eq messageId }) {
-            it[isRead] = dto.isRead
-        } > 0
-    }
-
     fun delete(id: Int) = transaction {
         AnonymousChatMessagesTable.deleteWhere { AnonymousChatMessagesTable.id eq id } > 0
+    }
+
+    fun update(dto: AnonymousChatMessageDto) = transaction {
+        AnonymousChatMessagesTable.update({ AnonymousChatMessagesTable.id eq dto.id }) {
+            it[message] = dto.message
+        } > 0
     }
 }

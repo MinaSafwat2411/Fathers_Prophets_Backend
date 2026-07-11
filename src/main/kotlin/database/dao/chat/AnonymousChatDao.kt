@@ -48,8 +48,8 @@ class AnonymousChatDao {
         } get AnonymousChatsTable.id
     }
 
-    fun update(id: Int, dto: AnonymousChatDto) = transaction {
-        AnonymousChatsTable.update({ AnonymousChatsTable.id eq id }) {
+    fun update(dto: AnonymousChatDto) = transaction {
+        AnonymousChatsTable.update({ AnonymousChatsTable.id eq dto.id }) {
             it[lastMessage] = dto.lastMessage
         } > 0
     }

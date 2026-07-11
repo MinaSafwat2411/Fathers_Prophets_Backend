@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.repository.matchingpair
 
-import com.fathersprophets.backend.database.dao.MatchingPairDao
+import com.fathersprophets.backend.database.dao.activity.matchpaor.MatchingPairDao
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.MatchingPairDto
 import com.fathersprophets.backend.models.matchingpair.CreateMatchingPairRequest

@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.repository.escapeegypt
 
-import com.fathersprophets.backend.database.dao.EscapeEgyptDao
+import com.fathersprophets.backend.database.dao.activity.escapeegypt.EscapeEgyptDao
 import com.fathersprophets.backend.database.tables.EscapeEgyptType
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.EscapeEgyptDto

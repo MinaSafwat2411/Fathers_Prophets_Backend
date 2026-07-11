@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.repository.events
 
-import com.fathersprophets.backend.database.dao.EventDao
-import com.fathersprophets.backend.database.dao.NotificationDao
+import com.fathersprophets.backend.database.dao.event.EventDao
+import com.fathersprophets.backend.database.dao.notification.NotificationDao
 import com.fathersprophets.backend.database.tables.EventType
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.EventDto
@@ -91,6 +91,15 @@ class EventRepository(
             success = true,
             data = events.map { it.convertToEventResponse() },
             message = Localization.get("upcoming_events_retrieved_successfully", lang)
+        )
+    }
+
+    override fun getEventByEventType(eventType: EventType, lang: String): ApiResponse<List<EventResponse>> {
+        val events = eventDao.getEventByType(idToDto(eventType.ordinal))
+        return ApiResponse(
+            success = true,
+            data = events.map { it.convertToEventResponse() },
+            message = Localization.get("events_by_type_retrieved_successfully", lang)
         )
     }
 

@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.repository.eventmember
 
-import com.fathersprophets.backend.database.dao.EventMemberDao
+import com.fathersprophets.backend.database.dao.event.EventMemberDao
 import com.fathersprophets.backend.database.tables.EventType
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.EventMemberDto

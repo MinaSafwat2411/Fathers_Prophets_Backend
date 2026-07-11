@@ -59,18 +59,18 @@ class AttendanceDao {
         } get AttendanceTable.id
     }
 
-    fun updateAttendance(attendanceId: Int, attendanceDto: AttendanceDto) = transaction {
-        AttendanceTable.update({ AttendanceTable.id eq attendanceId }) {
+    fun updateAttendance(attendanceDto: AttendanceDto) = transaction {
+        AttendanceTable.update({ AttendanceTable.id eq attendanceDto.id }) {
             it[attended] = attendanceDto.attended
             it[broughtBible] = attendanceDto.broughtBible
             it[shmas] = attendanceDto.shmas
             it[odas] = attendanceDto.odas
             it[tnawl] = attendanceDto.tnawl
             it[classId] = attendanceDto.classId
-        }
+        } > 0
     }
 
     fun deleteAttendance(attendanceId: Int) = transaction {
-        AttendanceTable.deleteWhere { AttendanceTable.id eq attendanceId }
+        AttendanceTable.deleteWhere { AttendanceTable.id eq attendanceId } > 0
     }
 }

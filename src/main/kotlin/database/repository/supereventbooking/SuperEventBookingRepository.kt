@@ -1,8 +1,8 @@
 package com.fathersprophets.backend.database.repository.supereventbooking
 
-import com.fathersprophets.backend.database.dao.SuperEventBookingDao
-import com.fathersprophets.backend.database.dao.SuperEventDao
-import com.fathersprophets.backend.database.dao.UserDao
+import com.fathersprophets.backend.database.dao.superevent.SuperEventBookingDao
+import com.fathersprophets.backend.database.dao.superevent.SuperEventDao
+import com.fathersprophets.backend.database.dao.users.UserDao
 import com.fathersprophets.backend.database.tables.SuperEventBookingStatus
 import com.fathersprophets.backend.database.tables.UserRole
 import com.fathersprophets.backend.exceptions.ConflictException

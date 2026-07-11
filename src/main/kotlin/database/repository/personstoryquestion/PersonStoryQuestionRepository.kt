@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.repository.personstoryquestion
 
-import com.fathersprophets.backend.database.dao.PersonStoryQuestionDao
+import com.fathersprophets.backend.database.dao.activity.story.PersonStoryQuestionDao
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.PersonStoryQuestionDto
 import com.fathersprophets.backend.models.personstoryquestion.CreatePersonStoryQuestionRequest

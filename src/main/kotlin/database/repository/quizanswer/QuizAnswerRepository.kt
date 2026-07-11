@@ -1,8 +1,8 @@
 package com.fathersprophets.backend.database.repository.quizanswer
 
-import com.fathersprophets.backend.database.dao.QuizAnswerDao
-import com.fathersprophets.backend.database.dao.QuizDayQuestionDao
-import com.fathersprophets.backend.database.dao.UserProgressQuizDao
+import com.fathersprophets.backend.database.dao.quiz.QuizAnswerDao
+import com.fathersprophets.backend.database.dao.quiz.QuizDayQuestionDao
+import com.fathersprophets.backend.database.dao.users.UserProgressQuizDao
 import com.fathersprophets.backend.database.tables.AnswerStatus
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.QuizAnswerDto

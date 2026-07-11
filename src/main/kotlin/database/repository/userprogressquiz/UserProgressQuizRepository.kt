@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.repository.userprogressquiz
 
-import com.fathersprophets.backend.database.dao.UserProgressQuizDao
+import com.fathersprophets.backend.database.dao.users.UserProgressQuizDao
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.UserProgressQuizDto
 import com.fathersprophets.backend.models.userprogressquiz.CreateUserProgressQuizRequest

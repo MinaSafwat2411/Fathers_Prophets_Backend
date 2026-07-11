@@ -33,17 +33,17 @@ class ClassDao {
         } get ClassesTable.id
     }
 
-    fun updateClass(classId: Int, classDto: ClassDto) = transaction {
-        ClassesTable.update({ ClassesTable.id eq classId }) {
+    fun updateClass(classDto: ClassDto) = transaction {
+        ClassesTable.update({ ClassesTable.id eq classDto.id }) {
             it[name] = classDto.name
             it[image] = classDto.image
-        }
+        } > 0
     }
 
     fun deleteClass(classId: Int) = transaction {
         ClassesTable.deleteWhere {
             ClassesTable.id eq classId
-        }
+        } > 0
     }
 
 }

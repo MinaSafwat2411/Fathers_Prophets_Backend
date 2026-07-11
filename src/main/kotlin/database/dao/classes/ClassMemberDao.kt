@@ -49,10 +49,10 @@ class ClassMemberDao {
             it[ClassMemberTable.teacher] = classMemberDto.isTeacher
             it[ClassMemberTable.image] = classMemberDto.image
             it[ClassMemberTable.userId] = classMemberDto.userId
-        }
+        } > 0
     }
 
-    fun deleteMember(classMemberDto: ClassMemberDto) = transaction {
-        ClassMemberTable.deleteWhere { ClassMemberTable.id eq classMemberDto.id }
-    }
+    fun deleteMember(classMemberId: Int) = transaction {
+        ClassMemberTable.deleteWhere { ClassMemberTable.id eq classMemberId }
+    } > 0
 }

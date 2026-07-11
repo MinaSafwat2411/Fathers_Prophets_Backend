@@ -27,11 +27,11 @@ class SessionDao {
     fun updateSession(session: SessionDto) = transaction {
         SessionTable.update({ SessionTable.id eq session.id }) {
             it[dateTime] = LocalDateTime.parse(session.dateTime)
-        }
+        } > 0
     }
 
     fun deleteSession(sessionId: Int) = transaction {
-        SessionTable.deleteWhere { SessionTable.id eq sessionId }
+        SessionTable.deleteWhere { SessionTable.id eq sessionId } > 0
     }
 
     fun getSessionById(sessionId: Int) = transaction {

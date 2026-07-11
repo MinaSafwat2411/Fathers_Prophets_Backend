@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.repository.personquestion
 
-import com.fathersprophets.backend.database.dao.PersonQuestionDao
+import com.fathersprophets.backend.database.dao.activity.complete.PersonQuestionDao
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.PersonQuestionDto
 import com.fathersprophets.backend.models.personquestion.CreateQuestionRequest

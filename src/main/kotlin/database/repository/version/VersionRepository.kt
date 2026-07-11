@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.repository.version
 
-import com.fathersprophets.backend.database.dao.VersionDao
+import com.fathersprophets.backend.database.dao.version.VersionDao
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.version.AdminPinRequest
 import com.fathersprophets.backend.models.version.VersionRequest

@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.repository.timeline
 
-import com.fathersprophets.backend.database.dao.TimelineDao
+import com.fathersprophets.backend.database.dao.activity.timeline.TimelineDao
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.TimelineDto
 import com.fathersprophets.backend.models.timeline.CreateTimelineRequest

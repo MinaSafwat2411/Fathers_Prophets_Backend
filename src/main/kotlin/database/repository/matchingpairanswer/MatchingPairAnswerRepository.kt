@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.repository.matchingpairanswer
 
-import com.fathersprophets.backend.database.dao.MatchingPairAnswerDao
-import com.fathersprophets.backend.database.dao.MatchingPairDao
+import com.fathersprophets.backend.database.dao.activity.matchpaor.MatchingPairAnswerDao
+import com.fathersprophets.backend.database.dao.activity.matchpaor.MatchingPairDao
 import com.fathersprophets.backend.database.tables.AnswerStatus
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.MatchingPairAnswerDto
