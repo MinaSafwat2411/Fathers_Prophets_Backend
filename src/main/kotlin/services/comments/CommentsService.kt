@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.services.comments
 
-import com.fathersprophets.backend.database.repository.comments.ICommentsRepository
+import com.fathersprophets.backend.database.repository.users.comments.ICommentsRepository
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.comments.AddCommentRequest
 import com.fathersprophets.backend.models.comments.CommentResponse

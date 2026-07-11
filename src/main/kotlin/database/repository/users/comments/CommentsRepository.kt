@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.repository.comments
+package com.fathersprophets.backend.database.repository.users.comments
 
 import com.fathersprophets.backend.database.dao.users.CommentDao
 import com.fathersprophets.backend.models.ApiResponse

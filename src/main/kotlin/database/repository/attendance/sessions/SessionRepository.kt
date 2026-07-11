@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.repository.sessions
+package com.fathersprophets.backend.database.repository.attendance.sessions
 
 import com.fathersprophets.backend.database.dao.attendance.SessionDao
 import com.fathersprophets.backend.models.ApiResponse
@@ -13,14 +13,15 @@ class SessionRepository(
     override fun createSession(
         addSessionRequest: AddSessionRequest,
         lang: String
-    ): ApiResponse<SessionResponse> {
+    ): ApiResponse<Int> {
         val id = sessionDao.addSession(addSessionRequest.toSessionDto())
 
-        val session = sessionDao.getSessionById(id) ?: throw IllegalStateException("session_create_failed")
+        if (id == 0) throw IllegalStateException("session_not_added")
+
 
         return ApiResponse(
             success = true,
-            data = session.convertToSessionResponse(),
+            data = id,
             message = "session_added_successfully"
         )
 
@@ -31,7 +32,7 @@ class SessionRepository(
         lang: String
     ): ApiResponse<SessionResponse> {
         val id = sessionDao.getSessionById(sessionId)
-        ?: throw IllegalStateException("session_not_found")
+            ?: throw IllegalStateException("session_not_found")
 
 
         return ApiResponse(
@@ -45,7 +46,10 @@ class SessionRepository(
         sessionId: Int,
         lang: String
     ): ApiResponse<Nothing> {
-        sessionDao.deleteSession(idToSession(sessionId))
+        val deleted = sessionDao.deleteSession(sessionId)
+
+        if (!deleted) throw IllegalStateException("session_not_found")
+
         return ApiResponse(
             success = true,
             data = null,
@@ -66,20 +70,18 @@ class SessionRepository(
         sessionId: Int,
         updateSessionRequest: UpdateSessionRequest,
         lang: String
-    ): ApiResponse<SessionResponse> {
+    ): ApiResponse<Nothing> {
+
         val sessionDto = updateSessionRequest.toSessionDto(sessionId)
+
         val updatedSession = sessionDao.updateSession(sessionDto)
+
+        if (!updatedSession) throw IllegalStateException("session_not_found")
 
         return ApiResponse(
             success = true,
-            data = updatedSession.convertToSessionResponse(),
+            data = null,
             message = "session_updated_successfully"
         )
     }
-
-    private fun idToSession(sessionId: Int) = SessionDto(
-        id = sessionId,
-        createdAt = "",
-        dateTime = ""
-    )
 }

@@ -1,7 +1,6 @@
 package com.fathersprophets.backend.services.classes
 
-import com.fathersprophets.backend.database.repository.classes.IClassRepository
-import com.fathersprophets.backend.exceptions.NotFoundException
+import com.fathersprophets.backend.database.repository.classes.classes.IClassRepository
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.classes.CreateClassRequest
 import com.fathersprophets.backend.models.classes.UpdateClassRequest

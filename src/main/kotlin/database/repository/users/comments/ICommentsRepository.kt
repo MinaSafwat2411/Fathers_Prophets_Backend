@@ -1,10 +1,9 @@
-package com.fathersprophets.backend.database.repository.comments
+package com.fathersprophets.backend.database.repository.users.comments
 
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.comments.AddCommentRequest
 import com.fathersprophets.backend.models.comments.CommentResponse
 import com.fathersprophets.backend.models.comments.UpdateCommentRequest
-import com.fathersprophets.backend.models.dto.CommentDto
 
 interface ICommentsRepository {
     fun addComment(comment: AddCommentRequest,lang : String): ApiResponse<CommentResponse>

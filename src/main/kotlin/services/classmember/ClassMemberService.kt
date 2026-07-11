@@ -1,11 +1,10 @@
 package com.fathersprophets.backend.services.classmember
 
-import com.fathersprophets.backend.database.repository.classmember.IClassMemberRepository
+import com.fathersprophets.backend.database.repository.classes.classmember.IClassMemberRepository
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.classmember.AddClassMemberRequest
 import com.fathersprophets.backend.models.classmember.ClassMemberResponse
 import com.fathersprophets.backend.models.classmember.UpdateClassMemberRequest
-import com.fathersprophets.backend.models.dto.ClassMemberDto
 import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
 
 class ClassMemberService(

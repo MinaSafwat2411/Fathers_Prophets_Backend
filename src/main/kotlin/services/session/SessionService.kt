@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.services.session
 
-import com.fathersprophets.backend.database.repository.sessions.ISessionRepository
+import com.fathersprophets.backend.database.repository.attendance.sessions.ISessionRepository
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.session.AddSessionRequest
 import com.fathersprophets.backend.models.session.SessionResponse

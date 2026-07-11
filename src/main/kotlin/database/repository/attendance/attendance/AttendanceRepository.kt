@@ -1,27 +1,26 @@
-package com.fathersprophets.backend.database.repository.attendance
+package com.fathersprophets.backend.database.repository.attendance.attendance
 
 import com.fathersprophets.backend.database.dao.attendance.AttendanceDao
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.attendance.AddAttendanceRequest
 import com.fathersprophets.backend.models.attendance.AttendanceResponse
 import com.fathersprophets.backend.models.attendance.UpdateAttendanceRequest
-import com.fathersprophets.backend.models.dto.AttendanceDto
 import com.fathersprophets.backend.utils.Localization
 
 class AttendanceRepository(
-    private val attendanceDao: AttendanceDao
+    private val attendanceDao: AttendanceDao,
 ) : IAttendanceRepository {
     override fun addAttendance(
         attendance: AddAttendanceRequest,
         lang: String
-    ): ApiResponse<AttendanceResponse> {
+    ): ApiResponse<Int> {
         val id = attendanceDao.addAttendance(attendance.toAttendanceDto())
-        val created = attendanceDao.getAttendanceById(idToAttendanceDto(id))
-            ?: throw IllegalStateException("attendance_create_failed")
+
+        if(id == 0) throw IllegalArgumentException(Localization.get("attendance_create_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = created.convertAttendanceResponse(),
+            data = id,
             message = Localization.get("attendance_create_success", lang)
         )
     }
@@ -31,11 +30,14 @@ class AttendanceRepository(
         updateAttendance: UpdateAttendanceRequest,
         lang: String
     ): ApiResponse<AttendanceResponse> {
-        attendanceDao.updateAttendance(updateAttendance.toAttendanceDto(attendanceId))
+
+        val isUpdated = attendanceDao.updateAttendance(updateAttendance.toAttendanceDto(attendanceId))
+
+        if(!isUpdated) throw  IllegalArgumentException(Localization.get("attendance_update_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = updateAttendance.toAttendanceDto(attendanceId).convertAttendanceResponse(),
+            data = null,
             message = Localization.get("attendance_update_success", lang)
         )
     }
@@ -44,7 +46,12 @@ class AttendanceRepository(
         attendanceId: Int,
         lang: String
     ): ApiResponse<Nothing> {
-        attendanceDao.deleteAttendance(idToAttendanceDto(attendanceId))
+
+        val  deleted = attendanceDao.deleteAttendance(attendanceId)
+
+        if(!deleted) throw  IllegalArgumentException(Localization.get("attendance_delete_failed", lang))
+
+
         return ApiResponse(
             success = true,
             data = null,
@@ -56,7 +63,7 @@ class AttendanceRepository(
         userId: Int,
         lang: String
     ): ApiResponse<List<AttendanceResponse>> {
-        val list = attendanceDao.getAllAttendanceByUserId(idToAttendanceDto(userId))
+        val list = attendanceDao.getAllAttendanceByUserId(userId)
         return ApiResponse(
             success = true,
             data = list.map { it.convertAttendanceResponse() },
@@ -68,7 +75,7 @@ class AttendanceRepository(
         sessionId: Int,
         lang: String
     ): ApiResponse<List<AttendanceResponse>> {
-        val list = attendanceDao.getAllAttendanceBySessionId(idToAttendanceDto(sessionId))
+        val list = attendanceDao.getAllAttendanceBySessionId(sessionId)
         return ApiResponse(
             success = true,
             data = list.map { it.convertAttendanceResponse() },
@@ -86,7 +93,8 @@ class AttendanceRepository(
     }
 
     override fun getAttendanceByClassId(classId: Int, lang: String): ApiResponse<List<AttendanceResponse>> {
-        val list = attendanceDao.getAllAttendanceByClassId(idToAttendanceDto(classId))
+
+        val list = attendanceDao.getAllAttendanceByClassId(classId)
 
         return ApiResponse(
             success = true,
@@ -94,17 +102,4 @@ class AttendanceRepository(
             message = Localization.get("attendance_retrieved_success", lang)
         )
     }
-
-    private fun idToAttendanceDto(id: Int) = AttendanceDto(
-        id = id,
-        userId = id,
-        sessionId = id,
-        name = "",
-        attended = false,
-        broughtBible = false,
-        shmas = false,
-        odas = false,
-        tnawl = false,
-        classId = id
-    )
 }

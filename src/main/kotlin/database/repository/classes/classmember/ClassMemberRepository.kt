@@ -1,11 +1,10 @@
-package com.fathersprophets.backend.database.repository.classmember
+package com.fathersprophets.backend.database.repository.classes.classmember
 
 import com.fathersprophets.backend.database.dao.classes.ClassMemberDao
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.classmember.AddClassMemberRequest
 import com.fathersprophets.backend.models.classmember.ClassMemberResponse
 import com.fathersprophets.backend.models.classmember.UpdateClassMemberRequest
-import com.fathersprophets.backend.models.dto.ClassMemberDto
 import com.fathersprophets.backend.utils.Localization
 
 class ClassMemberRepository(
@@ -17,31 +16,29 @@ class ClassMemberRepository(
         lang: String
     ): ApiResponse<List<ClassMemberResponse>> {
 
-        val classDto = idToClass(classId)
-
-        val members = classMemberDao.findMemberClass(classDto).map {
-            it.toClassMemberResponse()
-        }
+        val members = classMemberDao.findMemberClass(classId)
 
         if (members.isEmpty()) throw IllegalArgumentException(Localization.get("class_members_not_found", lang))
 
-        return ApiResponse(success = true, data = members, message = Localization.get("class_members_found", lang))
+        return ApiResponse(
+            success = true,
+            data = members.map { it.toClassMemberResponse() },
+            message = Localization.get("class_members_found", lang)
+        )
     }
 
     override suspend fun addMember(
         addClassMemberRequest: AddClassMemberRequest,
         lang: String
-    ): ApiResponse<ClassMemberResponse> {
+    ): ApiResponse<Int> {
 
         val id = classMemberDao.addMember(addClassMemberRequest.toClassMemberDto())
 
-        val classMemberDto = classMemberDao.findById(
-            idToClass(id)
-        ) ?: throw IllegalArgumentException(Localization.get("can_not_add_class_member", lang))
+        if (id == 0) throw IllegalArgumentException(Localization.get("can_not_add_class_member", lang))
 
         return ApiResponse(
             success = true,
-            data = classMemberDto.toClassMemberResponse(),
+            data = id,
             message = Localization.get("class_member_added", lang)
         )
     }
@@ -50,15 +47,17 @@ class ClassMemberRepository(
         id: Int,
         updateClassMemberRequest: UpdateClassMemberRequest,
         lang: String
-    ): ApiResponse<ClassMemberResponse> {
+    ): ApiResponse<Nothing> {
 
-        classMemberDao.updateMember(updateClassMemberRequest.toClassMemberDto(id))
+        val updated = classMemberDao.updateMember(updateClassMemberRequest.toClassMemberDto(id))
 
-        val classMemberDto = updateClassMemberRequest.toClassMemberDto(id)
+        if (!updated) throw IllegalArgumentException(Localization.get("class_member_not_updated", lang))
+
+
 
         return ApiResponse(
             success = true,
-            data = classMemberDto.toClassMemberResponse(),
+            data = null,
             message = Localization.get("class_member_updated", lang)
         )
     }
@@ -68,22 +67,11 @@ class ClassMemberRepository(
         lang: String
     ): ApiResponse<Nothing> {
 
-        val classMemberDto = idToClass(id)
+        val deleted = classMemberDao.deleteMember(id)
 
-        classMemberDao.deleteMember(classMemberDto)
+        if (!deleted) throw IllegalArgumentException(Localization.get("class_member_not_deleted", lang))
+
 
         return ApiResponse(success = true, message = Localization.get("class_member_deleted", lang))
     }
-
-    private fun idToClass(id: Int): ClassMemberDto {
-        return ClassMemberDto(
-            id = id,
-            name = "",
-            image = "",
-            isTeacher = false,
-            classId = 0,
-            userId = 0
-        )
-    }
-
 }

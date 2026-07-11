@@ -9,10 +9,10 @@ import com.fathersprophets.backend.models.auth.RefreshResponse
 import com.fathersprophets.backend.models.auth.RegisterResponse
 
 interface IAuthRepository {
-    suspend fun register(request: RegisterRequest): ApiResponse<RegisterResponse>
-    suspend fun login(request: LoginRequest): ApiResponse<LoginResponse>
+    suspend fun register(request: RegisterRequest, lang: String): ApiResponse<RegisterResponse>
+    suspend fun login(request: LoginRequest, lang: String): ApiResponse<LoginResponse>
 
-    suspend fun refreshToken(refresh: RefreshRequest): ApiResponse<RefreshResponse>
+    suspend fun refreshToken(refresh: RefreshRequest, lang: String): ApiResponse<RefreshResponse>
 
-    suspend fun logout(userId: Int): ApiResponse<Nothing>
+    suspend fun logout(userId: Int, lang: String): ApiResponse<Nothing>
 }

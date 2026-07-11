@@ -30,28 +30,37 @@ class AnonymousChatRepository(
         )
     }
 
-    override fun createAnonymousChat(request: CreateAnonymousChatRequest, lang: String): ApiResponse<AnonymousChatResponse> {
+    override fun createAnonymousChat(request: CreateAnonymousChatRequest, lang: String): ApiResponse<Int> {
+
         val id = dao.create(request.toAnonymousChatDto())
-        val created = dao.findById(id)
+
+        if (id == 0) throw IllegalStateException(Localization.get("anonymous_chat_creation_failed", lang))
+
         return ApiResponse(
             success = true,
-            data = created?.convertToResponse(),
+            data = id,
             message = Localization.get("anonymous_chat_created_successfully", lang)
         )
     }
 
-    override fun updateAnonymousChat(id: Int, request: UpdateAnonymousChatRequest, lang: String): ApiResponse<AnonymousChatResponse> {
-        dao.update(request.toAnonymousChatDto(id))
-        val updated = dao.findById(id)
+    override fun updateAnonymousChat(id: Int, request: UpdateAnonymousChatRequest, lang: String): ApiResponse<Nothing> {
+
+        val  updated = dao.update(request.toAnonymousChatDto(id))
+
+        if (!updated) throw IllegalStateException(Localization.get("anonymous_chat_update_failed", lang))
+
         return ApiResponse(
             success = true,
-            data = updated?.convertToResponse(),
+            data = null,
             message = Localization.get("anonymous_chat_updated_successfully", lang)
         )
     }
 
     override fun deleteAnonymousChat(id: Int, lang: String): ApiResponse<Nothing> {
-        dao.delete(idToDto(id))
+        val  deleted = dao.delete(id)
+
+        if (!deleted) throw IllegalStateException(Localization.get("anonymous_chat_deletion_failed", lang))
+
         return ApiResponse(
             success = true,
             data = null,

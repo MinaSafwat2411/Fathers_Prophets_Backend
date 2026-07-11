@@ -13,12 +13,11 @@ import com.fathersprophets.backend.utils.PasswordUtil
 
 class AuthRepository(
     val userDao: UserDao,
-    private val lang: String = "en"
 ) : IAuthRepository {
-    override suspend fun register(request: RegisterRequest): ApiResponse<RegisterResponse> {
+    override suspend fun register(request: RegisterRequest, lang: String): ApiResponse<RegisterResponse> {
         val passwordHash = PasswordUtil.hashPassword(request.password ?: "")
 
-        val existingUser = userDao.findByUsername(request.toUserDto(passwordHash))
+        val existingUser = userDao.findByUsername(request.username?:"")
         if (existingUser != null) {
             throw ConflictException(Localization.get("username_exists", lang))
         }
@@ -27,7 +26,9 @@ class AuthRepository(
             request.toUserDto(passwordHash)
         )
 
-        var user = userDao.findById(request.toUserDto(passwordHash).copy(id = newUserId)) ?: throw ConflictException(
+        if (newUserId == 0) throw UnauthorizedException(Localization.get("register_failed", lang))
+
+        var user = userDao.findById(newUserId) ?: throw ConflictException(
             Localization.get("register_failed", lang)
         )
 
@@ -53,11 +54,11 @@ class AuthRepository(
         )
     }
 
-    override suspend fun login(request: LoginRequest): ApiResponse<LoginResponse> {
+    override suspend fun login(request: LoginRequest, lang: String): ApiResponse<LoginResponse> {
 
         val hashPassword = PasswordUtil.hashPassword(request.password ?: "")
 
-        var user = userDao.findByUsername(request.toUserDto(hashPassword))
+        var user = userDao.findByUsername(request.username ?: "")
             ?: throw ConflictException(Localization.get("user_not_found", lang))
 
 
@@ -70,7 +71,7 @@ class AuthRepository(
             user.username,
             user.role.name,
             user.isReviewed == true,
-            user.name
+            user.name,
         )
         val refreshToken = JwtConfig.generateRefreshToken(user.id)
 
@@ -94,11 +95,11 @@ class AuthRepository(
         )
     }
 
-    override suspend fun refreshToken(refresh: RefreshRequest): ApiResponse<RefreshResponse> {
+    override suspend fun refreshToken(refresh: RefreshRequest, lang: String): ApiResponse<RefreshResponse> {
         val userId = JwtConfig.verifyRefreshToken(refresh.refreshToken ?: "")
             ?: throw UnauthorizedException(Localization.get("invalid_token", lang))
 
-        var user = userDao.findById(refresh.toUserDto().copy(id = userId))
+        var user = userDao.findById(userId)
             ?: throw ConflictException(Localization.get("user_not_found", lang))
 
         val newToken = generateAccessToken(user)
@@ -122,7 +123,7 @@ class AuthRepository(
         )
     }
 
-    override suspend fun logout(userId: Int): ApiResponse<Nothing> {
+    override suspend fun logout(userId: Int, lang: String): ApiResponse<Nothing> {
         val userDto = idToUser(userId).copy(
             token = null,
             refreshToken = null,

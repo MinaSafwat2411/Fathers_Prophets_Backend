@@ -1,21 +1,17 @@
 package com.fathersprophets.backend.database.repository.chat.anonymouschatmessage
 
-import com.fathersprophets.backend.database.dao.chat.AnonymousChatDao
 import com.fathersprophets.backend.database.dao.chat.AnonymousChatMessageDao
 import com.fathersprophets.backend.database.dao.users.UserDao
-import com.fathersprophets.backend.database.tables.UserRole
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.anonymouschatmessage.AnonymousChatMessageResponse
 import com.fathersprophets.backend.models.anonymouschatmessage.CreateAnonymousChatMessageRequest
 import com.fathersprophets.backend.models.anonymouschatmessage.UpdateAnonymousChatMessageRequest
-import com.fathersprophets.backend.models.dto.AnonymousChatMessageDto
-import com.fathersprophets.backend.models.dto.UserDto
 import com.fathersprophets.backend.services.notification.IFirebaseMessagingService
 import com.fathersprophets.backend.utils.Localization
+import java.time.LocalDateTime
 
 class AnonymousChatMessageRepository(
     private val messageDao: AnonymousChatMessageDao,
-    private val chatDao: AnonymousChatDao,
     private val userDao: UserDao,
     private val firebaseMessagingService: IFirebaseMessagingService
 ) : IAnonymousChatMessageRepository {
@@ -47,54 +43,66 @@ class AnonymousChatMessageRepository(
         )
     }
 
-    override fun createMessage(request: CreateAnonymousChatMessageRequest, lang: String): ApiResponse<AnonymousChatMessageResponse> {
-        chatDao.findById(request.chatId ?: 0)
-            ?: throw IllegalArgumentException(Localization.get("anonymous_chat_not_found", lang))
+    override fun createMessage(request: CreateAnonymousChatMessageRequest, lang: String): ApiResponse<Int> {
 
         val id = messageDao.create(request.toAnonymousChatMessageDto())
-        val created = messageDao.findById(id)
-        val member = userDao.findById(idToUserDto(request.memberId ?: 0))?: throw IllegalArgumentException(Localization.get("member_not_found", lang))
-        val servant = userDao.findById(idToUserDto(request.servantId ?: 0))?: throw IllegalArgumentException(Localization.get("servant_not_found", lang))
 
-        if (created != null) {
-            val tokens = listOfNotNull(
-                userDao.findFcmTokenById(created.memberId),
-                userDao.findFcmTokenById(created.servantId)
-            )
-            val data = mapOf(
-                "type" to "chat_message",
-                "id" to created.id.toString(),
-                "chatId" to created.chatId.toString(),
-                "memberId" to created.memberId.toString(),
-                "servantId" to created.servantId.toString(),
-                "message" to created.message,
-                "memberName" to member.name,
-                "servantName" to servant.name,
-                "isRead" to created.isRead.toString(),
-                "createdAt" to created.createdAt
-            )
-            firebaseMessagingService.sendToTokens(tokens, "New message", created.message, data)
-        }
+        if (id == 0) throw IllegalStateException(Localization.get("anonymous_chat_message_creation_failed", lang))
+
+        val member = userDao.findById(request.memberId ?: 0)
+            ?: throw IllegalArgumentException(Localization.get("member_not_found", lang))
+        val servant = userDao.findById(request.servantId ?: 0)
+            ?: throw IllegalArgumentException(Localization.get("servant_not_found", lang))
+
+        val tokens = listOfNotNull(
+            userDao.findFcmTokenById(request.memberId ?: 0),
+            userDao.findFcmTokenById(request.servantId ?: 0)
+        )
+
+        val data = mapOf(
+            "type" to "chat_message",
+            "id" to id.toString(),
+            "chatId" to request.chatId.toString(),
+            "memberId" to request.memberId.toString(),
+            "servantId" to request.servantId.toString(),
+            "message" to request.message.toString(),
+            "memberName" to member.name,
+            "servantName" to servant.name,
+            "isRead" to false.toString(),
+            "createdAt" to LocalDateTime.now().toString(),
+        )
+
+        firebaseMessagingService.sendToTokens(tokens, "New message", request.message ?: "", data)
 
         return ApiResponse(
             success = true,
-            data = created?.convertToResponse(),
+            data = id,
             message = Localization.get("anonymous_chat_message_created_successfully", lang)
         )
     }
 
-    override fun updateMessage(id: Int, request: UpdateAnonymousChatMessageRequest, lang: String): ApiResponse<AnonymousChatMessageResponse> {
-        messageDao.update(request.toAnonymousChatMessageDto(id))
-        val updated = messageDao.findById(id)
+    override fun updateMessage(
+        id: Int,
+        request: UpdateAnonymousChatMessageRequest,
+        lang: String
+    ): ApiResponse<Nothing> {
+        val updated = messageDao.update(request.toAnonymousChatMessageDto(id))
+
+        if (!updated) throw IllegalStateException(Localization.get("anonymous_chat_message_update_failed", lang))
+
         return ApiResponse(
             success = true,
-            data = updated?.convertToResponse(),
+            data = null,
             message = Localization.get("anonymous_chat_message_updated_successfully", lang)
         )
     }
 
     override fun deleteMessage(id: Int, lang: String): ApiResponse<Nothing> {
-        messageDao.delete(idToDto(id))
+
+        val deleted = messageDao.delete(id)
+
+        if (!deleted) throw IllegalStateException(Localization.get("anonymous_chat_message_deletion_failed", lang))
+
         return ApiResponse(
             success = true,
             data = null,
@@ -102,21 +110,4 @@ class AnonymousChatMessageRepository(
         )
     }
 
-    private fun idToDto(id: Int) = AnonymousChatMessageDto(
-        id = id,
-        chatId = 0,
-        memberId = 0,
-        servantId = 0,
-        message = "",
-        isRead = false,
-        createdAt = ""
-    )
-
-    private fun idToUserDto(id : Int) = UserDto(
-        id = id,
-        name = "",
-        username = "",
-        passwordHash = "",
-        role = UserRole.member
-    )
 }

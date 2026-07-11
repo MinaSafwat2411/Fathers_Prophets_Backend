@@ -15,8 +15,8 @@ data class AddAttendanceRequest(
     val tnawl: Boolean? = null,
     val classId: Int? = null
 ){
-    fun toAttendanceDto() = AttendanceDto(
-        id = 0,
+    fun toAttendanceDto(int: Int = 0) = AttendanceDto(
+        id = int,
         userId = userId ?: 0,
         sessionId = sessionId ?: 0,
         name = name ?: "",

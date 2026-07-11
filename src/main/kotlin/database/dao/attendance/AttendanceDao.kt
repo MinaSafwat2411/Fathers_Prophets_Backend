@@ -41,10 +41,6 @@ class AttendanceDao {
         AttendanceTable.select { AttendanceTable.sessionId eq sessionId }.map { rowToAttendanceDto(it) }
     }
 
-    fun getAttendanceById(id: Int) = transaction {
-        AttendanceTable.select { AttendanceTable.id eq id }.map { rowToAttendanceDto(it) }.singleOrNull()
-    }
-
     fun addAttendance(attendanceDto: AttendanceDto) = transaction {
         AttendanceTable.insert {
             it[userId] = attendanceDto.userId
