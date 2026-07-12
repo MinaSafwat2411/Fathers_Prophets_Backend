@@ -5,35 +5,40 @@ import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.comments.AddCommentRequest
 import com.fathersprophets.backend.models.comments.CommentResponse
 import com.fathersprophets.backend.models.comments.UpdateCommentRequest
-import com.fathersprophets.backend.models.dto.CommentDto
 import com.fathersprophets.backend.utils.Localization
 
 class CommentsRepository (
     private val commentDao: CommentDao
 ) : ICommentsRepository {
-    override fun addComment(comment: AddCommentRequest,lang : String): ApiResponse<CommentResponse> {
+    override fun addComment(comment: AddCommentRequest,lang : String): ApiResponse<Int> {
         val id = commentDao.addComment(comment.toCommentDto())
-        val createdComment = commentDao.getCommentById(id)?:
-            throw IllegalStateException("comment_create_failed")
+
+        if (id == 0) throw IllegalArgumentException(Localization.get("comment_create_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = createdComment.convertToCommentResponse(),
+            data = id,
             message = Localization.get("comment_create_success", lang)
         )
     }
 
-    override fun updateComment(commentId: Int,updateComment: UpdateCommentRequest,lang : String): ApiResponse<CommentResponse> {
+    override fun updateComment(commentId: Int,updateComment: UpdateCommentRequest,lang : String): ApiResponse<Nothing> {
         val updatedComment = commentDao.updateComment(updateComment.toCommentDto(commentId))
+
+        if (!updatedComment) throw IllegalArgumentException(Localization.get("comment_update_failed", lang))
+
         return ApiResponse(
             success = true,
-            data = updatedComment.convertToCommentResponse(),
+            data = null,
             message = Localization.get("comment_update_success", lang)
         )
     }
 
     override fun deleteComment(commentId : Int,lang : String): ApiResponse<Nothing> {
-        commentDao.deleteComment(idToComment(commentId))
+
+        val deleted = commentDao.deleteComment(commentId)
+
+        if (!deleted) throw IllegalArgumentException(Localization.get("comment_delete_failed", lang))
         return ApiResponse(
             success = true,
             data = null,
@@ -59,10 +64,4 @@ class CommentsRepository (
             message = Localization.get("comments_retrieved_success", lang)
         )
     }
-
-    fun idToComment(commentId : Int)=CommentDto(
-        id = commentId,
-        userId = 0,
-        comment = ""
-    )
 }

@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.services.timeline
 
-import com.fathersprophets.backend.database.repository.timeline.ITimelineRepository
+import com.fathersprophets.backend.database.repository.activity.timeline.ITimelineRepository
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.timeline.CreateTimelineRequest
 import com.fathersprophets.backend.models.timeline.TimelineResponse

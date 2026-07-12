@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.services.timelineanswer
 
-import com.fathersprophets.backend.database.repository.timelineanswer.ITimelineAnswerRepository
+import com.fathersprophets.backend.database.repository.activity.timeline.timelineanswer.ITimelineAnswerRepository
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.timelineanswer.CreateTimelineAnswerRequest
 import com.fathersprophets.backend.models.timelineanswer.TimelineAnswerResponse

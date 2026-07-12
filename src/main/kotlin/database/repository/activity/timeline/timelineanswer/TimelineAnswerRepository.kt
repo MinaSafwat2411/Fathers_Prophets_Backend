@@ -1,10 +1,9 @@
-package com.fathersprophets.backend.database.repository.timelineanswer
+package com.fathersprophets.backend.database.repository.activity.timeline.timelineanswer
 
 import com.fathersprophets.backend.database.dao.activity.timeline.TimelineAnswerDao
 import com.fathersprophets.backend.database.dao.activity.timeline.TimelineDao
 import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.dto.TimelineAnswerDto
 import com.fathersprophets.backend.models.timelineanswer.CreateTimelineAnswerRequest
 import com.fathersprophets.backend.models.timelineanswer.TimelineAnswerResponse
 import com.fathersprophets.backend.models.timelineanswer.UpdateTimelineAnswerRequest
@@ -52,65 +51,58 @@ class TimelineAnswerRepository(
         )
     }
 
-    override fun createAnswer(request: CreateTimelineAnswerRequest, lang: String): ApiResponse<TimelineAnswerResponse> {
-        val existing = answerDao.findByTimelineIdAndUserId(request.timelineId, request.userId)
-        if (existing != null) throw IllegalStateException(Localization.get("timeline_answer_already_exists", lang))
+    override fun createAnswer(request: CreateTimelineAnswerRequest, lang: String): ApiResponse<Int> {
 
         val timeline = timelineDao.findById(request.timelineId)
             ?: throw IllegalArgumentException(Localization.get("timeline_not_found", lang))
 
         val status = gradeOrder(request.order, timeline.correctOrder)
 
-        val id = answerDao.create(
-            TimelineAnswerDto(
-                id = 0,
-                timelineId = request.timelineId,
-                userId = request.userId,
-                status = status
-            )
-        )
-        val created = answerDao.findById(id)
+        val id = answerDao.create(request.convertToDto().copy(status = status))
+
+        if (id == 0) throw IllegalArgumentException(Localization.get("timeline_answer_creation_failed", lang))
+
         return ApiResponse(
             success = true,
-            data = created?.convertToResponse(),
+            data = id,
             message = Localization.get("timeline_answer_created_successfully", lang)
         )
     }
 
-    override fun updateAnswer(id: Int, request: UpdateTimelineAnswerRequest, lang: String): ApiResponse<TimelineAnswerResponse> {
+    override fun updateAnswer(id: Int, request: UpdateTimelineAnswerRequest, lang: String): ApiResponse<Nothing> {
         val timeline = timelineDao.findById(request.timelineId)
             ?: throw IllegalArgumentException(Localization.get("timeline_not_found", lang))
 
         val status = gradeOrder(request.order, timeline.correctOrder)
 
-        answerDao.update(
-            TimelineAnswerDto(
-                id = id,
-                timelineId = request.timelineId,
-                userId = request.userId,
-                status = status
-            )
-        )
-        val updated = answerDao.findById(id)
+        val updated = answerDao.update(request.convertToDto(id, status))
+
+        if (!updated) throw IllegalArgumentException(Localization.get("timeline_answer_update_failed", lang))
+
         return ApiResponse(
             success = true,
-            data = updated?.convertToResponse(),
+            data = null,
             message = Localization.get("timeline_answer_updated_successfully", lang)
         )
     }
 
-    override fun updateAnswerStatus(id: Int, request: UpdateTimelineAnswerStatusRequest, lang: String): ApiResponse<TimelineAnswerResponse> {
-        answerDao.updateStatus(idToDto(id, AnswerStatus.valueOf(request.status)))
-        val updated = answerDao.findById(id)
+    override fun updateAnswerStatus(id: Int, request: UpdateTimelineAnswerStatusRequest, lang: String): ApiResponse<Nothing> {
+        val updated = answerDao.updateStatus(request.convertToDto(id))
+
+        if (!updated) throw IllegalArgumentException(Localization.get("timeline_answer_update_failed", lang))
+
         return ApiResponse(
             success = true,
-            data = updated?.convertToResponse(),
+            data = null,
             message = Localization.get("timeline_answer_status_updated_successfully", lang)
         )
     }
 
     override fun deleteAnswer(id: Int, lang: String): ApiResponse<Nothing> {
-        answerDao.delete(idToDto(id, AnswerStatus.IS_FALSE))
+        val answer = answerDao.delete(id)
+
+        if (!answer) throw IllegalArgumentException(Localization.get("timeline_answer_deletion_failed", lang))
+
         return ApiResponse(
             success = true,
             data = null,
@@ -120,11 +112,4 @@ class TimelineAnswerRepository(
 
     private fun gradeOrder(order: List<Int>, correctOrder: List<Int>) =
         if (order == correctOrder) AnswerStatus.IS_TRUE else AnswerStatus.IS_FALSE
-
-    private fun idToDto(id: Int, status: AnswerStatus) = TimelineAnswerDto(
-        id = id,
-        timelineId = 0,
-        userId = 0,
-        status = status
-    )
 }

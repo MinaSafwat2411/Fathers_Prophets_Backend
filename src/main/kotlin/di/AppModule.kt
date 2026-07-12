@@ -102,10 +102,10 @@ import com.fathersprophets.backend.database.repository.superevent.supereventbook
 import com.fathersprophets.backend.database.repository.supereventbooking.SuperEventBookingRepository
 import com.fathersprophets.backend.database.repository.userprogressquiz.IUserProgressQuizRepository
 import com.fathersprophets.backend.database.repository.userprogressquiz.UserProgressQuizRepository
-import com.fathersprophets.backend.database.repository.timeline.ITimelineRepository
-import com.fathersprophets.backend.database.repository.timeline.TimelineRepository
-import com.fathersprophets.backend.database.repository.timelineanswer.ITimelineAnswerRepository
-import com.fathersprophets.backend.database.repository.timelineanswer.TimelineAnswerRepository
+import com.fathersprophets.backend.database.repository.activity.timeline.ITimelineRepository
+import com.fathersprophets.backend.database.repository.activity.timeline.TimelineRepository
+import com.fathersprophets.backend.database.repository.activity.timeline.timelineanswer.ITimelineAnswerRepository
+import com.fathersprophets.backend.database.repository.activity.timeline.timelineanswer.TimelineAnswerRepository
 import com.fathersprophets.backend.database.repository.users.IUserRepository
 import com.fathersprophets.backend.database.repository.users.UserRepository
 import com.fathersprophets.backend.database.repository.version.IVersionRepository

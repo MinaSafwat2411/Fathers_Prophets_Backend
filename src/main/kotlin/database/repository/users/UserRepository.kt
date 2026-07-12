@@ -3,15 +3,7 @@ package com.fathersprophets.backend.database.repository.users
 import com.fathersprophets.backend.database.dao.users.UserDao
 import com.fathersprophets.backend.database.tables.users.UserRole
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.dto.UserDto
-import com.fathersprophets.backend.models.users.AddUserRequest
-import com.fathersprophets.backend.models.users.UpdateEmailRequest
-import com.fathersprophets.backend.models.users.UpdatePasswordRequest
-import com.fathersprophets.backend.models.users.UpdatePhoneRequest
-import com.fathersprophets.backend.models.users.UpdateProfileRequest
-import com.fathersprophets.backend.models.users.UpcomingBirthdayResponse
-import com.fathersprophets.backend.models.users.UpdateUserRequest
-import com.fathersprophets.backend.models.users.UserResponse
+import com.fathersprophets.backend.models.users.*
 import com.fathersprophets.backend.utils.Localization
 import com.fathersprophets.backend.utils.PasswordUtil
 import java.time.LocalDate
@@ -22,9 +14,9 @@ import java.time.temporal.ChronoUnit
 class UserRepository(
     val userDao: UserDao,
 ) : IUserRepository {
-    override suspend fun getUserById(id: Int, lang: String): ApiResponse<UserResponse> {
+    override fun getUserById(id: Int, lang: String): ApiResponse<UserResponse> {
         val user =
-            userDao.findById(idToUser(id)) ?: throw IllegalArgumentException(Localization.get("user_not_found", lang))
+            userDao.findById(id) ?: throw IllegalArgumentException(Localization.get("user_not_found", lang))
         val userResponse = user.convertToUserResponse()
         val messageKey = "user_found"
         return ApiResponse(
@@ -34,27 +26,27 @@ class UserRepository(
         )
     }
 
-    override suspend fun addUser(addUserRequest: AddUserRequest, lang: String): ApiResponse<UserResponse> {
+    override fun addUser(addUserRequest: AddUserRequest, lang: String): ApiResponse<Int> {
         val hashPassword = PasswordUtil.hashPassword("123456")
         val id = userDao.createUser(addUserRequest.toUserDto(0, hashPassword))
 
-        userDao.updateUserByField(addUserRequest.toUserDto(id, hashPassword))
-
-        val user = addUserRequest.toUserDto(id, hashPassword)
+        if (id == 0) throw IllegalArgumentException(Localization.get("user_add_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = user.convertToUserResponse(),
+            data = id,
             message = Localization.get("user_added_success", lang)
         )
     }
 
-    override suspend fun updateEmail(
+    override fun updateEmail(
         id: Int,
         updateEmailRequest: UpdateEmailRequest,
         lang: String
     ): ApiResponse<Nothing> {
-        userDao.updateEmail(updateEmailRequest.toUserDto(id))
+        val updated = userDao.updateEmail(updateEmailRequest.toUserDto(id))
+
+        if (!updated) throw IllegalArgumentException(Localization.get("email_update_failed", lang))
 
         return ApiResponse(
             success = true,
@@ -62,14 +54,14 @@ class UserRepository(
         )
     }
 
-    override suspend fun updatePassword(
+    override fun updatePassword(
         id: Int,
         updatePasswordRequest: UpdatePasswordRequest,
         lang: String
     ): ApiResponse<Nothing> {
         val oldHashPassword = PasswordUtil.hashPassword(updatePasswordRequest.oldPassword ?: "")
         val newHashPassword = PasswordUtil.hashPassword(updatePasswordRequest.newPassword ?: "")
-        val user = userDao.findById(idToUser(id))
+        val user = userDao.findById(id)
             ?: throw IllegalArgumentException(Localization.get("password_update_failed", lang))
         if (user.passwordHash == newHashPassword) {
             throw IllegalArgumentException(Localization.get("new_password_same_as_old", lang))
@@ -79,7 +71,10 @@ class UserRepository(
             throw IllegalArgumentException(Localization.get("old_password_incorrect", lang))
         }
 
-        userDao.updatePassword(user.copy(passwordHash = newHashPassword))
+        val updated = userDao.updatePassword(user.copy(passwordHash = newHashPassword))
+
+        if (!updated) throw IllegalArgumentException(Localization.get("password_update_failed", lang))
+
         return ApiResponse(
             success = true,
             message = Localization.get(
@@ -89,74 +84,71 @@ class UserRepository(
         )
     }
 
-    override suspend fun updateProfile(
+    override fun updateProfile(
         id: Int,
         updateProfileRequest: UpdateProfileRequest,
         lang: String
     ): ApiResponse<Nothing> {
-        userDao.updateProfile(updateProfileRequest.toUserDto(id))
+        val updated = userDao.updateProfile(updateProfileRequest.toUserDto(id))
+
+        if (!updated) throw IllegalArgumentException(Localization.get("profile_update_failed", lang))
+
         return ApiResponse(
             success = true,
             message = Localization.get("profile_updated_successfully", lang)
         )
     }
 
-    override suspend fun updatePhone(
+    override fun updatePhone(
         id: Int,
         updatePhoneRequest: UpdatePhoneRequest,
         lang: String
     ): ApiResponse<Nothing> {
-        userDao.updatePhone(updatePhoneRequest.toUserDto(id))
+        val updated = userDao.updatePhone(updatePhoneRequest.toUserDto(id))
+
+        if (!updated) throw IllegalArgumentException(Localization.get("phone_update_failed", lang))
+
         return ApiResponse(
             success = true,
             message = Localization.get("phone_updated_successfully", lang)
         )
     }
 
-    override suspend fun updateReview(id: Int, lang: String): ApiResponse<Nothing> {
-        userDao.reviewUser(id)
+    override fun updateReview(id: Int, lang: String): ApiResponse<Nothing> {
+        val updated = userDao.reviewUser(id)
+
+        if (!updated) throw IllegalArgumentException(Localization.get("user_review_failed", lang))
         return ApiResponse(
             success = true,
             message = Localization.get("user_reviewed_successfully", lang)
         )
     }
 
-    override suspend fun updateUserByField(
-        id: Int,
-        updateUser: UpdateUserRequest,
-        lang: String
-    ): ApiResponse<UserResponse> {
-        val user = userDao.updateUserByField(updateUser.toUserDto(id))
-            ?: throw IllegalArgumentException(Localization.get("user_update_failed", lang))
-        return ApiResponse(
-            success = true,
-            message = Localization.get("user_updated_successfully", lang),
-            data = user.convertToUserResponse()
-        )
-    }
+    override fun deleteUser(id: Int, lang: String): ApiResponse<Nothing> {
+        val deleted = userDao.deleteUser(id)
 
-    override suspend fun deleteUser(id: Int, lang: String): ApiResponse<Nothing> {
-        userDao.deleteUser(idToUser(id))
+        if (!deleted) throw IllegalArgumentException(Localization.get("user_deletion_failed", lang))
+
         return ApiResponse(success = true, message = Localization.get("user_deleted_successfully", lang))
     }
 
-    override suspend fun getUsersByRole(role: String, lang: String): ApiResponse<List<UserResponse>> {
+    override fun getUsersByRole(role: String, lang: String): ApiResponse<List<UserResponse>> {
         val userRole = getRoleFromString(role)
         val users = userDao.findByRole(userRole).map { it.convertToUserResponse() }
         return ApiResponse(success = true, data = users, message = Localization.get("users_found", lang))
     }
 
-    override suspend fun getUnReviewedUsers(lang: String): ApiResponse<List<UserResponse>> {
+    override fun getUnReviewedUsers(lang: String): ApiResponse<List<UserResponse>> {
         val users = userDao.findUnreviewedUsers().map { it.convertToUserResponse() }
         return ApiResponse(success = true, data = users, message = Localization.get("users_found", lang))
     }
 
-    override suspend fun getAllUsers(lang: String): ApiResponse<List<UserResponse>> {
+    override fun getAllUsers(lang: String): ApiResponse<List<UserResponse>> {
         val users = userDao.findAllUsers().map { it.convertToUserResponse() }
         return ApiResponse(success = true, data = users, message = Localization.get("users_found", lang))
     }
 
-    override suspend fun getUpcomingBirthdays(lang: String): ApiResponse<List<UpcomingBirthdayResponse>> {
+    override fun getUpcomingBirthdays(lang: String): ApiResponse<List<UpcomingBirthdayResponse>> {
         val today = LocalDate.now()
 
         val upcoming = userDao.findUsersWithBirthDate()
@@ -186,18 +178,6 @@ class UserRepository(
             success = true,
             data = upcoming,
             message = Localization.get("upcoming_birthdays_retrieved_successfully", lang)
-        )
-    }
-
-    private fun idToUser(id: Int): UserDto {
-        return UserDto(
-            id = id,
-            name = "",
-            username = "",
-            passwordHash = "",
-            role = UserRole.bible,
-            isReviewed = false,
-            fcmToken = ""
         )
     }
     
