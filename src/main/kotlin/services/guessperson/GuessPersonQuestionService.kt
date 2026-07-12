@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.services.guessperson
 
-import com.fathersprophets.backend.database.repository.guessperson.IGuessPersonQuestionRepository
+import com.fathersprophets.backend.database.repository.activity.guessperson.IGuessPersonQuestionRepository
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.guessperson.CreateGuessPersonQuestionRequest
 import com.fathersprophets.backend.models.guessperson.GuessPersonQuestionResponse

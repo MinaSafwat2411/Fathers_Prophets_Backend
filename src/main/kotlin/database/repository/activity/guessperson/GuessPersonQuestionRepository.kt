@@ -1,11 +1,8 @@
-package com.fathersprophets.backend.database.repository.guessperson
+package com.fathersprophets.backend.database.repository.activity.guessperson
 
 import com.fathersprophets.backend.database.dao.activity.guessperson.GuessPersonQuestionDao
-import com.fathersprophets.backend.database.tables.McqCorrectAnswer
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.dto.GuessPersonQuestionDto
 import com.fathersprophets.backend.models.guessperson.CreateGuessPersonQuestionRequest
-import com.fathersprophets.backend.models.guessperson.GuessPersonChoice
 import com.fathersprophets.backend.models.guessperson.GuessPersonQuestionResponse
 import com.fathersprophets.backend.models.guessperson.UpdateGuessPersonQuestionRequest
 import com.fathersprophets.backend.utils.Localization
@@ -35,12 +32,15 @@ class GuessPersonQuestionRepository(
     override fun createQuestion(
         request: CreateGuessPersonQuestionRequest,
         lang: String
-    ): ApiResponse<GuessPersonQuestionResponse> {
+    ): ApiResponse<Int> {
         val id = dao.create(request.convertToDto())
-        val created = dao.findById(id)
+
+        if (id == 0) throw IllegalArgumentException(Localization.get("guess_person_question_creation_failed", lang))
+
+
         return ApiResponse(
             success = true,
-            data = created?.convertToResponse(),
+            data = id,
             message = Localization.get("guess_person_question_created_successfully", lang)
         )
     }
@@ -49,34 +49,24 @@ class GuessPersonQuestionRepository(
         id: Int,
         request: UpdateGuessPersonQuestionRequest,
         lang: String
-    ): ApiResponse<GuessPersonQuestionResponse> {
-        dao.update(request.convertToDto(id))
-        val updated = dao.findById(id)
+    ): ApiResponse<Nothing> {
+        val updated = dao.update(request.convertToDto(id))
+
+        if (!updated) throw IllegalArgumentException(Localization.get("guess_person_question_update_failed", lang))
+
         return ApiResponse(
             success = true,
-            data = updated?.convertToResponse(),
+            data = null,
             message = Localization.get("guess_person_question_updated_successfully", lang)
         )
     }
 
     override fun deleteQuestion(id: Int, lang: String): ApiResponse<Nothing> {
-        dao.delete(idToDto(id))
+        dao.delete(id)
         return ApiResponse(
             success = true,
             data = null,
             message = Localization.get("guess_person_question_deleted_successfully", lang)
         )
     }
-
-    private fun idToDto(id: Int) = GuessPersonQuestionDto(
-        id = id,
-        question = "",
-        correctPersonId = 0,
-        difficulty = null,
-        first = GuessPersonChoice(0, ""),
-        second = GuessPersonChoice(0, ""),
-        third = GuessPersonChoice(0, ""),
-        fourth = GuessPersonChoice(0, ""),
-        correctAnswer = McqCorrectAnswer.`1`
-    )
 }

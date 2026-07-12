@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.repository.guesspersonanswer
+package com.fathersprophets.backend.database.repository.activity.guessperson.guesspersonanswer
 
 import com.fathersprophets.backend.database.dao.activity.guessperson.GuessPersonAnswerDao
 import com.fathersprophets.backend.database.dao.activity.guessperson.GuessPersonQuestionDao
@@ -52,14 +52,7 @@ class GuessPersonAnswerRepository(
         )
     }
 
-    override fun createAnswer(request: CreateGuessPersonAnswerRequest, lang: String): ApiResponse<GuessPersonAnswerResponse> {
-        val existing = answerDao.findByQuestionIdAndUserId(request.questionId, request.userId)
-        if (existing != null) throw IllegalStateException(Localization.get("guess_person_answer_already_exists", lang))
-
-        val question = questionDao.findById(request.questionId)
-            ?: throw IllegalArgumentException(Localization.get("guess_person_question_not_found", lang))
-
-        val status = if (request.personId == question.correctPersonId) AnswerStatus.IS_TRUE else AnswerStatus.IS_FALSE
+    override fun createAnswer(request: CreateGuessPersonAnswerRequest, lang: String): ApiResponse<Int> {
 
         val id = answerDao.create(
             GuessPersonAnswerDto(
@@ -67,24 +60,18 @@ class GuessPersonAnswerRepository(
                 questionId = request.questionId,
                 userId = request.userId,
                 personId = request.personId,
-                status = status
+                status = AnswerStatus.TEACHER_STILL_NOT_CORRECTED
             )
         )
-        val created = answerDao.findById(id)
-        return ApiResponse(
-            success = true,
-            data = created?.convertToResponse(),
-            message = Localization.get("guess_person_answer_created_successfully", lang)
-        )
-    }
 
-    override fun updateAnswer(id: Int, request: UpdateGuessPersonAnswerRequest, lang: String): ApiResponse<GuessPersonAnswerResponse> {
-        val question = questionDao.findById(request.questionId)
+        if (id == 0) throw IllegalArgumentException(Localization.get("guess_person_answer_creation_failed", lang))
+
+        val questionDao = questionDao.findById(request.questionId)
             ?: throw IllegalArgumentException(Localization.get("guess_person_question_not_found", lang))
 
-        val status = if (request.personId == question.correctPersonId) AnswerStatus.IS_TRUE else AnswerStatus.IS_FALSE
+        val status = gradeAnswer(request.personId, questionDao.correctPersonId)
 
-        answerDao.update(
+        val update = answerDao.updateStatus(
             GuessPersonAnswerDto(
                 id = id,
                 questionId = request.questionId,
@@ -93,32 +80,51 @@ class GuessPersonAnswerRepository(
                 status = status
             )
         )
-        val updated = answerDao.findById(id)
+
+        if (!update) throw IllegalArgumentException(Localization.get("guess_person_answer_update_failed", lang))
+
         return ApiResponse(
             success = true,
-            data = updated?.convertToResponse(),
+            data = id,
+            message = Localization.get("guess_person_answer_created_successfully", lang)
+        )
+    }
+
+    override fun updateAnswer(id: Int, request: UpdateGuessPersonAnswerRequest, lang: String): ApiResponse<Nothing> {
+
+        val update = answerDao.update(request.convertToDto(id))
+
+        if (!update) throw IllegalArgumentException(Localization.get("guess_person_answer_update_failed", lang))
+
+        return ApiResponse(
+            success = true,
+            data = null,
             message = Localization.get("guess_person_answer_updated_successfully", lang)
         )
     }
 
-    override fun updateAnswerStatus(id: Int, request: UpdateGuessPersonAnswerStatusRequest, lang: String): ApiResponse<GuessPersonAnswerResponse> {
+    override fun updateAnswerStatus(id: Int, request: UpdateGuessPersonAnswerStatusRequest, lang: String): ApiResponse<Nothing> {
         answerDao.updateStatus(idToDto(id, AnswerStatus.valueOf(request.status)))
         val updated = answerDao.findById(id)
         return ApiResponse(
             success = true,
-            data = updated?.convertToResponse(),
+            data = null,
             message = Localization.get("guess_person_answer_status_updated_successfully", lang)
         )
     }
 
     override fun deleteAnswer(id: Int, lang: String): ApiResponse<Nothing> {
-        answerDao.delete(idToDto(id, AnswerStatus.IS_FALSE))
+        answerDao.delete(id)
         return ApiResponse(
             success = true,
             data = null,
             message = Localization.get("guess_person_answer_deleted_successfully", lang)
         )
     }
+
+    private fun gradeAnswer(answer: Int, correctAnswer: Int) =
+        if (answer == correctAnswer) AnswerStatus.IS_TRUE else AnswerStatus.IS_FALSE
+
 
     private fun idToDto(id: Int, status: AnswerStatus) = GuessPersonAnswerDto(
         id = id,
