@@ -12,7 +12,7 @@ class VersionRepository(
     private val versionDao: VersionDao
 ) : IVersionRepository {
 
-    override suspend fun getLastVersion(lang: String): ApiResponse<VersionDto> {
+    override fun getLastVersion(lang: String): ApiResponse<VersionDto> {
         val lastVersion = versionDao.getLastVersion()?:
             throw IllegalArgumentException(Localization.get("version_not_found", lang))
 
@@ -23,7 +23,7 @@ class VersionRepository(
         )
     }
 
-    override suspend fun addNewVersion(versionRequest: VersionRequest, lang: String): ApiResponse<Nothing> {
+    override fun addNewVersion(versionRequest: VersionRequest, lang: String): ApiResponse<Nothing> {
         val versionDto = versionRequest.toVersionDto().copy(
             adminPin = PasswordUtil.hashPassword(versionRequest.adminPin ?: "")
         )
@@ -32,7 +32,7 @@ class VersionRepository(
         return ApiResponse(success = true, message = Localization.get("version_added_successfully", lang))
     }
 
-    override suspend fun onValidatePin(adminPinRequest: AdminPinRequest, lang: String): ApiResponse<Nothing> {
+    override fun onValidatePin(adminPinRequest: AdminPinRequest, lang: String): ApiResponse<Nothing> {
         val adminPin = versionDao.getPinByVersion(adminPinRequest.toVersionDto()) ?: throw IllegalArgumentException(
             Localization.get("version_not_found", lang)
         )
@@ -43,7 +43,7 @@ class VersionRepository(
         return ApiResponse(success = isMatch, message = Localization.get(messageKey, lang))
     }
 
-    override suspend fun changePinVersion(adminPinRequest: AdminPinRequest, lang: String): ApiResponse<Nothing> {
+    override fun changePinVersion(adminPinRequest: AdminPinRequest, lang: String): ApiResponse<Nothing> {
         val versionDto = adminPinRequest.toVersionDto().copy(
             adminPin = PasswordUtil.hashPassword(adminPinRequest.adminPin ?: "")
         )

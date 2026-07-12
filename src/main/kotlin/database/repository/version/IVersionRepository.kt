@@ -6,9 +6,9 @@ import com.fathersprophets.backend.models.version.VersionRequest
 import com.fathersprophets.backend.models.dto.VersionDto
 
 interface IVersionRepository {
-    suspend fun getLastVersion(lang : String) : ApiResponse<VersionDto>
-    suspend fun addNewVersion(versionRequest: VersionRequest,lang : String) : ApiResponse<Nothing>
-    suspend fun onValidatePin(adminPinRequest: AdminPinRequest,lang : String) : ApiResponse<Nothing>
+    fun getLastVersion(lang : String) : ApiResponse<VersionDto>
+    fun addNewVersion(versionRequest: VersionRequest,lang : String) : ApiResponse<Nothing>
+    fun onValidatePin(adminPinRequest: AdminPinRequest,lang : String) : ApiResponse<Nothing>
 
-    suspend fun changePinVersion(adminPinRequest: AdminPinRequest,lang : String) : ApiResponse<Nothing>
+    fun changePinVersion(adminPinRequest: AdminPinRequest,lang : String) : ApiResponse<Nothing>
 }
