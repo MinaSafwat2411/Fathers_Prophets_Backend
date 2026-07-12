@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.LocalTime
+import kotlin.time.Duration.Companion.milliseconds
 
 class BirthdayReminderScheduler(
     private val userRepository: IUserRepository,
@@ -21,7 +22,7 @@ class BirthdayReminderScheduler(
     fun start(scope: CoroutineScope, runAt: LocalTime = LocalTime.of(8, 0)) {
         scope.launch(Dispatchers.IO) {
             while (true) {
-                delay(millisUntil(runAt))
+                delay(millisUntil(runAt).milliseconds)
                 runSafely()
             }
         }

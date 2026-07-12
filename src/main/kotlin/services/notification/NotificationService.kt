@@ -26,7 +26,7 @@ class NotificationService(
         return repository.getNotificationsByEventId(eventId, lang)
     }
 
-    override fun createNotification(request: CreateNotificationRequest, lang: String): ApiResponse<NotificationResponse> {
+    override fun createNotification(request: CreateNotificationRequest, lang: String): ApiResponse<Int> {
         validateRequired(
             request.eventId to "eventId",
             request.type to "type",
@@ -36,7 +36,7 @@ class NotificationService(
         return repository.createNotification(request, lang)
     }
 
-    override fun updateNotification(id: Int?, request: UpdateNotificationRequest, lang: String): ApiResponse<NotificationResponse> {
+    override fun updateNotification(id: Int?, request: UpdateNotificationRequest, lang: String): ApiResponse<Nothing> {
         if (id == null) throw IllegalArgumentException(Localization.get("notification_id_required", lang))
         return repository.updateNotification(id, request, lang)
     }

@@ -27,12 +27,12 @@ class AnonymousChatDao {
 
     fun findChatByMemberId(memberId: Int) = transaction {
         AnonymousChatsTable.selectAll().where { AnonymousChatsTable.memberId eq memberId }
-            .singleOrNull()?.let { rowToDto(it) }
+            .map{ rowToDto(it) }
     }
 
     fun findChatByServantId(servantId: Int) = transaction {
         AnonymousChatsTable.selectAll().where { AnonymousChatsTable.servantId eq servantId }
-            .singleOrNull()?.let { rowToDto(it) }
+            .map{ rowToDto(it) }
     }
 
     fun findById(id: Int) = transaction {

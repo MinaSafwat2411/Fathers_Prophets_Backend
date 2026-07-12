@@ -3,7 +3,7 @@ package com.fathersprophets.backend.routes
 import com.fathersprophets.backend.models.anonymouschat.CreateAnonymousChatRequest
 import com.fathersprophets.backend.models.anonymouschat.UpdateAnonymousChatRequest
 import com.fathersprophets.backend.plugins.requireRole
-import com.fathersprophets.backend.services.anonymouschat.IAnonymousChatService
+import com.fathersprophets.backend.services.chat.anonymouschat.IAnonymousChatService
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*

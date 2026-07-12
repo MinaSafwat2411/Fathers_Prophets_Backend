@@ -3,7 +3,7 @@ package com.fathersprophets.backend.routes
 import com.fathersprophets.backend.models.classmember.AddClassMemberRequest
 import com.fathersprophets.backend.models.classmember.UpdateClassMemberRequest
 import com.fathersprophets.backend.plugins.requireRole
-import com.fathersprophets.backend.services.classmember.IClassMemberService
+import com.fathersprophets.backend.services.classes.classmember.IClassMemberService
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*

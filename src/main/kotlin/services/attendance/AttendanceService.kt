@@ -19,21 +19,19 @@ class AttendanceService(private val attendanceRepository: IAttendanceRepository)
     override fun addAttendance(
         attendance: AddAttendanceRequest,
         lang: String
-    ): ApiResponse<AttendanceResponse> {
+    ): ApiResponse<Int> {
         validateRequired(
             attendance.userId to "user_id",
             attendance.sessionId to "session_id",
             attendance.classId to "attendance_status",
             lang = lang
         )
-        if(attendance.sessionId == null) {
-            throw IllegalArgumentException(Localization.get("session_id_required", lang))
-        }
+
         val result = attendanceRepository.addAttendance(attendance, lang)
         if (result.success) {
-            val sessionAttendance = attendanceRepository.getAttendanceBySessionId(attendance.sessionId, lang)
+            val sessionAttendance = attendanceRepository.getAttendanceBySessionId(result.data?: 0, lang)
             scope.launch {
-                AttendanceEventBroadcaster.broadcastAttendance(attendance.sessionId, sessionAttendance)
+                AttendanceEventBroadcaster.broadcastAttendance(result.data?: 0, sessionAttendance)
             }
         }
         return result
@@ -43,19 +41,12 @@ class AttendanceService(private val attendanceRepository: IAttendanceRepository)
         attendanceId: Int?,
         updateAttendance: UpdateAttendanceRequest,
         lang: String
-    ): ApiResponse<AttendanceResponse> {
+    ): ApiResponse<Nothing> {
         if (attendanceId == null) {
             return ApiResponse(success = false, message = Localization.get("invalid_id", lang))
         }
 
         val result = attendanceRepository.updateAttendance(attendanceId, updateAttendance, lang)
-        if (result.success && result.data != null) {
-            val sessionId = result.data.sessionId
-            val sessionAttendance = attendanceRepository.getAttendanceBySessionId(sessionId, lang)
-            scope.launch {
-                AttendanceEventBroadcaster.broadcastAttendance(sessionId, sessionAttendance)
-            }
-        }
         return result
     }
 

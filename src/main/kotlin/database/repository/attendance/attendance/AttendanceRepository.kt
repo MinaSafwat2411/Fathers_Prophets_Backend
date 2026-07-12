@@ -29,7 +29,7 @@ class AttendanceRepository(
         attendanceId: Int,
         updateAttendance: UpdateAttendanceRequest,
         lang: String
-    ): ApiResponse<AttendanceResponse> {
+    ): ApiResponse<Nothing> {
 
         val isUpdated = attendanceDao.updateAttendance(updateAttendance.toAttendanceDto(attendanceId))
 

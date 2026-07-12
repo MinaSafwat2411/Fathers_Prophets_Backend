@@ -4,7 +4,7 @@ import com.fathersprophets.backend.models.session.AddSessionRequest
 import com.fathersprophets.backend.models.session.UpdateSessionRequest
 import com.fathersprophets.backend.plugins.forbidRoles
 import com.fathersprophets.backend.plugins.requireRole
-import com.fathersprophets.backend.services.session.ISessionService
+import com.fathersprophets.backend.services.attendance.session.ISessionService
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*

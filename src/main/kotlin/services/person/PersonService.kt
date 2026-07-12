@@ -26,7 +26,7 @@ class PersonService(
     override fun addPerson(
         person: CreatePersonRequest,
         lang: String
-    ): ApiResponse<PersonResponse> {
+    ): ApiResponse<Int> {
         validateRequired(
             person.name to "name",
             person.type to "type",
@@ -39,7 +39,7 @@ class PersonService(
         personId: Int?,
         update: UpdatePersonRequest,
         lang: String
-    ): ApiResponse<PersonResponse> {
+    ): ApiResponse<Nothing> {
         if (personId == null) throw IllegalArgumentException(Localization.get("person_id_required", lang))
         return personRepository.updatePerson(personId, update, lang)
     }

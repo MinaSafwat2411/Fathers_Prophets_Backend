@@ -3,7 +3,7 @@ package com.fathersprophets.backend.routes
 import com.fathersprophets.backend.models.guessperson.CreateGuessPersonQuestionRequest
 import com.fathersprophets.backend.models.guessperson.UpdateGuessPersonQuestionRequest
 import com.fathersprophets.backend.plugins.requireRole
-import com.fathersprophets.backend.services.guessperson.IGuessPersonQuestionService
+import com.fathersprophets.backend.services.person.guessperson.IGuessPersonQuestionService
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*

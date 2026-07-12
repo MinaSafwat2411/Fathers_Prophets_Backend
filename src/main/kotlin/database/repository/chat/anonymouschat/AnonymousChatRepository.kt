@@ -68,12 +68,23 @@ class AnonymousChatRepository(
         )
     }
 
-    private fun idToDto(id: Int) = AnonymousChatDto(
-        id = id,
-        memberId = 0,
-        servantId = 0,
-        lastMessage = null,
-        createdAt = "",
-        updatedAt = ""
-    )
+    override fun getMemberChat(memberId: Int, lang: String) : ApiResponse<List<AnonymousChatResponse>> {
+        val chat = dao.findChatByMemberId(memberId)
+
+        return ApiResponse(
+            success = true,
+            data = chat.map { it.convertToResponse() },
+            message = Localization.get("anonymous_chat_retrieved_successfully", lang)
+        )
+    }
+
+    override fun getServantChat(servantId: Int, lang: String) : ApiResponse<List<AnonymousChatResponse>> {
+        val chat = dao.findChatByServantId(servantId)
+
+        return ApiResponse(
+            success = true,
+            data = chat.map { it.convertToResponse() },
+            message = Localization.get("anonymous_chat_retrieved_successfully", lang)
+        )
+    }
 }

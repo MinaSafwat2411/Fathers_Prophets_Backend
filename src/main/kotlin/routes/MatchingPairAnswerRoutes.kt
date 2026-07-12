@@ -3,7 +3,7 @@ package com.fathersprophets.backend.routes
 import com.fathersprophets.backend.models.matchingpairanswer.CreateMatchingPairAnswerRequest
 import com.fathersprophets.backend.models.matchingpairanswer.UpdateMatchingPairAnswerRequest
 import com.fathersprophets.backend.plugins.requireRole
-import com.fathersprophets.backend.services.matchingpairanswer.IMatchingPairAnswerService
+import com.fathersprophets.backend.services.activity.matchingpair.matchingpairanswer.IMatchingPairAnswerService
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*

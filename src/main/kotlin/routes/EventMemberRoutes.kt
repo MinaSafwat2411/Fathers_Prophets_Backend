@@ -4,7 +4,7 @@ import com.fathersprophets.backend.models.eventmember.EventMemberRequest
 import com.fathersprophets.backend.plugins.forbidRoles
 import com.fathersprophets.backend.plugins.requireAdminOrType
 import com.fathersprophets.backend.plugins.requireRole
-import com.fathersprophets.backend.services.eventmember.IEventMemberService
+import com.fathersprophets.backend.services.events.eventmember.IEventMemberService
 import com.fathersprophets.backend.utils.EventMemberBroadcaster
 import io.ktor.server.request.*
 import io.ktor.server.response.*

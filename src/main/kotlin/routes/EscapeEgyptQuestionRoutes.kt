@@ -3,7 +3,7 @@ package com.fathersprophets.backend.routes
 import com.fathersprophets.backend.models.escapeegyptquestion.CreateEscapeEgyptQuestionRequest
 import com.fathersprophets.backend.models.escapeegyptquestion.UpdateEscapeEgyptQuestionRequest
 import com.fathersprophets.backend.plugins.requireRole
-import com.fathersprophets.backend.services.escapeegyptquestion.IEscapeEgyptQuestionService
+import com.fathersprophets.backend.services.activity.escapeegypt.escapeegyptquestion.IEscapeEgyptQuestionService
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*

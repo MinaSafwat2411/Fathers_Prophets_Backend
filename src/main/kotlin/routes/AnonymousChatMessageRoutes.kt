@@ -2,7 +2,7 @@ package com.fathersprophets.backend.routes
 
 import com.fathersprophets.backend.models.anonymouschatmessage.CreateAnonymousChatMessageRequest
 import com.fathersprophets.backend.models.anonymouschatmessage.UpdateAnonymousChatMessageRequest
-import com.fathersprophets.backend.services.anonymouschatmessage.IAnonymousChatMessageService
+import com.fathersprophets.backend.services.chat.anonymouschatmessage.IAnonymousChatMessageService
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*

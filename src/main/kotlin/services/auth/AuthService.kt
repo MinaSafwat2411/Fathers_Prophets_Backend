@@ -1,15 +1,8 @@
 package com.fathersprophets.backend.services.auth
 
-import com.fathersprophets.backend.database.repository.auth.AuthRepository
 import com.fathersprophets.backend.database.repository.auth.IAuthRepository
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.auth.LoginRequest
-import com.fathersprophets.backend.models.auth.RefreshRequest
-import com.fathersprophets.backend.models.auth.RegisterRequest
-import com.fathersprophets.backend.models.auth.LoginResponse
-import com.fathersprophets.backend.models.auth.RefreshResponse
-import com.fathersprophets.backend.models.auth.RegisterResponse
-import com.fathersprophets.backend.models.users.UserResponse
+import com.fathersprophets.backend.models.auth.*
 import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
 
 class AuthService(
@@ -23,7 +16,7 @@ class AuthService(
             lang = lang
         )
 
-        return authRepository.register(request)
+        return authRepository.register(request, lang)
     }
 
     override suspend fun login(request: LoginRequest, lang: String): ApiResponse<LoginResponse> {
@@ -33,7 +26,7 @@ class AuthService(
             lang = lang
         )
 
-        return authRepository.login(request)
+        return authRepository.login(request, lang)
     }
 
     override suspend fun refreshToken(refreshRequest: RefreshRequest, lang: String): ApiResponse<RefreshResponse> {
@@ -42,11 +35,11 @@ class AuthService(
             lang = lang
         )
 
-        return authRepository.refreshToken(refreshRequest)
+        return authRepository.refreshToken(refreshRequest, lang)
     }
 
     override suspend fun logout(userId: Int, lang: String): ApiResponse<Nothing> {
 
-        return authRepository.logout(userId)
+        return authRepository.logout(userId, lang)
     }
 }

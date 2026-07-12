@@ -4,7 +4,7 @@ import com.fathersprophets.backend.models.escapeegyptanswer.CreateEscapeEgyptAns
 import com.fathersprophets.backend.models.escapeegyptanswer.UpdateEscapeEgyptAnswerRequest
 import com.fathersprophets.backend.models.escapeegyptanswer.UpdateEscapeEgyptAnswerStatusRequest
 import com.fathersprophets.backend.plugins.requireRole
-import com.fathersprophets.backend.services.escapeegyptanswer.IEscapeEgyptAnswerService
+import com.fathersprophets.backend.services.activity.escapeegypt.escapeegyptanswer.IEscapeEgyptAnswerService
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
