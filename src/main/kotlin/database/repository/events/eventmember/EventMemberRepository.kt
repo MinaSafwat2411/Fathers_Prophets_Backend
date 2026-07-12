@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.repository.eventmember
+package com.fathersprophets.backend.database.repository.events.eventmember
 
 import com.fathersprophets.backend.database.dao.event.EventMemberDao
 import com.fathersprophets.backend.database.tables.EventType
@@ -11,18 +11,23 @@ import com.fathersprophets.backend.utils.Localization
 class EventMemberRepository(
     private val eventMemberDao: EventMemberDao,
 ) : IEventMemberRepository {
-    override fun addEventMember(eventMember: EventMemberRequest, lang: String): ApiResponse<EventMemberResponse> {
+    override fun addEventMember(eventMember: EventMemberRequest, lang: String): ApiResponse<Int> {
         val id = eventMemberDao.addEventMember(eventMember.toEventMemberDto(0))
-        val createdEventMember = eventMemberDao.getEventMemberByIdAndEventId(eventMember.toEventMemberDto(id))
+
+        if (id == 0) throw IllegalArgumentException(Localization.get("event_member_creation_failed", lang))
+
         return ApiResponse(
             success = true,
-            data = createdEventMember.toEventMemberResponse(),
+            data = id,
             message = Localization.get("event_member_created_successfully", lang)
         )
     }
 
     override fun deleteEventMember(eventId: Int, lang: String): ApiResponse<Nothing> {
-        eventMemberDao.deleteEventMember(idToEventDto(eventId))
+        val deleted = eventMemberDao.deleteEventMember(eventId)
+
+        if (!deleted) throw IllegalArgumentException(Localization.get("event_member_deletion_failed", lang))
+
         return ApiResponse(
             success = true,
             data = null,
@@ -31,7 +36,7 @@ class EventMemberRepository(
     }
 
     override fun getEventMembersByEventId(eventId: Int, lang: String): ApiResponse<List<EventMemberResponse>> {
-        val list = eventMemberDao.getEventMembersByEventId(eventIdToEventDto(eventId))
+        val list = eventMemberDao.getEventMembersByEventId(eventId)
         return ApiResponse(
             success = true,
             data = list.map { it.toEventMemberResponse() },
@@ -40,37 +45,12 @@ class EventMemberRepository(
     }
 
     override fun getEventMembersByUserId(userId: Int, lang: String): ApiResponse<List<EventMemberResponse>> {
-        val list = eventMemberDao.getEventMembersByUserId(userIdToEventDto(userId))
+
+        val list = eventMemberDao.getEventMembersByUserId(userId)
         return ApiResponse(
             success = true,
             data = list.map { it.toEventMemberResponse() },
             message = Localization.get("event_members_retrieved_successfully", lang)
         )
     }
-    
-    private fun eventIdToEventDto(id: Int) = EventMemberDto(
-        id = 0,
-        eventId = id,
-        userId = 0,
-        name = "",
-        eventType = EventType.bible
-    )
-    
-    private fun userIdToEventDto(id: Int) = EventMemberDto(
-        id = 0,
-        eventId = 0,
-        userId = id,
-        name = "",
-        eventType = EventType.bible
-    )
-
-    private fun idToEventDto(id: Int) = EventMemberDto(
-        id = id,
-        eventId = 0,
-        userId = 0,
-        name = "",
-        eventType = EventType.bible
-
-    )
-    
 }

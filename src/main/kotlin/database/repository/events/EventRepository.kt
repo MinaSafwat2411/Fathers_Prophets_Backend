@@ -4,10 +4,8 @@ import com.fathersprophets.backend.database.dao.event.EventDao
 import com.fathersprophets.backend.database.dao.notification.NotificationDao
 import com.fathersprophets.backend.database.tables.EventType
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.dto.EventDto
-import com.fathersprophets.backend.models.dto.NotificationDto
-import com.fathersprophets.backend.models.event.EventCountsResponse
 import com.fathersprophets.backend.models.event.CreateEventRequest
+import com.fathersprophets.backend.models.event.EventCountsResponse
 import com.fathersprophets.backend.models.event.EventResponse
 import com.fathersprophets.backend.models.event.UpdateEventRequest
 import com.fathersprophets.backend.services.notification.IFirebaseMessagingService

@@ -56,8 +56,8 @@ import com.fathersprophets.backend.database.repository.activity.escapeegypt.esca
 import com.fathersprophets.backend.database.repository.activity.escapeegypt.escapeegyptanswer.IEscapeEgyptAnswerRepository
 import com.fathersprophets.backend.database.repository.activity.escapeegypt.escapeegyptquestion.EscapeEgyptQuestionRepository
 import com.fathersprophets.backend.database.repository.activity.escapeegypt.escapeegyptquestion.IEscapeEgyptQuestionRepository
-import com.fathersprophets.backend.database.repository.eventmember.EventMemberRepository
-import com.fathersprophets.backend.database.repository.eventmember.IEventMemberRepository
+import com.fathersprophets.backend.database.repository.events.eventmember.EventMemberRepository
+import com.fathersprophets.backend.database.repository.events.eventmember.IEventMemberRepository
 import com.fathersprophets.backend.database.repository.events.EventRepository
 import com.fathersprophets.backend.database.repository.events.IEventRepository
 import com.fathersprophets.backend.database.repository.notification.INotificationRepository
