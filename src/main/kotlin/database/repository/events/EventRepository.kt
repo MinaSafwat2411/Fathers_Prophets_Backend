@@ -2,6 +2,7 @@ package com.fathersprophets.backend.database.repository.events
 
 import com.fathersprophets.backend.database.dao.event.EventDao
 import com.fathersprophets.backend.database.dao.notification.NotificationDao
+import com.fathersprophets.backend.database.dao.users.UserDao
 import com.fathersprophets.backend.database.tables.event.EventType
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.event.CreateEventRequest
@@ -14,6 +15,7 @@ import com.fathersprophets.backend.utils.Localization
 class EventRepository(
     private val eventDao: EventDao,
     private val notificationDao: NotificationDao,
+    private val userDao: UserDao,
     private val firebaseMessagingService: IFirebaseMessagingService
 ) : IEventRepository {
     override fun getAllEvents(lang: String): ApiResponse<List<EventResponse>> {
@@ -43,6 +45,13 @@ class EventRepository(
         val notificationsId = notificationDao.create(event.convertToNotification(id))
 
         if (notificationsId == 0) throw IllegalArgumentException(Localization.get("notification_creation_failed", lang))
+
+        firebaseMessagingService.sendToTokens(
+            tokens = userDao.findAllFcmTokens(),
+            title = event.type?: "",
+            body = event.title ?: "",
+            data = mapOf("eventId" to id.toString())
+        )
 
         return ApiResponse(
             success = true,

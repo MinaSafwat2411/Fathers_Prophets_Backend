@@ -33,8 +33,8 @@ class PersonDao {
         } get PersonsTable.id
     }
 
-    fun getPersonById(personDto: PersonDto) = transaction {
-        PersonsTable.select { PersonsTable.id eq personDto.id }
+    fun getPersonById(personId : Int) =  transaction {
+        PersonsTable.select { PersonsTable.id eq personId}
             .map { rowToPerson(it) }
             .singleOrNull()
     }

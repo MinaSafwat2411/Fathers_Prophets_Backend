@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.services.quizanswer
 
-import com.fathersprophets.backend.database.repository.quizanswer.IQuizAnswerRepository
+import com.fathersprophets.backend.database.repository.quiz.quizanswer.IQuizAnswerRepository
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.quizanswer.CreateQuizAnswerRequest
 import com.fathersprophets.backend.models.quizanswer.QuizAnswerResponse

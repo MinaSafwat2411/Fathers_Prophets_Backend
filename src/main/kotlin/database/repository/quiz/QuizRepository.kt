@@ -2,12 +2,10 @@ package com.fathersprophets.backend.database.repository.quiz
 
 import com.fathersprophets.backend.database.dao.quiz.QuizDao
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.dto.QuizDto
 import com.fathersprophets.backend.models.quiz.CreateQuizRequest
 import com.fathersprophets.backend.models.quiz.QuizResponse
 import com.fathersprophets.backend.models.quiz.UpdateQuizRequest
 import com.fathersprophets.backend.utils.Localization
-import java.time.Instant
 
 class QuizRepository(
     private val dao: QuizDao
@@ -31,39 +29,38 @@ class QuizRepository(
         )
     }
 
-    override fun createQuiz(request: CreateQuizRequest, lang: String): ApiResponse<QuizResponse> {
+    override fun createQuiz(request: CreateQuizRequest, lang: String): ApiResponse<Int> {
         val id = dao.create(request.convertToDto())
-        val created = dao.findById(id)
+
+        if (id == 0) throw IllegalArgumentException(Localization.get("quiz_creation_failed", lang))
+
         return ApiResponse(
             success = true,
-            data = created?.convertToResponse(),
+            data = id,
             message = Localization.get("quiz_created_successfully", lang)
         )
     }
 
-    override fun updateQuiz(id: Int, request: UpdateQuizRequest, lang: String): ApiResponse<QuizResponse> {
-        dao.update(request.convertToDto(id))
-        val updated = dao.findById(id)
+    override fun updateQuiz(id: Int, request: UpdateQuizRequest, lang: String): ApiResponse<Nothing> {
+        val updated = dao.update(request.convertToDto(id))
+        if (!updated) throw IllegalArgumentException(Localization.get("quiz_update_failed", lang))
         return ApiResponse(
             success = true,
-            data = updated?.convertToResponse(),
+            data = null,
             message = Localization.get("quiz_updated_successfully", lang)
         )
     }
 
     override fun deleteQuiz(id: Int, lang: String): ApiResponse<Nothing> {
-        dao.delete(idToDto(id))
+
+        val deleted = dao.delete(id)
+
+        if (!deleted) throw IllegalArgumentException(Localization.get("quiz_deletion_failed", lang))
+
         return ApiResponse(
             success = true,
             data = null,
             message = Localization.get("quiz_deleted_successfully", lang)
         )
     }
-
-    private fun idToDto(id: Int) = QuizDto(
-        id = id,
-        number = 0,
-        startAt = Instant.EPOCH,
-        endAt = Instant.EPOCH
-    )
 }

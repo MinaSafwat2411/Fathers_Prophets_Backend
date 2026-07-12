@@ -18,7 +18,7 @@ import com.fathersprophets.backend.database.tables.classes.ClassesTable
 import com.fathersprophets.backend.database.tables.event.EventMembersTable
 import com.fathersprophets.backend.database.tables.event.EventsTable
 import com.fathersprophets.backend.database.tables.notification.NotificationsTable
-import com.fathersprophets.backend.database.tables.person.PersonOfDayTable
+import com.fathersprophets.backend.database.tables.person.personofday.PersonOfDayTable
 import com.fathersprophets.backend.database.tables.person.complete.PersonsAnswersTable
 import com.fathersprophets.backend.database.tables.person.complete.PersonsQuestionsTable
 import com.fathersprophets.backend.database.tables.person.PersonsTable

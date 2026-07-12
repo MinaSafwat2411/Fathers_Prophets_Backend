@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.services.personstoryquestion
 
-import com.fathersprophets.backend.database.repository.personstoryquestion.IPersonStoryQuestionRepository
+import com.fathersprophets.backend.database.repository.person.personstoryquestion.IPersonStoryQuestionRepository
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.personstoryquestion.CreatePersonStoryQuestionRequest
 import com.fathersprophets.backend.models.personstoryquestion.PersonStoryQuestionResponse

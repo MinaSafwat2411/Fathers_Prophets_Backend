@@ -1,9 +1,7 @@
 package com.fathersprophets.backend.database.repository.person
 
 import com.fathersprophets.backend.database.dao.person.PersonDao
-import com.fathersprophets.backend.database.tables.person.PersonType
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.dto.PersonDto
 import com.fathersprophets.backend.models.person.CreatePersonRequest
 import com.fathersprophets.backend.models.person.PersonResponse
 import com.fathersprophets.backend.models.person.UpdatePersonRequest
@@ -25,7 +23,7 @@ class PersonRepository(
         personId: Int,
         lang: String
     ): ApiResponse<PersonResponse> {
-        val person = personDao.getPersonById(idToDto(personId))
+        val person = personDao.getPersonById(personId)
         return ApiResponse(
             success = true,
             data = person?.convertToPersonResponse(),
@@ -36,12 +34,13 @@ class PersonRepository(
     override fun addPerson(
         person: CreatePersonRequest,
         lang: String
-    ): ApiResponse<PersonResponse> {
+    ): ApiResponse<Int> {
         val id = personDao.addPerson(person.toPersonDto())
-        val createdPerson = personDao.getPersonById(idToDto(id))
+
+        if (id == 0) throw IllegalArgumentException(Localization.get("person_creation_failed", lang))
         return ApiResponse(
             success = true,
-            data = createdPerson?.convertToPersonResponse(),
+            data = id,
             message = Localization.get("person_created_successfully", lang)
         )
     }
@@ -50,12 +49,15 @@ class PersonRepository(
         personId: Int,
         update: UpdatePersonRequest,
         lang: String
-    ): ApiResponse<PersonResponse> {
-        personDao.updatePerson(update.toPersonDto(personId))
-        val updatedPerson = personDao.getPersonById(idToDto(personId))
+    ): ApiResponse<Nothing> {
+
+        val updated = personDao.updatePerson(update.toPersonDto(personId))
+
+        if (!updated) throw IllegalArgumentException(Localization.get("person_update_failed", lang))
+
         return ApiResponse(
             success = true,
-            data = updatedPerson?.convertToPersonResponse(),
+            data = null,
             message = Localization.get("person_updated_successfully", lang)
         )
     }
@@ -64,21 +66,15 @@ class PersonRepository(
         personId: Int,
         lang: String
     ): ApiResponse<Nothing> {
-        personDao.deletePerson(idToDto(personId))
+
+        val deleted = personDao.deletePerson(personId)
+
+        if (!deleted) throw IllegalArgumentException(Localization.get("person_deletion_failed", lang))
+
         return ApiResponse(
             success = true,
             data = null,
             message = Localization.get("person_deleted_successfully", lang)
         )
     }
-
-    private fun idToDto(id: Int) = PersonDto(
-        id = id,
-        name = "",
-        nickname = "",
-        shortStory = "",
-        fullStory = "",
-        image = "",
-        type = PersonType.prophets
-    )
 }

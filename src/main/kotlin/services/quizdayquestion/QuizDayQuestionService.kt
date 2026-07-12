@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.services.quizdayquestion
 
-import com.fathersprophets.backend.database.repository.quizdayquestion.IQuizDayQuestionRepository
+import com.fathersprophets.backend.database.repository.quiz.quizdayquestion.IQuizDayQuestionRepository
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.quizdayquestion.CreateQuizDayQuestionRequest
 import com.fathersprophets.backend.models.quizdayquestion.QuizDayQuestionResponse

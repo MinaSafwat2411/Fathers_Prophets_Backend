@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.services.personquestion
 
-import com.fathersprophets.backend.database.repository.personquestion.IPersonQuestionRepository
+import com.fathersprophets.backend.database.repository.person.personquestion.IPersonQuestionRepository
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.personquestion.CreateQuestionRequest
 import com.fathersprophets.backend.models.personquestion.PersonQuestionResponse

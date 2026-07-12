@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.services.supereventbooking
 
-import com.fathersprophets.backend.database.repository.supereventbooking.ISuperEventBookingRepository
+import com.fathersprophets.backend.database.repository.superevent.supereventbooking.ISuperEventBookingRepository
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingPaymentRequest
 import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingResponse

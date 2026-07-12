@@ -1,0 +1,15 @@
+package com.fathersprophets.backend.database.repository.quiz.quizday
+
+import com.fathersprophets.backend.models.ApiResponse
+import com.fathersprophets.backend.models.quizday.CreateQuizDayRequest
+import com.fathersprophets.backend.models.quizday.QuizDayResponse
+import com.fathersprophets.backend.models.quizday.UpdateQuizDayRequest
+
+interface IQuizDayRepository {
+    fun getAllQuizDays(lang: String): ApiResponse<List<QuizDayResponse>>
+    fun getQuizDayById(id: Int, lang: String): ApiResponse<QuizDayResponse>
+    fun getQuizDaysByQuizId(quizId: Int, lang: String): ApiResponse<List<QuizDayResponse>>
+    fun createQuizDay(request: CreateQuizDayRequest, lang: String): ApiResponse<Int>
+    fun updateQuizDay(id: Int, request: UpdateQuizDayRequest, lang: String): ApiResponse<Nothing>
+    fun deleteQuizDay(id: Int, lang: String): ApiResponse<Nothing>
+}

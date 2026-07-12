@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.services.personmcqanswer
 
-import com.fathersprophets.backend.database.repository.personmcqanswer.IPersonMcqAnswerRepository
+import com.fathersprophets.backend.database.repository.person.personmcqanswer.IPersonMcqAnswerRepository
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.personmcqanswer.CreatePersonMcqAnswerRequest
 import com.fathersprophets.backend.models.personmcqanswer.PersonMcqAnswerResponse

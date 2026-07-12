@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.services.personstory
 
-import com.fathersprophets.backend.database.repository.personstory.IPersonStoryRepository
+import com.fathersprophets.backend.database.repository.person.personstory.IPersonStoryRepository
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.personstory.CreatePersonStoryRequest
 import com.fathersprophets.backend.models.personstory.PersonStoryResponse

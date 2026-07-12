@@ -5,6 +5,7 @@ import com.fathersprophets.backend.database.dao.superevent.SuperEventDao
 import com.fathersprophets.backend.database.tables.superevent.SuperEventBookingStatus
 import com.fathersprophets.backend.exceptions.NotFoundException
 import com.fathersprophets.backend.models.ApiResponse
+import com.fathersprophets.backend.models.dto.SuperEventBookingDto
 import com.fathersprophets.backend.models.superevent.SuperEventAvailabilityResponse
 import com.fathersprophets.backend.models.superevent.SuperEventRequest
 import com.fathersprophets.backend.models.superevent.SuperEventResponse
@@ -42,34 +43,36 @@ class SuperEventRepository(
         )
     }
 
-    override fun createSuperEvent(request: SuperEventRequest, lang: String): ApiResponse<SuperEventResponse> {
+    override fun createSuperEvent(request: SuperEventRequest, lang: String): ApiResponse<Int> {
         val id = superEventDao.create(request.convertToDto(0))
-        val created = superEventDao.findById(id)
+        
+        if (id == 0) throw IllegalArgumentException(Localization.get("super_event_creation_failed", lang))
         return ApiResponse(
             success = true,
-            data = created?.convertToResponse(),
+            data = id,
             message = Localization.get("super_event_created_successfully", lang)
         )
     }
 
-    override fun updateSuperEvent(id: Int, request: SuperEventRequest, lang: String): ApiResponse<SuperEventResponse> {
-        superEventDao.findById(id)
-            ?: throw NotFoundException(Localization.get("super_event_not_found", lang))
+    override fun updateSuperEvent(id: Int, request: SuperEventRequest, lang: String): ApiResponse<Nothing> {
 
-        superEventDao.update(request.convertToDto(id))
-        val updated = superEventDao.findById(id)
+        val updated = superEventDao.update(request.convertToDto(id))
+        
+        if (!updated) throw IllegalArgumentException(Localization.get("super_event_update_failed", lang))
+
         return ApiResponse(
             success = true,
-            data = updated?.convertToResponse(),
+            data = null,
             message = Localization.get("super_event_updated_successfully", lang)
         )
     }
 
     override fun deleteSuperEvent(id: Int, lang: String): ApiResponse<Nothing> {
-        superEventDao.findById(id)
-            ?: throw NotFoundException(Localization.get("super_event_not_found", lang))
 
-        superEventDao.delete(id)
+        val deleted = superEventDao.delete(id)
+
+        if (!deleted) throw IllegalArgumentException(Localization.get("super_event_deletion_failed", lang))
+
         return ApiResponse(
             success = true,
             data = null,
@@ -81,8 +84,8 @@ class SuperEventRepository(
         val superEvent = superEventDao.findById(id)
             ?: throw NotFoundException(Localization.get("super_event_not_found", lang))
 
-        val bookedCount = superEventBookingDao.countByStatus(id, SuperEventBookingStatus.booked)
-        val waitingCount = superEventBookingDao.countByStatus(id, SuperEventBookingStatus.waiting)
+        val bookedCount = superEventBookingDao.countByStatus(statusToDto(SuperEventBookingStatus.booked, id))
+        val waitingCount = superEventBookingDao.countByStatus(statusToDto(SuperEventBookingStatus.waiting, id))
         val seatsLeft = (superEvent.totalSeats - bookedCount).coerceAtLeast(0)
         val waitingSeatsLeft = (superEvent.waitingListLimit - waitingCount).coerceAtLeast(0)
 
@@ -102,4 +105,15 @@ class SuperEventRepository(
             message = Localization.get("super_event_availability_retrieved_successfully", lang)
         )
     }
+
+    private fun  statusToDto(status: SuperEventBookingStatus,superEventId: Int) = SuperEventBookingDto(
+        id = 0,
+        status = status,
+        superEventId = superEventId ,
+        userId = 0,
+        name = "",
+        totalPaid = 0,
+        createdAt = "",
+        teacherId = 0,
+    )
 }

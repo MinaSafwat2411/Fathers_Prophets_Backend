@@ -3,9 +3,7 @@ package com.fathersprophets.backend.database.repository.notification
 import com.fathersprophets.backend.database.dao.event.EventDao
 import com.fathersprophets.backend.database.dao.notification.NotificationDao
 import com.fathersprophets.backend.database.dao.users.UserDao
-import com.fathersprophets.backend.database.tables.event.EventType
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.dto.EventDto
 import com.fathersprophets.backend.models.notification.CreateNotificationRequest
 import com.fathersprophets.backend.models.notification.NotificationResponse
 import com.fathersprophets.backend.models.notification.UpdateNotificationRequest
@@ -46,34 +44,38 @@ class NotificationRepository(
         )
     }
 
-    override fun createNotification(request: CreateNotificationRequest, lang: String): ApiResponse<NotificationResponse> {
-        eventDao.getEventById(idToEventDto(request.eventId ?: 0))
-            ?: throw IllegalArgumentException(Localization.get("event_not_found", lang))
+    override fun createNotification(request: CreateNotificationRequest, lang: String): ApiResponse<Int> {
 
         val id = notificationDao.create(request.toNotificationDto())
-        val created = notificationDao.findById(id)
 
-        if (created != null) {
-            val tokens = userDao.findAllFcmTokens()
-            firebaseMessagingService.sendToTokens(tokens, created.title, created.message ?: "")
-        }
+        if (id == 0) throw IllegalArgumentException(Localization.get("notification_creation_failed", lang))
+
+        val tokens = userDao.findAllFcmTokens()
+
+        firebaseMessagingService.sendToTokens(
+            tokens,
+            request.title?:"",
+            request.message ?: "",
+            data = mapOf("notificationId" to id.toString())
+        )
 
         return ApiResponse(
             success = true,
-            data = created?.convertToResponse(),
+            data = id,
             message = Localization.get("notification_created_successfully", lang)
         )
     }
 
-    override fun updateNotification(id: Int, request: UpdateNotificationRequest, lang: String): ApiResponse<NotificationResponse> {
-        val existing = notificationDao.findById(id)
-            ?: throw IllegalArgumentException(Localization.get("notification_not_found", lang))
+    override fun updateNotification(id: Int, request: UpdateNotificationRequest, lang: String): ApiResponse<Nothing> {
 
-        notificationDao.update(existing.copy(isRead = request.isRead ?: existing.isRead))
-        val updated = notificationDao.findById(id)
+        val updated = notificationDao.update(request.convertToDto(id))
+
+        if (!updated) throw IllegalArgumentException(Localization.get("notification_update_failed", lang))
+
+
         return ApiResponse(
             success = true,
-            data = updated?.convertToResponse(),
+            data = null,
             message = Localization.get("notification_updated_successfully", lang)
         )
     }
@@ -86,12 +88,4 @@ class NotificationRepository(
             message = Localization.get("notification_deleted_successfully", lang)
         )
     }
-
-    private fun idToEventDto(id: Int) = EventDto(
-        id = id,
-        title = "",
-        dateTime = "",
-        image = "",
-        type = EventType.bible
-    )
 }

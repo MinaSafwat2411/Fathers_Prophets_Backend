@@ -1,0 +1,15 @@
+package com.fathersprophets.backend.database.repository.person.personofday
+
+import com.fathersprophets.backend.models.ApiResponse
+import com.fathersprophets.backend.models.personofday.CreatePersonOfDayRequest
+import com.fathersprophets.backend.models.personofday.PersonOfDayResponse
+import com.fathersprophets.backend.models.personofday.UpdatePersonOfDayRequest
+
+interface IPersonOfDayRepository {
+    fun getAllPersonsOfDay(lang: String): ApiResponse<List<PersonOfDayResponse>>
+    fun getPersonOfDayById(id: Int, lang: String): ApiResponse<PersonOfDayResponse>
+    fun getPersonOfDayByDate(lang: String): ApiResponse<PersonOfDayResponse>
+    fun addPersonOfDay(request: CreatePersonOfDayRequest, lang: String): ApiResponse<Int>
+    fun updatePersonOfDay(id: Int, request: UpdatePersonOfDayRequest, lang: String): ApiResponse<Nothing>
+    fun deletePersonOfDay(id: Int, lang: String): ApiResponse<Nothing>
+}
