@@ -52,10 +52,10 @@ import com.fathersprophets.backend.database.repository.users.comments.CommentsRe
 import com.fathersprophets.backend.database.repository.users.comments.ICommentsRepository
 import com.fathersprophets.backend.database.repository.activity.escapeegypt.EscapeEgyptRepository
 import com.fathersprophets.backend.database.repository.activity.escapeegypt.IEscapeEgyptRepository
-import com.fathersprophets.backend.database.repository.escapeegyptanswer.EscapeEgyptAnswerRepository
-import com.fathersprophets.backend.database.repository.escapeegyptanswer.IEscapeEgyptAnswerRepository
-import com.fathersprophets.backend.database.repository.escapeegyptquestion.EscapeEgyptQuestionRepository
-import com.fathersprophets.backend.database.repository.escapeegyptquestion.IEscapeEgyptQuestionRepository
+import com.fathersprophets.backend.database.repository.activity.escapeegypt.escapeegyptanswer.EscapeEgyptAnswerRepository
+import com.fathersprophets.backend.database.repository.activity.escapeegypt.escapeegyptanswer.IEscapeEgyptAnswerRepository
+import com.fathersprophets.backend.database.repository.activity.escapeegypt.escapeegyptquestion.EscapeEgyptQuestionRepository
+import com.fathersprophets.backend.database.repository.activity.escapeegypt.escapeegyptquestion.IEscapeEgyptQuestionRepository
 import com.fathersprophets.backend.database.repository.eventmember.EventMemberRepository
 import com.fathersprophets.backend.database.repository.eventmember.IEventMemberRepository
 import com.fathersprophets.backend.database.repository.events.EventRepository

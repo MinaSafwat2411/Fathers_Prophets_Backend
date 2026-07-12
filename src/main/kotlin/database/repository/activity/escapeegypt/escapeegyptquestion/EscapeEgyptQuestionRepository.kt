@@ -1,8 +1,7 @@
-package com.fathersprophets.backend.database.repository.escapeegyptquestion
+package com.fathersprophets.backend.database.repository.activity.escapeegypt.escapeegyptquestion
 
 import com.fathersprophets.backend.database.dao.activity.escapeegypt.EscapeEgyptQuestionDao
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.dto.EscapeEgyptQuestionDto
 import com.fathersprophets.backend.models.escapeegyptquestion.CreateEscapeEgyptQuestionRequest
 import com.fathersprophets.backend.models.escapeegyptquestion.EscapeEgyptQuestionResponse
 import com.fathersprophets.backend.models.escapeegyptquestion.UpdateEscapeEgyptQuestionRequest
@@ -39,39 +38,40 @@ class EscapeEgyptQuestionRepository(
         )
     }
 
-    override fun createQuestion(request: CreateEscapeEgyptQuestionRequest, lang: String): ApiResponse<EscapeEgyptQuestionResponse> {
+    override fun createQuestion(request: CreateEscapeEgyptQuestionRequest, lang: String): ApiResponse<Int> {
+
         val id = dao.create(request.convertToDto())
-        val created = dao.findById(id)
+
+        if (id == 0) throw IllegalArgumentException(Localization.get("escape_egypt_question_creation_failed", lang))
+
         return ApiResponse(
             success = true,
-            data = created?.convertToResponse(),
+            data = id,
             message = Localization.get("escape_egypt_question_created_successfully", lang)
         )
     }
 
-    override fun updateQuestion(id: Int, request: UpdateEscapeEgyptQuestionRequest, lang: String): ApiResponse<EscapeEgyptQuestionResponse> {
-        dao.update(request.convertToDto(id))
-        val updated = dao.findById(id)
+    override fun updateQuestion(id: Int, request: UpdateEscapeEgyptQuestionRequest, lang: String): ApiResponse<Nothing> {
+        val  update = dao.update(request.convertToDto(id))
+
+        if (!update) throw IllegalArgumentException(Localization.get("escape_egypt_question_not_found", lang))
         return ApiResponse(
             success = true,
-            data = updated?.convertToResponse(),
+            data = null,
             message = Localization.get("escape_egypt_question_updated_successfully", lang)
         )
     }
 
     override fun deleteQuestion(id: Int, lang: String): ApiResponse<Nothing> {
-        dao.delete(idToDto(id))
+
+        val deleted = dao.delete(id)
+
+        if (!deleted) throw IllegalArgumentException(Localization.get("escape_egypt_question_not_found", lang))
+
         return ApiResponse(
             success = true,
             data = null,
             message = Localization.get("escape_egypt_question_deleted_successfully", lang)
         )
     }
-
-    private fun idToDto(id: Int) = EscapeEgyptQuestionDto(
-        id = id,
-        escapeEgyptId = 0,
-        question = "",
-        correctAnswer = ""
-    )
 }

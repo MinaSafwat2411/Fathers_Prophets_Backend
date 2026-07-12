@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.repository.escapeegyptanswer
+package com.fathersprophets.backend.database.repository.activity.escapeegypt.escapeegyptanswer
 
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.escapeegyptanswer.CreateEscapeEgyptAnswerRequest
@@ -12,8 +12,8 @@ interface IEscapeEgyptAnswerRepository {
     fun getAnswersByEscapeEgyptId(escapeEgyptId: Int, lang: String): ApiResponse<List<EscapeEgyptAnswerResponse>>
     fun getAnswersByQuestionId(questionId: Int, lang: String): ApiResponse<List<EscapeEgyptAnswerResponse>>
     fun getAnswersByUserId(userId: Int, lang: String): ApiResponse<List<EscapeEgyptAnswerResponse>>
-    fun createAnswer(request: CreateEscapeEgyptAnswerRequest, lang: String): ApiResponse<EscapeEgyptAnswerResponse>
-    fun updateAnswer(id: Int, request: UpdateEscapeEgyptAnswerRequest, lang: String): ApiResponse<EscapeEgyptAnswerResponse>
-    fun updateAnswerStatus(id: Int, request: UpdateEscapeEgyptAnswerStatusRequest, lang: String): ApiResponse<EscapeEgyptAnswerResponse>
+    fun createAnswer(request: CreateEscapeEgyptAnswerRequest, lang: String): ApiResponse<Int>
+    fun updateAnswer(id: Int, request: UpdateEscapeEgyptAnswerRequest, lang: String): ApiResponse<Nothing>
+    fun updateAnswerStatus(id: Int, request: UpdateEscapeEgyptAnswerStatusRequest, lang: String): ApiResponse<Nothing>
     fun deleteAnswer(id: Int, lang: String): ApiResponse<Nothing>
 }

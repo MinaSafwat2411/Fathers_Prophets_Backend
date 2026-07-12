@@ -31,6 +31,9 @@ class EscapeEgyptRepository(
 
     override fun createEscapeEgypt(request: CreateEscapeEgyptRequest, lang: String): ApiResponse<Int> {
         val id = dao.create(request.convertToDto())
+
+        if (id == 0) throw IllegalArgumentException(Localization.get("escape_egypt_creation_failed", lang))
+
         return ApiResponse(
             success = true,
             data = id,

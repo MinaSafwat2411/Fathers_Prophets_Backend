@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.services.escapeegyptquestion
 
-import com.fathersprophets.backend.database.repository.escapeegyptquestion.IEscapeEgyptQuestionRepository
+import com.fathersprophets.backend.database.repository.activity.escapeegypt.escapeegyptquestion.IEscapeEgyptQuestionRepository
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.escapeegyptquestion.CreateEscapeEgyptQuestionRequest
 import com.fathersprophets.backend.models.escapeegyptquestion.EscapeEgyptQuestionResponse
