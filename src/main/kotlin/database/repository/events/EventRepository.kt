@@ -7,13 +7,16 @@ import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.EventDto
 import com.fathersprophets.backend.models.dto.NotificationDto
 import com.fathersprophets.backend.models.event.EventCountsResponse
-import com.fathersprophets.backend.models.event.EventRequest
+import com.fathersprophets.backend.models.event.CreateEventRequest
 import com.fathersprophets.backend.models.event.EventResponse
+import com.fathersprophets.backend.models.event.UpdateEventRequest
+import com.fathersprophets.backend.services.notification.IFirebaseMessagingService
 import com.fathersprophets.backend.utils.Localization
 
 class EventRepository(
     private val eventDao: EventDao,
     private val notificationDao: NotificationDao,
+    private val firebaseMessagingService: IFirebaseMessagingService
 ) : IEventRepository {
     override fun getAllEvents(lang: String): ApiResponse<List<EventResponse>> {
         val events = eventDao.getAllEvents()
@@ -25,7 +28,7 @@ class EventRepository(
     }
 
     override fun getEventById(eventId: Int, lang: String): ApiResponse<EventResponse> {
-        val event = eventDao.getEventById(idToDto(eventId))
+        val event = eventDao.getEventById(eventId)
         return ApiResponse(
             success = true,
             data = event?.convertToEventResponse(),
@@ -33,42 +36,38 @@ class EventRepository(
         )
     }
 
-    override fun addEvent(event: EventRequest, lang: String): ApiResponse<EventResponse> {
-        val id = eventDao.addEvent(event.convertToEventDto(0))
-        val createdEvent = eventDao.getEventById(idToDto(id))
+    override fun addEvent(event: CreateEventRequest, lang: String): ApiResponse<Int> {
 
-        if (createdEvent != null) {
-            notificationDao.create(
-                NotificationDto(
-                    id = 0,
-                    eventId = createdEvent.id,
-                    type = createdEvent.type,
-                    title = createdEvent.title,
-                    message = Localization.get("new_event_notification_message", lang),
-                    isRead = false,
-                    createdAt = ""
-                )
-            )
-        }
+        val id = eventDao.addEvent(event.convertToEventDto())
+
+        if (id == 0) throw IllegalArgumentException(Localization.get("event_creation_failed", lang))
+
+        val notificationsId = notificationDao.create(event.convertToNotification(id))
+
+        if (notificationsId == 0) throw IllegalArgumentException(Localization.get("notification_creation_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = createdEvent?.convertToEventResponse(),
+            data = id,
             message = Localization.get("event_created_successfully", lang)
         )
     }
 
-    override fun updateEvent(eventId: Int, update: EventRequest, lang: String): ApiResponse<EventResponse> {
-        eventDao.updateEvent(update.convertToEventDto(eventId))
+    override fun updateEvent(eventId: Int, update: UpdateEventRequest, lang: String): ApiResponse<Nothing> {
+
+        val  update = eventDao.updateEvent(update.convertToEventDto(eventId))
+
+        if (!update) throw IllegalArgumentException(Localization.get("event_update_failed", lang))
+
         return ApiResponse(
             success = true,
-            data = update.convertToEventDto(eventId).convertToEventResponse(),
+            data = null,
             message = Localization.get("event_updated_successfully", lang)
         )
     }
 
     override fun deleteEvent(eventId: Int, lang: String): ApiResponse<Nothing> {
-        eventDao.deleteEvent(idToDto(eventId))
+        eventDao.deleteEvent(eventId)
         return ApiResponse(
             success = true,
             data = null,
@@ -95,21 +94,11 @@ class EventRepository(
     }
 
     override fun getEventByEventType(eventType: EventType, lang: String): ApiResponse<List<EventResponse>> {
-        val events = eventDao.getEventByType(idToDto(eventType.ordinal))
+        val events = eventDao.getEventByType(eventType)
         return ApiResponse(
             success = true,
             data = events.map { it.convertToEventResponse() },
             message = Localization.get("events_by_type_retrieved_successfully", lang)
         )
     }
-
-    private fun idToDto(id: Int) = EventDto(
-        id = id,
-        title = "",
-        dateTime = "",
-        image = "",
-        type = EventType.bible
-    )
-
-
 }

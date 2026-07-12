@@ -3,7 +3,7 @@ package com.fathersprophets.backend.services.events
 import com.fathersprophets.backend.database.repository.events.IEventRepository
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.event.EventCountsResponse
-import com.fathersprophets.backend.models.event.EventRequest
+import com.fathersprophets.backend.models.event.CreateEventRequest
 import com.fathersprophets.backend.models.event.EventResponse
 import com.fathersprophets.backend.utils.Localization
 import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
@@ -20,7 +20,7 @@ class EventService(
         return eventRepository.getEventById(eventId,lang)
     }
 
-    override fun addEvent(event: EventRequest, lang: String): ApiResponse<EventResponse> {
+    override fun addEvent(event: CreateEventRequest, lang: String): ApiResponse<EventResponse> {
         validateRequired(
             event.title to "title",
             event.dateTime to "date_time",
@@ -31,7 +31,7 @@ class EventService(
         return eventRepository.addEvent(event, lang)
     }
 
-    override fun updateEvent(eventId: Int?, update: EventRequest, lang: String): ApiResponse<EventResponse> {
+    override fun updateEvent(eventId: Int?, update: CreateEventRequest, lang: String): ApiResponse<EventResponse> {
         if (eventId == null) throw IllegalArgumentException(Localization.get("event_id_required", lang))
         return eventRepository.updateEvent(eventId, update, lang)
     }

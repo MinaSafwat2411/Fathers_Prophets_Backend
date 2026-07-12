@@ -9,7 +9,7 @@ import com.fathersprophets.backend.models.classmember.AddClassMemberRequest
 import com.fathersprophets.backend.models.classmember.UpdateClassMemberRequest
 import com.fathersprophets.backend.models.comments.AddCommentRequest
 import com.fathersprophets.backend.models.comments.UpdateCommentRequest
-import com.fathersprophets.backend.models.event.EventRequest
+import com.fathersprophets.backend.models.event.CreateEventRequest
 import com.fathersprophets.backend.models.eventmember.EventMemberRequest
 import com.fathersprophets.backend.models.session.AddSessionRequest
 import com.fathersprophets.backend.models.session.UpdateSessionRequest
@@ -75,7 +75,6 @@ import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingReq
 import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingTeacherRequest
 import com.fathersprophets.backend.models.users.*
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
 import kotlin.reflect.KClass
@@ -494,8 +493,8 @@ object PostmanEndpoints {
         // Events
         RequestDefinition("Get All Events", "GET", "events"),
         RequestDefinition("Get Event by ID", "GET", "events/1"),
-        RequestDefinition("Create Event", "POST", "events", EventRequest::class),
-        RequestDefinition("Update Event", "PUT", "events/1", EventRequest::class),
+        RequestDefinition("Create Event", "POST", "events", CreateEventRequest::class),
+        RequestDefinition("Update Event", "PUT", "events/1", CreateEventRequest::class),
         RequestDefinition("Delete Event", "DELETE", "events/1"),
 
         // Event Members
