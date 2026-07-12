@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.models.person
 
-import com.fathersprophets.backend.database.tables.PersonType
+import com.fathersprophets.backend.database.tables.person.PersonType
 import com.fathersprophets.backend.models.dto.PersonDto
 import kotlinx.serialization.Serializable
 

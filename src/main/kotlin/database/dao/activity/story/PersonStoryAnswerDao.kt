@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.dao.activity.story
 
-import com.fathersprophets.backend.database.tables.PersonStoryAnswersTable
+import com.fathersprophets.backend.database.tables.person.story.PersonStoryAnswersTable
 import com.fathersprophets.backend.models.dto.PersonStoryAnswerDto
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

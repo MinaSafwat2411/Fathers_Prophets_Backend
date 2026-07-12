@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.dao.version
 
-import com.fathersprophets.backend.database.tables.VersionsTable
+import com.fathersprophets.backend.database.tables.vesion.VersionsTable
 import com.fathersprophets.backend.models.dto.VersionDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert

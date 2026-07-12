@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.models.quizdayquestion
 
-import com.fathersprophets.backend.database.tables.McqCorrectAnswer
+import com.fathersprophets.backend.database.tables.person.mcq.McqCorrectAnswer
 import com.fathersprophets.backend.models.dto.QuizDayQuestionDto
 import kotlinx.serialization.Serializable
 

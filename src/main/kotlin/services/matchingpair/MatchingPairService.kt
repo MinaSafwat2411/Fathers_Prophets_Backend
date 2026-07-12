@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.services.matchingpair
 
-import com.fathersprophets.backend.database.repository.matchingpair.IMatchingPairRepository
+import com.fathersprophets.backend.database.repository.activity.matchingpair.IMatchingPairRepository
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.matchingpair.CreateMatchingPairRequest
 import com.fathersprophets.backend.models.matchingpair.MatchingPairResponse

@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.models.dto
 
-import com.fathersprophets.backend.database.tables.AnswerStatus
+import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
 import com.fathersprophets.backend.models.personmcqanswer.PersonMcqAnswerResponse
 
 data class PersonMcqAnswerDto(

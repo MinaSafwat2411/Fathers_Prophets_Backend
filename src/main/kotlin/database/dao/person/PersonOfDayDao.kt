@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.dao.person
 
-import com.fathersprophets.backend.database.tables.PersonOfDayTable
+import com.fathersprophets.backend.database.tables.person.PersonOfDayTable
 import com.fathersprophets.backend.models.dto.PersonOfDayDto
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.ResultRow

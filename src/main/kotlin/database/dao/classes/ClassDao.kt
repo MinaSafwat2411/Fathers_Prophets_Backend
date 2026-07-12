@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.dao.classes
 
-import com.fathersprophets.backend.database.tables.ClassesTable
+import com.fathersprophets.backend.database.tables.classes.ClassesTable
 import com.fathersprophets.backend.models.dto.ClassDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

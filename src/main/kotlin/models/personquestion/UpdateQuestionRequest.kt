@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.models.personquestion
 
-import com.fathersprophets.backend.database.tables.QuestionType
+import com.fathersprophets.backend.database.tables.person.complete.QuestionType
 import com.fathersprophets.backend.models.dto.PersonQuestionDto
 import kotlinx.serialization.Serializable
 

@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.dao.superevent
 
-import com.fathersprophets.backend.database.tables.SuperEventsTable
+import com.fathersprophets.backend.database.tables.superevent.SuperEventsTable
 import com.fathersprophets.backend.models.dto.SuperEventDto
 import com.fathersprophets.backend.models.superevent.SuperEventTeacher
 import kotlinx.serialization.json.Json

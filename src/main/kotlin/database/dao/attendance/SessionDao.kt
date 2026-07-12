@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.dao.attendance
 
-import com.fathersprophets.backend.database.tables.SessionTable
+import com.fathersprophets.backend.database.tables.attendance.SessionTable
 import com.fathersprophets.backend.models.dto.SessionDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

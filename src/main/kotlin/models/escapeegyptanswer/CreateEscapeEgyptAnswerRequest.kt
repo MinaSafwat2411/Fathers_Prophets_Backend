@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.models.escapeegyptanswer
 
-import com.fathersprophets.backend.database.tables.AnswerStatus
+import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
 import com.fathersprophets.backend.models.dto.EscapeEgyptAnswerDto
 import kotlinx.serialization.Serializable
 

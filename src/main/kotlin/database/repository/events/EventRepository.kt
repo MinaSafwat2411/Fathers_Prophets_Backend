@@ -2,7 +2,7 @@ package com.fathersprophets.backend.database.repository.events
 
 import com.fathersprophets.backend.database.dao.event.EventDao
 import com.fathersprophets.backend.database.dao.notification.NotificationDao
-import com.fathersprophets.backend.database.tables.EventType
+import com.fathersprophets.backend.database.tables.event.EventType
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.event.CreateEventRequest
 import com.fathersprophets.backend.models.event.EventCountsResponse

@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.database.repository.person
 
 import com.fathersprophets.backend.database.dao.person.PersonDao
+import com.fathersprophets.backend.database.tables.person.PersonType
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.PersonDto
 import com.fathersprophets.backend.models.person.CreatePersonRequest
@@ -78,6 +79,6 @@ class PersonRepository(
         shortStory = "",
         fullStory = "",
         image = "",
-        type = com.fathersprophets.backend.database.tables.PersonType.prophets
+        type = PersonType.prophets
     )
 }

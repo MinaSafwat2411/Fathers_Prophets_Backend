@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.models.dto
 
-import com.fathersprophets.backend.database.tables.SuperEventBookingStatus
+import com.fathersprophets.backend.database.tables.superevent.SuperEventBookingStatus
 import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingResponse
 
 data class SuperEventBookingDto(

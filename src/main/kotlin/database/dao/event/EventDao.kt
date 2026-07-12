@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.dao.event
 
-import com.fathersprophets.backend.database.tables.EventType
-import com.fathersprophets.backend.database.tables.EventsTable
+import com.fathersprophets.backend.database.tables.event.EventType
+import com.fathersprophets.backend.database.tables.event.EventsTable
 import com.fathersprophets.backend.models.dto.EventCountsDto
 import com.fathersprophets.backend.models.dto.EventDto
 import org.jetbrains.exposed.sql.ResultRow

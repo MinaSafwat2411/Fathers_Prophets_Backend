@@ -2,7 +2,7 @@ package com.fathersprophets.backend.database.repository.activity.guessperson.gue
 
 import com.fathersprophets.backend.database.dao.activity.guessperson.GuessPersonAnswerDao
 import com.fathersprophets.backend.database.dao.activity.guessperson.GuessPersonQuestionDao
-import com.fathersprophets.backend.database.tables.AnswerStatus
+import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.GuessPersonAnswerDto
 import com.fathersprophets.backend.models.guesspersonanswer.CreateGuessPersonAnswerRequest

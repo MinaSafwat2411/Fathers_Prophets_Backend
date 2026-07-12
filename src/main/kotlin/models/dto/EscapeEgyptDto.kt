@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.models.dto
 
-import com.fathersprophets.backend.database.tables.EscapeEgyptType
+import com.fathersprophets.backend.database.tables.activity.escapeegypt.EscapeEgyptType
 import com.fathersprophets.backend.models.escapeegypt.EscapeEgyptResponse
 
 data class EscapeEgyptDto(

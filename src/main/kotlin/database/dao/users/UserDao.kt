@@ -1,8 +1,8 @@
 package com.fathersprophets.backend.database.dao.users
 
-import com.fathersprophets.backend.database.tables.ParentsTable
-import com.fathersprophets.backend.database.tables.UserRole
-import com.fathersprophets.backend.database.tables.UsersTable
+import com.fathersprophets.backend.database.tables.users.ParentsTable
+import com.fathersprophets.backend.database.tables.users.UserRole
+import com.fathersprophets.backend.database.tables.users.UsersTable
 import com.fathersprophets.backend.models.dto.ParentsDto
 import com.fathersprophets.backend.models.dto.UserDto
 import org.jetbrains.exposed.sql.*

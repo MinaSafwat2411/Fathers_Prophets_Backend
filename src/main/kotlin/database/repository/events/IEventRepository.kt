@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.repository.events
 
-import com.fathersprophets.backend.database.tables.EventType
+import com.fathersprophets.backend.database.tables.event.EventType
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.event.EventCountsResponse
 import com.fathersprophets.backend.models.event.CreateEventRequest

@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.dao.activity.matchpaor
 
-import com.fathersprophets.backend.database.tables.MatchingPairAnswersTable
+import com.fathersprophets.backend.database.tables.activity.matchingair.MatchingPairAnswersTable
 import com.fathersprophets.backend.models.dto.MatchingPairAnswerDto
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.*

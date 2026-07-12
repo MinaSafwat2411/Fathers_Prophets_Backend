@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.models.dto
 
-import com.fathersprophets.backend.database.tables.QuestionType
+import com.fathersprophets.backend.database.tables.person.complete.QuestionType
 import com.fathersprophets.backend.models.personquestion.PersonQuestionResponse
 
 data class PersonQuestionDto(

@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.dao.activity.guessperson
 
-import com.fathersprophets.backend.database.tables.GuessPersonAnswersTable
+import com.fathersprophets.backend.database.tables.activity.guessperson.GuessPersonAnswersTable
 import com.fathersprophets.backend.models.dto.GuessPersonAnswerDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

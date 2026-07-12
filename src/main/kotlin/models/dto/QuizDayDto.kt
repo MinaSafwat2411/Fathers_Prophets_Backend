@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.models.dto
 
-import com.fathersprophets.backend.database.tables.DayOfWeek
-import com.fathersprophets.backend.database.tables.QuizDayType
+import com.fathersprophets.backend.database.tables.quiz.DayOfWeek
+import com.fathersprophets.backend.database.tables.quiz.QuizDayType
 import com.fathersprophets.backend.models.quizday.QuizDayResponse
 import java.time.Instant
 

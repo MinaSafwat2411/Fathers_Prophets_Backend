@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.models.dto
 
-import com.fathersprophets.backend.database.tables.EventType
+import com.fathersprophets.backend.database.tables.event.EventType
 import com.fathersprophets.backend.models.eventmember.EventMemberResponse
 
 data class EventMemberDto(

@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.database.repository.personquestion
 
 import com.fathersprophets.backend.database.dao.activity.complete.PersonQuestionDao
+import com.fathersprophets.backend.database.tables.person.complete.QuestionType
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.PersonQuestionDto
 import com.fathersprophets.backend.models.personquestion.CreateQuestionRequest
@@ -72,13 +73,13 @@ class PersonQuestionRepository(
         id = id,
         question = "",
         personId = 0,
-        type = com.fathersprophets.backend.database.tables.QuestionType.mcq
+        type = QuestionType.mcq
     )
 
     private fun personIdToDto(personId: Int) = PersonQuestionDto(
         id = 0,
         question = "",
         personId = personId,
-        type = com.fathersprophets.backend.database.tables.QuestionType.mcq
+        type = QuestionType.mcq
     )
 }

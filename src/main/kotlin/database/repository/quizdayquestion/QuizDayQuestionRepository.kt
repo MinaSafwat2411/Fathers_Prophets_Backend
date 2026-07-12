@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.repository.quizdayquestion
 
 import com.fathersprophets.backend.database.dao.quiz.QuizDayQuestionDao
-import com.fathersprophets.backend.database.tables.McqCorrectAnswer
+import com.fathersprophets.backend.database.tables.person.mcq.McqCorrectAnswer
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.QuizDayQuestionDto
 import com.fathersprophets.backend.models.quizdayquestion.CreateQuizDayQuestionRequest

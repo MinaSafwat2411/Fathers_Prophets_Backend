@@ -3,7 +3,7 @@ package com.fathersprophets.backend.database.repository.notification
 import com.fathersprophets.backend.database.dao.event.EventDao
 import com.fathersprophets.backend.database.dao.notification.NotificationDao
 import com.fathersprophets.backend.database.dao.users.UserDao
-import com.fathersprophets.backend.database.tables.EventType
+import com.fathersprophets.backend.database.tables.event.EventType
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.EventDto
 import com.fathersprophets.backend.models.notification.CreateNotificationRequest

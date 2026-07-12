@@ -3,7 +3,7 @@ package com.fathersprophets.backend.database.repository.quizanswer
 import com.fathersprophets.backend.database.dao.quiz.QuizAnswerDao
 import com.fathersprophets.backend.database.dao.quiz.QuizDayQuestionDao
 import com.fathersprophets.backend.database.dao.users.UserProgressQuizDao
-import com.fathersprophets.backend.database.tables.AnswerStatus
+import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.QuizAnswerDto
 import com.fathersprophets.backend.models.quizanswer.CreateQuizAnswerRequest

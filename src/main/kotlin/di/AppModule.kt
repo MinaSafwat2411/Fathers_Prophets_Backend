@@ -17,7 +17,7 @@ import com.fathersprophets.backend.database.dao.person.PersonDao
 import com.fathersprophets.backend.database.dao.activity.guessperson.GuessPersonAnswerDao
 import com.fathersprophets.backend.database.dao.activity.guessperson.GuessPersonQuestionDao
 import com.fathersprophets.backend.database.dao.activity.matchpaor.MatchingPairAnswerDao
-import com.fathersprophets.backend.database.dao.activity.matchpaor.MatchingPairDao
+import com.fathersprophets.backend.database.dao.activity.matchpair.MatchingPairDao
 import com.fathersprophets.backend.database.dao.activity.mcq.PersonMcqAnswerDao
 import com.fathersprophets.backend.database.dao.activity.mcq.PersonMcqDao
 import com.fathersprophets.backend.database.dao.person.PersonOfDayDao
@@ -70,10 +70,10 @@ import com.fathersprophets.backend.database.repository.activity.guessperson.Gues
 import com.fathersprophets.backend.database.repository.activity.guessperson.IGuessPersonQuestionRepository
 import com.fathersprophets.backend.database.repository.activity.guessperson.guesspersonanswer.GuessPersonAnswerRepository
 import com.fathersprophets.backend.database.repository.activity.guessperson.guesspersonanswer.IGuessPersonAnswerRepository
-import com.fathersprophets.backend.database.repository.matchingpair.IMatchingPairRepository
-import com.fathersprophets.backend.database.repository.matchingpair.MatchingPairRepository
-import com.fathersprophets.backend.database.repository.matchingpairanswer.IMatchingPairAnswerRepository
-import com.fathersprophets.backend.database.repository.matchingpairanswer.MatchingPairAnswerRepository
+import com.fathersprophets.backend.database.repository.activity.matchingpair.IMatchingPairRepository
+import com.fathersprophets.backend.database.repository.activity.matchingpair.MatchingPairRepository
+import com.fathersprophets.backend.database.repository.activity.matchingpair.matchingpairanswer.IMatchingPairAnswerRepository
+import com.fathersprophets.backend.database.repository.activity.matchingpair.matchingpairanswer.MatchingPairAnswerRepository
 import com.fathersprophets.backend.database.repository.personmcq.IPersonMcqRepository
 import com.fathersprophets.backend.database.repository.personmcq.PersonMcqRepository
 import com.fathersprophets.backend.database.repository.personmcqanswer.IPersonMcqAnswerRepository

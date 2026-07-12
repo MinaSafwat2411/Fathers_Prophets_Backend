@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.dao.classes
 
-import com.fathersprophets.backend.database.tables.ClassMemberTable
-import com.fathersprophets.backend.database.tables.UsersTable
+import com.fathersprophets.backend.database.tables.classes.ClassMemberTable
+import com.fathersprophets.backend.database.tables.users.UsersTable
 import com.fathersprophets.backend.models.dto.ClassMemberDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

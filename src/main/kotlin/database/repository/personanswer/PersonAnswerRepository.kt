@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.repository.personanswer
 
 import com.fathersprophets.backend.database.dao.activity.complete.PersonAnswerDao
-import com.fathersprophets.backend.database.tables.AnswerStatus
+import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.PersonAnswerDto
 import com.fathersprophets.backend.models.personanswer.CreatePersonAnswerRequest

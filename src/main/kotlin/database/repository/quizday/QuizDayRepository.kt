@@ -1,8 +1,8 @@
 package com.fathersprophets.backend.database.repository.quizday
 
 import com.fathersprophets.backend.database.dao.quiz.QuizDayDao
-import com.fathersprophets.backend.database.tables.DayOfWeek
-import com.fathersprophets.backend.database.tables.QuizDayType
+import com.fathersprophets.backend.database.tables.quiz.DayOfWeek
+import com.fathersprophets.backend.database.tables.quiz.QuizDayType
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.QuizDayDto
 import com.fathersprophets.backend.models.quizday.CreateQuizDayRequest

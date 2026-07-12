@@ -1,9 +1,7 @@
 package com.fathersprophets.backend.database.repository.events.eventmember
 
 import com.fathersprophets.backend.database.dao.event.EventMemberDao
-import com.fathersprophets.backend.database.tables.EventType
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.dto.EventMemberDto
 import com.fathersprophets.backend.models.eventmember.EventMemberRequest
 import com.fathersprophets.backend.models.eventmember.EventMemberResponse
 import com.fathersprophets.backend.utils.Localization

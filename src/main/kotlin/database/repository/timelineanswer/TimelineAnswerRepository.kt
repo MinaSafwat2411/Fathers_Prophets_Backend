@@ -2,7 +2,7 @@ package com.fathersprophets.backend.database.repository.timelineanswer
 
 import com.fathersprophets.backend.database.dao.activity.timeline.TimelineAnswerDao
 import com.fathersprophets.backend.database.dao.activity.timeline.TimelineDao
-import com.fathersprophets.backend.database.tables.AnswerStatus
+import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.TimelineAnswerDto
 import com.fathersprophets.backend.models.timelineanswer.CreateTimelineAnswerRequest

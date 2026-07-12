@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.models.auth
 
-import com.fathersprophets.backend.database.tables.UserRole
+import com.fathersprophets.backend.database.tables.users.UserRole
 import com.fathersprophets.backend.models.dto.UserDto
 import kotlinx.serialization.Serializable
 
