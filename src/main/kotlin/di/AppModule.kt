@@ -50,8 +50,8 @@ import com.fathersprophets.backend.database.repository.classes.classmember.Class
 import com.fathersprophets.backend.database.repository.classes.classmember.IClassMemberRepository
 import com.fathersprophets.backend.database.repository.users.comments.CommentsRepository
 import com.fathersprophets.backend.database.repository.users.comments.ICommentsRepository
-import com.fathersprophets.backend.database.repository.escapeegypt.EscapeEgyptRepository
-import com.fathersprophets.backend.database.repository.escapeegypt.IEscapeEgyptRepository
+import com.fathersprophets.backend.database.repository.activity.escapeegypt.EscapeEgyptRepository
+import com.fathersprophets.backend.database.repository.activity.escapeegypt.IEscapeEgyptRepository
 import com.fathersprophets.backend.database.repository.escapeegyptanswer.EscapeEgyptAnswerRepository
 import com.fathersprophets.backend.database.repository.escapeegyptanswer.IEscapeEgyptAnswerRepository
 import com.fathersprophets.backend.database.repository.escapeegyptquestion.EscapeEgyptQuestionRepository

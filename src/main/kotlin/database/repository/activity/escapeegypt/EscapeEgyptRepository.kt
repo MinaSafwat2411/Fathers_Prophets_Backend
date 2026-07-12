@@ -1,9 +1,7 @@
-package com.fathersprophets.backend.database.repository.escapeegypt
+package com.fathersprophets.backend.database.repository.activity.escapeegypt
 
 import com.fathersprophets.backend.database.dao.activity.escapeegypt.EscapeEgyptDao
-import com.fathersprophets.backend.database.tables.EscapeEgyptType
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.dto.EscapeEgyptDto
 import com.fathersprophets.backend.models.escapeegypt.CreateEscapeEgyptRequest
 import com.fathersprophets.backend.models.escapeegypt.EscapeEgyptResponse
 import com.fathersprophets.backend.models.escapeegypt.UpdateEscapeEgyptRequest
@@ -31,38 +29,36 @@ class EscapeEgyptRepository(
         )
     }
 
-    override fun createEscapeEgypt(request: CreateEscapeEgyptRequest, lang: String): ApiResponse<EscapeEgyptResponse> {
+    override fun createEscapeEgypt(request: CreateEscapeEgyptRequest, lang: String): ApiResponse<Int> {
         val id = dao.create(request.convertToDto())
-        val created = dao.findById(id)
         return ApiResponse(
             success = true,
-            data = created?.convertToResponse(),
+            data = id,
             message = Localization.get("escape_egypt_created_successfully", lang)
         )
     }
 
-    override fun updateEscapeEgypt(id: Int, request: UpdateEscapeEgyptRequest, lang: String): ApiResponse<EscapeEgyptResponse> {
-        dao.update(request.convertToDto(id))
-        val updated = dao.findById(id)
+    override fun updateEscapeEgypt(id: Int, request: UpdateEscapeEgyptRequest, lang: String): ApiResponse<Nothing> {
+        val updated = dao.update(request.convertToDto(id))
+
+        if (!updated) throw IllegalArgumentException(Localization.get("escape_egypt_not_found", lang))
+
         return ApiResponse(
             success = true,
-            data = updated?.convertToResponse(),
+            data = null,
             message = Localization.get("escape_egypt_updated_successfully", lang)
         )
     }
 
     override fun deleteEscapeEgypt(id: Int, lang: String): ApiResponse<Nothing> {
-        dao.delete(idToDto(id))
+        val deleted = dao.delete(id)
+
+        if (!deleted) throw IllegalArgumentException(Localization.get("escape_egypt_not_found", lang))
+
         return ApiResponse(
             success = true,
             data = null,
             message = Localization.get("escape_egypt_deleted_successfully", lang)
         )
     }
-
-    private fun idToDto(id: Int) = EscapeEgyptDto(
-        id = id,
-        title = "",
-        type = EscapeEgyptType.from
-    )
 }
