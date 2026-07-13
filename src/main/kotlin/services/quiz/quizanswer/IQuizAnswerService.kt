@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.services.quizanswer
+package com.fathersprophets.backend.services.quiz.quizanswer
 
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.quizanswer.CreateQuizAnswerRequest
@@ -12,8 +12,8 @@ interface IQuizAnswerService {
     fun getQuizAnswersByUserId(userId: Int?, lang: String): ApiResponse<List<QuizAnswerResponse>>
     fun getQuizAnswersByDayId(dayId: Int?, lang: String): ApiResponse<List<QuizAnswerResponse>>
     fun getQuizAnswersByQuizId(quizId: Int?, lang: String): ApiResponse<List<QuizAnswerResponse>>
-    fun createQuizAnswer(request: CreateQuizAnswerRequest, lang: String): ApiResponse<QuizAnswerResponse>
-    fun createQuizAnswers(requests: List<CreateQuizAnswerRequest>, lang: String): ApiResponse<List<QuizAnswerResponse>>
-    fun updateQuizAnswer(id: Int?, request: UpdateQuizAnswerRequest, lang: String): ApiResponse<QuizAnswerResponse>
+    fun createQuizAnswer(request: CreateQuizAnswerRequest, lang: String): ApiResponse<Int>
+    fun createQuizAnswers(requests: List<CreateQuizAnswerRequest>, lang: String): ApiResponse<List<Int>>
+    fun updateQuizAnswer(id: Int?, request: UpdateQuizAnswerRequest, lang: String): ApiResponse<Nothing>
     fun deleteQuizAnswer(id: Int?, lang: String): ApiResponse<Nothing>
 }

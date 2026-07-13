@@ -45,13 +45,13 @@ class AnonymousChatDao {
             it[memberId] = dto.memberId
             it[servantId] = dto.servantId
             it[lastMessage] = dto.lastMessage
-        } get AnonymousChatsTable.id
+        }.let { findById(it[AnonymousChatsTable.id]) }
     }
 
     fun update(dto: AnonymousChatDto) = transaction {
         AnonymousChatsTable.update({ AnonymousChatsTable.id eq dto.id }) {
             it[lastMessage] = dto.lastMessage
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun delete(id: Int) = transaction {

@@ -5,6 +5,7 @@ import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.quizanswer.CreateQuizAnswerRequest
 import com.fathersprophets.backend.models.quizanswer.QuizAnswerResponse
 import com.fathersprophets.backend.models.quizanswer.UpdateQuizAnswerRequest
+import com.fathersprophets.backend.services.quiz.quizanswer.IQuizAnswerService
 import com.fathersprophets.backend.utils.Localization
 import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
 
@@ -41,18 +42,18 @@ class QuizAnswerService(
         return repository.getQuizAnswersByQuizId(quizId, lang)
     }
 
-    override fun createQuizAnswer(request: CreateQuizAnswerRequest, lang: String): ApiResponse<QuizAnswerResponse> {
+    override fun createQuizAnswer(request: CreateQuizAnswerRequest, lang: String): ApiResponse<Int> {
         validateCreateRequest(request, lang)
         return repository.createQuizAnswer(request, lang)
     }
 
-    override fun createQuizAnswers(requests: List<CreateQuizAnswerRequest>, lang: String): ApiResponse<List<QuizAnswerResponse>> {
+    override fun createQuizAnswers(requests: List<CreateQuizAnswerRequest>, lang: String): ApiResponse<List<Int>> {
         if (requests.isEmpty()) throw IllegalArgumentException(Localization.get("quiz_answers_required", lang))
         requests.forEach { validateCreateRequest(it, lang) }
         return repository.createQuizAnswers(requests, lang)
     }
 
-    override fun updateQuizAnswer(id: Int?, request: UpdateQuizAnswerRequest, lang: String): ApiResponse<QuizAnswerResponse> {
+    override fun updateQuizAnswer(id: Int?, request: UpdateQuizAnswerRequest, lang: String): ApiResponse<Nothing> {
         if (id == null) throw IllegalArgumentException(Localization.get("quiz_answer_id_required", lang))
         validateRequired(
             request.quizId to "quizId",

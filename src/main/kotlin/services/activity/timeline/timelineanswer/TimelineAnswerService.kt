@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.services.timelineanswer
+package com.fathersprophets.backend.services.activity.timeline.timelineanswer
 
 import com.fathersprophets.backend.database.repository.activity.timeline.timelineanswer.ITimelineAnswerRepository
 import com.fathersprophets.backend.models.ApiResponse
@@ -32,7 +32,7 @@ class TimelineAnswerService(
         return repository.getAnswersByUserId(userId, lang)
     }
 
-    override fun createAnswer(request: CreateTimelineAnswerRequest, lang: String): ApiResponse<TimelineAnswerResponse> {
+    override fun createAnswer(request: CreateTimelineAnswerRequest, lang: String): ApiResponse<Int> {
         validateRequired(
             request.timelineId to "timelineId",
             request.userId to "userId",
@@ -42,7 +42,7 @@ class TimelineAnswerService(
         return repository.createAnswer(request, lang)
     }
 
-    override fun updateAnswer(id: Int?, request: UpdateTimelineAnswerRequest, lang: String): ApiResponse<TimelineAnswerResponse> {
+    override fun updateAnswer(id: Int?, request: UpdateTimelineAnswerRequest, lang: String): ApiResponse<Nothing> {
         if (id == null) throw IllegalArgumentException(Localization.get("timeline_answer_id_required", lang))
         validateRequired(
             request.timelineId to "timelineId",
@@ -53,7 +53,7 @@ class TimelineAnswerService(
         return repository.updateAnswer(id, request, lang)
     }
 
-    override fun updateAnswerStatus(id: Int?, request: UpdateTimelineAnswerStatusRequest, lang: String): ApiResponse<TimelineAnswerResponse> {
+    override fun updateAnswerStatus(id: Int?, request: UpdateTimelineAnswerStatusRequest, lang: String): ApiResponse<Nothing> {
         if (id == null) throw IllegalArgumentException(Localization.get("timeline_answer_id_required", lang))
         validateRequired(request.status to "status", lang = lang)
         return repository.updateAnswerStatus(id, request, lang)

@@ -59,7 +59,7 @@ class SuperEventDao {
             it[waitingListLimit] = dto.waitingListLimit
             it[image] = dto.image
             it[teachers] = Json.encodeToString(dto.teachers)
-        } get SuperEventsTable.id
+        }.let { findById(it[SuperEventsTable.id]) }
     }
 
     fun update(dto: SuperEventDto) = transaction {
@@ -73,7 +73,7 @@ class SuperEventDao {
             it[totalSeats] = dto.totalSeats
             it[waitingListLimit] = dto.waitingListLimit
             it[image] = dto.image
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun delete(id: Int) = transaction {

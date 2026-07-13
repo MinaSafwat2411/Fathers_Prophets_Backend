@@ -27,7 +27,7 @@ class PersonOfDayDao {
             it[message] = dto.message
             it[verse] = dto.verse
             it[date] = dto.date
-        } get PersonOfDayTable.id
+        }.let { getPersonOfDayById(it[PersonOfDayTable.id]) }
     }
 
     fun getPersonOfDayById(id: Int) = transaction {
@@ -53,7 +53,7 @@ class PersonOfDayDao {
             it[message] = dto.message
             it[verse] = dto.verse
             it[date] = dto.date
-        } > 0
+        }.let { getPersonOfDayById(dto.id) }
     }
 
     fun deletePersonOfDay(id: Int) = transaction {

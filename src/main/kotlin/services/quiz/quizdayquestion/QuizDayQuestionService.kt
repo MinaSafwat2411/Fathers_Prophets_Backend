@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.services.quizdayquestion
+package com.fathersprophets.backend.services.quiz.quizdayquestion
 
 import com.fathersprophets.backend.database.repository.quiz.quizdayquestion.IQuizDayQuestionRepository
 import com.fathersprophets.backend.models.ApiResponse
@@ -26,18 +26,18 @@ class QuizDayQuestionService(
         return repository.getQuestionsByQuizDayId(quizDayId, lang)
     }
 
-    override fun createQuestion(request: CreateQuizDayQuestionRequest, lang: String): ApiResponse<QuizDayQuestionResponse> {
+    override fun createQuestion(request: CreateQuizDayQuestionRequest, lang: String): ApiResponse<Int> {
         validateCreateRequest(request, lang)
         return repository.createQuestion(request, lang)
     }
 
-    override fun createQuestions(requests: List<CreateQuizDayQuestionRequest>, lang: String): ApiResponse<List<QuizDayQuestionResponse>> {
+    override fun createQuestions(requests: List<CreateQuizDayQuestionRequest>, lang: String): ApiResponse<List<Int>> {
         if (requests.isEmpty()) throw IllegalArgumentException(Localization.get("quiz_day_questions_required", lang))
         requests.forEach { validateCreateRequest(it, lang) }
         return repository.createQuestions(requests, lang)
     }
 
-    override fun updateQuestion(id: Int?, request: UpdateQuizDayQuestionRequest, lang: String): ApiResponse<QuizDayQuestionResponse> {
+    override fun updateQuestion(id: Int?, request: UpdateQuizDayQuestionRequest, lang: String): ApiResponse<Nothing> {
         if (id == null) throw IllegalArgumentException(Localization.get("quiz_day_question_id_required", lang))
         validateRequired(
             request.quizDayId to "quizDayId",

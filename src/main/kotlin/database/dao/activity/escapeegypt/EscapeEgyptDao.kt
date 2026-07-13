@@ -27,14 +27,14 @@ class EscapeEgyptDao {
         EscapeEgyptTable.insert {
             it[title] = dto.title
             it[type] = dto.type
-        } get EscapeEgyptTable.id
+        }.let { findById(it[EscapeEgyptTable.id]) }
     }
 
     fun update(dto: EscapeEgyptDto) = transaction {
         EscapeEgyptTable.update({ EscapeEgyptTable.id eq dto.id }) {
             it[title] = dto.title
             it[type] = dto.type
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun delete(escapeEgyptId: Int) = transaction {

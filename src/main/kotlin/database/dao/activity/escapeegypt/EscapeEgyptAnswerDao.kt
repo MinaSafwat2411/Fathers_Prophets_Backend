@@ -48,7 +48,7 @@ class EscapeEgyptAnswerDao {
             it[userId] = dto.userId
             it[answer] = dto.answer
             it[status] = dto.status
-        } get EscapeEgyptAnswersTable.id
+        }.let { findById(it[EscapeEgyptAnswersTable.id]) }
     }
 
     fun update(dto: EscapeEgyptAnswerDto) = transaction {
@@ -58,13 +58,13 @@ class EscapeEgyptAnswerDao {
             it[userId] = dto.userId
             it[answer] = dto.answer
             it[status] = dto.status
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun updateStatus(dto: EscapeEgyptAnswerDto) = transaction {
         EscapeEgyptAnswersTable.update({ EscapeEgyptAnswersTable.id eq dto.id }) {
             it[status] = dto.status
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun delete(escapeEgyptAnswerId: Int) = transaction {

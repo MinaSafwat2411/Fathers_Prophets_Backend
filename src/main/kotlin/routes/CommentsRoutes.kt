@@ -3,7 +3,7 @@ package com.fathersprophets.backend.routes
 import com.fathersprophets.backend.models.comments.AddCommentRequest
 import com.fathersprophets.backend.models.comments.UpdateCommentRequest
 import com.fathersprophets.backend.plugins.requireRole
-import com.fathersprophets.backend.services.comments.ICommentsService
+import com.fathersprophets.backend.services.users.comments.ICommentsService
 import com.fathersprophets.backend.utils.CommentEventBroadcaster
 import io.ktor.server.request.*
 import io.ktor.server.response.*

@@ -28,6 +28,7 @@ class PersonMcqDao {
 
     fun findByPersonId(personId: Int) = transaction {
         PersonsMcqTable.selectAll().where { PersonsMcqTable.personId eq personId }
+            .map { resultRowToPersonMcq(it) }
     }
 
     fun create(dto: PersonMcqDto) = transaction {
@@ -38,7 +39,7 @@ class PersonMcqDao {
             it[third] = dto.third
             it[fourth] = dto.fourth
             it[correctAnswer] = dto.correctAnswer
-        } get PersonsMcqTable.id
+        }.let { findById(it[PersonsMcqTable.id]) }
     }
 
     fun update(dto: PersonMcqDto) = transaction {
@@ -49,7 +50,7 @@ class PersonMcqDao {
             it[third] = dto.third
             it[fourth] = dto.fourth
             it[correctAnswer] = dto.correctAnswer
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun delete(id: Int) = transaction {

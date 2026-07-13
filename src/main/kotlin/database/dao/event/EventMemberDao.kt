@@ -8,6 +8,7 @@ import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class EventMemberDao {
@@ -19,21 +20,23 @@ class EventMemberDao {
         eventType = row[EventMembersTable.eventType]
     )
 
+    fun findAll() = transaction {
+        EventMembersTable.selectAll().map { rowToEventMember(it) }
+    }
+
+
+    fun findById(eventMemberId : Int) = transaction {
+        EventMembersTable.select { EventMembersTable.id eq eventMemberId }
+    }
     fun addEventMember(eventMemberDto: EventMemberDto) = transaction {
         EventMembersTable.insert {
             it[eventId] = eventMemberDto.eventId
             it[userId] = eventMemberDto.userId
             it[name] = eventMemberDto.name
             it[eventType] = eventMemberDto.eventType
-        } get EventMembersTable.id
+        }.let { findById(it[EventMembersTable.id]) }
     }
 
-    fun getEventMemberByIdAndEventId(eventMemberDto: EventMemberDto) = transaction {
-        EventMembersTable.select {
-            (EventMembersTable.eventId eq eventMemberDto.eventId) and
-                    (EventMembersTable.userId eq eventMemberDto.userId)
-        }.map { rowToEventMember(it) }.first()
-    }
 
     fun deleteEventMember(eventMemberId : Int) = transaction {
         EventMembersTable.deleteWhere {

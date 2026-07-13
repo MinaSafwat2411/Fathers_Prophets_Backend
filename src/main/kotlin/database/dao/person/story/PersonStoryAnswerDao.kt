@@ -48,7 +48,7 @@ class PersonStoryAnswerDao {
             it[answered] = dto.answered
             it[status] = dto.status
             it[questionId] = dto.questionId
-        } get PersonStoryAnswersTable.id
+        }.let { findById(it[PersonStoryAnswersTable.id]) }
     }
 
     fun update(dto: PersonStoryAnswerDto) = transaction {
@@ -58,13 +58,13 @@ class PersonStoryAnswerDao {
             it[answered] = dto.answered
             it[status] = dto.status
             it[questionId] = dto.questionId
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun updateStatus(dto: PersonStoryAnswerDto) = transaction {
         PersonStoryAnswersTable.update({ PersonStoryAnswersTable.id eq dto.id }) {
             it[status] = dto.status
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun delete(id: Int) = transaction {

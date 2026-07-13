@@ -48,7 +48,7 @@ class EventDao {
             it[type] = eventDto.type
             it[dateTime] = LocalDate.parse(eventDto.dateTime)
             it[image] = eventDto.image
-        } get EventsTable.id
+        }.let { getEventById(it[EventsTable.id]) }
     }
 
     fun updateEvent(eventDto: EventDto) = transaction {
@@ -57,7 +57,7 @@ class EventDao {
             it[dateTime] = LocalDate.parse(eventDto.dateTime)
             it[image] = eventDto.image
             it[type] = eventDto.type
-        } > 0
+        }.let { getEventById(eventDto.id) }
     }
 
     fun deleteEvent(eventId : Int) = transaction {

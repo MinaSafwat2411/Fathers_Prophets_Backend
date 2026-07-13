@@ -3,7 +3,7 @@ package com.fathersprophets.backend.routes
 import com.fathersprophets.backend.models.userprogressquiz.CreateUserProgressQuizRequest
 import com.fathersprophets.backend.models.userprogressquiz.UpdateUserProgressQuizRequest
 import com.fathersprophets.backend.plugins.requireRole
-import com.fathersprophets.backend.services.userprogressquiz.IUserProgressQuizService
+import com.fathersprophets.backend.services.users.userprogressquiz.IUserProgressQuizService
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*

@@ -21,13 +21,13 @@ class CommentDao {
         CommentsTable.insert {
             it[CommentsTable.comment] = comment.comment
             it[CommentsTable.userId] = comment.userId
-        } get CommentsTable.id
+        }.let { getCommentById(it[CommentsTable.id]) }
     }
 
     fun updateComment(comment: CommentDto) = transaction {
         CommentsTable.update({ CommentsTable.id eq comment.id }) {
             it[CommentsTable.comment] = comment.comment
-        } > 0
+        }.let { getCommentById(comment.id) }
     }
 
     fun deleteComment(commentId: Int) = transaction {

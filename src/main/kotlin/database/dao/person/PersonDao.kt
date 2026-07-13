@@ -1,5 +1,6 @@
 package com.fathersprophets.backend.database.dao.person
 
+import com.fathersprophets.backend.database.tables.person.PersonType
 import com.fathersprophets.backend.database.tables.person.PersonsTable
 import com.fathersprophets.backend.models.dto.PersonDto
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -30,7 +31,7 @@ class PersonDao {
             it[fullStory] = personDto.fullStory
             it[image] = personDto.image
             it[type] = personDto.type
-        } get PersonsTable.id
+        }.let { getPersonById(it[PersonsTable.id]) }
     }
 
     fun getPersonById(personId : Int) =  transaction {
@@ -39,8 +40,8 @@ class PersonDao {
             .singleOrNull()
     }
 
-    fun getPersonsByType(personDto: PersonDto) = transaction {
-        PersonsTable.select { PersonsTable.type eq personDto.type }
+    fun getPersonsByType(type : PersonType) = transaction {
+        PersonsTable.select { PersonsTable.type eq type }
             .map { rowToPerson(it) }
     }
 
@@ -61,6 +62,6 @@ class PersonDao {
             it[fullStory] = personDto.fullStory
             it[image] = personDto.image
             it[type] = personDto.type
-        } > 0
+        }.let { getPersonById(personDto.id) }
     }
 }

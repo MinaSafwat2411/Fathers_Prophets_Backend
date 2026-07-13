@@ -62,13 +62,13 @@ class SuperEventBookingDao {
             it[userId] = dto.userId
             it[name] = dto.name
             it[status] = dto.status
-        } get SuperEventBookingsTable.id
+        }.let { findById(dto) }
     }
 
     fun updateStatus(dto : SuperEventBookingDto) = transaction {
         SuperEventBookingsTable.update({ SuperEventBookingsTable.id eq dto.id }) {
             it[SuperEventBookingsTable.status] = dto.status
-        } > 0
+        }.let { findById(dto) }
     }
 
     fun updateTotalPaid(dto : SuperEventBookingDto) = transaction {

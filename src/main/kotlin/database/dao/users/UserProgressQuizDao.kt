@@ -42,7 +42,7 @@ class UserProgressQuizDao {
             it[quizId] = dto.quizId
             it[dayId] = dto.dayId
             it[score] = dto.score
-        } get UserProgressQuizTable.id
+        }.let { findById(it[UserProgressQuizTable.id]) }
     }
 
     fun update(dto: UserProgressQuizDto) = transaction {
@@ -51,7 +51,7 @@ class UserProgressQuizDao {
             it[quizId] = dto.quizId
             it[dayId] = dto.dayId
             it[score] = dto.score
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun delete(id: Int) = transaction {
@@ -64,6 +64,6 @@ class UserProgressQuizDao {
             it[UserProgressQuizTable.quizId] = quizId
             it[UserProgressQuizTable.dayId] = dayId
             it[score] = amount
-        }
+        }.let { findById(it[UserProgressQuizTable.id]) }
     }
 }

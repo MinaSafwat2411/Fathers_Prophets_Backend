@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.database.repository.person
 
 import com.fathersprophets.backend.database.dao.person.PersonDao
+import com.fathersprophets.backend.database.tables.person.PersonType
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.person.CreatePersonRequest
 import com.fathersprophets.backend.models.person.PersonResponse
@@ -28,6 +29,18 @@ class PersonRepository(
             success = true,
             data = person?.convertToPersonResponse(),
             message = Localization.get("person_retrieved_successfully", lang)
+        )
+    }
+
+    override fun getPersonByType(
+        personType: String,
+        lang: String
+    ): ApiResponse<List<PersonResponse>> {
+        val persons = personDao.getPersonsByType(PersonType.valueOf(personType))
+        return ApiResponse(
+            success = true,
+            data = persons.map { it.convertToPersonResponse() },
+            message = Localization.get("persons_retrieved_successfully", lang)
         )
     }
 

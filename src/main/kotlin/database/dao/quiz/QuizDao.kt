@@ -29,7 +29,7 @@ class QuizDao {
             it[number] = dto.number
             it[startAt] = dto.startAt
             it[endAt] = dto.endAt
-        } get QuizTable.id
+        }.let { findById(it[QuizTable.id]) }
     }
 
     fun update(dto: QuizDto) = transaction {
@@ -37,7 +37,7 @@ class QuizDao {
             it[number] = dto.number
             it[startAt] = dto.startAt
             it[endAt] = dto.endAt
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun delete(id: Int) = transaction {

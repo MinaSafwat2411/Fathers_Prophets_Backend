@@ -13,9 +13,8 @@ import com.fathersprophets.backend.models.users.UserResponse
 
 interface IUserService {
     suspend fun getUserById(id: Int?, lang: String): ApiResponse<UserResponse>
-    suspend fun addUser(addUserRequest: AddUserRequest, lang: String): ApiResponse<UserResponse>
+    suspend fun addUser(addUserRequest: AddUserRequest, lang: String): ApiResponse<Int>
     suspend fun updateReview(id: Int?, lang: String): ApiResponse<Nothing>
-    suspend fun updateUserByField(id: Int?, updateUser: UpdateUserRequest, lang: String): ApiResponse<UserResponse>
     suspend fun deleteUser(id: Int?, lang: String): ApiResponse<Nothing>
     suspend fun getUsersByRole(role: String, lang: String): ApiResponse<List<UserResponse>>
     suspend fun getUnReviewedUsers(lang: String): ApiResponse<List<UserResponse>>

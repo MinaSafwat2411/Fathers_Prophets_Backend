@@ -33,7 +33,7 @@ class TimelineDao {
             it[event3] = dto.event3
             it[event4] = dto.event4
             it[correctOrder] = dto.correctOrder
-        } get TimelineTable.id
+        }.let { findById(it[TimelineTable.id]) }
     }
 
     fun update(dto: TimelineDto) = transaction {
@@ -43,7 +43,7 @@ class TimelineDao {
             it[event3] = dto.event3
             it[event4] = dto.event4
             it[correctOrder] = dto.correctOrder
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun delete(id: Int) = transaction {

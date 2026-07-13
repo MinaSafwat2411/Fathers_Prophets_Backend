@@ -37,16 +37,16 @@ class QuizDayDao {
 
     fun create(dto: QuizDayDto) = transaction {
         QuizDayTable.insert {
-            it[quizId] = dto.quizId
-            it[dayName] = dto.dayName
-            it[startAt] = dto.startAt
             it[endAt] = dto.endAt
+            it[dayName] = dto.dayName
             it[book] = dto.book
             it[chapter] = dto.chapter
             it[verseFrom] = dto.verseFrom
+            it[quizId] = dto.quizId
             it[verseTo] = dto.verseTo
             it[typeDay] = dto.typeDay
-        } get QuizDayTable.id
+            it[startAt] = dto.startAt
+        }.let { findById(it[QuizDayTable.id]) }
     }
 
     fun update(dto: QuizDayDto) = transaction {
@@ -60,7 +60,7 @@ class QuizDayDao {
             it[verseFrom] = dto.verseFrom
             it[verseTo] = dto.verseTo
             it[typeDay] = dto.typeDay
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun delete(id: Int) = transaction {

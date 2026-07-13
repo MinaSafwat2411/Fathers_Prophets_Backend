@@ -1,16 +1,13 @@
-package com.fathersprophets.backend.database.repository.supereventbooking
+package com.fathersprophets.backend.database.repository.superevent.supereventbooking
 
 import com.fathersprophets.backend.database.dao.superevent.SuperEventBookingDao
 import com.fathersprophets.backend.database.dao.superevent.SuperEventDao
 import com.fathersprophets.backend.database.dao.users.UserDao
-import com.fathersprophets.backend.database.repository.superevent.supereventbooking.ISuperEventBookingRepository
 import com.fathersprophets.backend.database.tables.superevent.SuperEventBookingStatus
-import com.fathersprophets.backend.database.tables.users.UserRole
 import com.fathersprophets.backend.exceptions.ConflictException
 import com.fathersprophets.backend.exceptions.NotFoundException
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.SuperEventBookingDto
-import com.fathersprophets.backend.models.dto.UserDto
 import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingPaymentRequest
 import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingRequest
 import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingResponse
@@ -23,7 +20,7 @@ class SuperEventBookingRepository(
     private val userDao: UserDao
 ) : ISuperEventBookingRepository {
 
-    override fun bookSeat(request: SuperEventBookingRequest, lang: String): ApiResponse<SuperEventBookingResponse> {
+    override fun bookSeat(request: SuperEventBookingRequest, lang: String): ApiResponse<Int> {
         val superEvent = superEventDao.findById(request.superEventId ?: 0)
             ?: throw NotFoundException(Localization.get("super_event_not_found", lang))
 
@@ -49,7 +46,7 @@ class SuperEventBookingRepository(
             }
         }
 
-        val user = userDao.findById(UserDto(id = request.userId ?: 0, name = "", username = "", passwordHash = "", role = UserRole.member))
+        val user = userDao.findById(request.userId?: 0)
             ?: throw NotFoundException(Localization.get("user_not_found", lang))
 
         if (existing != null) {
@@ -77,7 +74,7 @@ class SuperEventBookingRepository(
 
         return ApiResponse(
             success = true,
-            data = booking?.convertToResponse(),
+            data = booking?.id,
             message = Localization.get(messageKey, lang)
         )
     }

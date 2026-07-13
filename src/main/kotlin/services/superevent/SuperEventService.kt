@@ -25,7 +25,7 @@ class SuperEventService(
         return superEventRepository.getUpcomingSuperEvents(lang)
     }
 
-    override fun createSuperEvent(request: SuperEventRequest, lang: String): ApiResponse<SuperEventResponse> {
+    override fun createSuperEvent(request: SuperEventRequest, lang: String): ApiResponse<Int> {
         validateRequired(
             request.title to "title",
             request.startDate to "start_date",
@@ -41,7 +41,7 @@ class SuperEventService(
         return superEventRepository.createSuperEvent(request, lang)
     }
 
-    override fun updateSuperEvent(id: Int?, request: SuperEventRequest, lang: String): ApiResponse<SuperEventResponse> {
+    override fun updateSuperEvent(id: Int?, request: SuperEventRequest, lang: String): ApiResponse<Nothing> {
         if (id == null) throw IllegalArgumentException(Localization.get("super_event_id_required", lang))
         validateRequired(
             request.title to "title",

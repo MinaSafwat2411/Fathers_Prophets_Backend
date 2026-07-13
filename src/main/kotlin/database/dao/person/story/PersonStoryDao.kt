@@ -41,7 +41,7 @@ class PersonStoryDao {
             it[content] = dto.content
             it[image] = dto.image
             it[video] = dto.video
-        } get PersonStoryTable.id
+        }.let { findById(it[PersonStoryTable.id]) }
     }
 
     fun update(dto: PersonStoryDto) = transaction {
@@ -51,7 +51,7 @@ class PersonStoryDao {
             it[content] = dto.content
             it[image] = dto.image
             it[video] = dto.video
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun delete(id: Int) = transaction {

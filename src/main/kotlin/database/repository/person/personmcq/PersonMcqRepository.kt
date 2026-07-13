@@ -29,6 +29,18 @@ class PersonMcqRepository(
         )
     }
 
+    override fun getByPersonId(
+        personId: Int,
+        lang: String
+    ): ApiResponse<List<PersonMcqResponse>> {
+        val mcqs = personMcqDao.findByPersonId(personId)
+        return ApiResponse(
+            success = true,
+            data = mcqs.map { it.convertToPersonMcqResponse() },
+            message = Localization.get("person_mcqs_retrieved_successfully", lang)
+        )
+    }
+
     override fun createPersonMcq(request: CreatePersonMcqRequest, lang: String): ApiResponse<Int> {
         val id = personMcqDao.create(request.convertToPersonMcqDto())
 

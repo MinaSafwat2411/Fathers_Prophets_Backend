@@ -6,7 +6,7 @@ import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingReq
 import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingResponse
 
 interface ISuperEventBookingRepository {
-    fun bookSeat(request: SuperEventBookingRequest, lang: String): ApiResponse<SuperEventBookingResponse>
+    fun bookSeat(request: SuperEventBookingRequest, lang: String): ApiResponse<Int>
     fun cancelBooking(superEventId: Int, userId: Int, lang: String): ApiResponse<Nothing>
     fun getBookingsBySuperEventId(superEventId: Int, lang: String): ApiResponse<List<SuperEventBookingResponse>>
     fun updateBookingPaidAmount(

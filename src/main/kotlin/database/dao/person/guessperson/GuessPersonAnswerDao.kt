@@ -45,7 +45,7 @@ class GuessPersonAnswerDao {
             it[userId] = dto.userId
             it[personId] = dto.personId
             it[status] = dto.status
-        } get GuessPersonAnswersTable.id
+        }.let { findById(it[GuessPersonAnswersTable.id]) }
     }
 
     fun update(dto: GuessPersonAnswerDto) = transaction {
@@ -54,13 +54,13 @@ class GuessPersonAnswerDao {
             it[userId] = dto.userId
             it[personId] = dto.personId
             it[status] = dto.status
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun updateStatus(dto: GuessPersonAnswerDto) = transaction {
         GuessPersonAnswersTable.update({ GuessPersonAnswersTable.id eq dto.id }) {
             it[status] = dto.status
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun delete(guessPersonId: Int) = transaction {

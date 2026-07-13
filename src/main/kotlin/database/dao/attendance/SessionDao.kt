@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.database.dao.attendance
 
 import com.fathersprophets.backend.database.tables.attendance.SessionTable
+import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.SessionDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -18,10 +19,19 @@ class SessionDao {
         createdAt = row[SessionTable.createdAt].toString()
     )
 
+    fun getSessionsByDate(date: String) = transaction {
+        SessionTable.selectAll().where { SessionTable.dateTime eq LocalDateTime.parse(date) }
+    }
+
+    fun findById(sessionId: Int) = transaction {
+        SessionTable.selectAll().where { SessionTable.id eq sessionId }
+            .singleOrNull()?.let { rowToSession(it) }
+    }
+
     fun addSession(session: SessionDto) = transaction {
         SessionTable.insert {
             it[dateTime] = LocalDateTime.parse(session.dateTime)
-        } get SessionTable.id
+        }.let { findById(it[SessionTable.id]) }
     }
 
     fun updateSession(session: SessionDto) = transaction {
@@ -34,10 +44,7 @@ class SessionDao {
         SessionTable.deleteWhere { SessionTable.id eq sessionId } > 0
     }
 
-    fun getSessionById(sessionId: Int) = transaction {
-        SessionTable.selectAll().where { SessionTable.id eq sessionId }
-            .singleOrNull()?.let { rowToSession(it) }
-    }
+
 
     fun getAllSessions() = transaction {
         SessionTable.selectAll().map { rowToSession(it) }

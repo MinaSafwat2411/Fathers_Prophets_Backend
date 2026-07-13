@@ -34,7 +34,7 @@ class EscapeEgyptQuestionDao {
             it[escapeEgyptId] = dto.escapeEgyptId
             it[question] = dto.question
             it[correctAnswer] = dto.correctAnswer
-        } get EscapeEgyptQuestionsTable.id
+        }.let { findById(it[EscapeEgyptQuestionsTable.id]) }
     }
 
     fun update(dto: EscapeEgyptQuestionDto) = transaction {
@@ -42,7 +42,7 @@ class EscapeEgyptQuestionDao {
             it[escapeEgyptId] = dto.escapeEgyptId
             it[question] = dto.question
             it[correctAnswer] = dto.correctAnswer
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun delete(escapeEgyptQuestionId: Int) = transaction {

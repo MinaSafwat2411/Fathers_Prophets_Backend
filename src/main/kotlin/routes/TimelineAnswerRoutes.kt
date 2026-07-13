@@ -4,7 +4,7 @@ import com.fathersprophets.backend.models.timelineanswer.CreateTimelineAnswerReq
 import com.fathersprophets.backend.models.timelineanswer.UpdateTimelineAnswerRequest
 import com.fathersprophets.backend.models.timelineanswer.UpdateTimelineAnswerStatusRequest
 import com.fathersprophets.backend.plugins.requireRole
-import com.fathersprophets.backend.services.timelineanswer.ITimelineAnswerService
+import com.fathersprophets.backend.services.activity.timeline.timelineanswer.ITimelineAnswerService
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*

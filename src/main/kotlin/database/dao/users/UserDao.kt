@@ -60,8 +60,7 @@ class UserDao {
         ParentsTable.insert {
             it[userId]  = id
         }
-
-        return@transaction id
+        findById(id)
     }
 
     fun updateToken(userDto : UserDto) = transaction {
@@ -98,7 +97,7 @@ class UserDao {
             it[fatherName] = userDto.fatherName
             it[isShams] = userDto.isShams
             it[memberId] = userDto.memberId
-        } > 0
+        }.let { findById(userDto.id) }
     }
 
     fun reviewUser(userId: Int) = transaction {

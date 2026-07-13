@@ -8,7 +8,7 @@ import com.fathersprophets.backend.models.quiz.UpdateQuizRequest
 interface IQuizService {
     fun getAllQuizzes(lang: String): ApiResponse<List<QuizResponse>>
     fun getQuizById(id: Int?, lang: String): ApiResponse<QuizResponse>
-    fun createQuiz(request: CreateQuizRequest, lang: String): ApiResponse<QuizResponse>
-    fun updateQuiz(id: Int?, request: UpdateQuizRequest, lang: String): ApiResponse<QuizResponse>
+    fun createQuiz(request: CreateQuizRequest, lang: String): ApiResponse<Int>
+    fun updateQuiz(id: Int?, request: UpdateQuizRequest, lang: String): ApiResponse<Nothing>
     fun deleteQuiz(id: Int?, lang: String): ApiResponse<Nothing>
 }

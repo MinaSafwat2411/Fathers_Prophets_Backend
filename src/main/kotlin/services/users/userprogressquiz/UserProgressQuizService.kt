@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.services.userprogressquiz
+package com.fathersprophets.backend.services.users.userprogressquiz
 
 import com.fathersprophets.backend.database.repository.userprogressquiz.IUserProgressQuizRepository
 import com.fathersprophets.backend.models.ApiResponse
@@ -31,14 +31,8 @@ class UserProgressQuizService(
         return repository.getUserProgressByQuizId(quizId, lang)
     }
 
-    override fun getUserProgressByUserIdAndQuizIdAndDayId(userId: Int?, quizId: Int?, dayId: Int?, lang: String): ApiResponse<UserProgressQuizResponse> {
-        if (userId == null) throw IllegalArgumentException(Localization.get("user_id_required", lang))
-        if (quizId == null) throw IllegalArgumentException(Localization.get("quiz_id_required", lang))
-        if (dayId == null) throw IllegalArgumentException(Localization.get("quiz_day_id_required", lang))
-        return repository.getUserProgressByUserIdAndQuizIdAndDayId(userId, quizId, dayId, lang)
-    }
 
-    override fun createUserProgress(request: CreateUserProgressQuizRequest, lang: String): ApiResponse<UserProgressQuizResponse> {
+    override fun createUserProgress(request: CreateUserProgressQuizRequest, lang: String): ApiResponse<Int> {
         validateRequired(
             request.userId to "userId",
             request.quizId to "quizId",
@@ -48,7 +42,7 @@ class UserProgressQuizService(
         return repository.createUserProgress(request, lang)
     }
 
-    override fun updateUserProgress(id: Int?, request: UpdateUserProgressQuizRequest, lang: String): ApiResponse<UserProgressQuizResponse> {
+    override fun updateUserProgress(id: Int?, request: UpdateUserProgressQuizRequest, lang: String): ApiResponse<Nothing> {
         if (id == null) throw IllegalArgumentException(Localization.get("user_progress_quiz_id_required", lang))
         validateRequired(
             request.userId to "userId",

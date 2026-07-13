@@ -40,7 +40,7 @@ class PersonAnswerDao {
             it[questionId] = dto.questionId
             it[userId] = dto.userId
             it[status] = dto.status
-        } get PersonsAnswersTable.id
+        }.let { findById(it[PersonsAnswersTable.id]) }
     }
 
     fun update(dto: PersonAnswerDto) = transaction {
@@ -49,13 +49,13 @@ class PersonAnswerDao {
             it[questionId] = dto.questionId
             it[userId] = dto.userId
             it[status] = dto.status
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun updateStatus(dto: PersonAnswerDto) = transaction {
         PersonsAnswersTable.update({ PersonsAnswersTable.id eq dto.id }) {
             it[status] = dto.status
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun delete(id: Int) = transaction {

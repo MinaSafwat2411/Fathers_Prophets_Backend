@@ -30,14 +30,14 @@ class ClassDao {
         ClassesTable.insert {
             it[name] = classDto.name
             it[image] = classDto.image
-        } get ClassesTable.id
+        }.let { findById(it[ClassesTable.id]) }
     }
 
     fun updateClass(classDto: ClassDto) = transaction {
         ClassesTable.update({ ClassesTable.id eq classDto.id }) {
             it[name] = classDto.name
             it[image] = classDto.image
-        } > 0
+        }.let { findById(classDto.id) }
     }
 
     fun deleteClass(classId: Int) = transaction {
@@ -45,5 +45,4 @@ class ClassDao {
             ClassesTable.id eq classId
         } > 0
     }
-
 }

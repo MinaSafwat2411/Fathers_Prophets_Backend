@@ -37,15 +37,15 @@ class GuessPersonQuestionDao {
 
     fun create(dto: GuessPersonQuestionDto) = transaction {
         GuessPersonTable.insert {
-            it[question] = dto.question
-            it[correctPersonId] = dto.correctPersonId
             it[difficulty] = dto.difficulty
+            it[question] = dto.question
             it[first] = Json.encodeToString(dto.first)
             it[second] = Json.encodeToString(dto.second)
+            it[correctPersonId] = dto.correctPersonId
             it[third] = Json.encodeToString(dto.third)
             it[fourth] = Json.encodeToString(dto.fourth)
             it[correctAnswer] = dto.correctAnswer
-        } get GuessPersonTable.id
+        }.let { findById(it[GuessPersonTable.id]) }
     }
 
     fun update(dto: GuessPersonQuestionDto) = transaction {
@@ -58,7 +58,7 @@ class GuessPersonQuestionDao {
             it[third] = Json.encodeToString(dto.third)
             it[fourth] = Json.encodeToString(dto.fourth)
             it[correctAnswer] = dto.correctAnswer
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun delete(guessPersonId: Int) = transaction {

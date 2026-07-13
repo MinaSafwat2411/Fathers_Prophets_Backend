@@ -48,7 +48,7 @@ class AnonymousChatMessageDao {
             it[memberName] = dto.memberName
             it[servantName] = dto.servantName
             it[isRead] = dto.isRead
-        } get AnonymousChatMessagesTable.id
+        }.let { findById(it[AnonymousChatMessagesTable.id]) }
     }
 
     fun delete(id: Int) = transaction {
@@ -58,6 +58,6 @@ class AnonymousChatMessageDao {
     fun update(dto: AnonymousChatMessageDto) = transaction {
         AnonymousChatMessagesTable.update({ AnonymousChatMessagesTable.id eq dto.id }) {
             it[message] = dto.message
-        } > 0
+        }.let { findById(dto.id) }
     }
 }

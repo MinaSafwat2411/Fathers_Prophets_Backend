@@ -1,12 +1,10 @@
 package com.fathersprophets.backend.routes
 
-import com.fathersprophets.backend.exceptions.userRole
 import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingPaymentRequest
 import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingRequest
-import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingTeacherRequest
 import com.fathersprophets.backend.plugins.forbidRoles
 import com.fathersprophets.backend.plugins.requireRole
-import com.fathersprophets.backend.services.supereventbooking.ISuperEventBookingService
+import com.fathersprophets.backend.services.superevent.supereventbooking.ISuperEventBookingService
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*

@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.services.userprogressquiz
+package com.fathersprophets.backend.services.users.userprogressquiz
 
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.userprogressquiz.CreateUserProgressQuizRequest
@@ -10,8 +10,7 @@ interface IUserProgressQuizService {
     fun getUserProgressById(id: Int?, lang: String): ApiResponse<UserProgressQuizResponse>
     fun getUserProgressByUserId(userId: Int?, lang: String): ApiResponse<List<UserProgressQuizResponse>>
     fun getUserProgressByQuizId(quizId: Int?, lang: String): ApiResponse<List<UserProgressQuizResponse>>
-    fun getUserProgressByUserIdAndQuizIdAndDayId(userId: Int?, quizId: Int?, dayId: Int?, lang: String): ApiResponse<UserProgressQuizResponse>
-    fun createUserProgress(request: CreateUserProgressQuizRequest, lang: String): ApiResponse<UserProgressQuizResponse>
-    fun updateUserProgress(id: Int?, request: UpdateUserProgressQuizRequest, lang: String): ApiResponse<UserProgressQuizResponse>
+    fun createUserProgress(request: CreateUserProgressQuizRequest, lang: String): ApiResponse<Int>
+    fun updateUserProgress(id: Int?, request: UpdateUserProgressQuizRequest, lang: String): ApiResponse<Nothing>
     fun deleteUserProgress(id: Int?, lang: String): ApiResponse<Nothing>
 }

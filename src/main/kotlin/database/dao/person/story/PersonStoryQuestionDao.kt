@@ -31,14 +31,14 @@ class PersonStoryQuestionDao {
         PersonStoryQuestionsTable.insert {
             it[storyId] = dto.storyId
             it[question] = dto.question
-        } get PersonStoryQuestionsTable.id
+        }.let { findById(it[PersonStoryQuestionsTable.id]) }
     }
 
     fun update(dto: PersonStoryQuestionDto) = transaction {
         PersonStoryQuestionsTable.update({ PersonStoryQuestionsTable.id eq dto.id }) {
             it[storyId] = dto.storyId
             it[question] = dto.question
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun delete(id: Int) = transaction {

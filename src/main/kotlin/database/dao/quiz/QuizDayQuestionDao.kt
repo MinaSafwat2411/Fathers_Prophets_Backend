@@ -42,7 +42,7 @@ class QuizDayQuestionDao {
             it[choice3] = dto.choice3
             it[choice4] = dto.choice4
             it[correctAnswer] = dto.correctAnswer
-        } get QuizDayQuestionsTable.id
+        }.let { findById(it[QuizDayQuestionsTable.id]) }
     }
 
     fun createMany(dtos: List<QuizDayQuestionDto>) = transaction {
@@ -66,7 +66,7 @@ class QuizDayQuestionDao {
             it[choice3] = dto.choice3
             it[choice4] = dto.choice4
             it[correctAnswer] = dto.correctAnswer
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun delete(id: Int) = transaction {

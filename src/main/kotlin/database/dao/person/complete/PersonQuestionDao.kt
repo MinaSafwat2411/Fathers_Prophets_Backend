@@ -37,7 +37,7 @@ class PersonQuestionDao {
             it[question] = personQuestionDto.question
             it[personId] = personQuestionDto.personId
             it[type] = personQuestionDto.type
-        } get PersonsQuestionsTable.id
+        }.let { findById(it[PersonsQuestionsTable.id]) }
     }
 
     fun update(personQuestionDto: PersonQuestionDto) = transaction {
@@ -45,7 +45,7 @@ class PersonQuestionDao {
             it[question] = personQuestionDto.question
             it[personId] = personQuestionDto.personId
             it[type] = personQuestionDto.type
-        } > 0
+        }.let { findById(personQuestionDto.id) }
     }
 
     fun delete(personQuestionId : Int) = transaction {

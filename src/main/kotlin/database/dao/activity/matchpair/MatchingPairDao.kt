@@ -29,7 +29,7 @@ class MatchingPairDao {
             it[personId] = dto.personId
             it[personName] = dto.personName
             it[otherSide] = dto.otherSide
-        } get MatchingPairTable.id
+        }.let { findById(it[MatchingPairTable.id]) }
     }
 
     fun update(dto: MatchingPairDto) = transaction {
@@ -37,7 +37,7 @@ class MatchingPairDao {
             it[personId] = dto.personId
             it[personName] = dto.personName
             it[otherSide] = dto.otherSide
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun delete(id: Int) = transaction {

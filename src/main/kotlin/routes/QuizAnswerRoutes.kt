@@ -3,7 +3,7 @@ package com.fathersprophets.backend.routes
 import com.fathersprophets.backend.models.quizanswer.CreateQuizAnswerRequest
 import com.fathersprophets.backend.models.quizanswer.UpdateQuizAnswerRequest
 import com.fathersprophets.backend.plugins.requireRole
-import com.fathersprophets.backend.services.quizanswer.IQuizAnswerService
+import com.fathersprophets.backend.services.quiz.quizanswer.IQuizAnswerService
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*

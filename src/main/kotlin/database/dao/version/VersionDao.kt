@@ -28,13 +28,13 @@ class VersionDao {
         VersionsTable.insert {
             it[version] = versionDto.version
             it[adminPin] = versionDto.adminPin
-        } get VersionsTable.id
+        }.let { getLastVersion() }
     }
 
     fun changePinVersion(versionDto: VersionDto) = transaction {
         VersionsTable.update({ VersionsTable.version eq (versionDto.version ?: "") }) {
             it[adminPin] = versionDto.adminPin
-        } > 0
+        }.let { getLastVersion() }
     }
 
 }

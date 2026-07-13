@@ -3,7 +3,7 @@ package com.fathersprophets.backend.routes
 import com.fathersprophets.backend.models.timeline.CreateTimelineRequest
 import com.fathersprophets.backend.models.timeline.UpdateTimelineRequest
 import com.fathersprophets.backend.plugins.requireRole
-import com.fathersprophets.backend.services.timeline.ITimelineService
+import com.fathersprophets.backend.services.activity.timeline.ITimelineService
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*

@@ -22,7 +22,7 @@ class QuizService(
         return repository.getQuizById(id, lang)
     }
 
-    override fun createQuiz(request: CreateQuizRequest, lang: String): ApiResponse<QuizResponse> {
+    override fun createQuiz(request: CreateQuizRequest, lang: String): ApiResponse<Int> {
         validateRequired(
             request.number to "number",
             request.startAt to "startAt",
@@ -33,7 +33,7 @@ class QuizService(
         return repository.createQuiz(request, lang)
     }
 
-    override fun updateQuiz(id: Int?, request: UpdateQuizRequest, lang: String): ApiResponse<QuizResponse> {
+    override fun updateQuiz(id: Int?, request: UpdateQuizRequest, lang: String): ApiResponse<Nothing> {
         if (id == null) throw IllegalArgumentException(Localization.get("quiz_id_required", lang))
         validateRequired(
             request.number to "number",

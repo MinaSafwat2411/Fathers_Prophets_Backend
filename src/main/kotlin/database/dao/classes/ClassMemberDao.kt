@@ -39,7 +39,7 @@ class ClassMemberDao {
             it[ClassMemberTable.userId] = classMemberDto.userId
             it[ClassMemberTable.teacher] = classMemberDto.isTeacher
             it[ClassMemberTable.image] = classMemberDto.image
-        } get ClassMemberTable.id
+        }.let { findById(it[ClassMemberTable.id]) }
     }
 
     fun updateMember(classMemberDto: ClassMemberDto) = transaction {
@@ -49,7 +49,7 @@ class ClassMemberDao {
             it[ClassMemberTable.teacher] = classMemberDto.isTeacher
             it[ClassMemberTable.image] = classMemberDto.image
             it[ClassMemberTable.userId] = classMemberDto.userId
-        } > 0
+        }.let { findById(classMemberDto.id) }
     }
 
     fun deleteMember(classMemberId: Int) = transaction {

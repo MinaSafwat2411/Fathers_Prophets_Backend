@@ -46,13 +46,13 @@ class NotificationDao {
             it[type] = dto.type
             it[title] = dto.title
             it[message] = dto.message
-        } get NotificationsTable.id
+        }.let { findById(it[NotificationsTable.id]) }
     }
 
     fun update(dto: NotificationDto) = transaction {
         NotificationsTable.update({ NotificationsTable.id eq dto.id }) {
             it[isRead] = dto.isRead
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun delete(id: Int) = transaction {

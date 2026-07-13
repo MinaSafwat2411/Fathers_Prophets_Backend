@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.services.quizday
+package com.fathersprophets.backend.services.quiz.quizday
 
 import com.fathersprophets.backend.database.repository.quiz.quizday.IQuizDayRepository
 import com.fathersprophets.backend.models.ApiResponse
@@ -27,7 +27,7 @@ class QuizDayService(
         return repository.getQuizDaysByQuizId(quizId, lang)
     }
 
-    override fun createQuizDay(request: CreateQuizDayRequest, lang: String): ApiResponse<QuizDayResponse> {
+    override fun createQuizDay(request: CreateQuizDayRequest, lang: String): ApiResponse<Int> {
         validateRequired(
             request.quizId to "quizId",
             request.dayName to "dayName",
@@ -45,7 +45,7 @@ class QuizDayService(
         return repository.createQuizDay(request, lang)
     }
 
-    override fun updateQuizDay(id: Int?, request: UpdateQuizDayRequest, lang: String): ApiResponse<QuizDayResponse> {
+    override fun updateQuizDay(id: Int?, request: UpdateQuizDayRequest, lang: String): ApiResponse<Nothing> {
         if (id == null) throw IllegalArgumentException(Localization.get("quiz_day_id_required", lang))
         validateRequired(
             request.quizId to "quizId",

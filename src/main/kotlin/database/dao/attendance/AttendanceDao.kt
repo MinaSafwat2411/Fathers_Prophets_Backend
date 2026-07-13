@@ -29,6 +29,11 @@ class AttendanceDao {
         AttendanceTable.selectAll().map { rowToAttendanceDto(it) }
     }
 
+    fun findById(attendanceId: Int) = transaction {
+        AttendanceTable.selectAll().where { AttendanceTable.id eq attendanceId }
+            .singleOrNull()?.let { rowToAttendanceDto(it) }
+    }
+
     fun getAllAttendanceByUserId(userId : Int) = transaction {
         AttendanceTable.select { AttendanceTable.userId eq userId }.map { rowToAttendanceDto(it) }
     }
@@ -52,7 +57,7 @@ class AttendanceDao {
             it[odas] = attendanceDto.odas
             it[tnawl] = attendanceDto.tnawl
             it[classId] = attendanceDto.classId
-        } get AttendanceTable.id
+        }.let { findById(it[AttendanceTable.id]) }
     }
 
     fun updateAttendance(attendanceDto: AttendanceDto) = transaction {
@@ -63,7 +68,7 @@ class AttendanceDao {
             it[odas] = attendanceDto.odas
             it[tnawl] = attendanceDto.tnawl
             it[classId] = attendanceDto.classId
-        } > 0
+        }.let { findById(attendanceDto.id) }
     }
 
     fun deleteAttendance(attendanceId: Int) = transaction {

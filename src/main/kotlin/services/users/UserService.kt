@@ -1,16 +1,8 @@
 package com.fathersprophets.backend.services.users
 
 import com.fathersprophets.backend.database.repository.users.IUserRepository
-import com.fathersprophets.backend.exceptions.NotFoundException
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.users.AddUserRequest
-import com.fathersprophets.backend.models.users.UpdateEmailRequest
-import com.fathersprophets.backend.models.users.UpdatePasswordRequest
-import com.fathersprophets.backend.models.users.UpdatePhoneRequest
-import com.fathersprophets.backend.models.users.UpdateProfileRequest
-import com.fathersprophets.backend.models.users.UpcomingBirthdayResponse
-import com.fathersprophets.backend.models.users.UpdateUserRequest
-import com.fathersprophets.backend.models.users.UserResponse
+import com.fathersprophets.backend.models.users.*
 import com.fathersprophets.backend.utils.Localization
 import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
 
@@ -24,7 +16,7 @@ class UserService(
         return userResponse
     }
 
-    override suspend fun addUser(addUserRequest: AddUserRequest, lang: String): ApiResponse<UserResponse> {
+    override suspend fun addUser(addUserRequest: AddUserRequest, lang: String): ApiResponse<Int> {
         validateRequired(
             addUserRequest.name to "name",
             addUserRequest.username to "username",
@@ -51,12 +43,6 @@ class UserService(
         return userRepository.updateReview(id, lang)
     }
 
-    override suspend fun updateUserByField(id: Int?, updateUser: UpdateUserRequest, lang: String): ApiResponse<UserResponse> {
-        if (id == null) {
-             throw IllegalArgumentException(Localization.get("id_required", lang))
-        }
-        return userRepository.updateUserByField(id, updateUser, lang)
-    }
 
     override suspend fun deleteUser(id: Int?, lang: String): ApiResponse<Nothing> {
 
