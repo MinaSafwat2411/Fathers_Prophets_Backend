@@ -4,7 +4,7 @@ import com.fathersprophets.backend.models.personmcqanswer.CreatePersonMcqAnswerR
 import com.fathersprophets.backend.models.personmcqanswer.UpdateMcqAnswerStatusRequest
 import com.fathersprophets.backend.models.personmcqanswer.UpdatePersonMcqAnswerRequest
 import com.fathersprophets.backend.plugins.requireRole
-import com.fathersprophets.backend.services.personmcqanswer.IPersonMcqAnswerService
+import com.fathersprophets.backend.services.person.mcq.personmcqanswer.IPersonMcqAnswerService
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*

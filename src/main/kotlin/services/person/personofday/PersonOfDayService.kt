@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.services.personofday
+package com.fathersprophets.backend.services.person.personofday
 
 import com.fathersprophets.backend.database.repository.person.personofday.IPersonOfDayRepository
 import com.fathersprophets.backend.models.ApiResponse
@@ -21,12 +21,11 @@ class PersonOfDayService(
         return personOfDayRepository.getPersonOfDayById(id, lang)
     }
 
-    override fun getPersonOfDayByDate(date: String?, lang: String): ApiResponse<PersonOfDayResponse> {
-        if (date.isNullOrBlank()) throw IllegalArgumentException(Localization.get("date_required", lang))
-        return personOfDayRepository.getPersonOfDayByDate(date, lang)
+    override fun getPersonOfDayByDate(lang: String): ApiResponse<PersonOfDayResponse> {
+        return personOfDayRepository.getPersonOfDayByDate(lang)
     }
 
-    override fun addPersonOfDay(request: CreatePersonOfDayRequest, lang: String): ApiResponse<PersonOfDayResponse> {
+    override fun addPersonOfDay(request: CreatePersonOfDayRequest, lang: String): ApiResponse<Int> {
         validateRequired(
             request.personId to "personId",
             request.message to "message",
@@ -37,7 +36,7 @@ class PersonOfDayService(
         return personOfDayRepository.addPersonOfDay(request, lang)
     }
 
-    override fun updatePersonOfDay(id: Int?, request: UpdatePersonOfDayRequest, lang: String): ApiResponse<PersonOfDayResponse> {
+    override fun updatePersonOfDay(id: Int?, request: UpdatePersonOfDayRequest, lang: String): ApiResponse<Nothing> {
         if (id == null) throw IllegalArgumentException(Localization.get("person_of_day_id_required", lang))
         return personOfDayRepository.updatePersonOfDay(id, request, lang)
     }

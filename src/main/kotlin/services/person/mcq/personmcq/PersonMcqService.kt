@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.services.personmcq
+package com.fathersprophets.backend.services.person.mcq.personmcq
 
 import com.fathersprophets.backend.database.repository.person.personmcq.IPersonMcqRepository
 import com.fathersprophets.backend.models.ApiResponse
@@ -21,7 +21,7 @@ class PersonMcqService(
         return personMcqRepository.getPersonMcqById(id, lang)
     }
 
-    override fun createPersonMcq(request: CreatePersonMcqRequest, lang: String): ApiResponse<PersonMcqResponse> {
+    override fun createPersonMcq(request: CreatePersonMcqRequest, lang: String): ApiResponse<Int> {
         validateRequired(
             request.question to "question",
             request.first to "first",
@@ -34,7 +34,7 @@ class PersonMcqService(
         return personMcqRepository.createPersonMcq(request, lang)
     }
 
-    override fun updatePersonMcq(id: Int?, request: UpdatePersonMcqRequest, lang: String): ApiResponse<PersonMcqResponse> {
+    override fun updatePersonMcq(id: Int?, request: UpdatePersonMcqRequest, lang: String): ApiResponse<Nothing> {
         if (id == null) throw IllegalArgumentException(Localization.get("person_mcq_id_required", lang))
         validateRequired(
             request.question to "question",

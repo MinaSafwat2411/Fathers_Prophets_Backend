@@ -3,7 +3,7 @@ package com.fathersprophets.backend.routes
 import com.fathersprophets.backend.models.personofday.CreatePersonOfDayRequest
 import com.fathersprophets.backend.models.personofday.UpdatePersonOfDayRequest
 import com.fathersprophets.backend.plugins.requireRole
-import com.fathersprophets.backend.services.personofday.IPersonOfDayService
+import com.fathersprophets.backend.services.person.personofday.IPersonOfDayService
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*

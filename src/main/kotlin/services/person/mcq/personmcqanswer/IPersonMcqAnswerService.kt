@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.services.personmcqanswer
+package com.fathersprophets.backend.services.person.mcq.personmcqanswer
 
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.personmcqanswer.CreatePersonMcqAnswerRequest
@@ -11,8 +11,8 @@ interface IPersonMcqAnswerService {
     fun getPersonMcqAnswerById(id: Int?, lang: String): ApiResponse<PersonMcqAnswerResponse>
     fun getPersonMcqAnswersByQuestionId(questionId: Int?, lang: String): ApiResponse<List<PersonMcqAnswerResponse>>
     fun getPersonMcqAnswersByUserId(userId: Int?, lang: String): ApiResponse<List<PersonMcqAnswerResponse>>
-    fun createPersonMcqAnswer(request: CreatePersonMcqAnswerRequest, lang: String): ApiResponse<PersonMcqAnswerResponse>
-    fun updatePersonMcqAnswer(id: Int?, request: UpdatePersonMcqAnswerRequest, lang: String): ApiResponse<PersonMcqAnswerResponse>
-    fun updatePersonMcqAnswerStatus(id: Int?, request: UpdateMcqAnswerStatusRequest, lang: String): ApiResponse<PersonMcqAnswerResponse>
+    fun createPersonMcqAnswer(request: CreatePersonMcqAnswerRequest, lang: String): ApiResponse<Int>
+    fun updatePersonMcqAnswer(id: Int?, request: UpdatePersonMcqAnswerRequest, lang: String): ApiResponse<Nothing>
+    fun updatePersonMcqAnswerStatus(id: Int?, request: UpdateMcqAnswerStatusRequest, lang: String): ApiResponse<Nothing>
     fun deletePersonMcqAnswer(id: Int?, lang: String): ApiResponse<Nothing>
 }

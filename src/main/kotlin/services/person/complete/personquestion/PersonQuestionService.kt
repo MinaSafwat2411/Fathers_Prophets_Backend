@@ -5,6 +5,7 @@ import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.personquestion.CreateQuestionRequest
 import com.fathersprophets.backend.models.personquestion.PersonQuestionResponse
 import com.fathersprophets.backend.models.personquestion.UpdateQuestionRequest
+import com.fathersprophets.backend.services.person.complete.personquestion.IPersonQuestionService
 import com.fathersprophets.backend.utils.Localization
 import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
 
@@ -26,7 +27,7 @@ class PersonQuestionService(
         return personQuestionRepository.getPersonQuestionsByPersonId(personId, lang)
     }
 
-    override fun createPersonQuestion(request: CreateQuestionRequest, lang: String): ApiResponse<PersonQuestionResponse> {
+    override fun createPersonQuestion(request: CreateQuestionRequest, lang: String): ApiResponse<Int> {
         validateRequired(
             request.question to "question",
             request.type to "type",
@@ -35,7 +36,7 @@ class PersonQuestionService(
         return personQuestionRepository.createPersonQuestion(request, lang)
     }
 
-    override fun updatePersonQuestion(id: Int?, request: UpdateQuestionRequest, lang: String): ApiResponse<PersonQuestionResponse> {
+    override fun updatePersonQuestion(id: Int?, request: UpdateQuestionRequest, lang: String): ApiResponse<Nothing> {
         if (id == null) throw IllegalArgumentException(Localization.get("person_question_id_required", lang))
         validateRequired(
             request.question to "question",

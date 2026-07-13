@@ -32,6 +32,7 @@ import com.fathersprophets.backend.routes.personOfDayRoutes
 import com.fathersprophets.backend.routes.personQuestionRoutes
 import com.fathersprophets.backend.routes.personStoryRoutes
 import com.fathersprophets.backend.routes.personStoryQuestionRoutes
+import com.fathersprophets.backend.routes.personStoryAnswerRoutes
 import com.fathersprophets.backend.routes.personRoutes
 import com.fathersprophets.backend.routes.profileRoutes
 import com.fathersprophets.backend.routes.sessionRoutes
@@ -51,9 +52,9 @@ import com.fathersprophets.backend.services.events.IEventService
 import com.fathersprophets.backend.services.notification.INotificationService
 import com.fathersprophets.backend.services.person.IPersonService
 import com.fathersprophets.backend.services.person.complete.personanswer.IPersonAnswerService
-import com.fathersprophets.backend.services.personmcqanswer.IPersonMcqAnswerService
-import com.fathersprophets.backend.services.personofday.IPersonOfDayService
-import com.fathersprophets.backend.services.personstory.IPersonStoryService
+import com.fathersprophets.backend.services.person.mcq.personmcqanswer.IPersonMcqAnswerService
+import com.fathersprophets.backend.services.person.personofday.IPersonOfDayService
+import com.fathersprophets.backend.services.person.personstory.IPersonStoryService
 import com.fathersprophets.backend.services.person.guessperson.IGuessPersonQuestionService
 import com.fathersprophets.backend.services.guesspersonanswer.IGuessPersonAnswerService
 import com.fathersprophets.backend.services.activity.matchingpair.IMatchingPairService
@@ -68,9 +69,10 @@ import com.fathersprophets.backend.services.quizanswer.IQuizAnswerService
 import com.fathersprophets.backend.services.userprogressquiz.IUserProgressQuizService
 import com.fathersprophets.backend.services.quizday.IQuizDayService
 import com.fathersprophets.backend.services.quizdayquestion.IQuizDayQuestionService
-import com.fathersprophets.backend.services.personstoryquestion.IPersonStoryQuestionService
-import com.fathersprophets.backend.services.personmcq.IPersonMcqService
-import com.fathersprophets.backend.services.personquestion.IPersonQuestionService
+import com.fathersprophets.backend.services.person.personstory.personstoryquestion.IPersonStoryQuestionService
+import com.fathersprophets.backend.services.person.personstory.personstoryanswer.IPersonStoryAnswerService
+import com.fathersprophets.backend.services.person.mcq.personmcq.IPersonMcqService
+import com.fathersprophets.backend.services.person.complete.personquestion.IPersonQuestionService
 import com.fathersprophets.backend.services.attendance.session.ISessionService
 import com.fathersprophets.backend.services.superevent.ISuperEventService
 import com.fathersprophets.backend.services.supereventbooking.ISuperEventBookingService
@@ -102,6 +104,7 @@ fun Application.configureRouting() {
     val personOfDayService = get<IPersonOfDayService>()
     val personStoryService = get<IPersonStoryService>()
     val personStoryQuestionService = get<IPersonStoryQuestionService>()
+    val personStoryAnswerService = get<IPersonStoryAnswerService>()
     val guessPersonQuestionService = get<IGuessPersonQuestionService>()
     val guessPersonAnswerService = get<IGuessPersonAnswerService>()
     val matchingPairService = get<IMatchingPairService>()
@@ -147,6 +150,7 @@ fun Application.configureRouting() {
                 personOfDayRoutes(personOfDayService)
                 personStoryRoutes(personStoryService)
                 personStoryQuestionRoutes(personStoryQuestionService)
+                personStoryAnswerRoutes(personStoryAnswerService)
                 guessPersonQuestionRoutes(guessPersonQuestionService)
                 guessPersonAnswerRoutes(guessPersonAnswerService)
                 matchingPairRoutes(matchingPairService)

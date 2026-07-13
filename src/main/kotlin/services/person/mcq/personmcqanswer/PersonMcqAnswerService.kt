@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.services.personmcqanswer
+package com.fathersprophets.backend.services.person.mcq.personmcqanswer
 
 import com.fathersprophets.backend.database.repository.person.personmcqanswer.IPersonMcqAnswerRepository
 import com.fathersprophets.backend.models.ApiResponse
@@ -32,7 +32,7 @@ class PersonMcqAnswerService(
         return personMcqAnswerRepository.getPersonMcqAnswersByUserId(userId, lang)
     }
 
-    override fun createPersonMcqAnswer(request: CreatePersonMcqAnswerRequest, lang: String): ApiResponse<PersonMcqAnswerResponse> {
+    override fun createPersonMcqAnswer(request: CreatePersonMcqAnswerRequest, lang: String): ApiResponse<Int> {
         validateRequired(
             request.answer to "answer",
             lang = lang
@@ -40,7 +40,7 @@ class PersonMcqAnswerService(
         return personMcqAnswerRepository.createPersonMcqAnswer(request, lang)
     }
 
-    override fun updatePersonMcqAnswer(id: Int?, request: UpdatePersonMcqAnswerRequest, lang: String): ApiResponse<PersonMcqAnswerResponse> {
+    override fun updatePersonMcqAnswer(id: Int?, request: UpdatePersonMcqAnswerRequest, lang: String): ApiResponse<Nothing> {
         if (id == null) throw IllegalArgumentException(Localization.get("person_mcq_answer_id_required", lang))
         validateRequired(
             request.answer to "answer",
@@ -50,7 +50,7 @@ class PersonMcqAnswerService(
         return personMcqAnswerRepository.updatePersonMcqAnswer(id, request, lang)
     }
 
-    override fun updatePersonMcqAnswerStatus(id: Int?, request: UpdateMcqAnswerStatusRequest, lang: String): ApiResponse<PersonMcqAnswerResponse> {
+    override fun updatePersonMcqAnswerStatus(id: Int?, request: UpdateMcqAnswerStatusRequest, lang: String): ApiResponse<Nothing> {
         if (id == null) throw IllegalArgumentException(Localization.get("person_mcq_answer_id_required", lang))
         validateRequired(
             request.status to "status",

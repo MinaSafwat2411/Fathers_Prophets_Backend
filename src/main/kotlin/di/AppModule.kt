@@ -22,6 +22,7 @@ import com.fathersprophets.backend.database.dao.person.mcq.PersonMcqAnswerDao
 import com.fathersprophets.backend.database.dao.person.mcq.PersonMcqDao
 import com.fathersprophets.backend.database.dao.person.personofday.PersonOfDayDao
 import com.fathersprophets.backend.database.dao.person.complete.PersonQuestionDao
+import com.fathersprophets.backend.database.dao.person.story.PersonStoryAnswerDao
 import com.fathersprophets.backend.database.dao.person.story.PersonStoryDao
 import com.fathersprophets.backend.database.dao.person.story.PersonStoryQuestionDao
 import com.fathersprophets.backend.database.dao.quiz.QuizAnswerDao
@@ -82,6 +83,8 @@ import com.fathersprophets.backend.database.repository.person.personofday.IPerso
 import com.fathersprophets.backend.database.repository.person.personofday.PersonOfDayRepository
 import com.fathersprophets.backend.database.repository.person.personstory.IPersonStoryRepository
 import com.fathersprophets.backend.database.repository.personstory.PersonStoryRepository
+import com.fathersprophets.backend.database.repository.person.personstoryanswer.IPersonStoryAnswerRepository
+import com.fathersprophets.backend.database.repository.person.personstoryanswer.PersonStoryAnswerRepository
 import com.fathersprophets.backend.database.repository.person.personstoryquestion.IPersonStoryQuestionRepository
 import com.fathersprophets.backend.database.repository.person.personstoryquestion.PersonStoryQuestionRepository
 import com.fathersprophets.backend.database.repository.person.personquestion.IPersonQuestionRepository
@@ -151,17 +154,19 @@ import com.fathersprophets.backend.services.activity.matchingpair.IMatchingPairS
 import com.fathersprophets.backend.services.activity.matchingpair.MatchingPairService
 import com.fathersprophets.backend.services.activity.matchingpair.matchingpairanswer.IMatchingPairAnswerService
 import com.fathersprophets.backend.services.activity.matchingpair.matchingpairanswer.MatchingPairAnswerService
-import com.fathersprophets.backend.services.personmcq.IPersonMcqService
-import com.fathersprophets.backend.services.personmcq.PersonMcqService
-import com.fathersprophets.backend.services.personmcqanswer.IPersonMcqAnswerService
-import com.fathersprophets.backend.services.personmcqanswer.PersonMcqAnswerService
-import com.fathersprophets.backend.services.personofday.IPersonOfDayService
-import com.fathersprophets.backend.services.personofday.PersonOfDayService
-import com.fathersprophets.backend.services.personstory.IPersonStoryService
+import com.fathersprophets.backend.services.person.mcq.personmcq.IPersonMcqService
+import com.fathersprophets.backend.services.person.mcq.personmcq.PersonMcqService
+import com.fathersprophets.backend.services.person.mcq.personmcqanswer.IPersonMcqAnswerService
+import com.fathersprophets.backend.services.person.mcq.personmcqanswer.PersonMcqAnswerService
+import com.fathersprophets.backend.services.person.personofday.IPersonOfDayService
+import com.fathersprophets.backend.services.person.personofday.PersonOfDayService
+import com.fathersprophets.backend.services.person.personstory.IPersonStoryService
 import com.fathersprophets.backend.services.personstory.PersonStoryService
-import com.fathersprophets.backend.services.personstoryquestion.IPersonStoryQuestionService
+import com.fathersprophets.backend.services.person.personstory.personstoryanswer.IPersonStoryAnswerService
+import com.fathersprophets.backend.services.person.personstory.personstoryanswer.PersonStoryAnswerService
+import com.fathersprophets.backend.services.person.personstory.personstoryquestion.IPersonStoryQuestionService
 import com.fathersprophets.backend.services.personstoryquestion.PersonStoryQuestionService
-import com.fathersprophets.backend.services.personquestion.IPersonQuestionService
+import com.fathersprophets.backend.services.person.complete.personquestion.IPersonQuestionService
 import com.fathersprophets.backend.services.personquestion.PersonQuestionService
 import com.fathersprophets.backend.services.quiz.IQuizService
 import com.fathersprophets.backend.services.quiz.QuizService
@@ -204,6 +209,7 @@ val appModule = module {
     single { PersonOfDayDao() }
     single { PersonStoryDao() }
     single { PersonStoryQuestionDao() }
+    single { PersonStoryAnswerDao() }
     single { PersonQuestionDao() }
     single { PersonMcqDao() }
     single { PersonAnswerDao() }
@@ -381,6 +387,14 @@ val appModule = module {
 
     single<IPersonStoryQuestionService> {
         PersonStoryQuestionService(get())
+    }
+
+    single<IPersonStoryAnswerRepository> {
+        PersonStoryAnswerRepository(get())
+    }
+
+    single<IPersonStoryAnswerService> {
+        PersonStoryAnswerService(get())
     }
 
     single<IGuessPersonQuestionRepository> {
