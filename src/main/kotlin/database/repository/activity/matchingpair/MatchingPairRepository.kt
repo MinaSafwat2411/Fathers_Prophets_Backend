@@ -29,26 +29,24 @@ class MatchingPairRepository(
         )
     }
 
-    override fun createPair(request: CreateMatchingPairRequest, lang: String): ApiResponse<Int> {
-        val id = dao.create(request.convertToDto())
-
-        if (id == 0) throw IllegalArgumentException(Localization.get("matching_pair_creation_failed", lang))
+    override fun createPair(request: CreateMatchingPairRequest, lang: String): ApiResponse<MatchingPairResponse> {
+        val created = dao.create(request.convertToDto())
+            ?: throw IllegalArgumentException(Localization.get("matching_pair_creation_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = created.convertToResponse(),
             message = Localization.get("matching_pair_created_successfully", lang)
         )
     }
 
-    override fun updatePair(id: Int, request: UpdateMatchingPairRequest, lang: String): ApiResponse<Nothing> {
-        val  update = dao.update(request.convertToDto(id))
-
-        if (!update) throw IllegalArgumentException(Localization.get("matching_pair_update_failed", lang))
+    override fun updatePair(id: Int, request: UpdateMatchingPairRequest, lang: String): ApiResponse<MatchingPairResponse> {
+        val updated = dao.update(request.convertToDto(id))
+            ?: throw IllegalArgumentException(Localization.get("matching_pair_update_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = null,
+            data = updated.convertToResponse(),
             message = Localization.get("matching_pair_updated_successfully", lang)
         )
     }

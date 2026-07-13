@@ -129,7 +129,7 @@ import com.fathersprophets.backend.services.users.comments.CommentsService
 import com.fathersprophets.backend.services.users.comments.ICommentsService
 import com.fathersprophets.backend.services.activity.escapeegypt.EscapeEgyptService
 import com.fathersprophets.backend.services.activity.escapeegypt.IEscapeEgyptService
-import com.fathersprophets.backend.services.escapeegyptanswer.EscapeEgyptAnswerService
+import com.fathersprophets.backend.services.activity.escapeegypt.escapeegyptanswer.EscapeEgyptAnswerService
 import com.fathersprophets.backend.services.activity.escapeegypt.escapeegyptanswer.IEscapeEgyptAnswerService
 import com.fathersprophets.backend.services.activity.escapeegypt.escapeegyptquestion.EscapeEgyptQuestionService
 import com.fathersprophets.backend.services.activity.escapeegypt.escapeegyptquestion.IEscapeEgyptQuestionService

@@ -9,5 +9,6 @@ data class EscapeEgyptAnswerResponse(
     val escapeQuestionId: Int,
     val userId: Int,
     val answer: String,
-    val status: String
+    val status: String,
+    val correctAnswer: String
 )

@@ -11,8 +11,8 @@ data class CreateEscapeEgyptAnswerRequest(
     val userId: Int,
     val answer: String
 ){
-    fun convertToDto() = EscapeEgyptAnswerDto(
-        id = 0,
+    fun convertToDto(id : Int = 0) = EscapeEgyptAnswerDto(
+        id = id,
         escapeEgyptId = escapeEgyptId,
         escapeQuestionId = escapeQuestionId,
         userId = userId,

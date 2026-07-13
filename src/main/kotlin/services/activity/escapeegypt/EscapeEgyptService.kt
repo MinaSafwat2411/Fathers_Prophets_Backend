@@ -16,12 +16,8 @@ class EscapeEgyptService(
         return repository.getAllEscapeEgypt(lang)
     }
 
-    override fun getEscapeEgyptById(id: Int?, lang: String): ApiResponse<EscapeEgyptResponse> {
-        if (id == null) throw IllegalArgumentException(Localization.get("escape_egypt_id_required", lang))
-        return repository.getEscapeEgyptById(id, lang)
-    }
 
-    override fun createEscapeEgypt(request: CreateEscapeEgyptRequest, lang: String): ApiResponse<Int> {
+    override fun createEscapeEgypt(request: CreateEscapeEgyptRequest, lang: String): ApiResponse<EscapeEgyptResponse> {
         validateRequired(
             request.title to "title",
             request.type to "type",
@@ -30,7 +26,7 @@ class EscapeEgyptService(
         return repository.createEscapeEgypt(request, lang)
     }
 
-    override fun updateEscapeEgypt(id: Int?, request: UpdateEscapeEgyptRequest, lang: String): ApiResponse<Nothing> {
+    override fun updateEscapeEgypt(id: Int?, request: UpdateEscapeEgyptRequest, lang: String): ApiResponse<EscapeEgyptResponse> {
         if (id == null) throw IllegalArgumentException(Localization.get("escape_egypt_id_required", lang))
         validateRequired(
             request.title to "title",

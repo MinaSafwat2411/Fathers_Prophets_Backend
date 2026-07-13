@@ -1,10 +1,12 @@
-package com.fathersprophets.backend.routes
+package com.fathersprophets.backend.routes.activity.escapeegypt
 
 import com.fathersprophets.backend.models.escapeegyptanswer.CreateEscapeEgyptAnswerRequest
 import com.fathersprophets.backend.models.escapeegyptanswer.UpdateEscapeEgyptAnswerRequest
 import com.fathersprophets.backend.models.escapeegyptanswer.UpdateEscapeEgyptAnswerStatusRequest
 import com.fathersprophets.backend.plugins.requireRole
 import com.fathersprophets.backend.services.activity.escapeegypt.escapeegyptanswer.IEscapeEgyptAnswerService
+import io.ktor.server.auth.jwt.JWTPrincipal
+import io.ktor.server.auth.principal
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -13,14 +15,9 @@ fun Route.escapeEgyptAnswerRoutes(service: IEscapeEgyptAnswerService) {
     route("/escape-egypt-answers") {
 
         get {
+            call.requireRole("superadmin","admin","games")
             val lang = call.request.headers["Accept-Language"] ?: "en"
             call.respond(service.getAllAnswers(lang))
-        }
-
-        get("/{id}") {
-            val lang = call.request.headers["Accept-Language"] ?: "en"
-            val id = call.parameters["id"]?.toIntOrNull()
-            call.respond(service.getAnswerById(id, lang))
         }
 
         get("/escape-egypt/{escapeEgyptId}") {
@@ -29,16 +26,12 @@ fun Route.escapeEgyptAnswerRoutes(service: IEscapeEgyptAnswerService) {
             call.respond(service.getAnswersByEscapeEgyptId(escapeEgyptId, lang))
         }
 
-        get("/question/{questionId}") {
+        get("/my-answers{escapeEgyptId}") {
             val lang = call.request.headers["Accept-Language"] ?: "en"
-            val questionId = call.parameters["questionId"]?.toIntOrNull()
-            call.respond(service.getAnswersByQuestionId(questionId, lang))
-        }
-
-        get("/user/{userId}") {
-            val lang = call.request.headers["Accept-Language"] ?: "en"
-            val userId = call.parameters["userId"]?.toIntOrNull()
-            call.respond(service.getAnswersByUserId(userId, lang))
+            val escapeEgyptId = call.parameters["escapeEgyptId"]?.toIntOrNull()
+            val principal = call.principal<JWTPrincipal>()
+            val userId = principal?.payload?.getClaim("userId")?.asInt()
+            call.respond(service.getAnswersByUserIdAndEscapeEgyptId(userId, escapeEgyptId, lang))
         }
 
         post {

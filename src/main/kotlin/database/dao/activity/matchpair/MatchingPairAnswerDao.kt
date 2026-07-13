@@ -26,11 +26,6 @@ class MatchingPairAnswerDao {
             .singleOrNull()?.let { resultRowToDto(it) }
     }
 
-    fun findByPairId(pairId: Int) = transaction {
-        MatchingPairAnswersTable.selectAll().where { MatchingPairAnswersTable.pairId eq pairId }
-            .map { resultRowToDto(it) }
-    }
-
     fun findByUserId(userId: Int) = transaction {
         MatchingPairAnswersTable.selectAll().where { MatchingPairAnswersTable.userId eq userId }
             .map { resultRowToDto(it) }
@@ -42,22 +37,13 @@ class MatchingPairAnswerDao {
             it[userId] = dto.userId
             it[userPair] = Json.encodeToString(dto.userPair)
             it[status] = dto.status
-        } get MatchingPairAnswersTable.id
-    }
-
-    fun update(dto: MatchingPairAnswerDto) = transaction {
-        MatchingPairAnswersTable.update({ MatchingPairAnswersTable.id eq dto.id }) {
-            it[pairId] = dto.pairId
-            it[userId] = dto.userId
-            it[userPair] = Json.encodeToString(dto.userPair)
-            it[status] = dto.status
-        } > 0
+        }.let { findById(it[MatchingPairAnswersTable.id]) }
     }
 
     fun updateStatus(dto: MatchingPairAnswerDto) = transaction {
         MatchingPairAnswersTable.update({ MatchingPairAnswersTable.id eq dto.id }) {
             it[status] = dto.status
-        } > 0
+        }.let { findById(dto.id) }
     }
 
     fun delete(id: Int) = transaction {

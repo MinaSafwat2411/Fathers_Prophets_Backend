@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.routes
+package com.fathersprophets.backend.routes.activity.escapeegypt
 
 import com.fathersprophets.backend.models.escapeegypt.CreateEscapeEgyptRequest
 import com.fathersprophets.backend.models.escapeegypt.UpdateEscapeEgyptRequest
@@ -14,12 +14,6 @@ fun Route.escapeEgyptRoutes(service: IEscapeEgyptService) {
         get {
             val lang = call.request.headers["Accept-Language"] ?: "en"
             call.respond(service.getAllEscapeEgypt(lang))
-        }
-
-        get("/{id}") {
-            val lang = call.request.headers["Accept-Language"] ?: "en"
-            val id = call.parameters["id"]?.toIntOrNull()
-            call.respond(service.getEscapeEgyptById(id, lang))
         }
 
         post {

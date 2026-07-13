@@ -31,14 +31,10 @@ class EscapeEgyptAnswerDao {
             .map { resultRowToDto(it) }
     }
 
-    fun findByQuestionId(questionId: Int) = transaction {
-        EscapeEgyptAnswersTable.selectAll().where { EscapeEgyptAnswersTable.escapeQuestionId eq questionId }
-            .map { resultRowToDto(it) }
-    }
-
-    fun findByUserId(userId: Int) = transaction {
-        EscapeEgyptAnswersTable.selectAll().where { EscapeEgyptAnswersTable.userId eq userId }
-            .map { resultRowToDto(it) }
+    fun findByUserIdAndEscapeEgyptId(dto: EscapeEgyptAnswerDto) =  transaction {
+        EscapeEgyptAnswersTable.select {
+            EscapeEgyptAnswersTable.userId eq(dto.userId) and EscapeEgyptAnswersTable.escapeEgyptId.eq(dto.escapeEgyptId)
+        }.map { resultRowToDto(it) }
     }
 
     fun create(dto: EscapeEgyptAnswerDto) = transaction {

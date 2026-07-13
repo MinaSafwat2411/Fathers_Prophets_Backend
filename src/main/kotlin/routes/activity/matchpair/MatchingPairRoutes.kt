@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.routes
+package com.fathersprophets.backend.routes.activity.matchpair
 
 import com.fathersprophets.backend.models.matchingpair.CreateMatchingPairRequest
 import com.fathersprophets.backend.models.matchingpair.UpdateMatchingPairRequest

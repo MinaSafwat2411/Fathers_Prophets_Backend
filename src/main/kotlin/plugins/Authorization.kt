@@ -2,11 +2,9 @@ package com.fathersprophets.backend.plugins
 
 import com.fathersprophets.backend.exceptions.ForbiddenException
 import com.fathersprophets.backend.exceptions.userReviewed
-import com.fathersprophets.backend.utils.Localization
 import com.fathersprophets.backend.exceptions.userRole
+import com.fathersprophets.backend.utils.Localization
 import io.ktor.server.application.*
-import io.ktor.server.auth.jwt.JWTPrincipal
-import io.ktor.server.auth.principal
 
 fun ApplicationCall.requireRole(vararg roles: String) {
 

@@ -20,35 +20,24 @@ class EscapeEgyptRepository(
         )
     }
 
-    override fun getEscapeEgyptById(id: Int, lang: String): ApiResponse<EscapeEgyptResponse> {
-        val item = dao.findById(id)
-        return ApiResponse(
-            success = true,
-            data = item?.convertToResponse(),
-            message = Localization.get("escape_egypt_retrieved_successfully", lang)
-        )
-    }
-
-    override fun createEscapeEgypt(request: CreateEscapeEgyptRequest, lang: String): ApiResponse<Int> {
-        val id = dao.create(request.convertToDto())
-
-        if (id == 0) throw IllegalArgumentException(Localization.get("escape_egypt_creation_failed", lang))
+    override fun createEscapeEgypt(request: CreateEscapeEgyptRequest, lang: String): ApiResponse<EscapeEgyptResponse> {
+        val created = dao.create(request.convertToDto())
+            ?: throw IllegalArgumentException(Localization.get("escape_egypt_creation_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = created.convertToResponse(),
             message = Localization.get("escape_egypt_created_successfully", lang)
         )
     }
 
-    override fun updateEscapeEgypt(id: Int, request: UpdateEscapeEgyptRequest, lang: String): ApiResponse<Nothing> {
+    override fun updateEscapeEgypt(id: Int, request: UpdateEscapeEgyptRequest, lang: String): ApiResponse<EscapeEgyptResponse> {
         val updated = dao.update(request.convertToDto(id))
-
-        if (!updated) throw IllegalArgumentException(Localization.get("escape_egypt_not_found", lang))
+            ?: throw IllegalArgumentException(Localization.get("escape_egypt_update_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = null,
+            data = updated.convertToResponse(),
             message = Localization.get("escape_egypt_updated_successfully", lang)
         )
     }

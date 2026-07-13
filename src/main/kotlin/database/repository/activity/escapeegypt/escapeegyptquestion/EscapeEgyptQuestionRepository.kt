@@ -38,26 +38,25 @@ class EscapeEgyptQuestionRepository(
         )
     }
 
-    override fun createQuestion(request: CreateEscapeEgyptQuestionRequest, lang: String): ApiResponse<Int> {
+    override fun createQuestion(request: CreateEscapeEgyptQuestionRequest, lang: String): ApiResponse<EscapeEgyptQuestionResponse> {
 
-        val id = dao.create(request.convertToDto())
-
-        if (id == 0) throw IllegalArgumentException(Localization.get("escape_egypt_question_creation_failed", lang))
+        val created = dao.create(request.convertToDto())
+            ?: throw IllegalArgumentException(Localization.get("escape_egypt_question_creation_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = created.convertToResponse(),
             message = Localization.get("escape_egypt_question_created_successfully", lang)
         )
     }
 
-    override fun updateQuestion(id: Int, request: UpdateEscapeEgyptQuestionRequest, lang: String): ApiResponse<Nothing> {
+    override fun updateQuestion(id: Int, request: UpdateEscapeEgyptQuestionRequest, lang: String): ApiResponse<EscapeEgyptQuestionResponse> {
         val  update = dao.update(request.convertToDto(id))
+            ?: throw IllegalArgumentException(Localization.get("escape_egypt_question_update_failed", lang))
 
-        if (!update) throw IllegalArgumentException(Localization.get("escape_egypt_question_not_found", lang))
         return ApiResponse(
             success = true,
-            data = null,
+            data = update.convertToResponse(),
             message = Localization.get("escape_egypt_question_updated_successfully", lang)
         )
     }

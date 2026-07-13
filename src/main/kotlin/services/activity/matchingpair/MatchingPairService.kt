@@ -21,7 +21,7 @@ class MatchingPairService(
         return repository.getPairById(id, lang)
     }
 
-    override fun createPair(request: CreateMatchingPairRequest, lang: String): ApiResponse<Int> {
+    override fun createPair(request: CreateMatchingPairRequest, lang: String): ApiResponse<MatchingPairResponse> {
         validateRequired(
             request.personId to "personId",
             request.personName to "personName",
@@ -31,7 +31,7 @@ class MatchingPairService(
         return repository.createPair(request, lang)
     }
 
-    override fun updatePair(id: Int?, request: UpdateMatchingPairRequest, lang: String): ApiResponse<Nothing> {
+    override fun updatePair(id: Int?, request: UpdateMatchingPairRequest, lang: String): ApiResponse<MatchingPairResponse> {
         if (id == null) throw IllegalArgumentException(Localization.get("matching_pair_id_required", lang))
         validateRequired(
             request.personId to "personId",

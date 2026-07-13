@@ -1,15 +1,15 @@
 package com.fathersprophets.backend.plugins
 
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.routes.anonymousChatRoutes
-import com.fathersprophets.backend.routes.anonymousChatMessageRoutes
+import com.fathersprophets.backend.routes.chat.anonymousChatRoutes
+import com.fathersprophets.backend.routes.chat.anonymousChatMessageRoutes
 import com.fathersprophets.backend.routes.guessPersonAnswerRoutes
 import com.fathersprophets.backend.routes.guessPersonQuestionRoutes
-import com.fathersprophets.backend.routes.matchingPairRoutes
-import com.fathersprophets.backend.routes.matchingPairAnswerRoutes
-import com.fathersprophets.backend.routes.escapeEgyptRoutes
-import com.fathersprophets.backend.routes.escapeEgyptQuestionRoutes
-import com.fathersprophets.backend.routes.escapeEgyptAnswerRoutes
+import com.fathersprophets.backend.routes.activity.matchpair.matchingPairRoutes
+import com.fathersprophets.backend.routes.activity.matchpair.matchingPairAnswerRoutes
+import com.fathersprophets.backend.routes.activity.escapeegypt.escapeEgyptRoutes
+import com.fathersprophets.backend.routes.activity.escapeegypt.escapeEgyptQuestionRoutes
+import com.fathersprophets.backend.routes.activity.escapeegypt.escapeEgyptAnswerRoutes
 import com.fathersprophets.backend.routes.timelineRoutes
 import com.fathersprophets.backend.routes.timelineAnswerRoutes
 import com.fathersprophets.backend.routes.quizRoutes

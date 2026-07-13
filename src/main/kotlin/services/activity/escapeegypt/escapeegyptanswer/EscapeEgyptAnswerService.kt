@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.services.escapeegyptanswer
+package com.fathersprophets.backend.services.activity.escapeegypt.escapeegyptanswer
 
 import com.fathersprophets.backend.database.repository.activity.escapeegypt.escapeegyptanswer.IEscapeEgyptAnswerRepository
 import com.fathersprophets.backend.models.ApiResponse
@@ -6,7 +6,6 @@ import com.fathersprophets.backend.models.escapeegyptanswer.CreateEscapeEgyptAns
 import com.fathersprophets.backend.models.escapeegyptanswer.EscapeEgyptAnswerResponse
 import com.fathersprophets.backend.models.escapeegyptanswer.UpdateEscapeEgyptAnswerRequest
 import com.fathersprophets.backend.models.escapeegyptanswer.UpdateEscapeEgyptAnswerStatusRequest
-import com.fathersprophets.backend.services.activity.escapeegypt.escapeegyptanswer.IEscapeEgyptAnswerService
 import com.fathersprophets.backend.utils.Localization
 import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
 
@@ -18,11 +17,6 @@ class EscapeEgyptAnswerService(
         return repository.getAllAnswers(lang)
     }
 
-    override fun getAnswerById(id: Int?, lang: String): ApiResponse<EscapeEgyptAnswerResponse> {
-        if (id == null) throw IllegalArgumentException(Localization.get("escape_egypt_answer_id_required", lang))
-        return repository.getAnswerById(id, lang)
-    }
-
     override fun getAnswersByEscapeEgyptId(
         escapeEgyptId: Int?,
         lang: String
@@ -31,17 +25,17 @@ class EscapeEgyptAnswerService(
         return repository.getAnswersByEscapeEgyptId(escapeEgyptId, lang)
     }
 
-    override fun getAnswersByQuestionId(questionId: Int?, lang: String): ApiResponse<List<EscapeEgyptAnswerResponse>> {
-        if (questionId == null) throw IllegalArgumentException(Localization.get("question_id_required", lang))
-        return repository.getAnswersByQuestionId(questionId, lang)
-    }
-
-    override fun getAnswersByUserId(userId: Int?, lang: String): ApiResponse<List<EscapeEgyptAnswerResponse>> {
+    override fun getAnswersByUserIdAndEscapeEgyptId(
+        userId: Int?,
+        escapeEgyptId: Int?,
+        lang: String
+    ): ApiResponse<List<EscapeEgyptAnswerResponse>> {
         if (userId == null) throw IllegalArgumentException(Localization.get("user_id_required", lang))
-        return repository.getAnswersByUserId(userId, lang)
+        if (escapeEgyptId == null) throw IllegalArgumentException(Localization.get("escape_egypt_id_required", lang))
+        return repository.getAnswersByUserIdAndEscapeEgyptId(userId, escapeEgyptId, lang)
     }
 
-    override fun createAnswer(request: CreateEscapeEgyptAnswerRequest, lang: String): ApiResponse<Int> {
+    override fun createAnswer(request: CreateEscapeEgyptAnswerRequest, lang: String): ApiResponse<EscapeEgyptAnswerResponse> {
         validateRequired(
             request.escapeEgyptId to "escapeEgyptId",
             request.escapeQuestionId to "escapeQuestionId",
@@ -52,7 +46,7 @@ class EscapeEgyptAnswerService(
         return repository.createAnswer(request, lang)
     }
 
-    override fun updateAnswer(id: Int?, request: UpdateEscapeEgyptAnswerRequest, lang: String): ApiResponse<Nothing> {
+    override fun updateAnswer(id: Int?, request: UpdateEscapeEgyptAnswerRequest, lang: String): ApiResponse<EscapeEgyptAnswerResponse> {
         if (id == null) throw IllegalArgumentException(Localization.get("escape_egypt_answer_id_required", lang))
         validateRequired(
             request.escapeEgyptId to "escapeEgyptId",
@@ -68,7 +62,7 @@ class EscapeEgyptAnswerService(
         id: Int?,
         request: UpdateEscapeEgyptAnswerStatusRequest,
         lang: String
-    ): ApiResponse<Nothing> {
+    ): ApiResponse<EscapeEgyptAnswerResponse> {
         if (id == null) throw IllegalArgumentException(Localization.get("escape_egypt_answer_id_required", lang))
         validateRequired(request.status to "status", lang = lang)
         return repository.updateAnswerStatus(id, request, lang)

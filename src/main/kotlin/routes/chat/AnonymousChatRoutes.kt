@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.routes
+package com.fathersprophets.backend.routes.chat
 
 import com.fathersprophets.backend.models.anonymouschat.CreateAnonymousChatRequest
 import com.fathersprophets.backend.models.anonymouschat.UpdateAnonymousChatRequest

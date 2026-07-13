@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.routes
+package com.fathersprophets.backend.routes.activity.escapeegypt
 
 import com.fathersprophets.backend.models.escapeegyptquestion.CreateEscapeEgyptQuestionRequest
 import com.fathersprophets.backend.models.escapeegyptquestion.UpdateEscapeEgyptQuestionRequest
@@ -12,6 +12,7 @@ fun Route.escapeEgyptQuestionRoutes(service: IEscapeEgyptQuestionService) {
     route("/escape-egypt-questions") {
 
         get {
+            call.requireRole("admin", "superadmin", "games")
             val lang = call.request.headers["Accept-Language"] ?: "en"
             call.respond(service.getAllQuestions(lang))
         }

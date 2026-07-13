@@ -20,31 +20,29 @@ class EscapeEgyptAnswerRepository(
         val answers = answerDao.findAll()
         return ApiResponse(
             success = true,
-            data = answers.map { it.convertToResponse() },
+            data = answers.map { it.convertToResponse().copy(correctAnswer = questionDao.findById(it.escapeQuestionId)?.correctAnswer ?: "") },
             message = Localization.get("escape_egypt_answers_retrieved_successfully", lang)
         )
     }
 
-    override fun getAnswerById(id: Int, lang: String): ApiResponse<EscapeEgyptAnswerResponse> {
-        val answer = answerDao.findById(id)
-        return ApiResponse(
-            success = true,
-            data = answer?.convertToResponse(),
-            message = Localization.get("escape_egypt_answer_retrieved_successfully", lang)
-        )
-    }
 
     override fun getAnswersByEscapeEgyptId(escapeEgyptId: Int, lang: String): ApiResponse<List<EscapeEgyptAnswerResponse>> {
         val answers = answerDao.findByEscapeEgyptId(escapeEgyptId)
         return ApiResponse(
             success = true,
-            data = answers.map { it.convertToResponse() },
+            data = answers.map { it.convertToResponse().copy(correctAnswer = questionDao.findById(it.escapeQuestionId)?.correctAnswer ?: "") },
             message = Localization.get("escape_egypt_answers_retrieved_successfully", lang)
         )
     }
 
-    override fun getAnswersByQuestionId(questionId: Int, lang: String): ApiResponse<List<EscapeEgyptAnswerResponse>> {
-        val answers = answerDao.findByQuestionId(questionId)
+    override fun getAnswersByUserIdAndEscapeEgyptId(
+        userId: Int,
+        escapeEgyptId: Int,
+        lang: String
+    ): ApiResponse<List<EscapeEgyptAnswerResponse>> {
+
+        val answers = answerDao.findByUserIdAndEscapeEgyptId(userIdToDto(userId, escapeEgyptId))
+
         return ApiResponse(
             success = true,
             data = answers.map { it.convertToResponse() },
@@ -52,78 +50,37 @@ class EscapeEgyptAnswerRepository(
         )
     }
 
-    override fun getAnswersByUserId(userId: Int, lang: String): ApiResponse<List<EscapeEgyptAnswerResponse>> {
-        val answers = answerDao.findByUserId(userId)
-        return ApiResponse(
-            success = true,
-            data = answers.map { it.convertToResponse() },
-            message = Localization.get("escape_egypt_answers_retrieved_successfully", lang)
-        )
-    }
-
-    override fun createAnswer(request: CreateEscapeEgyptAnswerRequest, lang: String): ApiResponse<Int> {
-
-        val id = answerDao.create(request.convertToDto())
-
-        if (id == 0) throw IllegalArgumentException(Localization.get("escape_egypt_answer_creation_failed", lang))
-
-        val question = questionDao.findById(request.escapeQuestionId)
-            ?: throw IllegalArgumentException(Localization.get("escape_egypt_question_not_found", lang))
-
-        val status = gradeAnswer(request.answer, question.correctAnswer)
-
-        answerDao.updateStatus(
-            EscapeEgyptAnswerDto(
-                id = id,
-                escapeEgyptId = request.escapeEgyptId,
-                escapeQuestionId = request.escapeQuestionId,
-                userId = request.userId,
-                answer = request.answer,
-                status = status
-            )
-        )
+    override fun createAnswer(request: CreateEscapeEgyptAnswerRequest, lang: String): ApiResponse<EscapeEgyptAnswerResponse> {
+        val created = answerDao.create(request.convertToDto())
+            ?: throw IllegalArgumentException(Localization.get("escape_egypt_answer_creation_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = created.convertToResponse(),
             message = Localization.get("escape_egypt_answer_created_successfully", lang)
         )
     }
 
-    override fun updateAnswer(id: Int, request: UpdateEscapeEgyptAnswerRequest, lang: String): ApiResponse<Nothing> {
-        val question = questionDao.findById(request.escapeQuestionId)
-            ?: throw IllegalArgumentException(Localization.get("escape_egypt_question_not_found", lang))
+    override fun updateAnswer(id: Int, request: UpdateEscapeEgyptAnswerRequest, lang: String): ApiResponse<EscapeEgyptAnswerResponse> {
 
-        val status = gradeAnswer(request.answer, question.correctAnswer)
-
-        val updated = answerDao.update(
-            EscapeEgyptAnswerDto(
-                id = id,
-                escapeEgyptId = request.escapeEgyptId,
-                escapeQuestionId = request.escapeQuestionId,
-                userId = request.userId,
-                answer = request.answer,
-                status = status
-            )
-        )
-        if (!updated) throw IllegalArgumentException(Localization.get("escape_egypt_answer_not_found", lang))
-
+        val updated = answerDao.update(request.convertToDto(id))
+            ?: throw IllegalArgumentException(Localization.get("escape_egypt_answer_update_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = null,
+            data = updated.convertToResponse(),
             message = Localization.get("escape_egypt_answer_updated_successfully", lang)
         )
     }
 
-    override fun updateAnswerStatus(id: Int, request: UpdateEscapeEgyptAnswerStatusRequest, lang: String): ApiResponse<Nothing> {
-        val updated = answerDao.updateStatus(idToDto(id, AnswerStatus.valueOf(request.status)))
+    override fun updateAnswerStatus(id: Int, request: UpdateEscapeEgyptAnswerStatusRequest, lang: String): ApiResponse<EscapeEgyptAnswerResponse> {
 
-        if (!updated) throw IllegalArgumentException(Localization.get("escape_egypt_answer_not_found", lang))
+        val updated = answerDao.updateStatus(idToDto(id, AnswerStatus.valueOf(request.status)))
+            ?: throw IllegalArgumentException(Localization.get("escape_egypt_answer_update_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = null,
+            data = updated.convertToResponse(),
             message = Localization.get("escape_egypt_answer_status_updated_successfully", lang)
         )
     }
@@ -140,8 +97,14 @@ class EscapeEgyptAnswerRepository(
         )
     }
 
-    private fun gradeAnswer(answer: String, correctAnswer: String) =
-        if (answer.trim().equals(correctAnswer.trim(), ignoreCase = true)) AnswerStatus.IS_TRUE else AnswerStatus.IS_FALSE
+    private fun userIdToDto(userId: Int, escapeEgyptId: Int) = EscapeEgyptAnswerDto(
+        id = 0,
+        escapeEgyptId = escapeEgyptId,
+        escapeQuestionId = 0,
+        userId = userId,
+        answer = "",
+        status = AnswerStatus.TEACHER_STILL_NOT_CORRECTED
+    )
 
     private fun idToDto(id: Int, status: AnswerStatus) = EscapeEgyptAnswerDto(
         id = id,
