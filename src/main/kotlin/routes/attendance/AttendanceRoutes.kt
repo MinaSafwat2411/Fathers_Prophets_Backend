@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.routes
+package com.fathersprophets.backend.routes.attendance
 
 import com.fathersprophets.backend.models.attendance.AddAttendanceRequest
 import com.fathersprophets.backend.models.attendance.UpdateAttendanceRequest

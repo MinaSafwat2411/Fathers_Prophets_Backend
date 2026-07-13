@@ -4,8 +4,10 @@ import com.fathersprophets.backend.database.tables.chat.AnonymousChatMessagesTab
 import com.fathersprophets.backend.models.dto.AnonymousChatMessageDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.or
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
@@ -33,8 +35,9 @@ class AnonymousChatMessageDao {
             .singleOrNull()?.let { rowToDto(it) }
     }
 
-    fun findByChatId(chatId: Int) = transaction {
-        AnonymousChatMessagesTable.selectAll().where { AnonymousChatMessagesTable.chatId eq chatId }
+    fun findByChatId(chatId: Int,userId: Int) = transaction {
+        AnonymousChatMessagesTable.selectAll()
+            .where { AnonymousChatMessagesTable.chatId eq chatId and ((AnonymousChatMessagesTable.memberId eq userId) or (AnonymousChatMessagesTable.servantId eq userId)) }
             .orderBy(AnonymousChatMessagesTable.createdAt)
             .map { rowToDto(it) }
     }

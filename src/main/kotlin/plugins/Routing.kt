@@ -17,7 +17,7 @@ import com.fathersprophets.backend.routes.quizAnswerRoutes
 import com.fathersprophets.backend.routes.userProgressQuizRoutes
 import com.fathersprophets.backend.routes.quizDayRoutes
 import com.fathersprophets.backend.routes.quizDayQuestionRoutes
-import com.fathersprophets.backend.routes.attendanceRoutes
+import com.fathersprophets.backend.routes.attendance.attendanceRoutes
 import com.fathersprophets.backend.routes.authRoutes
 import com.fathersprophets.backend.routes.classMemberRoutes
 import com.fathersprophets.backend.routes.classRoutes
@@ -35,7 +35,7 @@ import com.fathersprophets.backend.routes.personStoryQuestionRoutes
 import com.fathersprophets.backend.routes.personStoryAnswerRoutes
 import com.fathersprophets.backend.routes.personRoutes
 import com.fathersprophets.backend.routes.profileRoutes
-import com.fathersprophets.backend.routes.sessionRoutes
+import com.fathersprophets.backend.routes.attendance.sessionRoutes
 import com.fathersprophets.backend.routes.settingRoutes
 import com.fathersprophets.backend.routes.superEventRoutes
 import com.fathersprophets.backend.routes.superEventBookingRoutes

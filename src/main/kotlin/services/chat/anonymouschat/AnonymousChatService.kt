@@ -16,12 +16,7 @@ class AnonymousChatService(
         return repository.getAllAnonymousChats(lang)
     }
 
-    override fun getAnonymousChatById(id: Int?, lang: String): ApiResponse<AnonymousChatResponse> {
-        if (id == null) throw IllegalArgumentException(Localization.get("anonymous_chat_id_required", lang))
-        return repository.getAnonymousChatById(id, lang)
-    }
-
-    override fun createAnonymousChat(request: CreateAnonymousChatRequest, lang: String): ApiResponse<Int> {
+    override fun createAnonymousChat(request: CreateAnonymousChatRequest, lang: String): ApiResponse<AnonymousChatResponse> {
         validateRequired(
             request.memberId to "memberId",
             request.servantId to "servantId",
@@ -34,27 +29,29 @@ class AnonymousChatService(
         id: Int?,
         request: UpdateAnonymousChatRequest,
         lang: String
-    ): ApiResponse<Nothing> {
+    ): ApiResponse<AnonymousChatResponse> {
         if (id == null) throw IllegalArgumentException(Localization.get("anonymous_chat_id_required", lang))
         return repository.updateAnonymousChat(id, request, lang)
     }
 
-    override fun deleteAnonymousChat(id: Int?, lang: String): ApiResponse<Nothing> {
+    override fun deleteAnonymousChat(id: Int?, lang: String): ApiResponse<AnonymousChatResponse> {
         if (id == null) throw IllegalArgumentException(Localization.get("anonymous_chat_id_required", lang))
         return repository.deleteAnonymousChat(id, lang)
     }
 
     override fun getMemberChat(
-        memberId: Int,
+        memberId: Int?,
         lang: String
     ): ApiResponse<List<AnonymousChatResponse>> {
+        if (memberId == null) throw IllegalArgumentException(Localization.get("member_id_required", lang))
         return repository.getMemberChat(memberId, lang)
     }
 
     override fun getServantChat(
-        servantId: Int,
+        servantId: Int?,
         lang: String
     ): ApiResponse<List<AnonymousChatResponse>> {
+        if (servantId == null) throw IllegalArgumentException(Localization.get("servant_id_required", lang))
         return repository.getServantChat(servantId, lang)
     }
 }

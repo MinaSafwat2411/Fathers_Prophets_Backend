@@ -25,17 +25,8 @@ class AnonymousChatMessageRepository(
         )
     }
 
-    override fun getMessageById(id: Int, lang: String): ApiResponse<AnonymousChatMessageResponse> {
-        val message = messageDao.findById(id)
-        return ApiResponse(
-            success = true,
-            data = message?.convertToResponse(),
-            message = Localization.get("anonymous_chat_message_retrieved_successfully", lang)
-        )
-    }
-
-    override fun getMessagesByChatId(chatId: Int, lang: String): ApiResponse<List<AnonymousChatMessageResponse>> {
-        val messages = messageDao.findByChatId(chatId)
+    override fun getMessagesByChatId(chatId: Int, userId : Int, lang: String): ApiResponse<List<AnonymousChatMessageResponse>> {
+        val messages = messageDao.findByChatId(chatId,userId)
         return ApiResponse(
             success = true,
             data = messages.map { it.convertToResponse() },
@@ -43,11 +34,13 @@ class AnonymousChatMessageRepository(
         )
     }
 
-    override fun createMessage(request: CreateAnonymousChatMessageRequest, lang: String): ApiResponse<Int> {
+    override fun createMessage(
+        request: CreateAnonymousChatMessageRequest,
+        lang: String
+    ): ApiResponse<AnonymousChatMessageResponse> {
 
-        val id = messageDao.create(request.toAnonymousChatMessageDto())
-
-        if (id == 0) throw IllegalStateException(Localization.get("anonymous_chat_message_creation_failed", lang))
+        val created = messageDao.create(request.toAnonymousChatMessageDto())
+            ?: throw IllegalStateException(Localization.get("anonymous_chat_message_creation_failed", lang))
 
         val member = userDao.findById(request.memberId ?: 0)
             ?: throw IllegalArgumentException(Localization.get("member_not_found", lang))
@@ -61,7 +54,7 @@ class AnonymousChatMessageRepository(
 
         val data = mapOf(
             "type" to "chat_message",
-            "id" to id.toString(),
+            "id" to created.toString(),
             "chatId" to request.chatId.toString(),
             "memberId" to request.memberId.toString(),
             "servantId" to request.servantId.toString(),
@@ -76,7 +69,7 @@ class AnonymousChatMessageRepository(
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = created.convertToResponse(),
             message = Localization.get("anonymous_chat_message_created_successfully", lang)
         )
     }
@@ -85,14 +78,13 @@ class AnonymousChatMessageRepository(
         id: Int,
         request: UpdateAnonymousChatMessageRequest,
         lang: String
-    ): ApiResponse<Nothing> {
+    ): ApiResponse<AnonymousChatMessageResponse> {
         val updated = messageDao.update(request.toAnonymousChatMessageDto(id))
-
-        if (!updated) throw IllegalStateException(Localization.get("anonymous_chat_message_update_failed", lang))
+            ?: throw IllegalStateException(Localization.get("anonymous_chat_message_update_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = null,
+            data = updated.convertToResponse(),
             message = Localization.get("anonymous_chat_message_updated_successfully", lang)
         )
     }

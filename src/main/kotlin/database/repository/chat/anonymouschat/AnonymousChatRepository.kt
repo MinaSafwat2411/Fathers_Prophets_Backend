@@ -5,7 +5,6 @@ import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.anonymouschat.AnonymousChatResponse
 import com.fathersprophets.backend.models.anonymouschat.CreateAnonymousChatRequest
 import com.fathersprophets.backend.models.anonymouschat.UpdateAnonymousChatRequest
-import com.fathersprophets.backend.models.dto.AnonymousChatDto
 import com.fathersprophets.backend.utils.Localization
 
 class AnonymousChatRepository(
@@ -21,42 +20,31 @@ class AnonymousChatRepository(
         )
     }
 
-    override fun getAnonymousChatById(id: Int, lang: String): ApiResponse<AnonymousChatResponse> {
-        val chat = dao.findById(id)
-        return ApiResponse(
-            success = true,
-            data = chat?.convertToResponse(),
-            message = Localization.get("anonymous_chat_retrieved_successfully", lang)
-        )
-    }
+    override fun createAnonymousChat(request: CreateAnonymousChatRequest, lang: String): ApiResponse<AnonymousChatResponse> {
 
-    override fun createAnonymousChat(request: CreateAnonymousChatRequest, lang: String): ApiResponse<Int> {
-
-        val id = dao.create(request.toAnonymousChatDto())
-
-        if (id == 0) throw IllegalStateException(Localization.get("anonymous_chat_creation_failed", lang))
+        val created = dao.create(request.toAnonymousChatDto())
+            ?: throw IllegalStateException(Localization.get("anonymous_chat_creation_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = created.convertToResponse(),
             message = Localization.get("anonymous_chat_created_successfully", lang)
         )
     }
 
-    override fun updateAnonymousChat(id: Int, request: UpdateAnonymousChatRequest, lang: String): ApiResponse<Nothing> {
+    override fun updateAnonymousChat(id: Int, request: UpdateAnonymousChatRequest, lang: String): ApiResponse<AnonymousChatResponse> {
 
         val  updated = dao.update(request.toAnonymousChatDto(id))
-
-        if (!updated) throw IllegalStateException(Localization.get("anonymous_chat_update_failed", lang))
+            ?: throw IllegalStateException(Localization.get("anonymous_chat_update_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = null,
+            data = updated.convertToResponse(),
             message = Localization.get("anonymous_chat_updated_successfully", lang)
         )
     }
 
-    override fun deleteAnonymousChat(id: Int, lang: String): ApiResponse<Nothing> {
+    override fun deleteAnonymousChat(id: Int, lang: String): ApiResponse<AnonymousChatResponse> {
         val  deleted = dao.delete(id)
 
         if (!deleted) throw IllegalStateException(Localization.get("anonymous_chat_deletion_failed", lang))

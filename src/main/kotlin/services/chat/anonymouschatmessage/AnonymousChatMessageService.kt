@@ -16,17 +16,15 @@ class AnonymousChatMessageService(
         return repository.getAllMessages(lang)
     }
 
-    override fun getMessageById(id: Int?, lang: String): ApiResponse<AnonymousChatMessageResponse> {
-        if (id == null) throw IllegalArgumentException(Localization.get("anonymous_chat_message_id_required", lang))
-        return repository.getMessageById(id, lang)
-    }
 
-    override fun getMessagesByChatId(chatId: Int?, lang: String): ApiResponse<List<AnonymousChatMessageResponse>> {
+    override fun getMessagesByChatId(chatId: Int?,userId : Int?, lang: String): ApiResponse<List<AnonymousChatMessageResponse>> {
         if (chatId == null) throw IllegalArgumentException(Localization.get("anonymous_chat_id_required", lang))
-        return repository.getMessagesByChatId(chatId, lang)
+        if (userId == null) throw IllegalArgumentException(Localization.get("user_id_required", lang))
+
+        return repository.getMessagesByChatId(chatId,userId, lang)
     }
 
-    override fun createMessage(request: CreateAnonymousChatMessageRequest, lang: String): ApiResponse<Int> {
+    override fun createMessage(request: CreateAnonymousChatMessageRequest, lang: String): ApiResponse<AnonymousChatMessageResponse> {
         validateRequired(
             request.chatId to "chatId",
             request.memberId to "memberId",
@@ -41,7 +39,7 @@ class AnonymousChatMessageService(
         id: Int?,
         request: UpdateAnonymousChatMessageRequest,
         lang: String
-    ): ApiResponse<Nothing> {
+    ): ApiResponse<AnonymousChatMessageResponse> {
         if (id == null) throw IllegalArgumentException(Localization.get("anonymous_chat_message_id_required", lang))
         return repository.updateMessage(id, request, lang)
     }
