@@ -10,7 +10,7 @@ import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
 class EventMemberService(
     private val eventMemberRepository: IEventMemberRepository
 ) : IEventMemberService {
-    override fun addEventMember(eventMember: EventMemberRequest, lang: String): ApiResponse<Int> {
+    override fun addEventMember(eventMember: EventMemberRequest, lang: String): ApiResponse<EventMemberResponse> {
         validateRequired(
             eventMember.eventId to "event_id",
             eventMember.userId to "user_id",

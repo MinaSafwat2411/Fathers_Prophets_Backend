@@ -15,34 +15,4 @@ class NotificationService(
     override fun getAllNotifications(lang: String): ApiResponse<List<NotificationResponse>> {
         return repository.getAllNotifications(lang)
     }
-
-    override fun getNotificationById(id: Int?, lang: String): ApiResponse<NotificationResponse> {
-        if (id == null) throw IllegalArgumentException(Localization.get("notification_id_required", lang))
-        return repository.getNotificationById(id, lang)
-    }
-
-    override fun getNotificationsByEventId(eventId: Int?, lang: String): ApiResponse<List<NotificationResponse>> {
-        if (eventId == null) throw IllegalArgumentException(Localization.get("event_id_required", lang))
-        return repository.getNotificationsByEventId(eventId, lang)
-    }
-
-    override fun createNotification(request: CreateNotificationRequest, lang: String): ApiResponse<Int> {
-        validateRequired(
-            request.eventId to "eventId",
-            request.type to "type",
-            request.title to "title",
-            lang = lang
-        )
-        return repository.createNotification(request, lang)
-    }
-
-    override fun updateNotification(id: Int?, request: UpdateNotificationRequest, lang: String): ApiResponse<Nothing> {
-        if (id == null) throw IllegalArgumentException(Localization.get("notification_id_required", lang))
-        return repository.updateNotification(id, request, lang)
-    }
-
-    override fun deleteNotification(id: Int?, lang: String): ApiResponse<Nothing> {
-        if (id == null) throw IllegalArgumentException(Localization.get("notification_id_required", lang))
-        return repository.deleteNotification(id, lang)
-    }
 }

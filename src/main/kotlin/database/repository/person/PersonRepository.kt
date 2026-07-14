@@ -20,17 +20,6 @@ class PersonRepository(
         )
     }
 
-    override fun getPersonById(
-        personId: Int,
-        lang: String
-    ): ApiResponse<PersonResponse> {
-        val person = personDao.getPersonById(personId)
-        return ApiResponse(
-            success = true,
-            data = person?.convertToPersonResponse(),
-            message = Localization.get("person_retrieved_successfully", lang)
-        )
-    }
 
     override fun getPersonByType(
         personType: String,
@@ -47,13 +36,12 @@ class PersonRepository(
     override fun addPerson(
         person: CreatePersonRequest,
         lang: String
-    ): ApiResponse<Int> {
-        val id = personDao.addPerson(person.toPersonDto())
-
-        if (id == 0) throw IllegalArgumentException(Localization.get("person_creation_failed", lang))
+    ): ApiResponse<PersonResponse> {
+        val created = personDao.addPerson(person.toPersonDto())
+            ?: throw IllegalArgumentException(Localization.get("person_creation_failed", lang))
         return ApiResponse(
             success = true,
-            data = id,
+            data = created.convertToPersonResponse(),
             message = Localization.get("person_created_successfully", lang)
         )
     }
@@ -62,15 +50,14 @@ class PersonRepository(
         personId: Int,
         update: UpdatePersonRequest,
         lang: String
-    ): ApiResponse<Nothing> {
+    ): ApiResponse<PersonResponse> {
 
         val updated = personDao.updatePerson(update.toPersonDto(personId))
-
-        if (!updated) throw IllegalArgumentException(Localization.get("person_update_failed", lang))
+            ?: throw IllegalArgumentException(Localization.get("person_update_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = null,
+            data = updated.convertToPersonResponse(),
             message = Localization.get("person_updated_successfully", lang)
         )
     }

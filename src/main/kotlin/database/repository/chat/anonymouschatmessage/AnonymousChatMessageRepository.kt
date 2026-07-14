@@ -54,7 +54,7 @@ class AnonymousChatMessageRepository(
 
         val data = mapOf(
             "type" to "chat_message",
-            "id" to created.toString(),
+            "id" to created.id.toString(),
             "chatId" to request.chatId.toString(),
             "memberId" to request.memberId.toString(),
             "servantId" to request.servantId.toString(),

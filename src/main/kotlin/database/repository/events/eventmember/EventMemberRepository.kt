@@ -9,14 +9,13 @@ import com.fathersprophets.backend.utils.Localization
 class EventMemberRepository(
     private val eventMemberDao: EventMemberDao,
 ) : IEventMemberRepository {
-    override fun addEventMember(eventMember: EventMemberRequest, lang: String): ApiResponse<Int> {
-        val id = eventMemberDao.addEventMember(eventMember.toEventMemberDto(0))
-
-        if (id == 0) throw IllegalArgumentException(Localization.get("event_member_creation_failed", lang))
+    override fun addEventMember(eventMember: EventMemberRequest, lang: String): ApiResponse<EventMemberResponse> {
+        val created = eventMemberDao.addEventMember(eventMember.toEventMemberDto(0))
+            ?: throw IllegalArgumentException(Localization.get("event_member_creation_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = created.toEventMemberResponse(),
             message = Localization.get("event_member_created_successfully", lang)
         )
     }

@@ -4,6 +4,7 @@ import com.fathersprophets.backend.database.dao.event.EventDao
 import com.fathersprophets.backend.database.dao.notification.NotificationDao
 import com.fathersprophets.backend.database.dao.users.UserDao
 import com.fathersprophets.backend.database.tables.event.EventType
+import com.fathersprophets.backend.database.tables.users.UserRole
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.event.CreateEventRequest
 import com.fathersprophets.backend.models.event.EventCountsResponse
@@ -27,54 +28,59 @@ class EventRepository(
         )
     }
 
-    override fun getEventById(eventId: Int, lang: String): ApiResponse<EventResponse> {
-        val event = eventDao.getEventById(eventId)
-        return ApiResponse(
-            success = true,
-            data = event?.convertToEventResponse(),
-            message = Localization.get("event_retrieved_successfully", lang)
-        )
-    }
+    override fun addEvent(event: CreateEventRequest, lang: String): ApiResponse<EventResponse> {
 
-    override fun addEvent(event: CreateEventRequest, lang: String): ApiResponse<Int> {
+        val createdEvent = eventDao.addEvent(event.convertToEventDto())
+            ?: throw IllegalArgumentException(Localization.get("event_creation_failed", lang))
 
-        val id = eventDao.addEvent(event.convertToEventDto())
-
-        if (id == 0) throw IllegalArgumentException(Localization.get("event_creation_failed", lang))
-
-        val notificationsId = notificationDao.create(event.convertToNotification(id))
-
-        if (notificationsId == 0) throw IllegalArgumentException(Localization.get("notification_creation_failed", lang))
+        val notificationsId = notificationDao.create(event.convertToNotification(createdEvent.id))
+            ?: throw IllegalArgumentException(Localization.get("notification_creation_failed", lang))
 
         firebaseMessagingService.sendToTokens(
             tokens = userDao.findAllFcmTokens(),
             title = event.type?: "",
             body = event.title ?: "",
-            data = mapOf("eventId" to id.toString())
+            data = mapOf(
+                "eventId" to createdEvent.id.toString(),
+                "notificationId" to notificationsId.toString(),
+                "type" to "event",
+                "eventType" to event.type.toString(),
+                "lang" to lang,
+                "eventTitle" to event.title.toString(),
+                "eventDateTime" to event.dateTime.toString(),
+                "eventImage" to event.image.toString()
+            )
         )
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = createdEvent.convertToEventResponse(),
             message = Localization.get("event_created_successfully", lang)
         )
     }
 
-    override fun updateEvent(eventId: Int, update: UpdateEventRequest, lang: String): ApiResponse<Nothing> {
+    override fun updateEvent(eventId: Int, update: UpdateEventRequest, lang: String): ApiResponse<EventResponse> {
 
         val  update = eventDao.updateEvent(update.convertToEventDto(eventId))
-
-        if (!update) throw IllegalArgumentException(Localization.get("event_update_failed", lang))
+            ?:throw IllegalArgumentException(Localization.get("event_update_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = null,
+            data = update.convertToEventResponse(),
             message = Localization.get("event_updated_successfully", lang)
         )
     }
 
-    override fun deleteEvent(eventId: Int, lang: String): ApiResponse<Nothing> {
-        eventDao.deleteEvent(eventId)
+    override fun deleteEvent(userRole: UserRole, eventId: Int, lang: String): ApiResponse<Nothing> {
+        val event = eventDao.getEventById(eventId)
+            ?: throw IllegalArgumentException(Localization.get("event_delete_failed", lang))
+
+        if (userRole == UserRole.admin || userRole == UserRole.superadmin ||(event.type.name == userRole.name)) {
+            eventDao.deleteEvent(eventId)
+            notificationDao.deleteByEventId(eventId)
+        } else {
+            throw IllegalArgumentException(Localization.get("access_denied", lang))
+        }
         return ApiResponse(
             success = true,
             data = null,

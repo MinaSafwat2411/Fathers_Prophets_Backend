@@ -24,7 +24,7 @@ class ClassService(
         return classRepository.getClassById(id, lang)
     }
 
-    override suspend fun createClass(createClassRequest: CreateClassRequest, lang: String): ApiResponse<Int> {
+    override suspend fun createClass(createClassRequest: CreateClassRequest, lang: String): ApiResponse<ClassResponse> {
         validateRequired(
             createClassRequest.name to "class_name",
             lang = lang
@@ -36,7 +36,7 @@ class ClassService(
         id: Int?,
         updateClassRequest: UpdateClassRequest,
         lang: String
-    ): ApiResponse<Nothing> {
+    ): ApiResponse<ClassResponse> {
 
         if (id == null) {
             throw IllegalArgumentException(Localization.get("class_id_required", lang))

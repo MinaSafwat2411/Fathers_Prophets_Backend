@@ -1,6 +1,9 @@
 package com.fathersprophets.backend.services.events
 
 import com.fathersprophets.backend.database.repository.events.IEventRepository
+import com.fathersprophets.backend.database.tables.event.EventType
+import com.fathersprophets.backend.database.tables.users.UserRole
+import com.fathersprophets.backend.exceptions.ForbiddenException
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.event.EventCountsResponse
 import com.fathersprophets.backend.models.event.CreateEventRequest
@@ -16,12 +19,7 @@ class EventService(
         return eventRepository.getAllEvents(lang)
     }
 
-    override fun getEventById(eventId: Int?, lang: String): ApiResponse<EventResponse> {
-        if (eventId == null) throw IllegalArgumentException(Localization.get("event_id_required", lang))
-        return eventRepository.getEventById(eventId,lang)
-    }
-
-    override fun addEvent(event: CreateEventRequest, lang: String): ApiResponse<Int> {
+    override fun addEvent(event: CreateEventRequest, lang: String): ApiResponse<EventResponse> {
         validateRequired(
             event.title to "title",
             event.dateTime to "date_time",
@@ -32,14 +30,15 @@ class EventService(
         return eventRepository.addEvent(event, lang)
     }
 
-    override fun updateEvent(eventId: Int?, update: UpdateEventRequest, lang: String): ApiResponse<Nothing> {
+    override fun updateEvent(eventId: Int?, update: UpdateEventRequest, lang: String): ApiResponse<EventResponse> {
         if (eventId == null) throw IllegalArgumentException(Localization.get("event_id_required", lang))
         return eventRepository.updateEvent(eventId, update, lang)
     }
 
-    override fun deleteEvent(eventId: Int?, lang: String): ApiResponse<Nothing> {
+    override fun deleteEvent(userRole: String?, eventId: Int?, lang: String): ApiResponse<Nothing> {
         if (eventId == null) throw IllegalArgumentException(Localization.get("event_id_required", lang))
-        return eventRepository.deleteEvent(eventId, lang)
+        if(userRole.isNullOrEmpty()) throw ForbiddenException(Localization.get("access_denied", lang))
+        return eventRepository.deleteEvent(UserRole.valueOf(userRole),eventId, lang)
     }
 
     override fun getEventsCount(lang: String): ApiResponse<EventCountsResponse> {
@@ -48,5 +47,13 @@ class EventService(
 
     override fun getUpcomingEvents(lang: String): ApiResponse<List<EventResponse>> {
         return eventRepository.getUpcomingEvents(lang)
+    }
+
+    override fun getEventByEventType(
+        eventType: String?,
+        lang: String
+    ): ApiResponse<List<EventResponse>> {
+        if (eventType == null) throw IllegalArgumentException(Localization.get("event_type_required", lang))
+        return eventRepository.getEventByEventType(EventType.valueOf(eventType), lang)
     }
 }

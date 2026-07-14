@@ -30,30 +30,28 @@ class ClassRepository(
         )
     }
 
-    override suspend fun createClass(createClassRequest: CreateClassRequest, lang: String): ApiResponse<Int> {
+    override suspend fun createClass(createClassRequest: CreateClassRequest, lang: String): ApiResponse<ClassResponse> {
 
-        val id = classDao.createClass(createClassRequest.toClassDto())
+        val created = classDao.createClass(createClassRequest.toClassDto())
+            ?: throw IllegalArgumentException(Localization.get("class_not_created", lang))
 
-        if (id == 0) throw IllegalArgumentException(Localization.get("class_not_created", lang))
 
-
-        return ApiResponse(success = true, data = id, message = Localization.get("class_created", lang))
+        return ApiResponse(success = true, data = created.toClassResponse(), message = Localization.get("class_created", lang))
     }
 
     override suspend fun updateClass(
         id: Int,
         updateClassRequest: UpdateClassRequest, lang: String
-    ): ApiResponse<Nothing> {
+    ): ApiResponse<ClassResponse> {
 
 
         val updated = classDao.updateClass(updateClassRequest.toClassDto(id))
-
-        if (!updated) throw IllegalArgumentException(Localization.get("class_not_updated", lang))
+            ?:throw IllegalArgumentException(Localization.get("class_not_updated", lang))
 
 
         return ApiResponse(
             success = true,
-            data = null,
+            data = updated.toClassResponse(),
             message = Localization.get("class_updated", lang)
         )
     }

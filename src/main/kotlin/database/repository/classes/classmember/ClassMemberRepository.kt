@@ -30,15 +30,14 @@ class ClassMemberRepository(
     override suspend fun addMember(
         addClassMemberRequest: AddClassMemberRequest,
         lang: String
-    ): ApiResponse<Int> {
+    ): ApiResponse<ClassMemberResponse> {
 
-        val id = classMemberDao.addMember(addClassMemberRequest.toClassMemberDto())
-
-        if (id == 0) throw IllegalArgumentException(Localization.get("can_not_add_class_member", lang))
+        val created = classMemberDao.addMember(addClassMemberRequest.toClassMemberDto())
+            ?:throw IllegalArgumentException(Localization.get("can_not_add_class_member", lang))
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = created.toClassMemberResponse(),
             message = Localization.get("class_member_added", lang)
         )
     }
@@ -47,17 +46,16 @@ class ClassMemberRepository(
         id: Int,
         updateClassMemberRequest: UpdateClassMemberRequest,
         lang: String
-    ): ApiResponse<Nothing> {
+    ): ApiResponse<ClassMemberResponse> {
 
         val updated = classMemberDao.updateMember(updateClassMemberRequest.toClassMemberDto(id))
-
-        if (!updated) throw IllegalArgumentException(Localization.get("class_member_not_updated", lang))
+            ?: throw IllegalArgumentException(Localization.get("class_member_not_updated", lang))
 
 
 
         return ApiResponse(
             success = true,
-            data = null,
+            data = updated.toClassMemberResponse(),
             message = Localization.get("class_member_updated", lang)
         )
     }

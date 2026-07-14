@@ -15,18 +15,11 @@ class PersonService(
         return personRepository.getAllPersons(lang)
     }
 
-    override fun getPersonById(
-        personId: Int?,
-        lang: String
-    ): ApiResponse<PersonResponse> {
-        if (personId == null) throw IllegalArgumentException(Localization.get("person_id_required", lang))
-        return personRepository.getPersonById(personId, lang)
-    }
 
     override fun addPerson(
         person: CreatePersonRequest,
         lang: String
-    ): ApiResponse<Int> {
+    ): ApiResponse<PersonResponse> {
         validateRequired(
             person.name to "name",
             person.type to "type",
@@ -39,7 +32,7 @@ class PersonService(
         personId: Int?,
         update: UpdatePersonRequest,
         lang: String
-    ): ApiResponse<Nothing> {
+    ): ApiResponse<PersonResponse> {
         if (personId == null) throw IllegalArgumentException(Localization.get("person_id_required", lang))
         return personRepository.updatePerson(personId, update, lang)
     }

@@ -1,9 +1,13 @@
 package com.fathersprophets.backend.routes
 
 import com.fathersprophets.backend.models.event.CreateEventRequest
+import com.fathersprophets.backend.models.event.UpdateEventRequest
 import com.fathersprophets.backend.plugins.requireAdminOrType
+import com.fathersprophets.backend.plugins.requireRole
 import com.fathersprophets.backend.services.events.IEventService
 import com.fathersprophets.backend.utils.EventBroadcaster
+import io.ktor.server.auth.jwt.JWTPrincipal
+import io.ktor.server.auth.principal
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -40,11 +44,7 @@ fun Route.eventRoutes(
                 close(CloseReason(CloseReason.Codes.PROTOCOL_ERROR, e.message ?: "Unknown error"))
             }
         }
-        get("/{id}") {
-            val id = call.parameters["id"]?.toIntOrNull()
-            val lang = call.request.header("Accept-Language") ?: "en"
-            call.respond(eventService.getEventById(id, lang))
-        }
+
         post {
             val lang = call.request.header("Accept-Language") ?: "en"
             val request = call.receive<CreateEventRequest>()
@@ -55,7 +55,7 @@ fun Route.eventRoutes(
         }
         put("/{id}") {
             val lang = call.request.header("Accept-Language") ?: "en"
-            val request = call.receive<CreateEventRequest>()
+            val request = call.receive<UpdateEventRequest>()
             call.requireAdminOrType(request.type)
             val id = call.parameters["id"]?.toIntOrNull()
             val response = eventService.updateEvent(id, request, lang)
@@ -63,11 +63,13 @@ fun Route.eventRoutes(
             call.respond(response)
         }
         delete("/{id}") {
+            call.requireRole("admin", "superadmin")
             val id = call.parameters["id"]?.toIntOrNull()
             val lang = call.request.header("Accept-Language") ?: "en"
-            val eventType = eventService.getEventById(id, lang).data?.type
-            call.requireAdminOrType(eventType)
-            val response = eventService.deleteEvent(id, lang)
+            val principal = call.principal<JWTPrincipal>()
+            val userRole = principal?.payload?.getClaim("role")?.asString()
+
+            val response = eventService.deleteEvent(userRole, id, lang)
             EventBroadcaster.broadcastEvents(eventService.getAllEvents(lang))
             call.respond(response)
         }

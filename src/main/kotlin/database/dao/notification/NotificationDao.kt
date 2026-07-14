@@ -34,12 +34,6 @@ class NotificationDao {
             .singleOrNull()?.let { rowToDto(it) }
     }
 
-    fun findByEventId(eventId: Int) = transaction {
-        NotificationsTable.selectAll().where { NotificationsTable.eventId eq eventId }
-            .orderBy(NotificationsTable.createdAt, SortOrder.DESC)
-            .map { rowToDto(it) }
-    }
-
     fun create(dto: NotificationDto) = transaction {
         NotificationsTable.insert {
             it[eventId] = dto.eventId
@@ -49,13 +43,7 @@ class NotificationDao {
         }.let { findById(it[NotificationsTable.id]) }
     }
 
-    fun update(dto: NotificationDto) = transaction {
-        NotificationsTable.update({ NotificationsTable.id eq dto.id }) {
-            it[isRead] = dto.isRead
-        }.let { findById(dto.id) }
-    }
-
-    fun delete(id: Int) = transaction {
-        NotificationsTable.deleteWhere { NotificationsTable.id eq id } > 0
+    fun deleteByEventId(eventId: Int) = transaction {
+        NotificationsTable.deleteWhere { NotificationsTable.eventId eq eventId } > 0
     }
 }

@@ -17,13 +17,6 @@ fun Route.personRoutes(personService: IPersonService) {
             call.respond(response)
         }
 
-        get("/{id}") {
-            val lang = call.request.headers["Accept-Language"] ?: "en"
-            val personId = call.parameters["id"]?.toIntOrNull()
-            val response = personService.getPersonById(personId, lang)
-            call.respond(response)
-        }
-
         post {
             call.requireRole("admin", "superadmin","games")
             val lang = call.request.headers["Accept-Language"] ?: "en"

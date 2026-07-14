@@ -21,7 +21,7 @@ class ClassMemberService(
     override suspend fun addMember(
         addClassMemberRequest: AddClassMemberRequest,
         lang: String
-    ): ApiResponse<Int> {
+    ): ApiResponse<ClassMemberResponse> {
         validateRequired(
             addClassMemberRequest.userId to "user_id",
             addClassMemberRequest.classId to "class_id",
@@ -37,7 +37,7 @@ class ClassMemberService(
         id: Int?,
         updateClassMemberRequest: UpdateClassMemberRequest,
         lang: String
-    ): ApiResponse<Nothing> {
+    ): ApiResponse<ClassMemberResponse> {
 
         if (id == null) throw IllegalArgumentException("member_id_required")
 

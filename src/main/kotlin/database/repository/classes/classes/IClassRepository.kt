@@ -8,8 +8,8 @@ import com.fathersprophets.backend.models.classes.ClassResponse
 interface IClassRepository {
     suspend fun getAllClasses(lang: String): ApiResponse<List<ClassResponse>>
     suspend fun getClassById(id: Int, lang: String): ApiResponse<ClassResponse>
-    suspend fun createClass(createClassRequest: CreateClassRequest, lang: String): ApiResponse<Int>
-    suspend fun updateClass(id: Int, updateClassRequest: UpdateClassRequest, lang: String): ApiResponse<Nothing>
+    suspend fun createClass(createClassRequest: CreateClassRequest, lang: String): ApiResponse<ClassResponse>
+    suspend fun updateClass(id: Int, updateClassRequest: UpdateClassRequest, lang: String): ApiResponse<ClassResponse>
     suspend fun deleteClass(id: Int, lang: String): ApiResponse<Nothing>
 
 }

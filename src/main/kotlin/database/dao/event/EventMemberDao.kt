@@ -26,7 +26,8 @@ class EventMemberDao {
 
 
     fun findById(eventMemberId : Int) = transaction {
-        EventMembersTable.select { EventMembersTable.id eq eventMemberId }
+        EventMembersTable.select(EventMembersTable.id eq eventMemberId)
+            .map { rowToEventMember(it) }.singleOrNull()
     }
     fun addEventMember(eventMemberDto: EventMemberDto) = transaction {
         EventMembersTable.insert {
