@@ -21,7 +21,7 @@ class TimelineService(
         return repository.getTimelineById(id, lang)
     }
 
-    override fun createTimeline(request: CreateTimelineRequest, lang: String): ApiResponse<Int> {
+    override fun createTimeline(request: CreateTimelineRequest, lang: String): ApiResponse<TimelineResponse> {
         validateRequired(
             request.event1 to "event1",
             request.event2 to "event2",
@@ -33,7 +33,7 @@ class TimelineService(
         return repository.createTimeline(request, lang)
     }
 
-    override fun updateTimeline(id: Int?, request: UpdateTimelineRequest, lang: String): ApiResponse<Nothing> {
+    override fun updateTimeline(id: Int?, request: UpdateTimelineRequest, lang: String): ApiResponse<TimelineResponse> {
         if (id == null) throw IllegalArgumentException(Localization.get("timeline_id_required", lang))
         validateRequired(
             request.event1 to "event1",

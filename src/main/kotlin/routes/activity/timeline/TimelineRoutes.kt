@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.routes
+package com.fathersprophets.backend.routes.activity.timeline
 
 import com.fathersprophets.backend.models.timeline.CreateTimelineRequest
 import com.fathersprophets.backend.models.timeline.UpdateTimelineRequest

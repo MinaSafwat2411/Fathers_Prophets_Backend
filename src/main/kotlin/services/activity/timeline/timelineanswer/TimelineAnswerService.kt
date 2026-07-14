@@ -4,8 +4,6 @@ import com.fathersprophets.backend.database.repository.activity.timeline.timelin
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.timelineanswer.CreateTimelineAnswerRequest
 import com.fathersprophets.backend.models.timelineanswer.TimelineAnswerResponse
-import com.fathersprophets.backend.models.timelineanswer.UpdateTimelineAnswerRequest
-import com.fathersprophets.backend.models.timelineanswer.UpdateTimelineAnswerStatusRequest
 import com.fathersprophets.backend.utils.Localization
 import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
 
@@ -17,22 +15,13 @@ class TimelineAnswerService(
         return repository.getAllAnswers(lang)
     }
 
-    override fun getAnswerById(id: Int?, lang: String): ApiResponse<TimelineAnswerResponse> {
-        if (id == null) throw IllegalArgumentException(Localization.get("timeline_answer_id_required", lang))
-        return repository.getAnswerById(id, lang)
-    }
-
-    override fun getAnswersByTimelineId(timelineId: Int?, lang: String): ApiResponse<List<TimelineAnswerResponse>> {
-        if (timelineId == null) throw IllegalArgumentException(Localization.get("timeline_id_required", lang))
-        return repository.getAnswersByTimelineId(timelineId, lang)
-    }
 
     override fun getAnswersByUserId(userId: Int?, lang: String): ApiResponse<List<TimelineAnswerResponse>> {
         if (userId == null) throw IllegalArgumentException(Localization.get("user_id_required", lang))
         return repository.getAnswersByUserId(userId, lang)
     }
 
-    override fun createAnswer(request: CreateTimelineAnswerRequest, lang: String): ApiResponse<Int> {
+    override fun createAnswer(request: CreateTimelineAnswerRequest, lang: String): ApiResponse<TimelineAnswerResponse> {
         validateRequired(
             request.timelineId to "timelineId",
             request.userId to "userId",
@@ -40,23 +29,6 @@ class TimelineAnswerService(
         )
         if (request.order.isEmpty()) throw IllegalArgumentException(Localization.get("timeline_answer_order_required", lang))
         return repository.createAnswer(request, lang)
-    }
-
-    override fun updateAnswer(id: Int?, request: UpdateTimelineAnswerRequest, lang: String): ApiResponse<Nothing> {
-        if (id == null) throw IllegalArgumentException(Localization.get("timeline_answer_id_required", lang))
-        validateRequired(
-            request.timelineId to "timelineId",
-            request.userId to "userId",
-            lang = lang
-        )
-        if (request.order.isEmpty()) throw IllegalArgumentException(Localization.get("timeline_answer_order_required", lang))
-        return repository.updateAnswer(id, request, lang)
-    }
-
-    override fun updateAnswerStatus(id: Int?, request: UpdateTimelineAnswerStatusRequest, lang: String): ApiResponse<Nothing> {
-        if (id == null) throw IllegalArgumentException(Localization.get("timeline_answer_id_required", lang))
-        validateRequired(request.status to "status", lang = lang)
-        return repository.updateAnswerStatus(id, request, lang)
     }
 
     override fun deleteAnswer(id: Int?, lang: String): ApiResponse<Nothing> {

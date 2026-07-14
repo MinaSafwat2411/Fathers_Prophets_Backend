@@ -10,8 +10,8 @@ import com.fathersprophets.backend.routes.activity.matchpair.matchingPairAnswerR
 import com.fathersprophets.backend.routes.activity.escapeegypt.escapeEgyptRoutes
 import com.fathersprophets.backend.routes.activity.escapeegypt.escapeEgyptQuestionRoutes
 import com.fathersprophets.backend.routes.activity.escapeegypt.escapeEgyptAnswerRoutes
-import com.fathersprophets.backend.routes.timelineRoutes
-import com.fathersprophets.backend.routes.timelineAnswerRoutes
+import com.fathersprophets.backend.routes.activity.timeline.timelineRoutes
+import com.fathersprophets.backend.routes.activity.timeline.timelineAnswerRoutes
 import com.fathersprophets.backend.routes.quizRoutes
 import com.fathersprophets.backend.routes.quizAnswerRoutes
 import com.fathersprophets.backend.routes.userProgressQuizRoutes

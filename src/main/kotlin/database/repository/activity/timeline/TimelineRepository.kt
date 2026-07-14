@@ -29,27 +29,25 @@ class TimelineRepository(
         )
     }
 
-    override fun createTimeline(request: CreateTimelineRequest, lang: String): ApiResponse<Int> {
-        val id = dao.create(request.convertToDto())
-
-        if (id == 0) throw IllegalArgumentException(Localization.get("timeline_creation_failed", lang))
+    override fun createTimeline(request: CreateTimelineRequest, lang: String): ApiResponse<TimelineResponse> {
+        val create = dao.create(request.convertToDto())
+            ?: throw IllegalArgumentException(Localization.get("timeline_creation_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = create.convertToResponse(),
             message = Localization.get("timeline_created_successfully", lang)
         )
     }
 
-    override fun updateTimeline(id: Int, request: UpdateTimelineRequest, lang: String): ApiResponse<Nothing> {
+    override fun updateTimeline(id: Int, request: UpdateTimelineRequest, lang: String): ApiResponse<TimelineResponse> {
 
         val updated = dao.update(request.convertToDto(id))
-
-        if (!updated) throw IllegalArgumentException(Localization.get("timeline_update_failed", lang))
+            ?: throw IllegalArgumentException(Localization.get("timeline_update_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = null,
+            data = updated.convertToResponse(),
             message = Localization.get("timeline_updated_successfully", lang)
         )
     }

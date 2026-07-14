@@ -24,11 +24,6 @@ class TimelineAnswerDao {
             .singleOrNull()?.let { resultRowToDto(it) }
     }
 
-    fun findByTimelineId(timelineId: Int) = transaction {
-        TimelineAnswersTable.selectAll().where { TimelineAnswersTable.timelineId eq timelineId }
-            .map { resultRowToDto(it) }
-    }
-
     fun findByUserId(userId: Int) = transaction {
         TimelineAnswersTable.selectAll().where { TimelineAnswersTable.userId eq userId }
             .map { resultRowToDto(it) }
@@ -39,21 +34,7 @@ class TimelineAnswerDao {
             it[timelineId] = dto.timelineId
             it[userId] = dto.userId
             it[status] = dto.status
-        } get TimelineAnswersTable.id
-    }
-
-    fun update(dto: TimelineAnswerDto) = transaction {
-        TimelineAnswersTable.update({ TimelineAnswersTable.id eq dto.id }) {
-            it[timelineId] = dto.timelineId
-            it[userId] = dto.userId
-            it[status] = dto.status
-        } > 0
-    }
-
-    fun updateStatus(dto: TimelineAnswerDto) = transaction {
-        TimelineAnswersTable.update({ TimelineAnswersTable.id eq dto.id }) {
-            it[status] = dto.status
-        } > 0
+        }.let { findById(it[TimelineAnswersTable.id]) }
     }
 
     fun delete(id: Int) = transaction {
