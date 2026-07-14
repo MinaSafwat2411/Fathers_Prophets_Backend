@@ -32,6 +32,42 @@ fun Route.attendanceRoutes(attendanceService: IAttendanceService) {
             call.respond(if (response.success) HttpStatusCode.OK else HttpStatusCode.BadRequest, response)
         }
 
+        webSocket("/session/{sessionId}/{classId}") {
+            call.forbidRoles("member")
+
+            try {
+                val sessionId = call.parameters["sessionId"]?.toIntOrNull()
+                val classId = call.parameters["classId"]?.toIntOrNull()
+                val lang = call.request.header("Accept-Language") ?: "en"
+
+                if (sessionId == null || classId == null) {
+                    close(CloseReason(CloseReason.Codes.PROTOCOL_ERROR, "Session ID or Class ID is required"))
+                    return@webSocket
+                }
+
+                val initialResponse = attendanceService.getAttendanceByClassIdAndSessionId(classId, sessionId, lang)
+                sendSerialized(initialResponse)
+                val job = launch {
+                    AttendanceEventBroadcaster.attendanceEvents.collectLatest { (broadcastSessionId, attendanceResponse) ->
+                        if (broadcastSessionId == sessionId) {
+                            sendSerialized(attendanceResponse)
+                        }
+                    }
+                }
+
+                for (frame in incoming) {
+                    if (frame is Frame.Close) {
+                        job.cancel()
+                        close(CloseReason(CloseReason.Codes.NORMAL, "Client disconnected"))
+                        break
+                    }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+                close(CloseReason(CloseReason.Codes.PROTOCOL_ERROR, e.message ?: "Unknown error"))
+            }
+        }
+
         webSocket("/session/{sessionId}") {
             call.forbidRoles("member")
 

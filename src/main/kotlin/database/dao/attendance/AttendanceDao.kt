@@ -4,6 +4,7 @@ import com.fathersprophets.backend.database.tables.attendance.AttendanceTable
 import com.fathersprophets.backend.models.dto.AttendanceDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
@@ -44,6 +45,10 @@ class AttendanceDao {
 
     fun getAllAttendanceBySessionId(sessionId: Int) = transaction {
         AttendanceTable.select { AttendanceTable.sessionId eq sessionId }.map { rowToAttendanceDto(it) }
+    }
+
+    fun getAllAttendanceByClassIdAndSessionId(classId: Int, sessionId: Int) = transaction {
+        AttendanceTable.select { AttendanceTable.classId eq classId and (AttendanceTable.sessionId eq sessionId) }.map { rowToAttendanceDto(it) }
     }
 
     fun addAttendance(attendanceDto: AttendanceDto) = transaction {

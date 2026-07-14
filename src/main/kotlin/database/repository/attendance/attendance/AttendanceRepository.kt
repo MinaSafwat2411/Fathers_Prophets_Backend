@@ -13,14 +13,13 @@ class AttendanceRepository(
     override fun addAttendance(
         attendance: AddAttendanceRequest,
         lang: String
-    ): ApiResponse<Int> {
-        val id = attendanceDao.addAttendance(attendance.toAttendanceDto())
-
-        if(id == 0) throw IllegalArgumentException(Localization.get("attendance_create_failed", lang))
+    ): ApiResponse<AttendanceResponse> {
+        val create = attendanceDao.addAttendance(attendance.toAttendanceDto())
+            ?: throw IllegalArgumentException(Localization.get("attendance_create_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = create.convertAttendanceResponse(),
             message = Localization.get("attendance_create_success", lang)
         )
     }
@@ -29,15 +28,14 @@ class AttendanceRepository(
         attendanceId: Int,
         updateAttendance: UpdateAttendanceRequest,
         lang: String
-    ): ApiResponse<Nothing> {
+    ): ApiResponse<AttendanceResponse> {
 
-        val isUpdated = attendanceDao.updateAttendance(updateAttendance.toAttendanceDto(attendanceId))
-
-        if(!isUpdated) throw  IllegalArgumentException(Localization.get("attendance_update_failed", lang))
+        val updated = attendanceDao.updateAttendance(updateAttendance.toAttendanceDto(attendanceId))
+            ?:throw  IllegalArgumentException(Localization.get("attendance_update_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = null,
+            data = updated.convertAttendanceResponse(),
             message = Localization.get("attendance_update_success", lang)
         )
     }
@@ -76,6 +74,20 @@ class AttendanceRepository(
         lang: String
     ): ApiResponse<List<AttendanceResponse>> {
         val list = attendanceDao.getAllAttendanceBySessionId(sessionId)
+        return ApiResponse(
+            success = true,
+            data = list.map { it.convertAttendanceResponse() },
+            message = Localization.get("attendance_retrieved_success", lang)
+        )
+    }
+
+    override fun getAttendanceByClassIdAndSessionId(
+        classId: Int,
+        sessionId: Int,
+        lang: String
+    ): ApiResponse<List<AttendanceResponse>> {
+        val list = attendanceDao.getAllAttendanceByClassIdAndSessionId(classId, sessionId)
+
         return ApiResponse(
             success = true,
             data = list.map { it.convertAttendanceResponse() },

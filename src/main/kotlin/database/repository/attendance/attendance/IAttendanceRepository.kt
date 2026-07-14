@@ -6,11 +6,12 @@ import com.fathersprophets.backend.models.attendance.AttendanceResponse
 import com.fathersprophets.backend.models.attendance.UpdateAttendanceRequest
 
 interface IAttendanceRepository {
-    fun addAttendance(attendance: AddAttendanceRequest, lang: String): ApiResponse<Int>
-    fun updateAttendance(attendanceId: Int, updateAttendance: UpdateAttendanceRequest, lang: String): ApiResponse<Nothing>
+    fun addAttendance(attendance: AddAttendanceRequest, lang: String): ApiResponse<AttendanceResponse>
+    fun updateAttendance(attendanceId: Int, updateAttendance: UpdateAttendanceRequest, lang: String): ApiResponse<AttendanceResponse>
     fun deleteAttendance(attendanceId: Int, lang: String): ApiResponse<Nothing>
     fun getAttendanceByUserId(userId: Int, lang: String): ApiResponse<List<AttendanceResponse>>
     fun getAttendanceBySessionId(sessionId: Int, lang: String): ApiResponse<List<AttendanceResponse>>
+    fun getAttendanceByClassIdAndSessionId(classId: Int, sessionId: Int, lang: String): ApiResponse<List<AttendanceResponse>>
     fun getAllAttendance(lang: String): ApiResponse<List<AttendanceResponse>>
     fun getAttendanceByClassId(classId: Int, lang: String): ApiResponse<List<AttendanceResponse>>
 

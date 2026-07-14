@@ -80,6 +80,17 @@ class AttendanceService(private val attendanceRepository: IAttendanceRepository)
         return attendanceRepository.getAttendanceBySessionId(sessionId, lang)
     }
 
+    override fun getAttendanceByClassIdAndSessionId(
+        classId: Int?,
+        sessionId: Int?,
+        lang: String
+    ): ApiResponse<List<AttendanceResponse>> {
+        if (classId == null || sessionId == null) {
+            throw IllegalArgumentException(Localization.get("invalid_id", lang))
+        }
+        return attendanceRepository.getAttendanceByClassIdAndSessionId(classId, sessionId, lang)
+    }
+
     override fun getAllAttendance(lang: String): ApiResponse<List<AttendanceResponse>> {
         return attendanceRepository.getAllAttendance(lang)
     }
