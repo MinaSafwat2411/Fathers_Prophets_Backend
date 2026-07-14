@@ -9,11 +9,6 @@ interface ISessionService {
     fun createSession(
         addSessionRequest: AddSessionRequest,
         lang: String
-    ): ApiResponse<Int>
-
-    fun getSessionById(
-        sessionId: Int?,
-        lang: String
     ): ApiResponse<SessionResponse>
 
     fun deleteSession(
@@ -27,6 +22,6 @@ interface ISessionService {
         sessionId: Int?,
         updateSessionRequest: UpdateSessionRequest,
         lang: String
-    ): ApiResponse<Nothing>
+    ): ApiResponse<SessionResponse>
 
 }

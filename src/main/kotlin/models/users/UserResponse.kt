@@ -17,5 +17,6 @@ data class UserResponse(
     val profile: String? = null,
     val isReviewed: Boolean? = null,
     val memberId: String? = null,
-    val parents: ParentsResponse? = null
+    val parents: ParentsResponse? = null,
+    val classId : Int? = null
 )

@@ -6,9 +6,8 @@ import com.fathersprophets.backend.models.session.SessionResponse
 import com.fathersprophets.backend.models.session.UpdateSessionRequest
 
 interface ISessionRepository {
-    fun createSession(addSessionRequest: AddSessionRequest,lang: String): ApiResponse<Int>
-    fun getSessionById(sessionId: Int,lang: String): ApiResponse<SessionResponse>
+    fun createSession(addSessionRequest: AddSessionRequest,lang: String): ApiResponse<SessionResponse>
     fun deleteSession(sessionId: Int,lang: String): ApiResponse<Nothing>
     fun getAllSessions(): ApiResponse<List<SessionResponse>>
-    fun updateSession(sessionId: Int,updateSessionRequest: UpdateSessionRequest,lang: String): ApiResponse<Nothing>
+    fun updateSession(sessionId: Int,updateSessionRequest: UpdateSessionRequest,lang: String): ApiResponse<SessionResponse>
 }

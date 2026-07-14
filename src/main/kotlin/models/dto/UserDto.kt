@@ -24,6 +24,7 @@ data class UserDto(
     val skipMembership: Boolean? = null,
     val comments: List<String> = emptyList(),
     val parents: ParentsDto? = null,
+    val classId : Int? = null
 ){
     fun convertToUserResponse() = UserResponse(
         id = this.id,
@@ -39,6 +40,7 @@ data class UserDto(
         profile = this.profile,
         isReviewed = this.isReviewed,
         memberId = this.memberId,
-        parents = this.parents?.convertToParentsResponse()
+        parents = this.parents?.convertToParentsResponse(),
+        classId = this.classId
     )
 }

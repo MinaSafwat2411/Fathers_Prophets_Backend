@@ -19,7 +19,7 @@ class AttendanceService(private val attendanceRepository: IAttendanceRepository)
     override fun addAttendance(
         attendance: AddAttendanceRequest,
         lang: String
-    ): ApiResponse<Int> {
+    ): ApiResponse<AttendanceResponse> {
         validateRequired(
             attendance.userId to "user_id",
             attendance.sessionId to "session_id",
@@ -29,9 +29,16 @@ class AttendanceService(private val attendanceRepository: IAttendanceRepository)
 
         val result = attendanceRepository.addAttendance(attendance, lang)
         if (result.success) {
-            val sessionAttendance = attendanceRepository.getAttendanceBySessionId(result.data?: 0, lang)
-            scope.launch {
-                AttendanceEventBroadcaster.broadcastAttendance(result.data?: 0, sessionAttendance)
+            val sessionId = result.data?.sessionId
+            if (sessionId != null) {
+                val sessionAttendance = attendanceRepository.getAttendanceBySessionId(sessionId, lang)
+                scope.launch {
+                    try {
+                        AttendanceEventBroadcaster.broadcastAttendance(sessionId, sessionAttendance)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
             }
         }
         return result
@@ -41,13 +48,12 @@ class AttendanceService(private val attendanceRepository: IAttendanceRepository)
         attendanceId: Int?,
         updateAttendance: UpdateAttendanceRequest,
         lang: String
-    ): ApiResponse<Nothing> {
+    ): ApiResponse<AttendanceResponse> {
         if (attendanceId == null) {
             return ApiResponse(success = false, message = Localization.get("invalid_id", lang))
         }
 
-        val result = attendanceRepository.updateAttendance(attendanceId, updateAttendance, lang)
-        return result
+        return attendanceRepository.updateAttendance(attendanceId, updateAttendance, lang)
     }
 
     override fun deleteAttendance(
@@ -81,14 +87,14 @@ class AttendanceService(private val attendanceRepository: IAttendanceRepository)
     }
 
     override fun getAttendanceByClassIdAndSessionId(
-        classId: Int?,
+        userId: Int?,
         sessionId: Int?,
         lang: String
     ): ApiResponse<List<AttendanceResponse>> {
-        if (classId == null || sessionId == null) {
+        if (userId == null || sessionId == null) {
             throw IllegalArgumentException(Localization.get("invalid_id", lang))
         }
-        return attendanceRepository.getAttendanceByClassIdAndSessionId(classId, sessionId, lang)
+        return attendanceRepository.getAttendanceByClassIdAndSessionId(userId, sessionId, lang)
     }
 
     override fun getAllAttendance(lang: String): ApiResponse<List<AttendanceResponse>> {

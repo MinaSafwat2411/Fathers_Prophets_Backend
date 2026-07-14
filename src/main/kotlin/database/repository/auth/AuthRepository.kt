@@ -22,13 +22,11 @@ class AuthRepository(
             throw ConflictException(Localization.get("username_exists", lang))
         }
 
-        val newUserId = userDao.createUser(
+        val newUser = userDao.createUser(
             request.toUserDto(passwordHash)
-        )
+        )?: throw UnauthorizedException(Localization.get("register_failed", lang))
 
-        if (newUserId == 0) throw UnauthorizedException(Localization.get("register_failed", lang))
-
-        var user = userDao.findById(newUserId) ?: throw ConflictException(
+        var user = userDao.findById(newUser.id) ?: throw ConflictException(
             Localization.get("register_failed", lang)
         )
 

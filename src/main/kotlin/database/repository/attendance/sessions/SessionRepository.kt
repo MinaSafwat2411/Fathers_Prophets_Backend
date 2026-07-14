@@ -2,7 +2,6 @@ package com.fathersprophets.backend.database.repository.attendance.sessions
 
 import com.fathersprophets.backend.database.dao.attendance.SessionDao
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.dto.SessionDto
 import com.fathersprophets.backend.models.session.AddSessionRequest
 import com.fathersprophets.backend.models.session.SessionResponse
 import com.fathersprophets.backend.models.session.UpdateSessionRequest
@@ -13,33 +12,17 @@ class SessionRepository(
     override fun createSession(
         addSessionRequest: AddSessionRequest,
         lang: String
-    ): ApiResponse<Int> {
-        val id = sessionDao.addSession(addSessionRequest.toSessionDto())
-
-        if (id == 0) throw IllegalStateException("session_not_added")
+    ): ApiResponse<SessionResponse> {
+        val created = sessionDao.addSession(addSessionRequest.toSessionDto())
+            ?: throw IllegalStateException("session_not_added")
 
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = created.convertToSessionResponse(),
             message = "session_added_successfully"
         )
 
-    }
-
-    override fun getSessionById(
-        sessionId: Int,
-        lang: String
-    ): ApiResponse<SessionResponse> {
-        val id = sessionDao.getSessionById(sessionId)
-            ?: throw IllegalStateException("session_not_found")
-
-
-        return ApiResponse(
-            success = true,
-            data = id.convertToSessionResponse(),
-            message = "session_retrieved_successfully"
-        )
     }
 
     override fun deleteSession(
@@ -70,7 +53,7 @@ class SessionRepository(
         sessionId: Int,
         updateSessionRequest: UpdateSessionRequest,
         lang: String
-    ): ApiResponse<Nothing> {
+    ): ApiResponse<SessionResponse> {
 
         val sessionDto = updateSessionRequest.toSessionDto(sessionId)
 

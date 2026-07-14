@@ -29,7 +29,8 @@ class ClassMemberDao {
     }
 
     fun findById(classMemberId: Int) = transaction {
-        ClassMemberTable.selectAll().where { ClassMemberTable.id eq classMemberId }
+        (ClassMemberTable innerJoin UsersTable)
+            .selectAll().where { ClassMemberTable.id eq classMemberId }
             .singleOrNull()?.let { resultRowToClassMember(it) }
     }
     fun addMember(classMemberDto: ClassMemberDto) = transaction {
@@ -39,7 +40,14 @@ class ClassMemberDao {
             it[ClassMemberTable.userId] = classMemberDto.userId
             it[ClassMemberTable.teacher] = classMemberDto.isTeacher
             it[ClassMemberTable.image] = classMemberDto.image
-        }.let { findById(it[ClassMemberTable.id]) }
+        }.let {
+            UsersTable.update(
+                where = { UsersTable.id eq classMemberDto.userId }
+            ) { user ->
+                user[UsersTable.classId] = classMemberDto.classId
+            }
+            findById(it[ClassMemberTable.id])
+        }
     }
 
     fun updateMember(classMemberDto: ClassMemberDto) = transaction {

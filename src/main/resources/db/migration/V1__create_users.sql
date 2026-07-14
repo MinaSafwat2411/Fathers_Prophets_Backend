@@ -44,7 +44,8 @@ CREATE TABLE IF NOT EXISTS users
     skip_membership BOOLEAN,
     password_hash   VARCHAR(255) NOT NULL,
     token           VARCHAR(512),
-    refresh_token   VARCHAR(512)
+    refresh_token   VARCHAR(512),
+    class_id        INT REFERENCES classes(id)
 );
 
 CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);

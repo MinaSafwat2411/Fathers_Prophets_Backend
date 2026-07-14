@@ -55,6 +55,7 @@ object UsersTable : Table("users") {
     val passwordHash = varchar("password_hash", 255)
     val token = varchar("token", 512).nullable()
     val refreshToken = varchar("refresh_token", 512).nullable()
+    val classId = integer("class_id").nullable()
 
     override val primaryKey = PrimaryKey(id)
 }

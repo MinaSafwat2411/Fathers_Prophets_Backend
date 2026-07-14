@@ -11,7 +11,7 @@ interface IAttendanceRepository {
     fun deleteAttendance(attendanceId: Int, lang: String): ApiResponse<Nothing>
     fun getAttendanceByUserId(userId: Int, lang: String): ApiResponse<List<AttendanceResponse>>
     fun getAttendanceBySessionId(sessionId: Int, lang: String): ApiResponse<List<AttendanceResponse>>
-    fun getAttendanceByClassIdAndSessionId(classId: Int, sessionId: Int, lang: String): ApiResponse<List<AttendanceResponse>>
+    fun getAttendanceByClassIdAndSessionId(userId: Int, sessionId: Int, lang: String): ApiResponse<List<AttendanceResponse>>
     fun getAllAttendance(lang: String): ApiResponse<List<AttendanceResponse>>
     fun getAttendanceByClassId(classId: Int, lang: String): ApiResponse<List<AttendanceResponse>>
 

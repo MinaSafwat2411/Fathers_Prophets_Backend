@@ -1,6 +1,8 @@
 package com.fathersprophets.backend.database.repository.attendance.attendance
 
 import com.fathersprophets.backend.database.dao.attendance.AttendanceDao
+import com.fathersprophets.backend.database.dao.users.UserDao
+import com.fathersprophets.backend.exceptions.ForbiddenException
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.attendance.AddAttendanceRequest
 import com.fathersprophets.backend.models.attendance.AttendanceResponse
@@ -9,6 +11,7 @@ import com.fathersprophets.backend.utils.Localization
 
 class AttendanceRepository(
     private val attendanceDao: AttendanceDao,
+    private val userDao: UserDao
 ) : IAttendanceRepository {
     override fun addAttendance(
         attendance: AddAttendanceRequest,
@@ -82,10 +85,14 @@ class AttendanceRepository(
     }
 
     override fun getAttendanceByClassIdAndSessionId(
-        classId: Int,
+        userId: Int,
         sessionId: Int,
         lang: String
     ): ApiResponse<List<AttendanceResponse>> {
+        val user = userDao.findById(userId) ?: throw ForbiddenException(Localization.get("user_not_found", lang))
+
+        val classId = user.classId ?: throw ForbiddenException(Localization.get("user_class_not_found", lang))
+
         val list = attendanceDao.getAllAttendanceByClassIdAndSessionId(classId, sessionId)
 
         return ApiResponse(

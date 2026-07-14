@@ -6,31 +6,33 @@ import com.fathersprophets.backend.models.session.AddSessionRequest
 import com.fathersprophets.backend.models.session.SessionResponse
 import com.fathersprophets.backend.models.session.UpdateSessionRequest
 import com.fathersprophets.backend.utils.Localization
+import com.fathersprophets.backend.utils.SessionEventBroadcaster
 import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SessionService(
     private val sessionRepository: ISessionRepository
 ) : ISessionService {
+
+    private val scope = CoroutineScope(Dispatchers.IO)
+
     override fun createSession(
         addSessionRequest: AddSessionRequest,
         lang: String
-    ): ApiResponse<Int> {
+    ): ApiResponse<SessionResponse> {
         validateRequired(
             addSessionRequest.dateTime to "date_time",
             lang = lang
         )
-        return sessionRepository.createSession(addSessionRequest, lang)
+        val result = sessionRepository.createSession(addSessionRequest, lang)
+        if (result.success) {
+            broadcastSessions()
+        }
+        return result
     }
 
-    override fun getSessionById(
-        sessionId: Int?,
-        lang: String
-    ): ApiResponse<SessionResponse> {
-        if (sessionId == null) {
-            return ApiResponse(success = false, message = Localization.get("invalid_id", lang))
-        }
-        return sessionRepository.getSessionById(sessionId, lang)
-    }
 
     override fun deleteSession(
         sessionId: Int?,
@@ -39,7 +41,11 @@ class SessionService(
         if (sessionId == null) {
             return ApiResponse(success = false, message = Localization.get("invalid_id", lang))
         }
-        return sessionRepository.deleteSession(sessionId, lang)
+        val result = sessionRepository.deleteSession(sessionId, lang)
+        if (result.success) {
+            broadcastSessions()
+        }
+        return result
     }
 
     override fun getAllSessions(): ApiResponse<List<SessionResponse>> {
@@ -50,10 +56,20 @@ class SessionService(
         sessionId: Int?,
         updateSessionRequest: UpdateSessionRequest,
         lang: String
-    ): ApiResponse<Nothing> {
+    ): ApiResponse<SessionResponse> {
         if (sessionId == null) {
             return ApiResponse(success = false, message = Localization.get("invalid_id", lang))
         }
-        return sessionRepository.updateSession(sessionId, updateSessionRequest, lang)
+        val result = sessionRepository.updateSession(sessionId, updateSessionRequest, lang)
+        if (result.success) {
+            broadcastSessions()
+        }
+        return result
+    }
+
+    private fun broadcastSessions() {
+        scope.launch {
+            SessionEventBroadcaster.broadcastSessions(getAllSessions())
+        }
     }
 }
