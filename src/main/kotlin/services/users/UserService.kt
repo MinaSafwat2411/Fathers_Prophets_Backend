@@ -9,14 +9,14 @@ import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
 class UserService(
     private val userRepository: IUserRepository
 ) : IUserService {
-    override suspend fun getUserById(id: Int?, lang: String): ApiResponse<UserResponse> {
+    override fun getUserById(id: Int?, lang: String): ApiResponse<UserResponse> {
         validateRequired(id to "user_id", lang = lang)
         
         val userResponse = userRepository.getUserById(id?:0, lang)
         return userResponse
     }
 
-    override suspend fun addUser(addUserRequest: AddUserRequest, lang: String): ApiResponse<Int> {
+    override fun addUser(addUserRequest: AddUserRequest, lang: String): ApiResponse<UserResponse> {
         validateRequired(
             addUserRequest.name to "name",
             addUserRequest.username to "username",
@@ -35,7 +35,28 @@ class UserService(
         return userRepository.addUser(addUserRequest, lang)
     }
 
-    override suspend fun updateReview(id: Int?, lang: String): ApiResponse<Nothing> {
+    override fun updateUser(
+        id: Int?,
+        updateUserRequest: UpdateUserRequest,
+        lang: String
+    ): ApiResponse<UserResponse> {
+        if(id == null){
+            throw IllegalArgumentException(Localization.get("id_required", lang))
+        }
+
+        validateRequired(
+            updateUserRequest.address to "address",
+            updateUserRequest.birthDate to "birthDate",
+            updateUserRequest.fatherName to "fatherName",
+            updateUserRequest.isShams to "isShams",
+            updateUserRequest.memberId to "memberId",
+            lang = lang
+        )
+
+        return userRepository.updateUser(id, updateUserRequest, lang)
+    }
+
+    override fun updateReview(id: Int?, lang: String): ApiResponse<Nothing> {
         if(id == null){
             throw IllegalArgumentException(Localization.get("id_required", lang))
         }
@@ -44,7 +65,7 @@ class UserService(
     }
 
 
-    override suspend fun deleteUser(id: Int?, lang: String): ApiResponse<Nothing> {
+    override fun deleteUser(id: Int?, lang: String): ApiResponse<Nothing> {
 
         if(id == null){
             throw IllegalArgumentException(Localization.get("id_required", lang))
@@ -53,24 +74,24 @@ class UserService(
         return userRepository.deleteUser(id, lang)
     }
 
-    override suspend fun getUsersByRole(role: String, lang: String): ApiResponse<List<UserResponse>> {
+    override fun getUsersByRole(role: String, lang: String): ApiResponse<List<UserResponse>> {
         validateRequired(role to "role", lang = lang)
         return userRepository.getUsersByRole(role, lang)
     }
 
-    override suspend fun getUnReviewedUsers(lang: String): ApiResponse<List<UserResponse>> {
+    override fun getUnReviewedUsers(lang: String): ApiResponse<List<UserResponse>> {
         return userRepository.getUnReviewedUsers(lang)
     }
 
-    override suspend fun getAllUsers(lang: String): ApiResponse<List<UserResponse>> {
+    override fun getAllUsers(lang: String): ApiResponse<List<UserResponse>> {
         return userRepository.getAllUsers(lang)
     }
 
-    override suspend fun getUpcomingBirthdays(lang: String): ApiResponse<List<UpcomingBirthdayResponse>> {
+    override fun getUpcomingBirthdays(lang: String): ApiResponse<List<UpcomingBirthdayResponse>> {
         return userRepository.getUpcomingBirthdays(lang)
     }
 
-    override suspend fun updateEmail(id: Int?, updateEmailRequest: UpdateEmailRequest, lang: String): ApiResponse<Nothing> {
+    override fun updateEmail(id: Int?, updateEmailRequest: UpdateEmailRequest, lang: String): ApiResponse<Nothing> {
         if(id == null){
             throw IllegalArgumentException(Localization.get("id_required", lang))
         }
@@ -83,7 +104,7 @@ class UserService(
         return userRepository.updateEmail(id, updateEmailRequest, lang)
     }
 
-    override suspend fun updatePassword(id: Int?, updatePasswordRequest: UpdatePasswordRequest, lang: String): ApiResponse<Nothing> {
+    override fun updatePassword(id: Int?, updatePasswordRequest: UpdatePasswordRequest, lang: String): ApiResponse<Nothing> {
         if(id == null){
             throw IllegalArgumentException(Localization.get("id_required", lang))
         }
@@ -97,7 +118,7 @@ class UserService(
         return userRepository.updatePassword(id, updatePasswordRequest, lang)
     }
 
-    override suspend fun updateProfile(id: Int?, updateProfileRequest: UpdateProfileRequest, lang: String): ApiResponse<Nothing> {
+    override fun updateProfile(id: Int?, updateProfileRequest: UpdateProfileRequest, lang: String): ApiResponse<Nothing> {
         if(id == null){
             throw IllegalArgumentException(Localization.get("id_required", lang))
         }
@@ -110,7 +131,7 @@ class UserService(
         return userRepository.updateProfile(id, updateProfileRequest, lang)
     }
 
-    override suspend fun updatePhone(id: Int?, updatePhoneRequest: UpdatePhoneRequest, lang: String): ApiResponse<Nothing> {
+    override fun updatePhone(id: Int?, updatePhoneRequest: UpdatePhoneRequest, lang: String): ApiResponse<Nothing> {
         if(id == null){
             throw IllegalArgumentException(Localization.get("id_required", lang))
         }

@@ -12,16 +12,18 @@ import com.fathersprophets.backend.models.users.UpdateUserRequest
 import com.fathersprophets.backend.models.users.UserResponse
 
 interface IUserService {
-    suspend fun getUserById(id: Int?, lang: String): ApiResponse<UserResponse>
-    suspend fun addUser(addUserRequest: AddUserRequest, lang: String): ApiResponse<Int>
-    suspend fun updateReview(id: Int?, lang: String): ApiResponse<Nothing>
-    suspend fun deleteUser(id: Int?, lang: String): ApiResponse<Nothing>
-    suspend fun getUsersByRole(role: String, lang: String): ApiResponse<List<UserResponse>>
-    suspend fun getUnReviewedUsers(lang: String): ApiResponse<List<UserResponse>>
-    suspend fun getAllUsers(lang: String): ApiResponse<List<UserResponse>>
-    suspend fun getUpcomingBirthdays(lang: String): ApiResponse<List<UpcomingBirthdayResponse>>
-    suspend fun updateEmail(id: Int?, updateEmailRequest: UpdateEmailRequest, lang: String): ApiResponse<Nothing>
-    suspend fun updatePassword(id: Int?, updatePasswordRequest: UpdatePasswordRequest, lang: String): ApiResponse<Nothing>
-    suspend fun updateProfile(id: Int?, updateProfileRequest: UpdateProfileRequest, lang: String): ApiResponse<Nothing>
-    suspend fun updatePhone(id: Int?, updatePhoneRequest: UpdatePhoneRequest, lang: String): ApiResponse<Nothing>
+    fun getUserById(id: Int?, lang: String): ApiResponse<UserResponse>
+    fun addUser(addUserRequest: AddUserRequest, lang: String): ApiResponse<UserResponse>
+
+    fun updateUser(id: Int?, updateUserRequest: UpdateUserRequest, lang: String): ApiResponse<UserResponse>
+    fun updateReview(id: Int?, lang: String): ApiResponse<Nothing>
+    fun deleteUser(id: Int?, lang: String): ApiResponse<Nothing>
+    fun getUsersByRole(role: String, lang: String): ApiResponse<List<UserResponse>>
+    fun getUnReviewedUsers(lang: String): ApiResponse<List<UserResponse>>
+    fun getAllUsers(lang: String): ApiResponse<List<UserResponse>>
+    fun getUpcomingBirthdays(lang: String): ApiResponse<List<UpcomingBirthdayResponse>>
+    fun updateEmail(id: Int?, updateEmailRequest: UpdateEmailRequest, lang: String): ApiResponse<Nothing>
+    fun updatePassword(id: Int?, updatePasswordRequest: UpdatePasswordRequest, lang: String): ApiResponse<Nothing>
+    fun updateProfile(id: Int?, updateProfileRequest: UpdateProfileRequest, lang: String): ApiResponse<Nothing>
+    fun updatePhone(id: Int?, updatePhoneRequest: UpdatePhoneRequest, lang: String): ApiResponse<Nothing>
 }

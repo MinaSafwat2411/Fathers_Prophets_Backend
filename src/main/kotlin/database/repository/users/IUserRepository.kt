@@ -13,7 +13,9 @@ import com.fathersprophets.backend.models.users.UserResponse
 
 interface IUserRepository {
     fun getUserById(id: Int, lang: String): ApiResponse<UserResponse>
-    fun addUser(addUserRequest: AddUserRequest, lang: String): ApiResponse<Int>
+    fun addUser(addUserRequest: AddUserRequest, lang: String): ApiResponse<UserResponse>
+
+    fun updateUser(id: Int, updateUserRequest: UpdateUserRequest, lang: String) : ApiResponse<UserResponse>
     fun updateEmail(id: Int, updateEmailRequest: UpdateEmailRequest, lang: String): ApiResponse<Nothing>
     fun updatePassword(id: Int, updatePasswordRequest: UpdatePasswordRequest, lang: String): ApiResponse<Nothing>
     fun updateProfile(id: Int, updateProfileRequest: UpdateProfileRequest, lang: String): ApiResponse<Nothing>

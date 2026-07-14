@@ -26,16 +26,30 @@ class UserRepository(
         )
     }
 
-    override fun addUser(addUserRequest: AddUserRequest, lang: String): ApiResponse<Int> {
+    override fun addUser(addUserRequest: AddUserRequest, lang: String): ApiResponse<UserResponse> {
         val hashPassword = PasswordUtil.hashPassword("123456")
-        val id = userDao.createUser(addUserRequest.toUserDto(0, hashPassword))
-
-        if (id == 0) throw IllegalArgumentException(Localization.get("user_add_failed", lang))
+        val user = userDao.createUser(addUserRequest.toUserDto(0, hashPassword))?:
+            throw IllegalArgumentException(Localization.get("user_add_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = user.convertToUserResponse(),
             message = Localization.get("user_added_success", lang)
+        )
+    }
+
+    override fun updateUser(
+        id: Int,
+        updateUserRequest: UpdateUserRequest,
+        lang: String
+    ): ApiResponse<UserResponse> {
+        val user = userDao.update(updateUserRequest.toUserDto(id))
+            ?: throw IllegalArgumentException(Localization.get("user_update_failed", lang))
+
+        return ApiResponse(
+            success = true,
+            data = user.convertToUserResponse(),
+            message = Localization.get("user_updated_successfully", lang)
         )
     }
 

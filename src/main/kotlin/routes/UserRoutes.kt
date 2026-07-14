@@ -1,20 +1,12 @@
 package com.fathersprophets.backend.routes
 
-import com.fathersprophets.backend.models.dto.UserDto
 import com.fathersprophets.backend.models.users.AddUserRequest
 import com.fathersprophets.backend.models.users.UpdateUserRequest
 import com.fathersprophets.backend.plugins.requireRole
 import com.fathersprophets.backend.services.users.IUserService
-import io.ktor.server.request.header
-import io.ktor.server.request.receive
-import io.ktor.server.response.respond
-import io.ktor.server.routing.Route
-import io.ktor.server.routing.delete
-import io.ktor.server.routing.get
-import io.ktor.server.routing.patch
-import io.ktor.server.routing.post
-import io.ktor.server.routing.put
-import io.ktor.server.routing.route
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 
 fun Route.userRoutes(
     userService: IUserService
@@ -63,20 +55,19 @@ fun Route.userRoutes(
             call.respond(result)
         }
 
-        put("/{id}/review") {
+        patch("/{id}/review") {
             call.requireRole("admin", "superadmin")
             val userId = call.parameters["id"]?.toIntOrNull()
             val lang = call.request.header("Accept-Language") ?: "en"
             val result = userService.updateReview(userId, lang)
             call.respond(result)
         }
-
         put("/{id}") {
             call.requireRole("admin", "superadmin")
-            val lang = call.request.header("Accept-Language") ?: "en"
-            val request = call.receive<UpdateUserRequest>()
             val userId = call.parameters["id"]?.toIntOrNull()
-            val result = userService.updateUserByField(userId,request,lang)
+            val request = call.receive<UpdateUserRequest>()
+            val lang = call.request.header("Accept-Language") ?: "en"
+            val result = userService.updateUser(userId, request, lang)
             call.respond(result)
         }
 
