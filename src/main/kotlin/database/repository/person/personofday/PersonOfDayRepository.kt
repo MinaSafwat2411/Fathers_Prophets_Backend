@@ -20,15 +20,6 @@ class PersonOfDayRepository(
         )
     }
 
-    override fun getPersonOfDayById(id: Int, lang: String): ApiResponse<PersonOfDayResponse> {
-        val item = personOfDayDao.getPersonOfDayById(id)
-        return ApiResponse(
-            success = true,
-            data = item?.convertToResponse(),
-            message = Localization.get("person_of_day_retrieved_successfully", lang)
-        )
-    }
-
     override fun getPersonOfDayByDate(lang: String): ApiResponse<PersonOfDayResponse> {
         val item = personOfDayDao.getPersonOfDayByDate()
         return ApiResponse(
@@ -38,28 +29,26 @@ class PersonOfDayRepository(
         )
     }
 
-    override fun addPersonOfDay(request: CreatePersonOfDayRequest, lang: String): ApiResponse<Int> {
+    override fun addPersonOfDay(request: CreatePersonOfDayRequest, lang: String): ApiResponse<PersonOfDayResponse> {
 
-        val id = personOfDayDao.addPersonOfDay(request.convertToDto())
-
-        if (id == 0) throw IllegalArgumentException(Localization.get("person_of_day_creation_failed", lang))
+        val create = personOfDayDao.addPersonOfDay(request.convertToDto())
+            ?:throw IllegalArgumentException(Localization.get("person_of_day_creation_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = create.convertToResponse(),
             message = Localization.get("person_of_day_created_successfully", lang)
         )
     }
 
-    override fun updatePersonOfDay(id: Int, request: UpdatePersonOfDayRequest, lang: String): ApiResponse<Nothing> {
+    override fun updatePersonOfDay(id: Int, request: UpdatePersonOfDayRequest, lang: String): ApiResponse<PersonOfDayResponse> {
 
         val updated = personOfDayDao.updatePersonOfDay(request.convertToPersonOfDayDto(id))
-
-        if (!updated) throw IllegalArgumentException(Localization.get("person_of_day_update_failed", lang))
+            ?: throw IllegalArgumentException(Localization.get("person_of_day_update_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = null,
+            data = updated.convertToResponse(),
             message = Localization.get("person_of_day_updated_successfully", lang)
         )
     }

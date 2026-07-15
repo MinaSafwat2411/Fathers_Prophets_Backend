@@ -20,14 +20,6 @@ class PersonQuestionRepository(
         )
     }
 
-    override fun getPersonQuestionById(id: Int, lang: String): ApiResponse<PersonQuestionResponse> {
-        val question = personQuestionDao.findById(id)
-        return ApiResponse(
-            success = true,
-            data = question?.convertToPersonQuestionResponse(),
-            message = Localization.get("person_question_retrieved_successfully", lang)
-        )
-    }
 
     override fun getPersonQuestionsByPersonId(personId: Int, lang: String): ApiResponse<List<PersonQuestionResponse>> {
         val questions = personQuestionDao.findByPersonId(personId)
@@ -38,26 +30,24 @@ class PersonQuestionRepository(
         )
     }
 
-    override fun createPersonQuestion(request: CreateQuestionRequest, lang: String): ApiResponse<Int> {
-        val id = personQuestionDao.create(request.convertToPersonQuestionDto())
-
-        if (id == 0) throw IllegalArgumentException(Localization.get("person_question_creation_failed", lang))
+    override fun createPersonQuestion(request: CreateQuestionRequest, lang: String): ApiResponse<PersonQuestionResponse> {
+        val created = personQuestionDao.create(request.convertToPersonQuestionDto())
+            ?:throw IllegalArgumentException(Localization.get("person_question_creation_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = created.convertToPersonQuestionResponse(),
             message = Localization.get("person_question_created_successfully", lang)
         )
     }
 
-    override fun updatePersonQuestion(id: Int, request: UpdateQuestionRequest, lang: String): ApiResponse<Nothing> {
+    override fun updatePersonQuestion(id: Int, request: UpdateQuestionRequest, lang: String): ApiResponse<PersonQuestionResponse> {
         val update = personQuestionDao.update(request.convertToPersonQuestionDto(id))
-
-        if (!update) throw IllegalArgumentException(Localization.get("person_question_update_failed", lang))
+            ?:throw IllegalArgumentException(Localization.get("person_question_update_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = null,
+            data = update.convertToPersonQuestionResponse(),
             message = Localization.get("person_question_updated_successfully", lang)
         )
     }

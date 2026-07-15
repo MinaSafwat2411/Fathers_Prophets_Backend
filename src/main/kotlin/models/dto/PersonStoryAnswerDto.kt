@@ -11,12 +11,13 @@ data class PersonStoryAnswerDto(
     val status: AnswerStatus,
     val questionId: Int
 ) {
-    fun convertToResponse() = PersonStoryAnswerResponse(
+    fun convertToResponse(correctAnswer: String? = null) = PersonStoryAnswerResponse(
         id = id,
         storyId = storyId,
         userId = userId,
         answered = answered,
         status = status.name,
-        questionId = questionId
+        questionId = questionId,
+        correctAnswer = correctAnswer
     )
 }

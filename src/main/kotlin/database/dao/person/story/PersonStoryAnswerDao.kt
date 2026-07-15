@@ -26,18 +26,8 @@ class PersonStoryAnswerDao {
             .singleOrNull()?.let { resultRowToDto(it) }
     }
 
-    fun findByStoryId(storyId: Int) = transaction {
-        PersonStoryAnswersTable.selectAll().where { PersonStoryAnswersTable.storyId eq storyId }
-            .map { resultRowToDto(it) }
-    }
-
-    fun findByUserId(userId: Int) = transaction {
-        PersonStoryAnswersTable.selectAll().where { PersonStoryAnswersTable.userId eq userId }
-            .map { resultRowToDto(it) }
-    }
-
-    fun findByQuestionId(questionId: Int) = transaction {
-        PersonStoryAnswersTable.selectAll().where { PersonStoryAnswersTable.questionId eq questionId }
+    fun findByUserIdAndStoryId(userId: Int, storyId: Int) = transaction {
+        PersonStoryAnswersTable.selectAll().where { (PersonStoryAnswersTable.storyId eq storyId) and (PersonStoryAnswersTable.userId eq userId)}
             .map { resultRowToDto(it) }
     }
 

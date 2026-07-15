@@ -16,15 +16,11 @@ class GuessPersonQuestionService(
         return repository.getAllQuestions(lang)
     }
 
-    override fun getQuestionById(id: Int?, lang: String): ApiResponse<GuessPersonQuestionResponse> {
-        if (id == null) throw IllegalArgumentException(Localization.get("guess_person_question_id_required", lang))
-        return repository.getQuestionById(id, lang)
-    }
 
     override fun createQuestion(
         request: CreateGuessPersonQuestionRequest,
         lang: String
-    ): ApiResponse<Int> {
+    ): ApiResponse<GuessPersonQuestionResponse> {
         validateRequired(
             request.question to "question",
             request.correctAnswer to "correctAnswer",
@@ -37,7 +33,7 @@ class GuessPersonQuestionService(
         id: Int?,
         request: UpdateGuessPersonQuestionRequest,
         lang: String
-    ): ApiResponse<Nothing> {
+    ): ApiResponse<GuessPersonQuestionResponse> {
         if (id == null) throw IllegalArgumentException(Localization.get("guess_person_question_id_required", lang))
         validateRequired(
             request.question to "question",

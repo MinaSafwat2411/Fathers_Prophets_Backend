@@ -8,13 +8,15 @@ import kotlinx.serialization.Serializable
 data class CreatePersonMcqAnswerRequest(
     val answer: String,
     val questionId: Int,
-    val userId: Int
+    val userId: Int,
+    val personId : Int
 ) {
     fun convertToPersonMcqAnswerDto() = PersonMcqAnswerDto(
         id = 0,
         answer = this.answer,
         questionId = this.questionId,
         userId = this.userId,
-        status = AnswerStatus.TEACHER_STILL_NOT_CORRECTED
+        status = AnswerStatus.TEACHER_STILL_NOT_CORRECTED,
+        personId = this.personId
     )
 }

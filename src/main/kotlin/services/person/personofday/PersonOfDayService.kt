@@ -16,16 +16,12 @@ class PersonOfDayService(
         return personOfDayRepository.getAllPersonsOfDay(lang)
     }
 
-    override fun getPersonOfDayById(id: Int?, lang: String): ApiResponse<PersonOfDayResponse> {
-        if (id == null) throw IllegalArgumentException(Localization.get("person_of_day_id_required", lang))
-        return personOfDayRepository.getPersonOfDayById(id, lang)
-    }
 
     override fun getPersonOfDayByDate(lang: String): ApiResponse<PersonOfDayResponse> {
         return personOfDayRepository.getPersonOfDayByDate(lang)
     }
 
-    override fun addPersonOfDay(request: CreatePersonOfDayRequest, lang: String): ApiResponse<Int> {
+    override fun addPersonOfDay(request: CreatePersonOfDayRequest, lang: String): ApiResponse<PersonOfDayResponse> {
         validateRequired(
             request.personId to "personId",
             request.message to "message",
@@ -36,7 +32,7 @@ class PersonOfDayService(
         return personOfDayRepository.addPersonOfDay(request, lang)
     }
 
-    override fun updatePersonOfDay(id: Int?, request: UpdatePersonOfDayRequest, lang: String): ApiResponse<Nothing> {
+    override fun updatePersonOfDay(id: Int?, request: UpdatePersonOfDayRequest, lang: String): ApiResponse<PersonOfDayResponse> {
         if (id == null) throw IllegalArgumentException(Localization.get("person_of_day_id_required", lang))
         return personOfDayRepository.updatePersonOfDay(id, request, lang)
     }

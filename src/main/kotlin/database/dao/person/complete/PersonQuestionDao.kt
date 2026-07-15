@@ -15,7 +15,8 @@ class PersonQuestionDao {
         id = row[PersonsQuestionsTable.id],
         question = row[PersonsQuestionsTable.question],
         personId = row[PersonsQuestionsTable.personId],
-        type = row[PersonsQuestionsTable.type]
+        type = row[PersonsQuestionsTable.type],
+        correctAnswer = ""
     )
 
     fun findAll() = transaction {

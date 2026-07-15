@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.repository.person.personstoryquestion
+package com.fathersprophets.backend.database.repository.person.personstory.personstoryquestion
 
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.personstoryquestion.CreatePersonStoryQuestionRequest
@@ -7,9 +7,8 @@ import com.fathersprophets.backend.models.personstoryquestion.UpdatePersonStoryQ
 
 interface IPersonStoryQuestionRepository {
     fun getAllPersonStoryQuestions(lang: String): ApiResponse<List<PersonStoryQuestionResponse>>
-    fun getPersonStoryQuestionById(id: Int, lang: String): ApiResponse<PersonStoryQuestionResponse>
     fun getPersonStoryQuestionsByStoryId(storyId: Int, lang: String): ApiResponse<List<PersonStoryQuestionResponse>>
-    fun createPersonStoryQuestion(request: CreatePersonStoryQuestionRequest, lang: String): ApiResponse<Int>
-    fun updatePersonStoryQuestion(id: Int, request: UpdatePersonStoryQuestionRequest, lang: String): ApiResponse<Nothing>
+    fun createPersonStoryQuestion(request: CreatePersonStoryQuestionRequest, lang: String): ApiResponse<PersonStoryQuestionResponse>
+    fun updatePersonStoryQuestion(id: Int, request: UpdatePersonStoryQuestionRequest, lang: String): ApiResponse<PersonStoryQuestionResponse>
     fun deletePersonStoryQuestion(id: Int, lang: String): ApiResponse<Nothing>
 }

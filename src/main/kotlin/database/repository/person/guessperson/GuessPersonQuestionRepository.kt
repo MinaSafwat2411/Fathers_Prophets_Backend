@@ -20,27 +20,17 @@ class GuessPersonQuestionRepository(
         )
     }
 
-    override fun getQuestionById(id: Int, lang: String): ApiResponse<GuessPersonQuestionResponse> {
-        val question = dao.findById(id)
-        return ApiResponse(
-            success = true,
-            data = question?.convertToResponse(),
-            message = Localization.get("guess_person_question_retrieved_successfully", lang)
-        )
-    }
-
     override fun createQuestion(
         request: CreateGuessPersonQuestionRequest,
         lang: String
-    ): ApiResponse<Int> {
-        val id = dao.create(request.convertToDto())
-
-        if (id == 0) throw IllegalArgumentException(Localization.get("guess_person_question_creation_failed", lang))
+    ): ApiResponse<GuessPersonQuestionResponse> {
+        val create = dao.create(request.convertToDto())
+            ?:throw IllegalArgumentException(Localization.get("guess_person_question_creation_failed", lang))
 
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = create.convertToResponse(),
             message = Localization.get("guess_person_question_created_successfully", lang)
         )
     }
@@ -49,14 +39,13 @@ class GuessPersonQuestionRepository(
         id: Int,
         request: UpdateGuessPersonQuestionRequest,
         lang: String
-    ): ApiResponse<Nothing> {
+    ): ApiResponse<GuessPersonQuestionResponse> {
         val updated = dao.update(request.convertToDto(id))
-
-        if (!updated) throw IllegalArgumentException(Localization.get("guess_person_question_update_failed", lang))
+            ?:throw IllegalArgumentException(Localization.get("guess_person_question_update_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = null,
+            data = updated.convertToResponse(),
             message = Localization.get("guess_person_question_updated_successfully", lang)
         )
     }

@@ -15,6 +15,6 @@ data class PersonMcqAnswerDto(
         answer = this.answer,
         questionId = this.questionId,
         userId = this.userId,
-        status = this.status.name
+        status = this.status.name,
     )
 }

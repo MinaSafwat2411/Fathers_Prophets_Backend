@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.tables.activity.guessperson
+package com.fathersprophets.backend.database.tables.person.guessperson
 
 import com.fathersprophets.backend.database.tables.person.mcq.McqCorrectAnswer
 import com.fathersprophets.backend.database.tables.person.PersonsTable

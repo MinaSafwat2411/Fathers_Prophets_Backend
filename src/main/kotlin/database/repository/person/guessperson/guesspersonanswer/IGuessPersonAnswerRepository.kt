@@ -8,11 +8,7 @@ import com.fathersprophets.backend.models.guesspersonanswer.UpdateGuessPersonAns
 
 interface IGuessPersonAnswerRepository {
     fun getAllAnswers(lang: String): ApiResponse<List<GuessPersonAnswerResponse>>
-    fun getAnswerById(id: Int, lang: String): ApiResponse<GuessPersonAnswerResponse>
-    fun getAnswersByQuestionId(questionId: Int, lang: String): ApiResponse<List<GuessPersonAnswerResponse>>
-    fun getAnswersByUserId(userId: Int, lang: String): ApiResponse<List<GuessPersonAnswerResponse>>
-    fun createAnswer(request: CreateGuessPersonAnswerRequest, lang: String): ApiResponse<Int>
-    fun updateAnswer(id: Int, request: UpdateGuessPersonAnswerRequest, lang: String): ApiResponse<Nothing>
-    fun updateAnswerStatus(id: Int, request: UpdateGuessPersonAnswerStatusRequest, lang: String): ApiResponse<Nothing>
+    fun getAnswersByUserIdAndQuestionId(userId: Int, questionId: Int,lang: String): ApiResponse<List<GuessPersonAnswerResponse>>
+    fun createAnswer(request: CreateGuessPersonAnswerRequest, lang: String): ApiResponse<GuessPersonAnswerResponse>
     fun deleteAnswer(id: Int, lang: String): ApiResponse<Nothing>
 }

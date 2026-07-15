@@ -12,19 +12,13 @@ fun Route.personQuestionRoutes(personQuestionService: IPersonQuestionService) {
     route("/person-question") {
 
         get {
+            call.requireRole("admin", "superadmin", "games")
             val lang = call.request.headers["Accept-Language"] ?: "en"
             val response = personQuestionService.getAllPersonQuestions(lang)
             call.respond(response)
         }
 
-        get("/{id}") {
-            val lang = call.request.headers["Accept-Language"] ?: "en"
-            val id = call.parameters["id"]?.toIntOrNull()
-            val response = personQuestionService.getPersonQuestionById(id, lang)
-            call.respond(response)
-        }
-
-        get("/person/{personId}") {
+        get("/{personId}") {
             val lang = call.request.headers["Accept-Language"] ?: "en"
             val personId = call.parameters["personId"]?.toIntOrNull()
             val response = personQuestionService.getPersonQuestionsByPersonId(personId, lang)

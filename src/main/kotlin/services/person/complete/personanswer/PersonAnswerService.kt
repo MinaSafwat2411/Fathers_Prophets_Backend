@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.services.person.complete.personanswer
 
-import com.fathersprophets.backend.database.repository.person.personanswer.IPersonAnswerRepository
+import com.fathersprophets.backend.database.repository.person.personquestion.personanswer.IPersonAnswerRepository
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.personanswer.CreatePersonAnswerRequest
 import com.fathersprophets.backend.models.personanswer.PersonAnswerResponse

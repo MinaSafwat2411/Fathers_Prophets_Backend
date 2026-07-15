@@ -4,7 +4,7 @@ import com.fathersprophets.backend.database.tables.activity.escapeegypt.EscapeEg
 import com.fathersprophets.backend.database.tables.activity.escapeegypt.EscapeEgyptQuestionsTable
 import com.fathersprophets.backend.database.tables.activity.escapeegypt.EscapeEgyptTable
 import com.fathersprophets.backend.database.tables.activity.guessperson.GuessPersonAnswersTable
-import com.fathersprophets.backend.database.tables.activity.guessperson.GuessPersonTable
+import com.fathersprophets.backend.database.tables.person.guessperson.GuessPersonTable
 import com.fathersprophets.backend.database.tables.activity.matchingair.MatchingPairAnswersTable
 import com.fathersprophets.backend.database.tables.activity.matchingair.MatchingPairTable
 import com.fathersprophets.backend.database.tables.activity.timeline.TimelineAnswersTable

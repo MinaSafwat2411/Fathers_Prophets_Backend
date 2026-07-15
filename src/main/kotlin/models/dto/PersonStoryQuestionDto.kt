@@ -5,11 +5,12 @@ import com.fathersprophets.backend.models.personstoryquestion.PersonStoryQuestio
 data class PersonStoryQuestionDto(
     val id: Int,
     val storyId: Int,
-    val question: String
+    val question: String,
+    val correctAnswer: String
 ) {
     fun convertToPersonStoryQuestionResponse() = PersonStoryQuestionResponse(
         id = this.id,
         storyId = this.storyId,
-        question = this.question
+        question = this.question,
     )
 }

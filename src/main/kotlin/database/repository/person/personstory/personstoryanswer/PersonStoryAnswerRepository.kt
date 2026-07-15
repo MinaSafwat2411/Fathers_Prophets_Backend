@@ -1,6 +1,7 @@
-package com.fathersprophets.backend.database.repository.person.personstoryanswer
+package com.fathersprophets.backend.database.repository.person.personstory.personstoryanswer
 
 import com.fathersprophets.backend.database.dao.person.story.PersonStoryAnswerDao
+import com.fathersprophets.backend.database.dao.person.story.PersonStoryQuestionDao
 import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.PersonStoryAnswerDto
@@ -12,10 +13,25 @@ import com.fathersprophets.backend.utils.Localization
 
 class PersonStoryAnswerRepository(
     private val personStoryAnswerDao: PersonStoryAnswerDao,
+    private val personStoryQuestionDao: PersonStoryQuestionDao
 ) : IPersonStoryAnswerRepository {
 
     override fun getAllPersonStoryAnswers(lang: String): ApiResponse<List<PersonStoryAnswerResponse>> {
         val answers = personStoryAnswerDao.findAll()
+        val questions = personStoryQuestionDao.findAll()
+        return ApiResponse(
+            success = true,
+            data = answers.map { it.convertToResponse(questions.find { q -> q.id == it.questionId }?.correctAnswer) },
+            message = Localization.get("person_story_answers_retrieved_successfully", lang)
+        )
+    }
+
+    override fun getAllPersonStoryAnswersByUserIdAndStoryId(
+        userId: Int,
+        storyId: Int,
+        lang: String
+    ): ApiResponse<List<PersonStoryAnswerResponse>> {
+        val answers = personStoryAnswerDao.findByUserIdAndStoryId(userId, storyId)
         return ApiResponse(
             success = true,
             data = answers.map { it.convertToResponse() },
@@ -23,74 +39,35 @@ class PersonStoryAnswerRepository(
         )
     }
 
-    override fun getPersonStoryAnswerById(id: Int, lang: String): ApiResponse<PersonStoryAnswerResponse> {
-        val answer = personStoryAnswerDao.findById(id)
-        return ApiResponse(
-            success = true,
-            data = answer?.convertToResponse(),
-            message = Localization.get("person_story_answer_retrieved_successfully", lang)
-        )
-    }
-
-    override fun getPersonStoryAnswersByStoryId(storyId: Int, lang: String): ApiResponse<List<PersonStoryAnswerResponse>> {
-        val answers = personStoryAnswerDao.findByStoryId(storyId)
-        return ApiResponse(
-            success = true,
-            data = answers.map { it.convertToResponse() },
-            message = Localization.get("person_story_answers_retrieved_successfully", lang)
-        )
-    }
-
-    override fun getPersonStoryAnswersByUserId(userId: Int, lang: String): ApiResponse<List<PersonStoryAnswerResponse>> {
-        val answers = personStoryAnswerDao.findByUserId(userId)
-        return ApiResponse(
-            success = true,
-            data = answers.map { it.convertToResponse() },
-            message = Localization.get("person_story_answers_retrieved_successfully", lang)
-        )
-    }
-
-    override fun getPersonStoryAnswersByQuestionId(questionId: Int, lang: String): ApiResponse<List<PersonStoryAnswerResponse>> {
-        val answers = personStoryAnswerDao.findByQuestionId(questionId)
-        return ApiResponse(
-            success = true,
-            data = answers.map { it.convertToResponse() },
-            message = Localization.get("person_story_answers_retrieved_successfully", lang)
-        )
-    }
-
-    override fun createPersonStoryAnswer(request: CreatePersonStoryAnswerRequest, lang: String): ApiResponse<Int> {
-        val id = personStoryAnswerDao.create(request.convertToPersonStoryAnswerDto())
-
-        if (id == 0) throw IllegalArgumentException(Localization.get("person_story_answer_creation_failed", lang))
+    override fun createPersonStoryAnswer(request: CreatePersonStoryAnswerRequest, lang: String): ApiResponse<PersonStoryAnswerResponse> {
+        val created = personStoryAnswerDao.create(request.convertToPersonStoryAnswerDto())
+            ?:throw IllegalArgumentException(Localization.get("person_story_answer_creation_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = created.convertToResponse(),
             message = Localization.get("person_story_answer_created_successfully", lang)
         )
     }
 
-    override fun updatePersonStoryAnswer(id: Int, request: UpdatePersonStoryAnswerRequest, lang: String): ApiResponse<Nothing> {
+    override fun updatePersonStoryAnswer(id: Int, request: UpdatePersonStoryAnswerRequest, lang: String): ApiResponse<PersonStoryAnswerResponse> {
         val updated = personStoryAnswerDao.update(request.convertToPersonStoryAnswerDto(id))
-
-        if (!updated) throw IllegalArgumentException(Localization.get("person_story_answer_update_failed", lang))
+            ?:throw IllegalArgumentException(Localization.get("person_story_answer_update_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = null,
+            data = updated.convertToResponse(),
             message = Localization.get("person_story_answer_updated_successfully", lang)
         )
     }
 
-    override fun updatePersonStoryAnswerStatus(id: Int, request: UpdatePersonStoryAnswerStatusRequest, lang: String): ApiResponse<Nothing> {
+    override fun updatePersonStoryAnswerStatus(id: Int, request: UpdatePersonStoryAnswerStatusRequest, lang: String): ApiResponse<PersonStoryAnswerResponse> {
         val updated = personStoryAnswerDao.updateStatus(statusToDto(id, AnswerStatus.valueOf(request.status)))
-
-        if (!updated) throw IllegalArgumentException(Localization.get("person_story_answer_status_update_failed", lang))
+            ?:throw IllegalArgumentException(Localization.get("person_story_answer_status_update_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = null,
+            data = updated.convertToResponse(),
             message = Localization.get("person_story_answer_status_updated_successfully", lang)
         )
     }

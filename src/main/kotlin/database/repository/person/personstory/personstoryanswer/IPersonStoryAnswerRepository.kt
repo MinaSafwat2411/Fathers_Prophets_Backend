@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.services.person.personstory.personstoryanswer
+package com.fathersprophets.backend.database.repository.person.personstory.personstoryanswer
 
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.personstoryanswer.CreatePersonStoryAnswerRequest
@@ -6,11 +6,11 @@ import com.fathersprophets.backend.models.personstoryanswer.PersonStoryAnswerRes
 import com.fathersprophets.backend.models.personstoryanswer.UpdatePersonStoryAnswerRequest
 import com.fathersprophets.backend.models.personstoryanswer.UpdatePersonStoryAnswerStatusRequest
 
-interface IPersonStoryAnswerService {
+interface IPersonStoryAnswerRepository {
     fun getAllPersonStoryAnswers(lang: String): ApiResponse<List<PersonStoryAnswerResponse>>
-    fun getPersonStoryAnswersByUserAndStoryId(storyId: Int?, userId: Int?, lang: String): ApiResponse<List<PersonStoryAnswerResponse>>
+    fun getAllPersonStoryAnswersByUserIdAndStoryId(userId: Int, storyId: Int,lang: String): ApiResponse<List<PersonStoryAnswerResponse>>
     fun createPersonStoryAnswer(request: CreatePersonStoryAnswerRequest, lang: String): ApiResponse<PersonStoryAnswerResponse>
-    fun updatePersonStoryAnswer(id: Int?, request: UpdatePersonStoryAnswerRequest, lang: String): ApiResponse<PersonStoryAnswerResponse>
-    fun updatePersonStoryAnswerStatus(id: Int?, request: UpdatePersonStoryAnswerStatusRequest, lang: String): ApiResponse<PersonStoryAnswerResponse>
-    fun deletePersonStoryAnswer(id: Int?, lang: String): ApiResponse<Nothing>
+    fun updatePersonStoryAnswer(id: Int, request: UpdatePersonStoryAnswerRequest, lang: String): ApiResponse<PersonStoryAnswerResponse>
+    fun updatePersonStoryAnswerStatus(id: Int, request: UpdatePersonStoryAnswerStatusRequest, lang: String): ApiResponse<PersonStoryAnswerResponse>
+    fun deletePersonStoryAnswer(id: Int, lang: String): ApiResponse<Nothing>
 }

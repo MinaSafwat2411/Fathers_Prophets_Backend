@@ -9,5 +9,6 @@ data class PersonStoryAnswerResponse(
     val userId: Int,
     val answered: String,
     val status: String,
-    val questionId: Int
+    val questionId: Int,
+    val correctAnswer : String? = null
 )

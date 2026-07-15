@@ -24,8 +24,8 @@ class PersonAnswerDao {
             .singleOrNull()?.let { resultRowToPersonAnswer(it) }
     }
 
-    fun findByQuestionId(questionId: Int) = transaction {
-        PersonsAnswersTable.selectAll().where { PersonsAnswersTable.questionId eq questionId }
+    fun findByQuestionIdAndUserId(questionId: Int, userId: Int) = transaction {
+        PersonsAnswersTable.selectAll().where { (PersonsAnswersTable.questionId eq questionId)and (PersonsAnswersTable.userId eq userId) }
             .map { resultRowToPersonAnswer(it) }
     }
 

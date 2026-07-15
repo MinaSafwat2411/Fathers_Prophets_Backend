@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.dao.person.guessperson
 
-import com.fathersprophets.backend.database.tables.activity.guessperson.GuessPersonTable
+import com.fathersprophets.backend.database.tables.person.guessperson.GuessPersonTable
 import com.fathersprophets.backend.models.dto.GuessPersonQuestionDto
 import com.fathersprophets.backend.models.guessperson.GuessPersonChoice
 import kotlinx.serialization.json.Json

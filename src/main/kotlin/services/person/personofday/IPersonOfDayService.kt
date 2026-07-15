@@ -7,9 +7,8 @@ import com.fathersprophets.backend.models.personofday.UpdatePersonOfDayRequest
 
 interface IPersonOfDayService {
     fun getAllPersonsOfDay(lang: String): ApiResponse<List<PersonOfDayResponse>>
-    fun getPersonOfDayById(id: Int?, lang: String): ApiResponse<PersonOfDayResponse>
     fun getPersonOfDayByDate(lang: String): ApiResponse<PersonOfDayResponse>
-    fun addPersonOfDay(request: CreatePersonOfDayRequest, lang: String): ApiResponse<Int>
-    fun updatePersonOfDay(id: Int?, request: UpdatePersonOfDayRequest, lang: String): ApiResponse<Nothing>
+    fun addPersonOfDay(request: CreatePersonOfDayRequest, lang: String): ApiResponse<PersonOfDayResponse>
+    fun updatePersonOfDay(id: Int?, request: UpdatePersonOfDayRequest, lang: String): ApiResponse<PersonOfDayResponse>
     fun deletePersonOfDay(id: Int?, lang: String): ApiResponse<Nothing>
 }

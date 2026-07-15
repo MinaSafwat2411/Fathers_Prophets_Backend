@@ -12,7 +12,7 @@ class PersonMcqAnswerDao {
         answer = row[PersonsMcqAnswersTable.answer],
         questionId = row[PersonsMcqAnswersTable.questionId],
         userId = row[PersonsMcqAnswersTable.userId],
-        status = row[PersonsMcqAnswersTable.status]
+        status = row[PersonsMcqAnswersTable.status],
     )
 
     fun findAll() = transaction {
@@ -24,13 +24,9 @@ class PersonMcqAnswerDao {
             .singleOrNull()?.let { resultRowToPersonMcqAnswer(it) }
     }
 
-    fun findByQuestionId(questionId: Int) = transaction {
-        PersonsMcqAnswersTable.selectAll().where { PersonsMcqAnswersTable.questionId eq questionId }
-            .map { resultRowToPersonMcqAnswer(it) }
-    }
 
-    fun findByUserId(userId: Int) = transaction {
-        PersonsMcqAnswersTable.selectAll().where { PersonsMcqAnswersTable.userId eq userId }
+    fun findByUserIdAndQuestionId(userId: Int, questionId: Int) = transaction {
+        PersonsMcqAnswersTable.selectAll().where { (PersonsMcqAnswersTable.userId eq userId)and (PersonsMcqAnswersTable.questionId eq questionId) }
             .map { resultRowToPersonMcqAnswer(it) }
     }
 

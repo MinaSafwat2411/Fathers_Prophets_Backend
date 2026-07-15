@@ -10,7 +10,8 @@ class PersonStoryQuestionDao {
     private fun resultRowToPersonStoryQuestion(row: ResultRow) = PersonStoryQuestionDto(
         id = row[PersonStoryQuestionsTable.id],
         storyId = row[PersonStoryQuestionsTable.storyId],
-        question = row[PersonStoryQuestionsTable.question]
+        question = row[PersonStoryQuestionsTable.question],
+        correctAnswer = row[PersonStoryQuestionsTable.correctAnswer]
     )
 
     fun findAll() = transaction {
@@ -31,6 +32,7 @@ class PersonStoryQuestionDao {
         PersonStoryQuestionsTable.insert {
             it[storyId] = dto.storyId
             it[question] = dto.question
+            it[correctAnswer] = dto.correctAnswer
         }.let { findById(it[PersonStoryQuestionsTable.id]) }
     }
 

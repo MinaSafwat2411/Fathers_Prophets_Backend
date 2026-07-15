@@ -8,13 +8,15 @@ data class PersonAnswerDto(
     val answer: String,
     val questionId: Int,
     val userId: Int,
-    val status: AnswerStatus
+    val status: AnswerStatus,
+    val correctAnswer: String? = null
 ) {
-    fun convertToPersonAnswerResponse() = PersonAnswerResponse(
+    fun convertToPersonAnswerResponse(correctAnswer: String? = null) = PersonAnswerResponse(
         id = this.id,
         answer = this.answer,
         questionId = this.questionId,
         userId = this.userId,
-        status = this.status.name
+        status = this.status.name,
+        correctAnswer = correctAnswer
     )
 }

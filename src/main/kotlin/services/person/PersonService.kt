@@ -28,6 +28,14 @@ class PersonService(
         return personRepository.addPerson(person, lang)
     }
 
+    override fun getPersonByType(
+        personType: String?,
+        lang: String
+    ): ApiResponse<List<PersonResponse>> {
+        if (personType == null) throw IllegalArgumentException(Localization.get("person_type_required", lang))
+        return personRepository.getPersonByType(personType, lang)
+    }
+
     override fun updatePerson(
         personId: Int?,
         update: UpdatePersonRequest,

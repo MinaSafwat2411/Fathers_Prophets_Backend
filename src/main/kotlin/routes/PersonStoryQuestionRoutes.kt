@@ -17,13 +17,6 @@ fun Route.personStoryQuestionRoutes(personStoryQuestionService: IPersonStoryQues
             call.respond(response)
         }
 
-        get("/{id}") {
-            val lang = call.request.headers["Accept-Language"] ?: "en"
-            val id = call.parameters["id"]?.toIntOrNull()
-            val response = personStoryQuestionService.getPersonStoryQuestionById(id, lang)
-            call.respond(response)
-        }
-
         get("/story/{storyId}") {
             val lang = call.request.headers["Accept-Language"] ?: "en"
             val storyId = call.parameters["storyId"]?.toIntOrNull()

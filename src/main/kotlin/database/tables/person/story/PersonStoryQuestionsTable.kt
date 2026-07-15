@@ -7,6 +7,7 @@ object PersonStoryQuestionsTable : Table("persons_story_questions") {
     val id = integer("id").autoIncrement()
     val storyId = reference("story_id", PersonStoryTable.id, onDelete = ReferenceOption.CASCADE).index("idx_persons_story_questions_story_id")
     val question = varchar("question", 255)
+    val correctAnswer = varchar("correct_answer", 255)
 
     override val primaryKey = PrimaryKey(id)
 }

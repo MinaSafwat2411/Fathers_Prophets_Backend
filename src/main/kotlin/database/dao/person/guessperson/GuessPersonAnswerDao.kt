@@ -4,6 +4,7 @@ import com.fathersprophets.backend.database.tables.activity.guessperson.GuessPer
 import com.fathersprophets.backend.models.dto.GuessPersonAnswerDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
@@ -29,13 +30,9 @@ class GuessPersonAnswerDao {
             .singleOrNull()?.let { resultRowToDto(it) }
     }
 
-    fun findByQuestionId(questionId: Int) = transaction {
-        GuessPersonAnswersTable.selectAll().where { GuessPersonAnswersTable.questionId eq questionId }
-            .map { resultRowToDto(it) }
-    }
 
-    fun findByUserId(userId: Int) = transaction {
-        GuessPersonAnswersTable.selectAll().where { GuessPersonAnswersTable.userId eq userId }
+    fun findByUserIdAndQuestionId(userId: Int, questionId: Int) = transaction {
+        GuessPersonAnswersTable.selectAll().where { (GuessPersonAnswersTable.userId eq userId) and (GuessPersonAnswersTable.questionId eq questionId) }
             .map { resultRowToDto(it) }
     }
 

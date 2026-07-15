@@ -17,13 +17,6 @@ fun Route.guessPersonQuestionRoutes(service: IGuessPersonQuestionService) {
             call.respond(response)
         }
 
-        get("/{id}") {
-            val lang = call.request.headers["Accept-Language"] ?: "en"
-            val id = call.parameters["id"]?.toIntOrNull()
-            val response = service.getQuestionById(id, lang)
-            call.respond(response)
-        }
-
         post {
             call.requireRole("admin", "superadmin", "games")
             val lang = call.request.headers["Accept-Language"] ?: "en"

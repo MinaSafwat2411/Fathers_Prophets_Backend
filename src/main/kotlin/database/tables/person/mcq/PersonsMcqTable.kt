@@ -6,10 +6,7 @@ import org.jetbrains.exposed.sql.Table
 import org.postgresql.util.PGobject
 
 enum class McqCorrectAnswer {
-    `1`,
-    `2`,
-    `3`,
-    `4`
+    first, second, third, fourth
 }
 
 object PersonsMcqTable : Table("persons_mcq") {

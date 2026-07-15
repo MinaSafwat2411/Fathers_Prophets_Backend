@@ -3,12 +3,12 @@ package com.fathersprophets.backend.database.repository.person.guessperson.guess
 import com.fathersprophets.backend.database.dao.person.guessperson.GuessPersonAnswerDao
 import com.fathersprophets.backend.database.dao.person.guessperson.GuessPersonQuestionDao
 import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
+import com.fathersprophets.backend.database.tables.person.mcq.McqCorrectAnswer
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.dto.GuessPersonAnswerDto
+import com.fathersprophets.backend.models.dto.GuessPersonQuestionDto
+import com.fathersprophets.backend.models.guessperson.GuessPersonChoice
 import com.fathersprophets.backend.models.guesspersonanswer.CreateGuessPersonAnswerRequest
 import com.fathersprophets.backend.models.guesspersonanswer.GuessPersonAnswerResponse
-import com.fathersprophets.backend.models.guesspersonanswer.UpdateGuessPersonAnswerRequest
-import com.fathersprophets.backend.models.guesspersonanswer.UpdateGuessPersonAnswerStatusRequest
 import com.fathersprophets.backend.utils.Localization
 
 class GuessPersonAnswerRepository(
@@ -18,6 +18,23 @@ class GuessPersonAnswerRepository(
 
     override fun getAllAnswers(lang: String): ApiResponse<List<GuessPersonAnswerResponse>> {
         val answers = answerDao.findAll()
+        val questions = questionDao.findAll()
+        return ApiResponse(
+            success = true,
+            data = answers.map { answerDto ->
+                answerDto.convertToResponse()
+                    .copy(correctAnswer = questions.find { it.id == answerDto.questionId }?.let { getCorrectAnswer(it) })
+            },
+            message = Localization.get("guess_person_answers_retrieved_successfully", lang)
+        )
+    }
+
+    override fun getAnswersByUserIdAndQuestionId(
+        userId: Int,
+        questionId: Int,
+        lang: String
+    ): ApiResponse<List<GuessPersonAnswerResponse>> {
+        val answers = answerDao.findByUserIdAndQuestionId(userId, questionId)
         return ApiResponse(
             success = true,
             data = answers.map { it.convertToResponse() },
@@ -25,91 +42,24 @@ class GuessPersonAnswerRepository(
         )
     }
 
-    override fun getAnswerById(id: Int, lang: String): ApiResponse<GuessPersonAnswerResponse> {
-        val answer = answerDao.findById(id)
-        return ApiResponse(
-            success = true,
-            data = answer?.convertToResponse(),
-            message = Localization.get("guess_person_answer_retrieved_successfully", lang)
-        )
-    }
-
-    override fun getAnswersByQuestionId(questionId: Int, lang: String): ApiResponse<List<GuessPersonAnswerResponse>> {
-        val answers = answerDao.findByQuestionId(questionId)
-        return ApiResponse(
-            success = true,
-            data = answers.map { it.convertToResponse() },
-            message = Localization.get("guess_person_answers_retrieved_successfully", lang)
-        )
-    }
-
-    override fun getAnswersByUserId(userId: Int, lang: String): ApiResponse<List<GuessPersonAnswerResponse>> {
-        val answers = answerDao.findByUserId(userId)
-        return ApiResponse(
-            success = true,
-            data = answers.map { it.convertToResponse() },
-            message = Localization.get("guess_person_answers_retrieved_successfully", lang)
-        )
-    }
-
-    override fun createAnswer(request: CreateGuessPersonAnswerRequest, lang: String): ApiResponse<Int> {
-
-        val id = answerDao.create(
-            GuessPersonAnswerDto(
-                id = 0,
-                questionId = request.questionId,
-                userId = request.userId,
-                personId = request.personId,
-                status = AnswerStatus.TEACHER_STILL_NOT_CORRECTED
-            )
-        )
-
-        if (id == 0) throw IllegalArgumentException(Localization.get("guess_person_answer_creation_failed", lang))
+    override fun createAnswer(
+        request: CreateGuessPersonAnswerRequest,
+        lang: String
+    ): ApiResponse<GuessPersonAnswerResponse> {
 
         val questionDao = questionDao.findById(request.questionId)
             ?: throw IllegalArgumentException(Localization.get("guess_person_question_not_found", lang))
 
         val status = gradeAnswer(request.personId, questionDao.correctPersonId)
 
-        val update = answerDao.updateStatus(
-            GuessPersonAnswerDto(
-                id = id,
-                questionId = request.questionId,
-                userId = request.userId,
-                personId = request.personId,
-                status = status
-            )
-        )
+        val create = answerDao.create(request.convertToDto().copy(status = status))
+            ?: throw IllegalArgumentException(Localization.get("guess_person_answer_creation_failed", lang))
 
-        if (!update) throw IllegalArgumentException(Localization.get("guess_person_answer_update_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = create.convertToResponse(),
             message = Localization.get("guess_person_answer_created_successfully", lang)
-        )
-    }
-
-    override fun updateAnswer(id: Int, request: UpdateGuessPersonAnswerRequest, lang: String): ApiResponse<Nothing> {
-
-        val update = answerDao.update(request.convertToDto(id))
-
-        if (!update) throw IllegalArgumentException(Localization.get("guess_person_answer_update_failed", lang))
-
-        return ApiResponse(
-            success = true,
-            data = null,
-            message = Localization.get("guess_person_answer_updated_successfully", lang)
-        )
-    }
-
-    override fun updateAnswerStatus(id: Int, request: UpdateGuessPersonAnswerStatusRequest, lang: String): ApiResponse<Nothing> {
-        answerDao.updateStatus(idToDto(id, AnswerStatus.valueOf(request.status)))
-        val updated = answerDao.findById(id)
-        return ApiResponse(
-            success = true,
-            data = null,
-            message = Localization.get("guess_person_answer_status_updated_successfully", lang)
         )
     }
 
@@ -125,12 +75,12 @@ class GuessPersonAnswerRepository(
     private fun gradeAnswer(answer: Int, correctAnswer: Int) =
         if (answer == correctAnswer) AnswerStatus.IS_TRUE else AnswerStatus.IS_FALSE
 
+    private fun getCorrectAnswer(question: GuessPersonQuestionDto): GuessPersonChoice =
+        when (question.correctAnswer) {
+            McqCorrectAnswer.first -> question.first
+            McqCorrectAnswer.second -> question.second
+            McqCorrectAnswer.third -> question.third
+            McqCorrectAnswer.fourth -> question.fourth
+        }
 
-    private fun idToDto(id: Int, status: AnswerStatus) = GuessPersonAnswerDto(
-        id = id,
-        questionId = 0,
-        userId = 0,
-        personId = 0,
-        status = status
-    )
 }
