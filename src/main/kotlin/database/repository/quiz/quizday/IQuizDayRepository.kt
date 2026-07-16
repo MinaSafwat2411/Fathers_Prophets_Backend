@@ -7,9 +7,8 @@ import com.fathersprophets.backend.models.quizday.UpdateQuizDayRequest
 
 interface IQuizDayRepository {
     fun getAllQuizDays(lang: String): ApiResponse<List<QuizDayResponse>>
-    fun getQuizDayById(id: Int, lang: String): ApiResponse<QuizDayResponse>
     fun getQuizDaysByQuizId(quizId: Int, lang: String): ApiResponse<List<QuizDayResponse>>
-    fun createQuizDay(request: CreateQuizDayRequest, lang: String): ApiResponse<Int>
-    fun updateQuizDay(id: Int, request: UpdateQuizDayRequest, lang: String): ApiResponse<Nothing>
+    fun createQuizDay(request: CreateQuizDayRequest, lang: String): ApiResponse<QuizDayResponse>
+    fun updateQuizDay(id: Int, request: UpdateQuizDayRequest, lang: String): ApiResponse<QuizDayResponse>
     fun deleteQuizDay(id: Int, lang: String): ApiResponse<Nothing>
 }

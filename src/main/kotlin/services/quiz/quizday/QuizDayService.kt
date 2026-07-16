@@ -17,17 +17,12 @@ class QuizDayService(
         return repository.getAllQuizDays(lang)
     }
 
-    override fun getQuizDayById(id: Int?, lang: String): ApiResponse<QuizDayResponse> {
-        if (id == null) throw IllegalArgumentException(Localization.get("quiz_day_id_required", lang))
-        return repository.getQuizDayById(id, lang)
-    }
-
     override fun getQuizDaysByQuizId(quizId: Int?, lang: String): ApiResponse<List<QuizDayResponse>> {
         if (quizId == null) throw IllegalArgumentException(Localization.get("quiz_id_required", lang))
         return repository.getQuizDaysByQuizId(quizId, lang)
     }
 
-    override fun createQuizDay(request: CreateQuizDayRequest, lang: String): ApiResponse<Int> {
+    override fun createQuizDay(request: CreateQuizDayRequest, lang: String): ApiResponse<QuizDayResponse> {
         validateRequired(
             request.quizId to "quizId",
             request.dayName to "dayName",
@@ -45,7 +40,7 @@ class QuizDayService(
         return repository.createQuizDay(request, lang)
     }
 
-    override fun updateQuizDay(id: Int?, request: UpdateQuizDayRequest, lang: String): ApiResponse<Nothing> {
+    override fun updateQuizDay(id: Int?, request: UpdateQuizDayRequest, lang: String): ApiResponse<QuizDayResponse> {
         if (id == null) throw IllegalArgumentException(Localization.get("quiz_day_id_required", lang))
         validateRequired(
             request.quizId to "quizId",

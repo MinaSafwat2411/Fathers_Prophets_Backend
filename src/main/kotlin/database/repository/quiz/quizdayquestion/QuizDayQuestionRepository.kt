@@ -29,37 +29,38 @@ class QuizDayQuestionRepository(
         )
     }
 
-    override fun createQuestion(request: CreateQuizDayQuestionRequest, lang: String): ApiResponse<Int> {
-        val id = dao.create(request.convertToDto())
-
-        if (id == 0) throw IllegalArgumentException(Localization.get("quiz_day_question_creation_failed", lang))
+    override fun createQuestion(request: CreateQuizDayQuestionRequest, lang: String): ApiResponse<QuizDayQuestionResponse> {
+        val create = dao.create(request.convertToDto())
+            ?: throw IllegalArgumentException(Localization.get("quiz_day_question_creation_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = create.convertToResponse(),
             message = Localization.get("quiz_day_question_created_successfully", lang)
         )
     }
 
-    override fun createQuestions(requests: List<CreateQuizDayQuestionRequest>, lang: String): ApiResponse<List<Int>> {
+    override fun createQuestions(requests: List<CreateQuizDayQuestionRequest>, lang: String): ApiResponse<List<QuizDayQuestionResponse>> {
+
         val created = dao.createMany(requests.map { it.convertToDto() })
+
         if (created.size != requests.size) throw IllegalArgumentException(Localization.get("quiz_day_questions_creation_failed", lang))
+
         return ApiResponse(
             success = true,
-            data = created.map { it.id },
+            data = created.map { it.convertToResponse() },
             message = Localization.get("quiz_day_questions_created_successfully", lang)
         )
     }
 
-    override fun updateQuestion(id: Int, request: UpdateQuizDayQuestionRequest, lang: String): ApiResponse<Nothing> {
+    override fun updateQuestion(id: Int, request: UpdateQuizDayQuestionRequest, lang: String): ApiResponse<QuizDayQuestionResponse> {
 
         val  update = dao.update(request.convertToDto(id))
-
-        if (!update) throw IllegalArgumentException(Localization.get("quiz_day_question_update_failed", lang))
-
+            ?:throw IllegalArgumentException(Localization.get("quiz_day_question_update_failed", lang))
+null
         return ApiResponse(
             success = true,
-            data = null,
+            data = update.convertToResponse(),
             message = Localization.get("quiz_day_question_updated_successfully", lang)
         )
     }

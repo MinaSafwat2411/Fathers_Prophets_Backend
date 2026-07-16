@@ -27,16 +27,6 @@ class QuizAnswerDao {
             .singleOrNull()?.let { resultRowToDto(it) }
     }
 
-    fun findByQuestionId(questionId: Int) = transaction {
-        QuizAnswersTable.selectAll().where { QuizAnswersTable.questionId eq questionId }
-            .map { resultRowToDto(it) }
-    }
-
-    fun findByUserId(userId: Int) = transaction {
-        QuizAnswersTable.selectAll().where { QuizAnswersTable.userId eq userId }
-            .map { resultRowToDto(it) }
-    }
-
     fun findByDayId(dayId: Int) = transaction {
         QuizAnswersTable.selectAll().where { QuizAnswersTable.dayId eq dayId }
             .map { resultRowToDto(it) }

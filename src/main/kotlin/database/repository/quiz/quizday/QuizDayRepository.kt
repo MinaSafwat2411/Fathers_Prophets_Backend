@@ -20,15 +20,6 @@ class QuizDayRepository(
         )
     }
 
-    override fun getQuizDayById(id: Int, lang: String): ApiResponse<QuizDayResponse> {
-        val quizDay = dao.findById(id)
-        return ApiResponse(
-            success = true,
-            data = quizDay?.convertToResponse(),
-            message = Localization.get("quiz_day_retrieved_successfully", lang)
-        )
-    }
-
     override fun getQuizDaysByQuizId(quizId: Int, lang: String): ApiResponse<List<QuizDayResponse>> {
         val quizDays = dao.findByQuizId(quizId)
         return ApiResponse(
@@ -38,25 +29,25 @@ class QuizDayRepository(
         )
     }
 
-    override fun createQuizDay(request: CreateQuizDayRequest, lang: String): ApiResponse<Int> {
-        val id = dao.create(request.convertToDto())
+    override fun createQuizDay(request: CreateQuizDayRequest, lang: String): ApiResponse<QuizDayResponse> {
 
-        if (id == 0) throw IllegalArgumentException(Localization.get("quiz_day_creation_failed", lang))
+        val create = dao.create(request.convertToDto())
+            ?: throw IllegalArgumentException(Localization.get("quiz_day_creation_failed", lang))
+
         return ApiResponse(
             success = true,
-            data = id,
+            data = create.convertToResponse(),
             message = Localization.get("quiz_day_created_successfully", lang)
         )
     }
 
-    override fun updateQuizDay(id: Int, request: UpdateQuizDayRequest, lang: String): ApiResponse<Nothing> {
+    override fun updateQuizDay(id: Int, request: UpdateQuizDayRequest, lang: String): ApiResponse<QuizDayResponse> {
         val updated = dao.update(request.convertToDto(id))
-
-        if (!updated) throw IllegalArgumentException(Localization.get("quiz_day_update_failed", lang))
+            ?:throw IllegalArgumentException(Localization.get("quiz_day_update_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = null,
+            data = updated.convertToResponse(),
             message = Localization.get("quiz_day_updated_successfully", lang)
         )
     }

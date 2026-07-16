@@ -16,12 +16,6 @@ fun Route.quizDayQuestionRoutes(service: IQuizDayQuestionService) {
             call.respond(service.getAllQuestions(lang))
         }
 
-        get("/{id}") {
-            val lang = call.request.headers["Accept-Language"] ?: "en"
-            val id = call.parameters["id"]?.toIntOrNull()
-            call.respond(service.getQuestionById(id, lang))
-        }
-
         get("/quiz-day/{quizDayId}") {
             val lang = call.request.headers["Accept-Language"] ?: "en"
             val quizDayId = call.parameters["quizDayId"]?.toIntOrNull()

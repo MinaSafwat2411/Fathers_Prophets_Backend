@@ -21,18 +21,18 @@ class QuizDayQuestionService(
         return repository.getQuestionsByQuizDayId(quizDayId, lang)
     }
 
-    override fun createQuestion(request: CreateQuizDayQuestionRequest, lang: String): ApiResponse<Int> {
+    override fun createQuestion(request: CreateQuizDayQuestionRequest, lang: String): ApiResponse<QuizDayQuestionResponse> {
         validateCreateRequest(request, lang)
         return repository.createQuestion(request, lang)
     }
 
-    override fun createQuestions(requests: List<CreateQuizDayQuestionRequest>, lang: String): ApiResponse<List<Int>> {
+    override fun createQuestions(requests: List<CreateQuizDayQuestionRequest>, lang: String): ApiResponse<List<QuizDayQuestionResponse>> {
         if (requests.isEmpty()) throw IllegalArgumentException(Localization.get("quiz_day_questions_required", lang))
         requests.forEach { validateCreateRequest(it, lang) }
         return repository.createQuestions(requests, lang)
     }
 
-    override fun updateQuestion(id: Int?, request: UpdateQuizDayQuestionRequest, lang: String): ApiResponse<Nothing> {
+    override fun updateQuestion(id: Int?, request: UpdateQuizDayQuestionRequest, lang: String): ApiResponse<QuizDayQuestionResponse> {
         if (id == null) throw IllegalArgumentException(Localization.get("quiz_day_question_id_required", lang))
         validateRequired(
             request.quizDayId to "quizDayId",
