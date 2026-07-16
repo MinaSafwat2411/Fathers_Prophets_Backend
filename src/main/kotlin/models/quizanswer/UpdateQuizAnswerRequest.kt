@@ -9,4 +9,6 @@ data class UpdateQuizAnswerRequest(
     val dayId: Int,
     val userId: Int,
     val answer: String
-)
+){
+
+}

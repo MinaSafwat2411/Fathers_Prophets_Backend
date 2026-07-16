@@ -10,15 +10,17 @@ data class QuizAnswerDto(
     val dayId: Int,
     val userId: Int,
     val answer: String,
-    val status: AnswerStatus
+    val status: AnswerStatus,
+    val correctAnswer: String? = null
 ) {
-    fun convertToResponse() = QuizAnswerResponse(
+    fun convertToResponse(correctAnswer: String? = null) = QuizAnswerResponse(
         id = id,
         quizId = quizId,
         questionId = questionId,
         dayId = dayId,
         userId = userId,
         answer = answer,
-        status = status.name
+        status = status.name,
+        correctAnswer = correctAnswer
     )
 }

@@ -171,7 +171,7 @@ import com.fathersprophets.backend.services.person.complete.personquestion.Perso
 import com.fathersprophets.backend.services.quiz.IQuizService
 import com.fathersprophets.backend.services.quiz.QuizService
 import com.fathersprophets.backend.services.quiz.quizanswer.IQuizAnswerService
-import com.fathersprophets.backend.services.quizanswer.QuizAnswerService
+import com.fathersprophets.backend.services.quiz.quizanswer.QuizAnswerService
 import com.fathersprophets.backend.services.quiz.quizday.IQuizDayService
 import com.fathersprophets.backend.services.quiz.quizday.QuizDayService
 import com.fathersprophets.backend.services.quiz.quizdayquestion.IQuizDayQuestionService

@@ -4,8 +4,10 @@ import com.fathersprophets.backend.database.dao.quiz.QuizAnswerDao
 import com.fathersprophets.backend.database.dao.quiz.QuizDayQuestionDao
 import com.fathersprophets.backend.database.dao.users.UserProgressQuizDao
 import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
+import com.fathersprophets.backend.database.tables.person.mcq.McqCorrectAnswer
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.QuizAnswerDto
+import com.fathersprophets.backend.models.dto.QuizDayQuestionDto
 import com.fathersprophets.backend.models.quizanswer.CreateQuizAnswerRequest
 import com.fathersprophets.backend.models.quizanswer.QuizAnswerResponse
 import com.fathersprophets.backend.models.quizanswer.UpdateQuizAnswerRequest
@@ -19,6 +21,20 @@ class QuizAnswerRepository(
 
     override fun getAllQuizAnswers(lang: String): ApiResponse<List<QuizAnswerResponse>> {
         val answers = dao.findAll()
+        val questions = quizDayQuestionDao.findAll()
+        return ApiResponse(
+            success = true,
+            data = answers.map { it.convertToResponse().copy(correctAnswer = getCorrectAnswer(questions.first { q -> q.id == it.questionId })) },
+            message = Localization.get("quiz_answers_retrieved_successfully", lang)
+        )
+    }
+
+    override fun getQuizAnswersByUserIdAndDayId(
+        dayId: Int,
+        userId: Int,
+        lang: String
+    ): ApiResponse<List<QuizAnswerResponse>> {
+        val answers = dao.findByUserIdAndDayId(userId, dayId)
         return ApiResponse(
             success = true,
             data = answers.map { it.convertToResponse() },
@@ -26,135 +42,60 @@ class QuizAnswerRepository(
         )
     }
 
-    override fun getQuizAnswerById(id: Int, lang: String): ApiResponse<QuizAnswerResponse> {
-        val answer = dao.findById(id)
-        return ApiResponse(
-            success = true,
-            data = answer?.convertToResponse(),
-            message = Localization.get("quiz_answer_retrieved_successfully", lang)
-        )
-    }
-
-    override fun getQuizAnswersByQuestionId(questionId: Int, lang: String): ApiResponse<List<QuizAnswerResponse>> {
-        val answers = dao.findByQuestionId(questionId)
-        return ApiResponse(
-            success = true,
-            data = answers.map { it.convertToResponse() },
-            message = Localization.get("quiz_answers_retrieved_successfully", lang)
-        )
-    }
-
-    override fun getQuizAnswersByUserId(userId: Int, lang: String): ApiResponse<List<QuizAnswerResponse>> {
-        val answers = dao.findByUserId(userId)
-        return ApiResponse(
-            success = true,
-            data = answers.map { it.convertToResponse() },
-            message = Localization.get("quiz_answers_retrieved_successfully", lang)
-        )
-    }
-
-    override fun getQuizAnswersByDayId(dayId: Int, lang: String): ApiResponse<List<QuizAnswerResponse>> {
-        val answers = dao.findByDayId(dayId)
-        return ApiResponse(
-            success = true,
-            data = answers.map { it.convertToResponse() },
-            message = Localization.get("quiz_answers_retrieved_successfully", lang)
-        )
-    }
-
-    override fun getQuizAnswersByQuizId(quizId: Int, lang: String): ApiResponse<List<QuizAnswerResponse>> {
-        val answers = dao.findByQuizId(quizId)
-        return ApiResponse(
-            success = true,
-            data = answers.map { it.convertToResponse() },
-            message = Localization.get("quiz_answers_retrieved_successfully", lang)
-        )
-    }
-
-    override fun createQuizAnswer(request: CreateQuizAnswerRequest, lang: String): ApiResponse<Int> {
+    override fun createQuizAnswer(request: CreateQuizAnswerRequest, lang: String): ApiResponse<QuizAnswerResponse> {
         val dto = buildDtoForCreate(request, lang)
-        val id = dao.create(dto)
 
-        if (id == 0) throw IllegalArgumentException(Localization.get("quiz_answer_creation_failed", lang))
+        val create = dao.create(dto)
+            ?: throw IllegalArgumentException(Localization.get("quiz_answer_creation_failed", lang))
 
         trackScore(dto)
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = create.convertToResponse(),
             message = Localization.get("quiz_answer_created_successfully", lang)
         )
     }
 
-    override fun createQuizAnswers(requests: List<CreateQuizAnswerRequest>, lang: String): ApiResponse<List<Int>> {
-        val seen = mutableSetOf<List<Int>>()
-        val dtos = requests.map { request ->
-            val key = listOf(request.questionId, request.userId, request.dayId, request.quizId)
-            if (!seen.add(key)) throw IllegalStateException(Localization.get("quiz_answer_already_exists", lang))
-            buildDtoForCreate(request, lang)
-        }
+    override fun createQuizAnswers(
+        requests: List<CreateQuizAnswerRequest>,
+        lang: String
+    ): ApiResponse<List<QuizAnswerResponse>> {
+        val dtos = requests.map { buildDtoForCreate(it, lang) }
 
         val created = dao.createMany(dtos)
 
-        if (created.size != dtos.size) throw IllegalArgumentException(Localization.get("quiz_answers_creation_failed", lang))
+        if (created.size != dtos.size) throw IllegalArgumentException(
+            Localization.get(
+                "quiz_answers_creation_failed",
+                lang
+            )
+        )
 
         created.forEach { trackScore(it) }
         return ApiResponse(
             success = true,
-            data = created.map { it.id },
+            data = created.map { it.convertToResponse() },
             message = Localization.get("quiz_answers_created_successfully", lang)
         )
     }
 
     private fun buildDtoForCreate(request: CreateQuizAnswerRequest, lang: String): QuizAnswerDto {
-        
         val question = quizDayQuestionDao.findById(request.questionId)
             ?: throw IllegalArgumentException(Localization.get("quiz_day_question_not_found", lang))
 
-        return QuizAnswerDto(
-            id = 0,
-            quizId = request.quizId,
-            questionId = request.questionId,
-            dayId = request.dayId,
-            userId = request.userId,
-            answer = request.answer,
-            status = autoGrade(request.answer, question.correctAnswer.name)
-        )
+        val status = autoGrade(request.answer, getCorrectAnswer(question))
+
+        return request.convertToDto().copy(status = status)
     }
 
-    override fun updateQuizAnswer(id: Int, request: UpdateQuizAnswerRequest, lang: String): ApiResponse<Nothing> {
-        val previous = dao.findById(id)
-
-        val question = quizDayQuestionDao.findById(request.questionId)
-            ?: throw IllegalArgumentException(Localization.get("quiz_day_question_not_found", lang))
-
-        val status = autoGrade(request.answer, question.correctAnswer.name)
-
-        val updated = dao.update(
-            QuizAnswerDto(
-                id = id,
-                quizId = request.quizId,
-                questionId = request.questionId,
-                dayId = request.dayId,
-                userId = request.userId,
-                answer = request.answer,
-                status = status
-            )
-        )
-        
-        if (!updated) throw IllegalArgumentException(Localization.get("quiz_answer_update_failed", lang))
-
-        val wasCorrect = previous?.status == AnswerStatus.IS_TRUE
-        val isCorrect = status == AnswerStatus.IS_TRUE
-        if (wasCorrect != isCorrect) {
-            userProgressQuizDao.incrementScore(request.userId, request.quizId, request.dayId, if (isCorrect) 1 else -1)
+    private fun getCorrectAnswer(question: QuizDayQuestionDto): String {
+        return when (question.correctAnswer) {
+            McqCorrectAnswer.first -> question.choice1
+            McqCorrectAnswer.second -> question.choice2
+            McqCorrectAnswer.third -> question.choice3 ?: ""
+            McqCorrectAnswer.fourth -> question.choice4 ?: ""
         }
-
-        return ApiResponse(
-            success = true,
-            data = null,
-            message = Localization.get("quiz_answer_updated_successfully", lang)
-        )
     }
 
     override fun deleteQuizAnswer(id: Int, lang: String): ApiResponse<Nothing> {

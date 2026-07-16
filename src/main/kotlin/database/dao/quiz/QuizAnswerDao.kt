@@ -27,13 +27,8 @@ class QuizAnswerDao {
             .singleOrNull()?.let { resultRowToDto(it) }
     }
 
-    fun findByDayId(dayId: Int) = transaction {
-        QuizAnswersTable.selectAll().where { QuizAnswersTable.dayId eq dayId }
-            .map { resultRowToDto(it) }
-    }
-
-    fun findByQuizId(quizId: Int) = transaction {
-        QuizAnswersTable.selectAll().where { QuizAnswersTable.quizId eq quizId }
+    fun findByUserIdAndDayId(userId: Int, dayId: Int) = transaction {
+        QuizAnswersTable.selectAll().where { (QuizAnswersTable.userId eq userId) and (QuizAnswersTable.dayId eq dayId)}
             .map { resultRowToDto(it) }
     }
 
@@ -57,17 +52,6 @@ class QuizAnswerDao {
             this[QuizAnswersTable.answer] = dto.answer
             this[QuizAnswersTable.status] = dto.status
         }.map { resultRowToDto(it) }
-    }
-
-    fun update(dto: QuizAnswerDto) = transaction {
-        QuizAnswersTable.update({ QuizAnswersTable.id eq dto.id }) {
-            it[quizId] = dto.quizId
-            it[questionId] = dto.questionId
-            it[dayId] = dto.dayId
-            it[userId] = dto.userId
-            it[answer] = dto.answer
-            it[status] = dto.status
-        }.let { findById(dto.id) }
     }
 
     fun delete(id: Int) = transaction {

@@ -1,11 +1,9 @@
-package com.fathersprophets.backend.services.quizanswer
+package com.fathersprophets.backend.services.quiz.quizanswer
 
 import com.fathersprophets.backend.database.repository.quiz.quizanswer.IQuizAnswerRepository
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.quizanswer.CreateQuizAnswerRequest
 import com.fathersprophets.backend.models.quizanswer.QuizAnswerResponse
-import com.fathersprophets.backend.models.quizanswer.UpdateQuizAnswerRequest
-import com.fathersprophets.backend.services.quiz.quizanswer.IQuizAnswerService
 import com.fathersprophets.backend.utils.Localization
 import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
 
@@ -17,53 +15,21 @@ class QuizAnswerService(
         return repository.getAllQuizAnswers(lang)
     }
 
-    override fun getQuizAnswerById(id: Int?, lang: String): ApiResponse<QuizAnswerResponse> {
-        if (id == null) throw IllegalArgumentException(Localization.get("quiz_answer_id_required", lang))
-        return repository.getQuizAnswerById(id, lang)
-    }
-
-    override fun getQuizAnswersByQuestionId(questionId: Int?, lang: String): ApiResponse<List<QuizAnswerResponse>> {
-        if (questionId == null) throw IllegalArgumentException(Localization.get("question_id_required", lang))
-        return repository.getQuizAnswersByQuestionId(questionId, lang)
-    }
-
-    override fun getQuizAnswersByUserId(userId: Int?, lang: String): ApiResponse<List<QuizAnswerResponse>> {
+    override fun getQuizAnswersByUserIdAndDayId(userId: Int?, dayId: Int?, lang: String): ApiResponse<List<QuizAnswerResponse>> {
         if (userId == null) throw IllegalArgumentException(Localization.get("user_id_required", lang))
-        return repository.getQuizAnswersByUserId(userId, lang)
-    }
-
-    override fun getQuizAnswersByDayId(dayId: Int?, lang: String): ApiResponse<List<QuizAnswerResponse>> {
         if (dayId == null) throw IllegalArgumentException(Localization.get("quiz_day_id_required", lang))
-        return repository.getQuizAnswersByDayId(dayId, lang)
+        return repository.getQuizAnswersByUserIdAndDayId(userId, dayId, lang)
     }
 
-    override fun getQuizAnswersByQuizId(quizId: Int?, lang: String): ApiResponse<List<QuizAnswerResponse>> {
-        if (quizId == null) throw IllegalArgumentException(Localization.get("quiz_id_required", lang))
-        return repository.getQuizAnswersByQuizId(quizId, lang)
-    }
-
-    override fun createQuizAnswer(request: CreateQuizAnswerRequest, lang: String): ApiResponse<Int> {
+    override fun createQuizAnswer(request: CreateQuizAnswerRequest, lang: String): ApiResponse<QuizAnswerResponse> {
         validateCreateRequest(request, lang)
         return repository.createQuizAnswer(request, lang)
     }
 
-    override fun createQuizAnswers(requests: List<CreateQuizAnswerRequest>, lang: String): ApiResponse<List<Int>> {
+    override fun createQuizAnswers(requests: List<CreateQuizAnswerRequest>, lang: String): ApiResponse<List<QuizAnswerResponse>> {
         if (requests.isEmpty()) throw IllegalArgumentException(Localization.get("quiz_answers_required", lang))
         requests.forEach { validateCreateRequest(it, lang) }
         return repository.createQuizAnswers(requests, lang)
-    }
-
-    override fun updateQuizAnswer(id: Int?, request: UpdateQuizAnswerRequest, lang: String): ApiResponse<Nothing> {
-        if (id == null) throw IllegalArgumentException(Localization.get("quiz_answer_id_required", lang))
-        validateRequired(
-            request.quizId to "quizId",
-            request.questionId to "questionId",
-            request.dayId to "dayId",
-            request.userId to "userId",
-            request.answer to "answer",
-            lang = lang
-        )
-        return repository.updateQuizAnswer(id, request, lang)
     }
 
     override fun deleteQuizAnswer(id: Int?, lang: String): ApiResponse<Nothing> {
