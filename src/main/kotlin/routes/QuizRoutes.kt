@@ -46,12 +46,6 @@ fun Route.quizRoutes(service: IQuizService) {
             }
         }
 
-        get("/{id}") {
-            val lang = call.request.headers["Accept-Language"] ?: "en"
-            val id = call.parameters["id"]?.toIntOrNull()
-            call.respond(service.getQuizById(id, lang))
-        }
-
         post {
             call.requireRole("admin", "superadmin", "quiz")
             val lang = call.request.headers["Accept-Language"] ?: "en"

@@ -16,11 +16,6 @@ class QuizDayQuestionService(
         return repository.getAllQuestions(lang)
     }
 
-    override fun getQuestionById(id: Int?, lang: String): ApiResponse<QuizDayQuestionResponse> {
-        if (id == null) throw IllegalArgumentException(Localization.get("quiz_day_question_id_required", lang))
-        return repository.getQuestionById(id, lang)
-    }
-
     override fun getQuestionsByQuizDayId(quizDayId: Int?, lang: String): ApiResponse<List<QuizDayQuestionResponse>> {
         if (quizDayId == null) throw IllegalArgumentException(Localization.get("quiz_day_id_required", lang))
         return repository.getQuestionsByQuizDayId(quizDayId, lang)

@@ -20,15 +20,6 @@ class QuizDayQuestionRepository(
         )
     }
 
-    override fun getQuestionById(id: Int, lang: String): ApiResponse<QuizDayQuestionResponse> {
-        val question = dao.findById(id)
-        return ApiResponse(
-            success = true,
-            data = question?.convertToResponse(),
-            message = Localization.get("quiz_day_question_retrieved_successfully", lang)
-        )
-    }
-
     override fun getQuestionsByQuizDayId(quizDayId: Int, lang: String): ApiResponse<List<QuizDayQuestionResponse>> {
         val questions = dao.findByQuizDayId(quizDayId)
         return ApiResponse(

@@ -1,4 +1,4 @@
-CREATE TYPE mcq_correct_answer AS ENUM ('1', '2', '3', '4');
+CREATE TYPE mcq_correct_answer AS ENUM ('first', 'second', 'third', 'fourth');
 
 CREATE TABLE IF NOT EXISTS persons_mcq (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,

@@ -17,12 +17,7 @@ class QuizService(
         return repository.getAllQuizzes(lang)
     }
 
-    override fun getQuizById(id: Int?, lang: String): ApiResponse<QuizResponse> {
-        if (id == null) throw IllegalArgumentException(Localization.get("quiz_id_required", lang))
-        return repository.getQuizById(id, lang)
-    }
-
-    override fun createQuiz(request: CreateQuizRequest, lang: String): ApiResponse<Int> {
+    override fun createQuiz(request: CreateQuizRequest, lang: String): ApiResponse<QuizResponse> {
         validateRequired(
             request.number to "number",
             request.startAt to "startAt",
@@ -33,7 +28,7 @@ class QuizService(
         return repository.createQuiz(request, lang)
     }
 
-    override fun updateQuiz(id: Int?, request: UpdateQuizRequest, lang: String): ApiResponse<Nothing> {
+    override fun updateQuiz(id: Int?, request: UpdateQuizRequest, lang: String): ApiResponse<QuizResponse> {
         if (id == null) throw IllegalArgumentException(Localization.get("quiz_id_required", lang))
         validateRequired(
             request.number to "number",

@@ -20,30 +20,20 @@ class QuizRepository(
         )
     }
 
-    override fun getQuizById(id: Int, lang: String): ApiResponse<QuizResponse> {
-        val quiz = dao.findById(id)
-        return ApiResponse(
-            success = true,
-            data = quiz?.convertToResponse(),
-            message = Localization.get("quiz_retrieved_successfully", lang)
-        )
-    }
-
-    override fun createQuiz(request: CreateQuizRequest, lang: String): ApiResponse<Int> {
-        val id = dao.create(request.convertToDto())
-
-        if (id == 0) throw IllegalArgumentException(Localization.get("quiz_creation_failed", lang))
+    override fun createQuiz(request: CreateQuizRequest, lang: String): ApiResponse<QuizResponse> {
+        val create = dao.create(request.convertToDto())
+            ?: throw IllegalArgumentException(Localization.get("quiz_creation_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = create.convertToResponse(),
             message = Localization.get("quiz_created_successfully", lang)
         )
     }
 
-    override fun updateQuiz(id: Int, request: UpdateQuizRequest, lang: String): ApiResponse<Nothing> {
+    override fun updateQuiz(id: Int, request: UpdateQuizRequest, lang: String): ApiResponse<QuizResponse> {
         val updated = dao.update(request.convertToDto(id))
-        if (!updated) throw IllegalArgumentException(Localization.get("quiz_update_failed", lang))
+            ?:throw IllegalArgumentException(Localization.get("quiz_update_failed", lang))
         return ApiResponse(
             success = true,
             data = null,

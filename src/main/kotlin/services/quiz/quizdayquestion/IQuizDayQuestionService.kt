@@ -7,7 +7,6 @@ import com.fathersprophets.backend.models.quizdayquestion.UpdateQuizDayQuestionR
 
 interface IQuizDayQuestionService {
     fun getAllQuestions(lang: String): ApiResponse<List<QuizDayQuestionResponse>>
-    fun getQuestionById(id: Int?, lang: String): ApiResponse<QuizDayQuestionResponse>
     fun getQuestionsByQuizDayId(quizDayId: Int?, lang: String): ApiResponse<List<QuizDayQuestionResponse>>
     fun createQuestion(request: CreateQuizDayQuestionRequest, lang: String): ApiResponse<Int>
     fun createQuestions(requests: List<CreateQuizDayQuestionRequest>, lang: String): ApiResponse<List<Int>>
