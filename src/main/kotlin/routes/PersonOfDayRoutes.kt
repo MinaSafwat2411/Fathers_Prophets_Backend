@@ -16,17 +16,9 @@ fun Route.personOfDayRoutes(personOfDayService: IPersonOfDayService) {
             call.respond(response)
         }
 
-        get("/{id}") {
-            val lang = call.request.headers["Accept-Language"] ?: "en"
-            val id = call.parameters["id"]?.toIntOrNull()
-            val response = personOfDayService.getPersonOfDayById(id, lang)
-            call.respond(response)
-        }
-
         get("/date/{date}") {
             val lang = call.request.headers["Accept-Language"] ?: "en"
-            val date = call.parameters["date"]
-            val response = personOfDayService.getPersonOfDayByDate(date, lang)
+            val response = personOfDayService.getPersonOfDayByDate(lang)
             call.respond(response)
         }
 

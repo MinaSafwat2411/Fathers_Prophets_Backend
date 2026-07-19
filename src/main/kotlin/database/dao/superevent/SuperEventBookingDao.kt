@@ -34,6 +34,12 @@ class SuperEventBookingDao {
             .singleOrNull()?.let { rowToDto(it) }
     }
 
+    fun findByEventAndUserId(dto : SuperEventBookingDto) = transaction {
+        SuperEventBookingsTable.selectAll().where {
+            (SuperEventBookingsTable.superEventId eq dto.superEventId) and (SuperEventBookingsTable.userId eq dto.userId)
+        }.singleOrNull()?.let { rowToDto(it) }
+    }
+
     fun findByEventId(dto : SuperEventBookingDto) = transaction {
         SuperEventBookingsTable.selectAll().where { SuperEventBookingsTable.superEventId eq dto.superEventId }
             .orderBy(SuperEventBookingsTable.createdAt, SortOrder.ASC)
@@ -75,6 +81,6 @@ class SuperEventBookingDao {
         SuperEventBookingsTable.update({ SuperEventBookingsTable.id eq dto.id }) {
             it[SuperEventBookingsTable.totalPaid] = dto.totalPaid
             it[SuperEventBookingsTable.teacherId] = dto.teacherId
-        } > 0
+        }.let { findById(dto) }
     }
 }

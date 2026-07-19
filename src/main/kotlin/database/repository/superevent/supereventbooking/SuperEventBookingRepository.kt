@@ -20,7 +20,7 @@ class SuperEventBookingRepository(
     private val userDao: UserDao
 ) : ISuperEventBookingRepository {
 
-    override fun bookSeat(request: SuperEventBookingRequest, lang: String): ApiResponse<Int> {
+    override fun bookSeat(request: SuperEventBookingRequest, lang: String): ApiResponse<SuperEventBookingResponse> {
         val superEvent = superEventDao.findById(request.superEventId ?: 0)
             ?: throw NotFoundException(Localization.get("super_event_not_found", lang))
 
@@ -65,7 +65,8 @@ class SuperEventBookingRepository(
             )
         }
 
-        val booking = superEventBookingDao.findByEventAndUser(bookingDto)
+        val booking = superEventBookingDao.findByEventAndUser(bookingDto)?:
+            throw NotFoundException(Localization.get("super_event_booking_not_found", lang))
         val messageKey = if (status == SuperEventBookingStatus.booked) {
             "super_event_seat_booked_successfully"
         } else {
@@ -74,12 +75,12 @@ class SuperEventBookingRepository(
 
         return ApiResponse(
             success = true,
-            data = booking?.id,
+            data = booking.convertToResponse(),
             message = Localization.get(messageKey, lang)
         )
     }
 
-    override fun cancelBooking(superEventId: Int, userId: Int, lang: String): ApiResponse<Nothing> {
+    override fun cancelBooking(superEventId: Int, userId: Int, lang: String): ApiResponse<SuperEventBookingResponse> {
         val bookingDto = superEventIdToBookingDto(superEventId, userId)
         val booking = superEventBookingDao.findByEventAndUser(bookingDto)
             ?: throw NotFoundException(Localization.get("super_event_booking_not_found", lang))
@@ -98,8 +99,23 @@ class SuperEventBookingRepository(
 
         return ApiResponse(
             success = true,
-            data = null,
+            data = booking.convertToResponse(),
             message = Localization.get("super_event_booking_cancelled_successfully", lang)
+        )
+    }
+
+    override fun getBookingSeatByUserIdAndEventId(
+        userId: Int,
+        superEventId: Int,
+        lang: String
+    ): ApiResponse<SuperEventBookingResponse> {
+        val bookingDto = superEventIdToBookingDto(superEventId, userId)
+        val booking = superEventBookingDao.findByEventAndUser(bookingDto)
+            ?: throw NotFoundException(Localization.get("super_event_booking_not_found", lang))
+        return ApiResponse(
+            success = true,
+            data = booking.convertToResponse(),
+            message = Localization.get("super_event_booking_retrieved_successfully", lang)
         )
     }
 

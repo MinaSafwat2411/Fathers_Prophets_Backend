@@ -26,7 +26,7 @@ fun Route.escapeEgyptAnswerRoutes(service: IEscapeEgyptAnswerService) {
             call.respond(service.getAnswersByEscapeEgyptId(escapeEgyptId, lang))
         }
 
-        get("/my-answers{escapeEgyptId}") {
+        get("/my-answers/{escapeEgyptId}") {
             val lang = call.request.headers["Accept-Language"] ?: "en"
             val escapeEgyptId = call.parameters["escapeEgyptId"]?.toIntOrNull()
             val principal = call.principal<JWTPrincipal>()

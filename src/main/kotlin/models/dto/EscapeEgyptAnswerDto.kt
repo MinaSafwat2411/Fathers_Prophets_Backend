@@ -11,12 +11,13 @@ data class EscapeEgyptAnswerDto(
     val answer: String,
     val status: AnswerStatus
 ) {
-    fun convertToResponse() = EscapeEgyptAnswerResponse(
+    fun convertToResponse(correctAnswer : String? = null) = EscapeEgyptAnswerResponse(
         id = id,
         escapeEgyptId = escapeEgyptId,
         escapeQuestionId = escapeQuestionId,
         userId = userId,
         answer = answer,
-        status = status.name
+        status = status.name,
+        correctAnswer = correctAnswer
     )
 }

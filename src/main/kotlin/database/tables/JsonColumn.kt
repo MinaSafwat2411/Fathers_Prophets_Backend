@@ -15,6 +15,7 @@ internal class JsonColumnType : ColumnType<String>() {
         type = "json"
         this.value = value
     }
+    override fun nonNullValueToString(value: String) = "'${value.replace("'", "''")}'"
 }
 
 internal fun Table.json(name: String): Column<String> = registerColumn(name, JsonColumnType())

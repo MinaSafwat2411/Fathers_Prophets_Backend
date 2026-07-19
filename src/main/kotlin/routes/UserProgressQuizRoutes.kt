@@ -4,6 +4,8 @@ import com.fathersprophets.backend.models.userprogressquiz.CreateUserProgressQui
 import com.fathersprophets.backend.models.userprogressquiz.UpdateUserProgressQuizRequest
 import com.fathersprophets.backend.plugins.requireRole
 import com.fathersprophets.backend.services.users.userprogressquiz.IUserProgressQuizService
+import io.ktor.server.auth.jwt.JWTPrincipal
+import io.ktor.server.auth.principal
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -17,13 +19,6 @@ fun Route.userProgressQuizRoutes(service: IUserProgressQuizService) {
             call.respond(service.getAllUserProgress(lang))
         }
 
-        get("/{id}") {
-            call.requireRole("superadmin", "admin", "quiz")
-            val lang = call.request.headers["Accept-Language"] ?: "en"
-            val id = call.parameters["id"]?.toIntOrNull()
-            call.respond(service.getUserProgressById(id, lang))
-        }
-
         get("/user/{userId}") {
             call.requireRole("superadmin", "admin", "quiz")
             val lang = call.request.headers["Accept-Language"] ?: "en"
@@ -31,20 +26,12 @@ fun Route.userProgressQuizRoutes(service: IUserProgressQuizService) {
             call.respond(service.getUserProgressByUserId(userId, lang))
         }
 
-        get("/quiz/{quizId}") {
-            call.requireRole("superadmin", "admin", "quiz")
-            val lang = call.request.headers["Accept-Language"] ?: "en"
-            val quizId = call.parameters["quizId"]?.toIntOrNull()
-            call.respond(service.getUserProgressByQuizId(quizId, lang))
-        }
 
-        get("/user/{userId}/quiz/{quizId}/day/{dayId}") {
-            call.requireRole("superadmin", "admin", "quiz")
+        get("/my-progress") {
             val lang = call.request.headers["Accept-Language"] ?: "en"
-            val userId = call.parameters["userId"]?.toIntOrNull()
-            val quizId = call.parameters["quizId"]?.toIntOrNull()
-            val dayId = call.parameters["dayId"]?.toIntOrNull()
-            call.respond(service.getUserProgressByUserIdAndQuizIdAndDayId(userId, quizId, dayId, lang))
+            val principal = call.principal<JWTPrincipal>()
+            val userId = principal?.payload?.getClaim("userId")?.asInt()
+            call.respond(service.getUserProgressByUserId(userId, lang))
         }
 
         post {

@@ -20,13 +20,7 @@ fun Route.superEventRoutes(superEventService: ISuperEventService) {
             call.respond(superEventService.getUpcomingSuperEvents(lang))
         }
 
-        get("/{id}") {
-            val lang = call.request.header("Accept-Language") ?: "en"
-            val id = call.parameters["id"]?.toIntOrNull()
-            call.respond(superEventService.getSuperEventById(id, lang))
-        }
-
-        get("/{id}/availability") {
+        get("/availability/{id}") {
             val lang = call.request.header("Accept-Language") ?: "en"
             val id = call.parameters["id"]?.toIntOrNull()
             call.respond(superEventService.getSuperEventAvailability(id, lang))

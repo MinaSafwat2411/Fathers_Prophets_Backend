@@ -27,7 +27,7 @@ class PersonStoryService(
         return personStoryRepository.getStoriesByPersonId(personId, lang)
     }
 
-    override fun addStory(request: CreatePersonStoryRequest, lang: String): ApiResponse<Int> {
+    override fun addStory(request: CreatePersonStoryRequest, lang: String): ApiResponse<PersonStoryResponse> {
         validateRequired(
             request.personId to "personId",
             request.title to "title",
@@ -37,7 +37,7 @@ class PersonStoryService(
         return personStoryRepository.addStory(request, lang)
     }
 
-    override fun updateStory(id: Int?, request: UpdatePersonStoryRequest, lang: String): ApiResponse<Nothing> {
+    override fun updateStory(id: Int?, request: UpdatePersonStoryRequest, lang: String): ApiResponse<PersonStoryResponse> {
         if (id == null) throw IllegalArgumentException(Localization.get("person_story_id_required", lang))
         return personStoryRepository.updateStory(id, request, lang)
     }

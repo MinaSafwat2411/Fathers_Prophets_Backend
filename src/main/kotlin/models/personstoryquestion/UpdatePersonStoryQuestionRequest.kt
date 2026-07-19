@@ -5,12 +5,14 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UpdatePersonStoryQuestionRequest(
-    val storyId: Int,
-    val question: String
+    val storyId: Int? = null,
+    val question: String? = null,
+    val correctAnswer: String? = null
 ) {
     fun convertToPersonStoryQuestionDto(id: Int) = PersonStoryQuestionDto(
         id = id,
-        storyId = this.storyId,
-        question = this.question
+        storyId = this.storyId ?: 0,
+        question = this.question ?: "",
+        correctAnswer = this.correctAnswer ?: ""
     )
 }

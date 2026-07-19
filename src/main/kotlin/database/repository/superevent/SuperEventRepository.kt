@@ -25,16 +25,6 @@ class SuperEventRepository(
         )
     }
 
-    override fun getSuperEventById(id: Int, lang: String): ApiResponse<SuperEventResponse> {
-        val superEvent = superEventDao.findById(id)
-            ?: throw NotFoundException(Localization.get("super_event_not_found", lang))
-        return ApiResponse(
-            success = true,
-            data = superEvent.convertToResponse(),
-            message = Localization.get("super_event_retrieved_successfully", lang)
-        )
-    }
-
     override fun getUpcomingSuperEvents(lang: String): ApiResponse<List<SuperEventResponse>> {
         return ApiResponse(
             success = true,
@@ -43,26 +33,24 @@ class SuperEventRepository(
         )
     }
 
-    override fun createSuperEvent(request: SuperEventRequest, lang: String): ApiResponse<Int> {
-        val id = superEventDao.create(request.convertToDto(0))
-        
-        if (id == 0) throw IllegalArgumentException(Localization.get("super_event_creation_failed", lang))
+    override fun createSuperEvent(request: SuperEventRequest, lang: String): ApiResponse<SuperEventResponse> {
+        val create = superEventDao.create(request.convertToDto(0))
+            ?:throw IllegalArgumentException(Localization.get("super_event_creation_failed", lang))
         return ApiResponse(
             success = true,
-            data = id,
+            data = create.convertToResponse(),
             message = Localization.get("super_event_created_successfully", lang)
         )
     }
 
-    override fun updateSuperEvent(id: Int, request: SuperEventRequest, lang: String): ApiResponse<Nothing> {
+    override fun updateSuperEvent(id: Int, request: SuperEventRequest, lang: String): ApiResponse<SuperEventResponse> {
 
         val updated = superEventDao.update(request.convertToDto(id))
-        
-        if (!updated) throw IllegalArgumentException(Localization.get("super_event_update_failed", lang))
+            ?: throw IllegalArgumentException(Localization.get("super_event_update_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = null,
+            data = updated.convertToResponse(),
             message = Localization.get("super_event_updated_successfully", lang)
         )
     }

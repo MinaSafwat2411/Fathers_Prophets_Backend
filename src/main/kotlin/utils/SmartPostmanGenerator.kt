@@ -10,11 +10,13 @@ import com.fathersprophets.backend.models.classmember.UpdateClassMemberRequest
 import com.fathersprophets.backend.models.comments.AddCommentRequest
 import com.fathersprophets.backend.models.comments.UpdateCommentRequest
 import com.fathersprophets.backend.models.event.CreateEventRequest
+import com.fathersprophets.backend.models.event.UpdateEventRequest
 import com.fathersprophets.backend.models.eventmember.EventMemberRequest
 import com.fathersprophets.backend.models.session.AddSessionRequest
 import com.fathersprophets.backend.models.session.UpdateSessionRequest
 import com.fathersprophets.backend.models.attendance.AddAttendanceRequest
 import com.fathersprophets.backend.models.attendance.UpdateAttendanceRequest
+import com.fathersprophets.backend.models.person.CreatePersonRequest
 import com.fathersprophets.backend.models.person.UpdatePersonRequest
 import com.fathersprophets.backend.models.personquestion.CreateQuestionRequest
 import com.fathersprophets.backend.models.personquestion.UpdateQuestionRequest
@@ -29,6 +31,9 @@ import com.fathersprophets.backend.models.personstory.CreatePersonStoryRequest
 import com.fathersprophets.backend.models.personstory.UpdatePersonStoryRequest
 import com.fathersprophets.backend.models.personstoryquestion.CreatePersonStoryQuestionRequest
 import com.fathersprophets.backend.models.personstoryquestion.UpdatePersonStoryQuestionRequest
+import com.fathersprophets.backend.models.personstoryanswer.CreatePersonStoryAnswerRequest
+import com.fathersprophets.backend.models.personstoryanswer.UpdatePersonStoryAnswerRequest
+import com.fathersprophets.backend.models.personstoryanswer.UpdatePersonStoryAnswerStatusRequest
 import com.fathersprophets.backend.models.guessperson.CreateGuessPersonQuestionRequest
 import com.fathersprophets.backend.models.guessperson.UpdateGuessPersonQuestionRequest
 import com.fathersprophets.backend.models.guesspersonanswer.CreateGuessPersonAnswerRequest
@@ -67,12 +72,9 @@ import com.fathersprophets.backend.models.anonymouschat.CreateAnonymousChatReque
 import com.fathersprophets.backend.models.anonymouschat.UpdateAnonymousChatRequest
 import com.fathersprophets.backend.models.anonymouschatmessage.CreateAnonymousChatMessageRequest
 import com.fathersprophets.backend.models.anonymouschatmessage.UpdateAnonymousChatMessageRequest
-import com.fathersprophets.backend.models.notification.CreateNotificationRequest
-import com.fathersprophets.backend.models.notification.UpdateNotificationRequest
 import com.fathersprophets.backend.models.superevent.SuperEventRequest
 import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingPaymentRequest
 import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingRequest
-import com.fathersprophets.backend.models.supereventbooking.SuperEventBookingTeacherRequest
 import com.fathersprophets.backend.models.users.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -491,35 +493,32 @@ object PostmanEndpoints {
         RequestDefinition("Health Check", "GET", "healthcheck", requiresAuth = false),
 
         // Events
-        RequestDefinition("Get All Events", "GET", "events"),
-        RequestDefinition("Get Event by ID", "GET", "events/1"),
+        RequestDefinition("Get Events Count", "GET", "events/count"),
+        RequestDefinition("Get Upcoming Events", "GET", "events/upcoming"),
         RequestDefinition("Create Event", "POST", "events", CreateEventRequest::class),
-        RequestDefinition("Update Event", "PUT", "events/1", CreateEventRequest::class),
+        RequestDefinition("Update Event", "PUT", "events/1", UpdateEventRequest::class),
         RequestDefinition("Delete Event", "DELETE", "events/1"),
 
         // Event Members
-        RequestDefinition("Get Event Members", "GET", "event-members/1"),
+        RequestDefinition("Get Event Members By User ID", "GET", "event-members/user/1"),
         RequestDefinition("Add Event Member", "POST", "event-members", EventMemberRequest::class),
         RequestDefinition("Delete Event Member", "DELETE", "event-members/1"),
-        
+
         // Sessions
-        RequestDefinition("Get All Sessions", "GET", "sessions"),
-        RequestDefinition("Get Session By ID", "GET", "sessions/{{session_id}}"),
         RequestDefinition("Create Session", "POST", "sessions", AddSessionRequest::class),
         RequestDefinition("Update Session", "PUT", "sessions/{{session_id}}", UpdateSessionRequest::class),
         RequestDefinition("Delete Session", "DELETE", "sessions/{{session_id}}"),
-        
+
         // Person
         RequestDefinition("Get All Persons", "GET", "person"),
-        RequestDefinition("Get Person by ID", "GET", "person/1"),
-        RequestDefinition("Add Person", "POST", "person", UpdatePersonRequest::class),
+        RequestDefinition("Get Persons By Type", "GET", "person/type/prophets"),
+        RequestDefinition("Add Person", "POST", "person", CreatePersonRequest::class),
         RequestDefinition("Update Person", "PUT", "person/1", UpdatePersonRequest::class),
         RequestDefinition("Delete Person", "DELETE", "person/1"),
 
         // Person Question
         RequestDefinition("Get All Person Questions", "GET", "person-question"),
-        RequestDefinition("Get Person Question by ID", "GET", "person-question/1"),
-        RequestDefinition("Get Person Questions by Person ID", "GET", "person-question/person/1"),
+        RequestDefinition("Get Person Questions by Person ID", "GET", "person-question/1"),
         RequestDefinition("Create Person Question", "POST", "person-question", CreateQuestionRequest::class),
         RequestDefinition("Update Person Question", "PUT", "person-question/1", UpdateQuestionRequest::class),
         RequestDefinition("Delete Person Question", "DELETE", "person-question/1"),
@@ -527,33 +526,27 @@ object PostmanEndpoints {
         // Person MCQ
         RequestDefinition("Get All Person MCQs", "GET", "person-mcq"),
         RequestDefinition("Get Person MCQ by ID", "GET", "person-mcq/1"),
-        RequestDefinition("Get Person MCQs by Question ID", "GET", "person-mcq/question/1"),
         RequestDefinition("Create Person MCQ", "POST", "person-mcq", CreatePersonMcqRequest::class),
         RequestDefinition("Update Person MCQ", "PUT", "person-mcq/1", UpdatePersonMcqRequest::class),
         RequestDefinition("Delete Person MCQ", "DELETE", "person-mcq/1"),
 
         // Person Answer
         RequestDefinition("Get All Person Answers", "GET", "person-answer"),
-        RequestDefinition("Get Person Answer by ID", "GET", "person-answer/1"),
-        RequestDefinition("Get Person Answers by Question ID", "GET", "person-answer/question/1"),
-        RequestDefinition("Get Person Answers by User ID", "GET", "person-answer/user/1"),
+        RequestDefinition("Get My Person Answers By Question ID", "GET", "person-answer/my-answers/1"),
         RequestDefinition("Create Person Answer", "POST", "person-answer", CreatePersonAnswerRequest::class),
         RequestDefinition("Update Person Answer", "PUT", "person-answer/1", UpdatePersonAnswerRequest::class),
         RequestDefinition("Update Person Answer Status", "PATCH", "person-answer/1/status", UpdateAnswerStatusRequest::class),
         RequestDefinition("Delete Person Answer", "DELETE", "person-answer/1"),
 
         // Attendance
-        RequestDefinition("Get All Attendance", "GET", "attendance"),
-        RequestDefinition("Get Attendance By Session ID", "GET", "attendance/session/{{session_id}}"),
+        RequestDefinition("Add Attendance", "POST", "attendance", AddAttendanceRequest::class),
         RequestDefinition("Get Attendance By Member ID", "GET", "attendance/member/{{member_id}}"),
         RequestDefinition("Get Attendance By Class ID", "GET", "attendance/class/{{class_id}}"),
-        RequestDefinition("Add Attendance", "POST", "attendance", AddAttendanceRequest::class),
         RequestDefinition("Update Attendance", "PUT", "attendance/{{attendance_id}}", UpdateAttendanceRequest::class),
         RequestDefinition("Delete Attendance", "DELETE", "attendance/{{attendance_id}}"),
 
         // Person Of Day
         RequestDefinition("Get All Persons Of Day", "GET", "person-of-day"),
-        RequestDefinition("Get Person Of Day By ID", "GET", "person-of-day/{{person_of_day_id}}"),
         RequestDefinition("Get Person Of Day By Date", "GET", "person-of-day/date/2024-01-15"),
         RequestDefinition("Add Person Of Day", "POST", "person-of-day", CreatePersonOfDayRequest::class),
         RequestDefinition("Update Person Of Day", "PUT", "person-of-day/{{person_of_day_id}}", UpdatePersonOfDayRequest::class),
@@ -569,37 +562,35 @@ object PostmanEndpoints {
 
         // Person Story Question
         RequestDefinition("Get All Person Story Questions", "GET", "person-story-question"),
-        RequestDefinition("Get Person Story Question By ID", "GET", "person-story-question/{{person_story_question_id}}"),
         RequestDefinition("Get Person Story Questions By Story ID", "GET", "person-story-question/story/{{person_story_id}}"),
         RequestDefinition("Create Person Story Question", "POST", "person-story-question", CreatePersonStoryQuestionRequest::class),
         RequestDefinition("Update Person Story Question", "PUT", "person-story-question/{{person_story_question_id}}", UpdatePersonStoryQuestionRequest::class),
         RequestDefinition("Delete Person Story Question", "DELETE", "person-story-question/{{person_story_question_id}}"),
 
+        // Person Story Answer
+        RequestDefinition("Get All Person Story Answers", "GET", "person-story-answer"),
+        RequestDefinition("Get My Person Story Answers By Story ID", "GET", "person-story-answer/my-answers/1"),
+        RequestDefinition("Create Person Story Answer", "POST", "person-story-answer", CreatePersonStoryAnswerRequest::class),
+        RequestDefinition("Update Person Story Answer", "PUT", "person-story-answer/1", UpdatePersonStoryAnswerRequest::class),
+        RequestDefinition("Update Person Story Answer Status", "PATCH", "person-story-answer/1/status", UpdatePersonStoryAnswerStatusRequest::class),
+        RequestDefinition("Delete Person Story Answer", "DELETE", "person-story-answer/1"),
+
         // Guess Person Question
         RequestDefinition("Get All Guess Person Questions", "GET", "guess-person-questions"),
-        RequestDefinition("Get Guess Person Question By ID", "GET", "guess-person-questions/{{guess_person_question_id}}"),
         RequestDefinition("Create Guess Person Question", "POST", "guess-person-questions", CreateGuessPersonQuestionRequest::class),
         RequestDefinition("Update Guess Person Question", "PUT", "guess-person-questions/{{guess_person_question_id}}", UpdateGuessPersonQuestionRequest::class),
         RequestDefinition("Delete Guess Person Question", "DELETE", "guess-person-questions/{{guess_person_question_id}}"),
 
         // Guess Person Answer
         RequestDefinition("Get All Guess Person Answers", "GET", "guess-person-answers"),
-        RequestDefinition("Get Guess Person Answer By ID", "GET", "guess-person-answers/{{guess_person_answer_id}}"),
-        RequestDefinition("Get Guess Person Answers By Question ID", "GET", "guess-person-answers/question/{{guess_person_question_id}}"),
-        RequestDefinition("Get Guess Person Answers By User ID", "GET", "guess-person-answers/user/{{user_id}}"),
+        RequestDefinition("Get My Guess Person Answers By Question ID", "GET", "guess-person-answers/my-answers/1"),
         RequestDefinition("Create Guess Person Answer", "POST", "guess-person-answers", CreateGuessPersonAnswerRequest::class),
-        RequestDefinition("Update Guess Person Answer", "PUT", "guess-person-answers/{{guess_person_answer_id}}", UpdateGuessPersonAnswerRequest::class),
-        RequestDefinition("Update Guess Person Answer Status", "PATCH", "guess-person-answers/{{guess_person_answer_id}}/status", UpdateGuessPersonAnswerStatusRequest::class),
         RequestDefinition("Delete Guess Person Answer", "DELETE", "guess-person-answers/{{guess_person_answer_id}}"),
 
         // Person MCQ Answer
         RequestDefinition("Get All Person MCQ Answers", "GET", "person-mcq-answer"),
-        RequestDefinition("Get Person MCQ Answer By ID", "GET", "person-mcq-answer/{{person_mcq_answer_id}}"),
         RequestDefinition("Get Person MCQ Answers By Question ID", "GET", "person-mcq-answer/question/1"),
-        RequestDefinition("Get Person MCQ Answers By User ID", "GET", "person-mcq-answer/user/{{user_id}}"),
         RequestDefinition("Create Person MCQ Answer", "POST", "person-mcq-answer", CreatePersonMcqAnswerRequest::class),
-        RequestDefinition("Update Person MCQ Answer", "PUT", "person-mcq-answer/{{person_mcq_answer_id}}", UpdatePersonMcqAnswerRequest::class),
-        RequestDefinition("Update Person MCQ Answer Status", "PATCH", "person-mcq-answer/{{person_mcq_answer_id}}/status", UpdateMcqAnswerStatusRequest::class),
         RequestDefinition("Delete Person MCQ Answer", "DELETE", "person-mcq-answer/{{person_mcq_answer_id}}"),
 
         // Matching Pair
@@ -611,16 +602,12 @@ object PostmanEndpoints {
 
         // Matching Pair Answer
         RequestDefinition("Get All Matching Pair Answers", "GET", "matching-pair-answers"),
-        RequestDefinition("Get Matching Pair Answer By ID", "GET", "matching-pair-answers/{{matching_pair_answer_id}}"),
-        RequestDefinition("Get Matching Pair Answers By Pair ID", "GET", "matching-pair-answers/pair/{{matching_pair_id}}"),
-        RequestDefinition("Get Matching Pair Answers By User ID", "GET", "matching-pair-answers/user/{{user_id}}"),
+        RequestDefinition("Get My Matching Pair Answers", "GET", "matching-pair-answers/my-answers"),
         RequestDefinition("Create Matching Pair Answer", "POST", "matching-pair-answers", CreateMatchingPairAnswerRequest::class),
-        RequestDefinition("Update Matching Pair Answer", "PUT", "matching-pair-answers/{{matching_pair_answer_id}}", UpdateMatchingPairAnswerRequest::class),
         RequestDefinition("Delete Matching Pair Answer", "DELETE", "matching-pair-answers/{{matching_pair_answer_id}}"),
 
         // Escape Egypt
         RequestDefinition("Get All Escape Egypt", "GET", "escape-egypt"),
-        RequestDefinition("Get Escape Egypt By ID", "GET", "escape-egypt/{{escape_egypt_id}}"),
         RequestDefinition("Create Escape Egypt", "POST", "escape-egypt", CreateEscapeEgyptRequest::class),
         RequestDefinition("Update Escape Egypt", "PUT", "escape-egypt/{{escape_egypt_id}}", UpdateEscapeEgyptRequest::class),
         RequestDefinition("Delete Escape Egypt", "DELETE", "escape-egypt/{{escape_egypt_id}}"),
@@ -635,10 +622,8 @@ object PostmanEndpoints {
 
         // Escape Egypt Answer
         RequestDefinition("Get All Escape Egypt Answers", "GET", "escape-egypt-answers"),
-        RequestDefinition("Get Escape Egypt Answer By ID", "GET", "escape-egypt-answers/{{escape_egypt_answer_id}}"),
         RequestDefinition("Get Escape Egypt Answers By Escape Egypt ID", "GET", "escape-egypt-answers/escape-egypt/{{escape_egypt_id}}"),
-        RequestDefinition("Get Escape Egypt Answers By Question ID", "GET", "escape-egypt-answers/question/{{escape_egypt_question_id}}"),
-        RequestDefinition("Get Escape Egypt Answers By User ID", "GET", "escape-egypt-answers/user/{{user_id}}"),
+        RequestDefinition("Get My Escape Egypt Answers By Escape Egypt ID", "GET", "escape-egypt-answers/my-answers/1"),
         RequestDefinition("Create Escape Egypt Answer", "POST", "escape-egypt-answers", CreateEscapeEgyptAnswerRequest::class),
         RequestDefinition("Update Escape Egypt Answer", "PUT", "escape-egypt-answers/{{escape_egypt_answer_id}}", UpdateEscapeEgyptAnswerRequest::class),
         RequestDefinition("Update Escape Egypt Answer Status", "PATCH", "escape-egypt-answers/{{escape_egypt_answer_id}}/status", UpdateEscapeEgyptAnswerStatusRequest::class),
@@ -653,24 +638,18 @@ object PostmanEndpoints {
 
         // Timeline Answer
         RequestDefinition("Get All Timeline Answers", "GET", "timeline-answers"),
-        RequestDefinition("Get Timeline Answer By ID", "GET", "timeline-answers/{{timeline_answer_id}}"),
-        RequestDefinition("Get Timeline Answers By Timeline ID", "GET", "timeline-answers/timeline/{{timeline_id}}"),
-        RequestDefinition("Get Timeline Answers By User ID", "GET", "timeline-answers/user/{{user_id}}"),
+        RequestDefinition("Get My Timeline Answers", "GET", "timeline-answers/my-answers"),
         RequestDefinition("Create Timeline Answer", "POST", "timeline-answers", CreateTimelineAnswerRequest::class),
-        RequestDefinition("Update Timeline Answer", "PUT", "timeline-answers/{{timeline_answer_id}}", UpdateTimelineAnswerRequest::class),
-        RequestDefinition("Update Timeline Answer Status", "PATCH", "timeline-answers/{{timeline_answer_id}}/status", UpdateTimelineAnswerStatusRequest::class),
         RequestDefinition("Delete Timeline Answer", "DELETE", "timeline-answers/{{timeline_answer_id}}"),
 
         // Quiz
         RequestDefinition("Get All Quizzes", "GET", "quiz"),
-        RequestDefinition("Get Quiz By ID", "GET", "quiz/{{quiz_id}}"),
         RequestDefinition("Create Quiz", "POST", "quiz", CreateQuizRequest::class),
         RequestDefinition("Update Quiz", "PUT", "quiz/{{quiz_id}}", UpdateQuizRequest::class),
         RequestDefinition("Delete Quiz", "DELETE", "quiz/{{quiz_id}}"),
 
         // Quiz Day
         RequestDefinition("Get All Quiz Days", "GET", "quiz-day"),
-        RequestDefinition("Get Quiz Day By ID", "GET", "quiz-day/{{quiz_day_id}}"),
         RequestDefinition("Get Quiz Days By Quiz ID", "GET", "quiz-day/quiz/{{quiz_id}}"),
         RequestDefinition("Create Quiz Day", "POST", "quiz-day", CreateQuizDayRequest::class),
         RequestDefinition("Update Quiz Day", "PUT", "quiz-day/{{quiz_day_id}}", UpdateQuizDayRequest::class),
@@ -678,7 +657,6 @@ object PostmanEndpoints {
 
         // Quiz Day Question
         RequestDefinition("Get All Quiz Day Questions", "GET", "quiz-day-questions"),
-        RequestDefinition("Get Quiz Day Question By ID", "GET", "quiz-day-questions/{{quiz_day_question_id}}"),
         RequestDefinition("Get Quiz Day Questions By Quiz Day ID", "GET", "quiz-day-questions/quiz-day/{{quiz_day_id}}"),
         RequestDefinition("Create Quiz Day Question", "POST", "quiz-day-questions", CreateQuizDayQuestionRequest::class),
         RequestDefinition("Create Quiz Day Questions (Bulk)", "POST", "quiz-day-questions/bulk", CreateQuizDayQuestionRequest::class, isBulk = true),
@@ -687,36 +665,27 @@ object PostmanEndpoints {
 
         // Quiz Answer
         RequestDefinition("Get All Quiz Answers", "GET", "quiz-answers"),
-        RequestDefinition("Get Quiz Answer By ID", "GET", "quiz-answers/{{quiz_answer_id}}"),
-        RequestDefinition("Get Quiz Answers By Question ID", "GET", "quiz-answers/question/{{quiz_day_question_id}}"),
-        RequestDefinition("Get Quiz Answers By User ID", "GET", "quiz-answers/user/{{user_id}}"),
-        RequestDefinition("Get Quiz Answers By Day ID", "GET", "quiz-answers/day/{{quiz_day_id}}"),
-        RequestDefinition("Get Quiz Answers By Quiz ID", "GET", "quiz-answers/quiz/{{quiz_id}}"),
         RequestDefinition("Create Quiz Answer", "POST", "quiz-answers", CreateQuizAnswerRequest::class),
         RequestDefinition("Create Quiz Answers (Bulk)", "POST", "quiz-answers/bulk", CreateQuizAnswerRequest::class, isBulk = true),
-        RequestDefinition("Update Quiz Answer", "PUT", "quiz-answers/{{quiz_answer_id}}", UpdateQuizAnswerRequest::class),
         RequestDefinition("Delete Quiz Answer", "DELETE", "quiz-answers/{{quiz_answer_id}}"),
 
         // User Progress Quiz
         RequestDefinition("Get All User Progress", "GET", "user-progress-quiz"),
-        RequestDefinition("Get User Progress By ID", "GET", "user-progress-quiz/{{user_progress_quiz_id}}"),
         RequestDefinition("Get User Progress By User ID", "GET", "user-progress-quiz/user/{{user_id}}"),
-        RequestDefinition("Get User Progress By Quiz ID", "GET", "user-progress-quiz/quiz/{{quiz_id}}"),
-        RequestDefinition("Get User Progress By User/Quiz/Day", "GET", "user-progress-quiz/user/{{user_id}}/quiz/{{quiz_id}}/day/{{quiz_day_id}}"),
+        RequestDefinition("Get My User Progress", "GET", "user-progress-quiz/my-progress"),
         RequestDefinition("Create User Progress", "POST", "user-progress-quiz", CreateUserProgressQuizRequest::class),
         RequestDefinition("Update User Progress", "PUT", "user-progress-quiz/{{user_progress_quiz_id}}", UpdateUserProgressQuizRequest::class),
         RequestDefinition("Delete User Progress", "DELETE", "user-progress-quiz/{{user_progress_quiz_id}}"),
 
         // Anonymous Chat
         RequestDefinition("Get All Anonymous Chats", "GET", "anonymous-chats"),
-        RequestDefinition("Get Anonymous Chat By ID", "GET", "anonymous-chats/{{anonymous_chat_id}}"),
+        RequestDefinition("Get My Anonymous Chat", "GET", "anonymous-chats/my-chats"),
         RequestDefinition("Create Anonymous Chat", "POST", "anonymous-chats", CreateAnonymousChatRequest::class),
         RequestDefinition("Update Anonymous Chat", "PUT", "anonymous-chats/{{anonymous_chat_id}}", UpdateAnonymousChatRequest::class),
         RequestDefinition("Delete Anonymous Chat", "DELETE", "anonymous-chats/{{anonymous_chat_id}}"),
 
         // Anonymous Chat Message
         RequestDefinition("Get All Anonymous Chat Messages", "GET", "anonymous-chat-messages"),
-        RequestDefinition("Get Anonymous Chat Message By ID", "GET", "anonymous-chat-messages/{{anonymous_chat_message_id}}"),
         RequestDefinition("Get Anonymous Chat Messages By Chat ID", "GET", "anonymous-chat-messages/chat/{{anonymous_chat_id}}"),
         RequestDefinition("Create Anonymous Chat Message", "POST", "anonymous-chat-messages", CreateAnonymousChatMessageRequest::class),
         RequestDefinition("Update Anonymous Chat Message", "PUT", "anonymous-chat-messages/{{anonymous_chat_message_id}}", UpdateAnonymousChatMessageRequest::class),
@@ -724,17 +693,11 @@ object PostmanEndpoints {
 
         // Notifications
         RequestDefinition("Get All Notifications", "GET", "notifications"),
-        RequestDefinition("Get Notification By ID", "GET", "notifications/{{notification_id}}"),
-        RequestDefinition("Get Notifications By Event ID", "GET", "notifications/event/1"),
-        RequestDefinition("Create Notification", "POST", "notifications", CreateNotificationRequest::class),
-        RequestDefinition("Update Notification", "PUT", "notifications/{{notification_id}}", UpdateNotificationRequest::class),
-        RequestDefinition("Delete Notification", "DELETE", "notifications/{{notification_id}}"),
 
         // Super Events
         RequestDefinition("Get All Super Events", "GET", "super-events"),
         RequestDefinition("Get Upcoming Super Events", "GET", "super-events/upcoming"),
-        RequestDefinition("Get Super Event By ID", "GET", "super-events/{{super_event_id}}"),
-        RequestDefinition("Get Super Event Availability", "GET", "super-events/{{super_event_id}}/availability"),
+        RequestDefinition("Get Super Event Availability", "GET", "super-events/availability/{{super_event_id}}"),
         RequestDefinition("Create Super Event", "POST", "super-events", SuperEventRequest::class),
         RequestDefinition("Update Super Event", "PUT", "super-events/{{super_event_id}}", SuperEventRequest::class),
         RequestDefinition("Delete Super Event", "DELETE", "super-events/{{super_event_id}}"),
@@ -743,9 +706,8 @@ object PostmanEndpoints {
         RequestDefinition("Book Super Event Seat", "POST", "super-event-bookings", SuperEventBookingRequest::class),
         RequestDefinition("Cancel Super Event Booking", "DELETE", "super-event-bookings/{{super_event_id}}"),
         RequestDefinition("Get Super Event Bookings By Event ID", "GET", "super-event-bookings/event/{{super_event_id}}"),
-        RequestDefinition("Get My Super Event Bookings", "GET", "super-event-bookings/me"),
-        RequestDefinition("Update Super Event Booking Paid Amount", "PUT", "super-event-bookings/{{super_event_booking_id}}/pay", SuperEventBookingPaymentRequest::class),
-        RequestDefinition("Assign Teacher To Super Event Booking", "PUT", "super-event-bookings/{{super_event_booking_id}}/teacher", SuperEventBookingTeacherRequest::class),
+        RequestDefinition("Get My Super Event Booking", "GET", "super-event-bookings/my-booking/{{super_event_id}}"),
+        RequestDefinition("Update Super Event Booking Paid Amount", "PUT", "super-event-bookings/pay/{{super_event_booking_id}}", SuperEventBookingPaymentRequest::class),
     )
 }
 

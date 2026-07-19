@@ -7,10 +7,9 @@ import com.fathersprophets.backend.models.superevent.SuperEventResponse
 
 interface ISuperEventRepository {
     fun getAllSuperEvents(lang: String): ApiResponse<List<SuperEventResponse>>
-    fun getSuperEventById(id: Int, lang: String): ApiResponse<SuperEventResponse>
     fun getUpcomingSuperEvents(lang: String): ApiResponse<List<SuperEventResponse>>
-    fun createSuperEvent(request: SuperEventRequest, lang: String): ApiResponse<Int>
-    fun updateSuperEvent(id: Int, request: SuperEventRequest, lang: String): ApiResponse<Nothing>
+    fun createSuperEvent(request: SuperEventRequest, lang: String): ApiResponse<SuperEventResponse>
+    fun updateSuperEvent(id: Int, request: SuperEventRequest, lang: String): ApiResponse<SuperEventResponse>
     fun deleteSuperEvent(id: Int, lang: String): ApiResponse<Nothing>
     fun getSuperEventAvailability(id: Int, lang: String): ApiResponse<SuperEventAvailabilityResponse>
 }

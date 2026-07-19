@@ -17,19 +17,18 @@ class CommentsService(
     override fun addComment(
         comment: AddCommentRequest,
         lang: String
-    ): ApiResponse<Int> {
+    ): ApiResponse<CommentResponse> {
         validateRequired(
             comment.userId to "user_id",
             comment.comment to "comment",
             lang = lang
         )
         val response = commentsRepository.addComment(comment, lang)
-        
-        // Broadcast to WebSocket clients
+
         if (response.success && response.data != null) {
-            broadcastComment(response.data!!, response)
+            broadcastComment(response.data.userId, response)
         }
-        
+
         return response
     }
 
@@ -37,7 +36,7 @@ class CommentsService(
         commentId: Int?,
         comment: UpdateCommentRequest,
         lang: String
-    ): ApiResponse<Nothing> {
+    ): ApiResponse<CommentResponse> {
         if (commentId == null) {
             throw IllegalArgumentException(Localization.get("comment_id_required", lang))
         }
@@ -46,12 +45,12 @@ class CommentsService(
             lang = lang
         )
         val response = commentsRepository.updateComment(commentId, comment, lang)
-        
+
         // Broadcast to WebSocket clients
         if (response.success) {
             broadcastComment(commentId, response)
         }
-        
+
         return response
     }
 
@@ -76,7 +75,7 @@ class CommentsService(
         return commentsRepository.getAllComments(lang)
     }
 
-    private fun broadcastComment(id: Int, response: ApiResponse<*>) {
+    private fun broadcastComment(id: Int, response: ApiResponse<CommentResponse>) {
         thread(isDaemon = true) {
             runBlocking {
                 CommentEventBroadcaster.broadcastComment(id, response)

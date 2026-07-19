@@ -6,8 +6,8 @@ import com.fathersprophets.backend.models.comments.CommentResponse
 import com.fathersprophets.backend.models.comments.UpdateCommentRequest
 
 interface ICommentsRepository {
-    fun addComment(comment: AddCommentRequest,lang : String): ApiResponse<Int>
-    fun updateComment(commentId: Int,updateComment: UpdateCommentRequest,lang : String): ApiResponse<Nothing>
+    fun addComment(comment: AddCommentRequest,lang : String): ApiResponse<CommentResponse>
+    fun updateComment(commentId: Int,updateComment: UpdateCommentRequest,lang : String): ApiResponse<CommentResponse>
     fun deleteComment(commentId : Int,lang : String): ApiResponse<Nothing>
     fun getCommentsByUserId(userId: Int,lang : String): ApiResponse<List<CommentResponse>>
     fun getAllComments(lang : String): ApiResponse<List<CommentResponse>>

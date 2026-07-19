@@ -21,7 +21,7 @@ class PersonMcqService(
         return personMcqRepository.getPersonMcqById(id, lang)
     }
 
-    override fun createPersonMcq(request: CreatePersonMcqRequest, lang: String): ApiResponse<Int> {
+    override fun createPersonMcq(request: CreatePersonMcqRequest, lang: String): ApiResponse<PersonMcqResponse> {
         validateRequired(
             request.question to "question",
             request.first to "first",
@@ -34,7 +34,7 @@ class PersonMcqService(
         return personMcqRepository.createPersonMcq(request, lang)
     }
 
-    override fun updatePersonMcq(id: Int?, request: UpdatePersonMcqRequest, lang: String): ApiResponse<Nothing> {
+    override fun updatePersonMcq(id: Int?, request: UpdatePersonMcqRequest, lang: String): ApiResponse<PersonMcqResponse> {
         if (id == null) throw IllegalArgumentException(Localization.get("person_mcq_id_required", lang))
         validateRequired(
             request.question to "question",

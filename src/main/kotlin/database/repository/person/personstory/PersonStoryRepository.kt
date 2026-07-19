@@ -39,26 +39,24 @@ class PersonStoryRepository(
         )
     }
 
-    override fun addStory(request: CreatePersonStoryRequest, lang: String): ApiResponse<Int> {
-        val id = personStoryDao.create(request.convertToDto())
-
-        if (id == 0) throw IllegalArgumentException(Localization.get("person_story_creation_failed", lang))
+    override fun addStory(request: CreatePersonStoryRequest, lang: String): ApiResponse<PersonStoryResponse> {
+        val create = personStoryDao.create(request.convertToDto())
+            ?:throw IllegalArgumentException(Localization.get("person_story_creation_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = create.convertToPersonStoryResponse(),
             message = Localization.get("person_story_created_successfully", lang)
         )
     }
 
-    override fun updateStory(id: Int, request: UpdatePersonStoryRequest, lang: String): ApiResponse<Nothing> {
+    override fun updateStory(id: Int, request: UpdatePersonStoryRequest, lang: String): ApiResponse<PersonStoryResponse> {
 
         val updated = personStoryDao.update(request.convertToPersonStoryDto(id))
-
-        if (!updated) throw IllegalArgumentException(Localization.get("person_story_update_failed", lang))
+            ?: throw IllegalArgumentException(Localization.get("person_story_update_failed", lang))
         return ApiResponse(
             success = true,
-            data = null,
+            data = updated.convertToPersonStoryResponse(),
             message = Localization.get("person_story_updated_successfully", lang)
         )
     }

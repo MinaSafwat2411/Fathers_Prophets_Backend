@@ -100,6 +100,10 @@ class AuthRepository(
         var user = userDao.findById(userId)
             ?: throw ConflictException(Localization.get("user_not_found", lang))
 
+        if (user.refreshToken == null || user.refreshToken != refresh.refreshToken) {
+            throw UnauthorizedException(Localization.get("invalid_token", lang))
+        }
+
         val newToken = generateAccessToken(user)
         val newRefreshToken = generateRefresh(user)
 

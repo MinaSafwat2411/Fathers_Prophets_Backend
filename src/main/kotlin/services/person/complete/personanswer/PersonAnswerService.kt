@@ -17,22 +17,7 @@ class PersonAnswerService(
         return personAnswerRepository.getAllPersonAnswers(lang)
     }
 
-    override fun getPersonAnswerById(id: Int?, lang: String): ApiResponse<PersonAnswerResponse> {
-        if (id == null) throw IllegalArgumentException(Localization.get("person_answer_id_required", lang))
-        return personAnswerRepository.getPersonAnswerById(id, lang)
-    }
-
-    override fun getPersonAnswersByQuestionId(questionId: Int?, lang: String): ApiResponse<List<PersonAnswerResponse>> {
-        if (questionId == null) throw IllegalArgumentException(Localization.get("question_id_required", lang))
-        return personAnswerRepository.getPersonAnswersByQuestionId(questionId, lang)
-    }
-
-    override fun getPersonAnswersByUserId(userId: Int?, lang: String): ApiResponse<List<PersonAnswerResponse>> {
-        if (userId == null) throw IllegalArgumentException(Localization.get("user_id_required", lang))
-        return personAnswerRepository.getPersonAnswersByUserId(userId, lang)
-    }
-
-    override fun createPersonAnswer(request: CreatePersonAnswerRequest, lang: String): ApiResponse<Int> {
+    override fun createPersonAnswer(request: CreatePersonAnswerRequest, lang: String): ApiResponse<PersonAnswerResponse> {
         validateRequired(
             request.answer to "answer",
             lang = lang
@@ -40,7 +25,7 @@ class PersonAnswerService(
         return personAnswerRepository.createPersonAnswer(request, lang)
     }
 
-    override fun updatePersonAnswer(id: Int?, request: UpdatePersonAnswerRequest, lang: String): ApiResponse<Nothing> {
+    override fun updatePersonAnswer(id: Int?, request: UpdatePersonAnswerRequest, lang: String): ApiResponse<PersonAnswerResponse> {
         if (id == null) throw IllegalArgumentException(Localization.get("person_answer_id_required", lang))
         validateRequired(
             request.answer to "answer",
@@ -50,11 +35,21 @@ class PersonAnswerService(
         return personAnswerRepository.updatePersonAnswer(id, request, lang)
     }
 
+    override fun getPersonAnswersByUserIdAndQuestionId(
+        userId: Int?,
+        questionId: Int?,
+        lang: String
+    ): ApiResponse<List<PersonAnswerResponse>> {
+        if (userId == null) throw IllegalArgumentException(Localization.get("user_id_required", lang))
+        if (questionId == null) throw IllegalArgumentException(Localization.get("question_id_required", lang))
+        return personAnswerRepository.getPersonAnswersByUserIdAndQuestionId(userId, questionId, lang)
+    }
+
     override fun updatePersonAnswerStatus(
         id: Int?,
         request: UpdateAnswerStatusRequest,
         lang: String
-    ): ApiResponse<Nothing> {
+    ): ApiResponse<PersonAnswerResponse> {
         if (id == null) throw IllegalArgumentException(Localization.get("person_answer_id_required", lang))
         validateRequired(
             request.status to "status",

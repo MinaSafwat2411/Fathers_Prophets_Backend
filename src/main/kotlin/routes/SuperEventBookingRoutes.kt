@@ -20,7 +20,7 @@ fun Route.superEventBookingRoutes(superEventBookingService: ISuperEventBookingSe
             val userId = principal?.payload?.getClaim("userId")?.asInt()
             val request = call.receive<SuperEventBookingRequest>()
 
-            call.respond(superEventBookingService.bookSeat(request.superEventId, userId, lang))
+            call.respond(superEventBookingService.bookSeat(request.copy(userId = userId), lang))
         }
 
         delete("/{superEventId}") {
@@ -43,14 +43,15 @@ fun Route.superEventBookingRoutes(superEventBookingService: ISuperEventBookingSe
             call.respond(superEventBookingService.getBookingsBySuperEventId(superEventId, lang))
         }
 
-        get("/me") {
-            val lang = call.request.header("Accept-Language") ?: "en"
+        get("/my-booking/{superEventId}") {
             val principal = call.principal<JWTPrincipal>()
             val userId = principal?.payload?.getClaim("userId")?.asInt()
-            call.respond(superEventBookingService.getBookingsByUserId(userId, lang))
+            val lang = call.request.header("Accept-Language") ?: "en"
+            val superEventId = call.parameters["superEventId"]?.toIntOrNull()
+            call.respond(superEventBookingService.getBookingSeatByUserIdAndEventId(userId, superEventId, lang))
         }
 
-        put("/{id}/pay") {
+        put("/pay/{id}") {
             call.forbidRoles("members")
             val lang = call.request.header("Accept-Language") ?: "en"
             val principal = call.principal<JWTPrincipal>()

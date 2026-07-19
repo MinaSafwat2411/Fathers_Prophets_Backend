@@ -5,6 +5,8 @@ import com.fathersprophets.backend.models.personanswer.UpdateAnswerStatusRequest
 import com.fathersprophets.backend.models.personanswer.UpdatePersonAnswerRequest
 import com.fathersprophets.backend.plugins.requireRole
 import com.fathersprophets.backend.services.person.complete.personanswer.IPersonAnswerService
+import io.ktor.server.auth.jwt.JWTPrincipal
+import io.ktor.server.auth.principal
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -18,27 +20,14 @@ fun Route.personAnswerRoutes(personAnswerService: IPersonAnswerService) {
             call.respond(response)
         }
 
-        get("/{id}") {
+        get("/my-answers/{questionId}") {
             val lang = call.request.headers["Accept-Language"] ?: "en"
-            val id = call.parameters["id"]?.toIntOrNull()
-            val response = personAnswerService.getPersonAnswerById(id, lang)
-            call.respond(response)
-        }
-
-        get("/question/{questionId}") {
-            val lang = call.request.headers["Accept-Language"] ?: "en"
+            val principal = call.principal<JWTPrincipal>()
+            val userId = principal?.payload?.getClaim("id")?.asInt()
             val questionId = call.parameters["questionId"]?.toIntOrNull()
-            val response = personAnswerService.getPersonAnswersByQuestionId(questionId, lang)
+            val response = personAnswerService.getPersonAnswersByUserIdAndQuestionId(userId, questionId, lang)
             call.respond(response)
         }
-
-        get("/user/{userId}") {
-            val lang = call.request.headers["Accept-Language"] ?: "en"
-            val userId = call.parameters["userId"]?.toIntOrNull()
-            val response = personAnswerService.getPersonAnswersByUserId(userId, lang)
-            call.respond(response)
-        }
-
         post {
             val lang = call.request.headers["Accept-Language"] ?: "en"
             val request = call.receive<CreatePersonAnswerRequest>()

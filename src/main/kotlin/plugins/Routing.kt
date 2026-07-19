@@ -56,7 +56,7 @@ import com.fathersprophets.backend.services.person.mcq.personmcqanswer.IPersonMc
 import com.fathersprophets.backend.services.person.personofday.IPersonOfDayService
 import com.fathersprophets.backend.services.person.personstory.IPersonStoryService
 import com.fathersprophets.backend.services.person.guessperson.IGuessPersonQuestionService
-import com.fathersprophets.backend.services.guesspersonanswer.IGuessPersonAnswerService
+import com.fathersprophets.backend.services.person.guesspersonanswer.IGuessPersonAnswerService
 import com.fathersprophets.backend.services.activity.matchingpair.IMatchingPairService
 import com.fathersprophets.backend.services.activity.matchingpair.matchingpairanswer.IMatchingPairAnswerService
 import com.fathersprophets.backend.services.activity.escapeegypt.IEscapeEgyptService

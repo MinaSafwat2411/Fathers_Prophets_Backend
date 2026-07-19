@@ -10,26 +10,24 @@ import com.fathersprophets.backend.utils.Localization
 class CommentsRepository (
     private val commentDao: CommentDao
 ) : ICommentsRepository {
-    override fun addComment(comment: AddCommentRequest,lang : String): ApiResponse<Int> {
-        val id = commentDao.addComment(comment.toCommentDto())
-
-        if (id == 0) throw IllegalArgumentException(Localization.get("comment_create_failed", lang))
+    override fun addComment(comment: AddCommentRequest,lang : String): ApiResponse<CommentResponse> {
+        val create = commentDao.addComment(comment.toCommentDto())
+            ?:throw IllegalArgumentException(Localization.get("comment_create_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = create.convertToCommentResponse(),
             message = Localization.get("comment_create_success", lang)
         )
     }
 
-    override fun updateComment(commentId: Int,updateComment: UpdateCommentRequest,lang : String): ApiResponse<Nothing> {
+    override fun updateComment(commentId: Int,updateComment: UpdateCommentRequest,lang : String): ApiResponse<CommentResponse> {
         val updatedComment = commentDao.updateComment(updateComment.toCommentDto(commentId))
-
-        if (!updatedComment) throw IllegalArgumentException(Localization.get("comment_update_failed", lang))
+            ?:throw IllegalArgumentException(Localization.get("comment_update_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = null,
+            data = updatedComment.convertToCommentResponse(),
             message = Localization.get("comment_update_success", lang)
         )
     }

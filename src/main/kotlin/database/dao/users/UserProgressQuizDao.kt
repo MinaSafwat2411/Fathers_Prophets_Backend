@@ -30,11 +30,6 @@ class UserProgressQuizDao {
             .map { resultRowToDto(it) }
     }
 
-    fun findByQuizId(quizId: Int) = transaction {
-        UserProgressQuizTable.selectAll().where { UserProgressQuizTable.quizId eq quizId }
-            .map { resultRowToDto(it) }
-    }
-
 
     fun create(dto: UserProgressQuizDto) = transaction {
         UserProgressQuizTable.insert {

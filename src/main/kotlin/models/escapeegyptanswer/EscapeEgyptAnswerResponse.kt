@@ -10,5 +10,5 @@ data class EscapeEgyptAnswerResponse(
     val userId: Int,
     val answer: String,
     val status: String,
-    val correctAnswer: String
+    val correctAnswer: String?= null
 )

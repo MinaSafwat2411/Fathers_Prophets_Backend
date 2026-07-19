@@ -41,26 +41,24 @@ class PersonMcqRepository(
         )
     }
 
-    override fun createPersonMcq(request: CreatePersonMcqRequest, lang: String): ApiResponse<Int> {
-        val id = personMcqDao.create(request.convertToPersonMcqDto())
-
-        if (id == 0) throw IllegalArgumentException(Localization.get("person_mcq_creation_failed", lang))
+    override fun createPersonMcq(request: CreatePersonMcqRequest, lang: String): ApiResponse<PersonMcqResponse> {
+        val create = personMcqDao.create(request.convertToPersonMcqDto())
+            ?:throw IllegalArgumentException(Localization.get("person_mcq_creation_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = id,
+            data = create.convertToPersonMcqResponse(),
             message = Localization.get("person_mcq_created_successfully", lang)
         )
     }
 
-    override fun updatePersonMcq(id: Int, request: UpdatePersonMcqRequest, lang: String): ApiResponse<Nothing> {
+    override fun updatePersonMcq(id: Int, request: UpdatePersonMcqRequest, lang: String): ApiResponse<PersonMcqResponse> {
         val updated = personMcqDao.update(request.convertToPersonMcqDto(id))
-
-        if (!updated) throw IllegalArgumentException(Localization.get("person_mcq_update_failed", lang))
+            ?: throw IllegalArgumentException(Localization.get("person_mcq_update_failed", lang))
 
         return ApiResponse(
             success = true,
-            data = null,
+            data = updated.convertToPersonMcqResponse(),
             message = Localization.get("person_mcq_updated_successfully", lang)
         )
     }

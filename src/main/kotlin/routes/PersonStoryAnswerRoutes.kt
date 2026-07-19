@@ -21,7 +21,7 @@ fun Route.personStoryAnswerRoutes(personStoryAnswerService: IPersonStoryAnswerSe
             call.respond(response)
         }
 
-        get("/story/{storyId}") {
+        get("/my-answers/{storyId}") {
             val lang = call.request.headers["Accept-Language"] ?: "en"
             val principal = call.principal<JWTPrincipal>()
             val userId = principal?.payload?.getClaim("id")?.asInt()

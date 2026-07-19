@@ -6,14 +6,20 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UpdateQuestionRequest(
-    val question: String,
-    val personId: Int,
-    val type: String
+    val question: String? = null,
+    val personId: Int  ? = null,
+    val type: String? = null,
+    val correctAnswer: String? = null
 ){
     fun convertToPersonQuestionDto(id: Int) = PersonQuestionDto(
         id = id,
-        question = this.question,
-        personId = this.personId,
-        type = QuestionType.valueOf(this.type)
+        question = this.question?: "",
+        personId = this.personId ?: 0,
+        type = try{
+            QuestionType.valueOf(this.type ?: "")
+        } catch (e: IllegalArgumentException) {
+            QuestionType.complete
+        },
+        correctAnswer = this.correctAnswer?: ""
     )
 }

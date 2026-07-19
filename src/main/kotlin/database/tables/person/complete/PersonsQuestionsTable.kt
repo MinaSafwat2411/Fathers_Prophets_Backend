@@ -14,7 +14,7 @@ object PersonsQuestionsTable : Table("persons_questions") {
     val id = integer("id").autoIncrement()
     val question = varchar("question", 255)
     val personId = reference("person_id", PersonsTable.id, onDelete = ReferenceOption.CASCADE).index("idx_persons_questions_person_id")
-    val type = customEnumeration("type", "QuestionType", { value -> QuestionType.valueOf(value as String) }, { PGobject().apply { this.type = "QuestionType"; this.value = it.name } })
+    val type = customEnumeration("type", "question_type", { value -> QuestionType.valueOf(value as String) }, { PGobject().apply { this.type = "question_type"; this.value = it.name } })
     val correctAnswer = varchar("correct_answer", 255).nullable()
 
     override val primaryKey = PrimaryKey(id)

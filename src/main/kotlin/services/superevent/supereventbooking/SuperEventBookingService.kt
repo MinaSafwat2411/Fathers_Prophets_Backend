@@ -12,7 +12,7 @@ class SuperEventBookingService(
     private val superEventBookingRepository: ISuperEventBookingRepository
 ) : ISuperEventBookingService {
 
-    override fun bookSeat(request: SuperEventBookingRequest, lang: String): ApiResponse<Int> {
+    override fun bookSeat(request: SuperEventBookingRequest, lang: String): ApiResponse<SuperEventBookingResponse> {
         validateRequired(
             request.superEventId to "superEventId",
             request.userId to "userId",
@@ -21,10 +21,20 @@ class SuperEventBookingService(
         return superEventBookingRepository.bookSeat(request, lang)
     }
 
-    override fun cancelBooking(superEventId: Int?, userId: Int?, lang: String): ApiResponse<Nothing> {
+    override fun cancelBooking(superEventId: Int?, userId: Int?, lang: String): ApiResponse<SuperEventBookingResponse> {
         if (superEventId == null) throw IllegalArgumentException(Localization.get("super_event_id_required", lang))
         if (userId == null) throw IllegalArgumentException(Localization.get("user_id_required", lang))
         return superEventBookingRepository.cancelBooking(superEventId, userId, lang)
+    }
+
+    override fun getBookingSeatByUserIdAndEventId(
+        userId: Int?,
+        superEventId: Int?,
+        lang: String
+    ): ApiResponse<SuperEventBookingResponse> {
+        if (superEventId == null) throw IllegalArgumentException(Localization.get("super_event_id_required", lang))
+        if (userId == null) throw IllegalArgumentException(Localization.get("user_id_required", lang))
+        return superEventBookingRepository.getBookingSeatByUserIdAndEventId(userId, superEventId, lang)
     }
 
     override fun getBookingsBySuperEventId(superEventId: Int?, lang: String): ApiResponse<List<SuperEventBookingResponse>> {
