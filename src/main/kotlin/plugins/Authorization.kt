@@ -5,6 +5,13 @@ import com.fathersprophets.backend.exceptions.userReviewed
 import com.fathersprophets.backend.exceptions.userRole
 import com.fathersprophets.backend.utils.Localization
 import io.ktor.server.application.*
+import io.ktor.server.auth.AuthenticationChecked
+
+val RequireReviewedPlugin = createRouteScopedPlugin("RequireReviewedPlugin") {
+    on(AuthenticationChecked) { call ->
+        call.requireReviewed()
+    }
+}
 
 fun ApplicationCall.requireRole(vararg roles: String) {
 

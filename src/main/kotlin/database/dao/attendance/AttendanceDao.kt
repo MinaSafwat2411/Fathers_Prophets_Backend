@@ -2,15 +2,9 @@ package com.fathersprophets.backend.database.dao.attendance
 
 import com.fathersprophets.backend.database.tables.attendance.AttendanceTable
 import com.fathersprophets.backend.models.dto.AttendanceDto
-import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.update
 
 class AttendanceDao {
     private fun rowToAttendanceDto(raw: ResultRow) = AttendanceDto(
@@ -36,19 +30,20 @@ class AttendanceDao {
     }
 
     fun getAllAttendanceByUserId(userId : Int) = transaction {
-        AttendanceTable.select { AttendanceTable.userId eq userId }.map { rowToAttendanceDto(it) }
+        AttendanceTable.selectAll().where { AttendanceTable.userId eq userId }.map { rowToAttendanceDto(it) }
     }
 
     fun getAllAttendanceByClassId(classId: Int) = transaction {
-        AttendanceTable.select { AttendanceTable.classId eq classId }.map { rowToAttendanceDto(it) }
+        AttendanceTable.selectAll().where { AttendanceTable.classId eq classId }.map { rowToAttendanceDto(it) }
     }
 
     fun getAllAttendanceBySessionId(sessionId: Int) = transaction {
-        AttendanceTable.select { AttendanceTable.sessionId eq sessionId }.map { rowToAttendanceDto(it) }
+        AttendanceTable.selectAll().where { AttendanceTable.sessionId eq sessionId }.map { rowToAttendanceDto(it) }
     }
 
     fun getAllAttendanceByClassIdAndSessionId(classId: Int, sessionId: Int) = transaction {
-        AttendanceTable.select { AttendanceTable.classId eq classId and (AttendanceTable.sessionId eq sessionId) }.map { rowToAttendanceDto(it) }
+        AttendanceTable.selectAll()
+            .where { AttendanceTable.classId eq classId and (AttendanceTable.sessionId eq sessionId) }.map { rowToAttendanceDto(it) }
     }
 
     fun addAttendance(attendanceDto: AttendanceDto) = transaction {

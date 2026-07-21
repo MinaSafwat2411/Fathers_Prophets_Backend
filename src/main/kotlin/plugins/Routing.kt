@@ -129,9 +129,7 @@ fun Application.configureRouting() {
             authRoutes(authService)
             settingRoutes(versionService)
             authenticate("auth-jwt") {
-                intercept(ApplicationCallPipeline.Call) {
-                    call.requireReviewed()
-                }
+                install(RequireReviewedPlugin)
                 userRoutes(userService)
                 classRoutes(classService)
                 profileRoutes(userService)

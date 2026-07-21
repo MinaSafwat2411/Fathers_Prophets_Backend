@@ -4,6 +4,7 @@ import com.fathersprophets.backend.database.tables.activity.escapeegypt.EscapeEg
 import com.fathersprophets.backend.models.dto.EscapeEgyptAnswerDto
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class EscapeEgyptAnswerDao {
@@ -32,8 +33,10 @@ class EscapeEgyptAnswerDao {
     }
 
     fun findByUserIdAndEscapeEgyptId(dto: EscapeEgyptAnswerDto) =  transaction {
-        EscapeEgyptAnswersTable.select {
-            EscapeEgyptAnswersTable.userId eq(dto.userId) and EscapeEgyptAnswersTable.escapeEgyptId.eq(dto.escapeEgyptId)
+        EscapeEgyptAnswersTable.selectAll().where {
+            EscapeEgyptAnswersTable.userId eq (dto.userId) and EscapeEgyptAnswersTable.escapeEgyptId.eq(
+                dto.escapeEgyptId
+            )
         }.map { resultRowToDto(it) }
     }
 

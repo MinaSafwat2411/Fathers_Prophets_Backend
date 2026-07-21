@@ -2,14 +2,10 @@ package com.fathersprophets.backend.database.dao.person.personofday
 
 import com.fathersprophets.backend.database.tables.person.personofday.PersonOfDayTable
 import com.fathersprophets.backend.models.dto.PersonOfDayDto
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.update
 import java.time.LocalDate
 
 class PersonOfDayDao {
@@ -31,13 +27,13 @@ class PersonOfDayDao {
     }
 
     fun getPersonOfDayById(id: Int) = transaction {
-        PersonOfDayTable.select { PersonOfDayTable.id eq id }
+        PersonOfDayTable.selectAll().where { PersonOfDayTable.id eq id }
             .map { rowToPersonOfDay(it) }
             .singleOrNull()
     }
 
     fun getPersonOfDayByDate() = transaction {
-        PersonOfDayTable.select { PersonOfDayTable.date eq LocalDate.now() }
+        PersonOfDayTable.selectAll().where { PersonOfDayTable.date eq LocalDate.now() }
             .map { rowToPersonOfDay(it) }
             .singleOrNull()
     }

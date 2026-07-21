@@ -4,6 +4,11 @@ import com.fathersprophets.backend.exceptions.UnauthorizedException
 import com.fathersprophets.backend.models.auth.LoginRequest
 import com.fathersprophets.backend.models.auth.RefreshRequest
 import com.fathersprophets.backend.models.auth.RegisterRequest
+import com.fathersprophets.backend.models.auth.ForgotPasswordRequest
+import com.fathersprophets.backend.models.auth.SendOtpRequest
+import com.fathersprophets.backend.models.auth.ResendOtpRequest
+import com.fathersprophets.backend.models.auth.VerifyOtpRequest
+import com.fathersprophets.backend.models.auth.ResetPasswordRequest
 import com.fathersprophets.backend.services.auth.IAuthService
 import com.fathersprophets.backend.utils.Localization
 import io.ktor.http.*
@@ -43,6 +48,61 @@ fun Route.authRoutes(authService: IAuthService) {
             val request = call.receive<RefreshRequest>()
             val lang = call.request.header("Accept-Language") ?: "en"
             val result = authService.refreshToken(request, lang)
+
+            call.respond(
+                HttpStatusCode.OK,
+                result
+            )
+        }
+
+        post("/forgot-password") {
+            val request = call.receive<ForgotPasswordRequest>()
+            val lang = call.request.header("Accept-Language") ?: "en"
+            val result = authService.forgotPassword(request, lang)
+
+            call.respond(
+                HttpStatusCode.OK,
+                result
+            )
+        }
+
+        post("/forgot-password/send-otp") {
+            val request = call.receive<SendOtpRequest>()
+            val lang = call.request.header("Accept-Language") ?: "en"
+            val result = authService.sendOtp(request, lang)
+
+            call.respond(
+                HttpStatusCode.OK,
+                result
+            )
+        }
+
+        post("/forgot-password/resend-otp") {
+            val request = call.receive<ResendOtpRequest>()
+            val lang = call.request.header("Accept-Language") ?: "en"
+            val result = authService.resendOtp(request, lang)
+
+            call.respond(
+                HttpStatusCode.OK,
+                result
+            )
+        }
+
+        post("/forgot-password/verify-otp") {
+            val request = call.receive<VerifyOtpRequest>()
+            val lang = call.request.header("Accept-Language") ?: "en"
+            val result = authService.verifyOtp(request, lang)
+
+            call.respond(
+                HttpStatusCode.OK,
+                result
+            )
+        }
+
+        post("/reset-password") {
+            val request = call.receive<ResetPasswordRequest>()
+            val lang = call.request.header("Accept-Language") ?: "en"
+            val result = authService.resetPassword(request, lang)
 
             call.respond(
                 HttpStatusCode.OK,

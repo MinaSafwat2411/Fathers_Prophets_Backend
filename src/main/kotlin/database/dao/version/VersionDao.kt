@@ -32,7 +32,7 @@ class VersionDao {
     }
 
     fun changePinVersion(versionDto: VersionDto) = transaction {
-        VersionsTable.update({ VersionsTable.version eq (versionDto.version ?: "") }) {
+        VersionsTable.update({ VersionsTable.version eq versionDto.version }) {
             it[adminPin] = versionDto.adminPin
         }.let { getLastVersion() }
     }

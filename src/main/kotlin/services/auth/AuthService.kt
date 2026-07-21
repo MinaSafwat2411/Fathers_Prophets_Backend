@@ -42,4 +42,52 @@ class AuthService(
 
         return authRepository.logout(userId, lang)
     }
+
+    override suspend fun forgotPassword(request: ForgotPasswordRequest, lang: String): ApiResponse<ForgotPasswordResponse> {
+        validateRequired(
+            request.username to "username",
+            lang = lang
+        )
+
+        return authRepository.forgotPassword(request, lang)
+    }
+
+    override suspend fun sendOtp(request: SendOtpRequest, lang: String): ApiResponse<SendOtpResponse> {
+        validateRequired(
+            request.username to "username",
+            request.email to "email",
+            lang = lang
+        )
+
+        return authRepository.sendOtp(request, lang)
+    }
+
+    override suspend fun resendOtp(request: ResendOtpRequest, lang: String): ApiResponse<SendOtpResponse> {
+        validateRequired(
+            request.transactionId to "transaction_id",
+            lang = lang
+        )
+
+        return authRepository.resendOtp(request, lang)
+    }
+
+    override suspend fun verifyOtp(request: VerifyOtpRequest, lang: String): ApiResponse<VerifyOtpResponse> {
+        validateRequired(
+            request.transactionId to "transaction_id",
+            request.otp to "otp",
+            lang = lang
+        )
+
+        return authRepository.verifyOtp(request, lang)
+    }
+
+    override suspend fun resetPassword(request: ResetPasswordRequest, lang: String): ApiResponse<Nothing> {
+        validateRequired(
+            request.verifyToken to "verify_token",
+            request.newPassword to "new_password",
+            lang = lang
+        )
+
+        return authRepository.resetPassword(request, lang)
+    }
 }

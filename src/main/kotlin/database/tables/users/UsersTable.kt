@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.database.tables.users
 
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.javatime.timestamp
 import org.postgresql.util.PGobject
 
 enum class UserRole {
@@ -41,7 +42,7 @@ object UsersTable : Table("users") {
     val birthDate = varchar("birth_date", 255).nullable()
     val fatherName = varchar("father_name", 255).nullable()
     val isShams = bool("is_shams").nullable()
-    val profile = varchar("profile", 255).nullable()
+    val profile = text("profile").nullable()
     val isReviewed = bool("is_reviewed").nullable().index("idx_users_is_reviewed")
     val role = customEnumeration(
         "role",
@@ -56,6 +57,11 @@ object UsersTable : Table("users") {
     val token = varchar("token", 512).nullable()
     val refreshToken = varchar("refresh_token", 512).nullable()
     val classId = integer("class_id").nullable()
+    val otpCode = varchar("otp_code", 10).nullable()
+    val otpExpiresAt = timestamp("otp_expires_at").nullable()
+    val resetTransactionId = varchar("reset_transaction_id", 64).nullable().uniqueIndex()
+    val resetVerifyToken = varchar("reset_verify_token", 64).nullable().uniqueIndex()
+    val resetVerifyTokenExpiresAt = timestamp("reset_verify_token_expires_at").nullable()
 
     override val primaryKey = PrimaryKey(id)
 }

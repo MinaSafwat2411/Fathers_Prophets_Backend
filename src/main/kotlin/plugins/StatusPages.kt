@@ -1,5 +1,6 @@
 package com.fathersprophets.backend.plugins
 
+import com.fathersprophets.backend.exceptions.BadRequestException
 import com.fathersprophets.backend.exceptions.ConflictException
 import com.fathersprophets.backend.exceptions.ForbiddenException
 import com.fathersprophets.backend.exceptions.UnauthorizedException
@@ -49,6 +50,16 @@ fun Application.configureStatusPages() {
                 ApiResponse<Nothing>(
                     success = false,
                     message = cause.message ?: "Conflict"
+                )
+            )
+        }
+
+        exception<BadRequestException> { call, cause ->
+            call.respond(
+                HttpStatusCode.BadRequest,
+                ApiResponse<Nothing>(
+                    success = false,
+                    message = cause.message ?: "Bad request"
                 )
             )
         }

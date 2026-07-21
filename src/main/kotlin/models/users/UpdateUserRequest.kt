@@ -15,13 +15,18 @@ data class UpdateUserRequest(
     val skipMembership: Boolean? = null,
     val motherPhone : String? = null,
     val fatherPhone : String? = null,
+    val userRole : String? = null
 ) {
     fun toUserDto(id: Int) = UserDto(
         id = id,
         name = "",
         username = "",
         passwordHash = "",
-        role = UserRole.member,
+        role = try{
+            UserRole.valueOf(userRole?:"")
+        }catch (e : Exception){
+            UserRole.member
+        },
         address = address,
         birthDate = birthDate,
         fatherName = fatherName,

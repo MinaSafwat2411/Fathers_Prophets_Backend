@@ -1,5 +1,6 @@
 package com.fathersprophets.backend.database.dao.users
 
+import com.fathersprophets.backend.database.tables.person.PersonsTable
 import com.fathersprophets.backend.database.tables.users.ParentsTable
 import com.fathersprophets.backend.database.tables.users.UserRole
 import com.fathersprophets.backend.database.tables.users.UsersTable
@@ -29,6 +30,11 @@ class UserDao {
         refreshToken = row[UsersTable.refreshToken],
         fcmToken = row[UsersTable.fcmToken],
         skipMembership = row[UsersTable.skipMembership],
+        otpCode = row[UsersTable.otpCode],
+        otpExpiresAt = row[UsersTable.otpExpiresAt],
+        resetTransactionId = row[UsersTable.resetTransactionId],
+        resetVerifyToken = row[UsersTable.resetVerifyToken],
+        resetVerifyTokenExpiresAt = row[UsersTable.resetVerifyTokenExpiresAt],
         parents = row.getOrNull(ParentsTable.id)?.let {
             ParentsDto(
                 motherPhone = row[ParentsTable.motherPhone],
@@ -44,6 +50,21 @@ class UserDao {
 
     fun findById(userId: Int) = transaction {
         (UsersTable leftJoin ParentsTable).selectAll().where { UsersTable.id eq userId }
+            .singleOrNull()?.let { resultRowToUser(it) }
+    }
+
+    fun findByEmail(email: String) = transaction {
+        (UsersTable leftJoin ParentsTable).selectAll().where { UsersTable.email eq email }
+            .singleOrNull()?.let { resultRowToUser(it) }
+    }
+
+    fun findByResetTransactionId(transactionId: String) = transaction {
+        (UsersTable leftJoin ParentsTable).selectAll().where { UsersTable.resetTransactionId eq transactionId }
+            .singleOrNull()?.let { resultRowToUser(it) }
+    }
+
+    fun findByResetVerifyToken(verifyToken: String) = transaction {
+        (UsersTable leftJoin ParentsTable).selectAll().where { UsersTable.resetVerifyToken eq verifyToken }
             .singleOrNull()?.let { resultRowToUser(it) }
     }
 
@@ -97,6 +118,8 @@ class UserDao {
             it[fatherName] = userDto.fatherName
             it[isShams] = userDto.isShams
             it[memberId] = userDto.memberId
+            it[skipMembership] = userDto.skipMembership
+            it[role] = userDto.role
         }.let { findById(userDto.id) }
     }
 
@@ -127,10 +150,41 @@ class UserDao {
     fun updatePassword(userDto: UserDto) = transaction {
         UsersTable.update({ UsersTable.id eq userDto.id }) {
             it[passwordHash] = userDto.passwordHash
+            it[otpCode] = null
+            it[otpExpiresAt] = null
+            it[resetTransactionId] = null
+            it[resetVerifyToken] = null
+            it[resetVerifyTokenExpiresAt] = null
+        } > 0
+    }
+
+    fun updateResetOtp(userDto: UserDto) = transaction {
+        UsersTable.update({ UsersTable.id eq userDto.id }) {
+            it[otpCode] = userDto.otpCode
+            it[otpExpiresAt] = userDto.otpExpiresAt
+            it[resetTransactionId] = userDto.resetTransactionId
+        } > 0
+    }
+
+    fun updateResetVerifyToken(userDto: UserDto) = transaction {
+        UsersTable.update({ UsersTable.id eq userDto.id }) {
+            it[otpCode] = null
+            it[otpExpiresAt] = null
+            it[resetTransactionId] = null
+            it[resetVerifyToken] = userDto.resetVerifyToken
+            it[resetVerifyTokenExpiresAt] = userDto.resetVerifyTokenExpiresAt
+        } > 0
+    }
+
+    fun clearResetVerifyToken(userDto: UserDto) = transaction {
+        UsersTable.update({ UsersTable.id eq userDto.id }) {
+            it[resetVerifyToken] = null
+            it[resetVerifyTokenExpiresAt] = null
         } > 0
     }
 
     fun deleteUser(userId: Int) = transaction {
+        ParentsTable.deleteWhere { ParentsTable.userId eq userId } > 0
         UsersTable.deleteWhere { UsersTable.id eq userId } > 0
     }
 

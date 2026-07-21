@@ -52,6 +52,8 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:5.3.2")
 
     implementation("com.google.firebase:firebase-admin:9.4.3")
+
+    implementation("org.eclipse.angus:angus-mail:2.0.3")
 }
 
 tasks.register<JavaExec>("generatePostmanSmart") {

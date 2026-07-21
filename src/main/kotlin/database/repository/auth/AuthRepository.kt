@@ -2,6 +2,7 @@ package com.fathersprophets.backend.database.repository.auth
 
 import com.fathersprophets.backend.database.dao.users.UserDao
 import com.fathersprophets.backend.database.tables.users.UserRole
+import com.fathersprophets.backend.exceptions.BadRequestException
 import com.fathersprophets.backend.exceptions.ConflictException
 import com.fathersprophets.backend.exceptions.UnauthorizedException
 import com.fathersprophets.backend.models.ApiResponse
@@ -9,7 +10,12 @@ import com.fathersprophets.backend.models.auth.*
 import com.fathersprophets.backend.models.dto.UserDto
 import com.fathersprophets.backend.utils.JwtConfig
 import com.fathersprophets.backend.utils.Localization
+import com.fathersprophets.backend.utils.MailSender
 import com.fathersprophets.backend.utils.PasswordUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.time.Instant
+import java.util.UUID
 
 class AuthRepository(
     val userDao: UserDao,
@@ -87,7 +93,7 @@ class AuthRepository(
             message = Localization.get("login_success", lang),
             data = LoginResponse(
                 user = user.convertToUserResponse(),
-                token = token,
+                accessToken = token,
                 refreshToken = refreshToken
             )
         )
@@ -135,6 +141,110 @@ class AuthRepository(
         userDao.updateRefreshToken(userDto)
         userDao.updateFcmToken(userDto)
         return ApiResponse(success = true, message = Localization.get("logout_success", lang))
+    }
+
+    override suspend fun forgotPassword(request: ForgotPasswordRequest, lang: String): ApiResponse<ForgotPasswordResponse> {
+        val user = userDao.findByUsername(request.username ?: "")
+            ?: throw ConflictException(Localization.get("user_not_found", lang))
+
+        if (user.email.isNullOrBlank()) {
+            throw RuntimeException(Localization.get("contact_admin_no_email", lang))
+        }
+
+        return ApiResponse(
+            success = true,
+            message = Localization.get("username_found", lang),
+            data = ForgotPasswordResponse(maskedEmail = maskEmail(user.email))
+        )
+    }
+
+    override suspend fun sendOtp(request: SendOtpRequest, lang: String): ApiResponse<SendOtpResponse> {
+        val user = userDao.findByUsername(request.username ?: "")
+            ?: throw ConflictException(Localization.get("user_not_found", lang))
+
+        if (user.email.isNullOrBlank() || !user.email.equals(request.email, ignoreCase = true)) {
+            throw BadRequestException(Localization.get("email_not_matched", lang))
+        }
+
+        val transactionId = UUID.randomUUID().toString()
+        issueAndSendOtp(user.copy(resetTransactionId = transactionId))
+
+        return ApiResponse(
+            success = true,
+            message = Localization.get("otp_sent", lang),
+            data = SendOtpResponse(transactionId = transactionId)
+        )
+    }
+
+    override suspend fun resendOtp(request: ResendOtpRequest, lang: String): ApiResponse<SendOtpResponse> {
+        val user = userDao.findByResetTransactionId(request.transactionId ?: "")
+            ?: throw BadRequestException(Localization.get("invalid_transaction_id", lang))
+
+        issueAndSendOtp(user)
+
+        return ApiResponse(
+            success = true,
+            message = Localization.get("otp_sent", lang),
+            data = SendOtpResponse(transactionId = user.resetTransactionId)
+        )
+    }
+
+    private suspend fun issueAndSendOtp(user: UserDto) {
+        val otp = (100000..999999).random().toString()
+        val expiresAt = Instant.now().plusSeconds(600)
+
+        userDao.updateResetOtp(user.copy(otpCode = otp, otpExpiresAt = expiresAt))
+
+        withContext(Dispatchers.IO) {
+            MailSender.sendOtpEmail(user.email ?: "", otp)
+        }
+    }
+
+    override suspend fun verifyOtp(request: VerifyOtpRequest, lang: String): ApiResponse<VerifyOtpResponse> {
+        val user = userDao.findByResetTransactionId(request.transactionId ?: "")
+            ?: throw BadRequestException(Localization.get("invalid_transaction_id", lang))
+
+        if (user.otpCode == null || user.otpCode != request.otp) {
+            throw BadRequestException(Localization.get("otp_invalid", lang))
+        }
+
+        if (user.otpExpiresAt == null || user.otpExpiresAt.isBefore(Instant.now())) {
+            throw BadRequestException(Localization.get("otp_expired", lang))
+        }
+
+        val verifyToken = UUID.randomUUID().toString()
+        val verifyTokenExpiresAt = Instant.now().plusSeconds(600)
+
+        userDao.updateResetVerifyToken(
+            user.copy(resetVerifyToken = verifyToken, resetVerifyTokenExpiresAt = verifyTokenExpiresAt)
+        )
+
+        return ApiResponse(
+            success = true,
+            message = Localization.get("otp_verified_successfully", lang),
+            data = VerifyOtpResponse(verifyToken = verifyToken)
+        )
+    }
+
+    override suspend fun resetPassword(request: ResetPasswordRequest, lang: String): ApiResponse<Nothing> {
+        val user = userDao.findByResetVerifyToken(request.verifyToken ?: "")
+            ?: throw UnauthorizedException(Localization.get("invalid_or_expired_token", lang))
+
+        if (user.resetVerifyTokenExpiresAt == null || user.resetVerifyTokenExpiresAt.isBefore(Instant.now())) {
+            throw UnauthorizedException(Localization.get("invalid_or_expired_token", lang))
+        }
+
+        val passwordHash = PasswordUtil.hashPassword(request.newPassword ?: "")
+        userDao.updatePassword(user.copy(passwordHash = passwordHash))
+        userDao.clearResetVerifyToken(user)
+
+        return ApiResponse(success = true, message = Localization.get("password_updated_successfully", lang))
+    }
+
+    private fun maskEmail(email: String): String {
+        val at = email.indexOf('@')
+        if (at <= 1) return email
+        return "${email.take(2)}***${email.substring(at)}"
     }
 
     private fun generateAccessToken(userDto: UserDto): String {

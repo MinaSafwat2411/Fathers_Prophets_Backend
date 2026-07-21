@@ -18,5 +18,6 @@ data class UserResponse(
     val isReviewed: Boolean? = null,
     val memberId: String? = null,
     val parents: ParentsResponse? = null,
-    val classId : Int? = null
+    val classId : Int? = null,
+    val skipMembership : Boolean? = null
 )

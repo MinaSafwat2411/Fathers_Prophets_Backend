@@ -2,6 +2,7 @@ package com.fathersprophets.backend.models.dto
 
 import com.fathersprophets.backend.database.tables.users.UserRole
 import com.fathersprophets.backend.models.users.UserResponse
+import java.time.Instant
 
 data class UserDto(
     val id: Int,
@@ -24,7 +25,12 @@ data class UserDto(
     val skipMembership: Boolean? = null,
     val comments: List<String> = emptyList(),
     val parents: ParentsDto? = null,
-    val classId : Int? = null
+    val classId : Int? = null,
+    val otpCode: String? = null,
+    val otpExpiresAt: Instant? = null,
+    val resetTransactionId: String? = null,
+    val resetVerifyToken: String? = null,
+    val resetVerifyTokenExpiresAt: Instant? = null
 ){
     fun convertToUserResponse() = UserResponse(
         id = this.id,

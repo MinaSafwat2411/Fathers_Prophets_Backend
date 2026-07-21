@@ -3,6 +3,11 @@ package com.fathersprophets.backend.utils
 import com.fathersprophets.backend.models.auth.LoginRequest
 import com.fathersprophets.backend.models.auth.RefreshRequest
 import com.fathersprophets.backend.models.auth.RegisterRequest
+import com.fathersprophets.backend.models.auth.ForgotPasswordRequest
+import com.fathersprophets.backend.models.auth.SendOtpRequest
+import com.fathersprophets.backend.models.auth.ResendOtpRequest
+import com.fathersprophets.backend.models.auth.VerifyOtpRequest
+import com.fathersprophets.backend.models.auth.ResetPasswordRequest
 import com.fathersprophets.backend.models.classes.CreateClassRequest
 import com.fathersprophets.backend.models.classes.UpdateClassRequest
 import com.fathersprophets.backend.models.classmember.AddClassMemberRequest
@@ -198,6 +203,8 @@ object ExampleValueGenerator {
             fieldName.contains("role", ignoreCase = true) -> "member"
             fieldName.contains("token", ignoreCase = true) -> "fcm_token_here"
             fieldName.contains("pin", ignoreCase = true) -> "1234"
+            fieldName.contains("otp", ignoreCase = true) -> "123456"
+            fieldName.contains("transactionid", ignoreCase = true) -> "transaction_id_123"
             fieldName.contains("version", ignoreCase = true) -> "1.0.0"
             fieldName.contains("joindate", ignoreCase = true) -> "2024-01-15"
             fieldName.contains("datetime", ignoreCase = true) -> "2024-10-15T18:00:00"
@@ -289,6 +296,28 @@ object PostmanScripts {
         "    console.log(\"Tokens refreshed successfully\");",
         "}"
     )
+
+    val captureTransactionId = listOf(
+        "var jsonData = pm.response.json();",
+        "pm.test(\"Status is 200\", function () {",
+        "    pm.response.to.have.status(200);",
+        "});",
+        "if (jsonData.success && jsonData.data) {",
+        "    pm.environment.set(\"reset_transaction_id\", jsonData.data.transactionId);",
+        "    console.log(\"Transaction ID captured successfully\");",
+        "}"
+    )
+
+    val captureVerifyToken = listOf(
+        "var jsonData = pm.response.json();",
+        "pm.test(\"Status is 200\", function () {",
+        "    pm.response.to.have.status(200);",
+        "});",
+        "if (jsonData.success && jsonData.data) {",
+        "    pm.environment.set(\"reset_verify_token\", jsonData.data.verifyToken);",
+        "    console.log(\"Verify token captured successfully\");",
+        "}"
+    )
 }
 
 data class RequestDefinition(
@@ -310,6 +339,8 @@ object EnhancedPostmanGenerator {
         "access_token" to "",
         "refresh_token" to "",
         "admin_token" to "",
+        "reset_transaction_id" to "",
+        "reset_verify_token" to "",
         "user_id" to "1",
         "class_id" to "1",
         "member_id" to "1",
@@ -447,6 +478,11 @@ object PostmanEndpoints {
         RequestDefinition("Register", "POST", "auth/register", RegisterRequest::class, requiresAuth = false, testScript = PostmanScripts.captureTokens),
         RequestDefinition("Refresh Token", "POST", "auth/refresh-token", RefreshRequest::class, requiresAuth = false, testScript = PostmanScripts.captureRefreshedTokens),
         RequestDefinition("Logout", "POST", "auth/logout"),
+        RequestDefinition("Forgot Password - Check Username", "POST", "auth/forgot-password", ForgotPasswordRequest::class, requiresAuth = false),
+        RequestDefinition("Forgot Password - Send OTP", "POST", "auth/forgot-password/send-otp", SendOtpRequest::class, requiresAuth = false, testScript = PostmanScripts.captureTransactionId),
+        RequestDefinition("Forgot Password - Resend OTP", "POST", "auth/forgot-password/resend-otp", ResendOtpRequest::class, requiresAuth = false),
+        RequestDefinition("Forgot Password - Verify OTP", "POST", "auth/forgot-password/verify-otp", VerifyOtpRequest::class, requiresAuth = false, testScript = PostmanScripts.captureVerifyToken),
+        RequestDefinition("Reset Password", "POST", "auth/reset-password", ResetPasswordRequest::class, requiresAuth = false),
 
         // Users
         RequestDefinition("Get All Users", "GET", "users"),
