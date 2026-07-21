@@ -32,7 +32,7 @@ object EventsTable : Table("events") {
     ).index("idx_events_type")
     val title = varchar("title", 255)
     val dateTime = date("date_time").index("idx_events_date_time")
-    val image = varchar("image", 255).nullable()
+    val image = text("image").nullable()
 
     override val primaryKey = PrimaryKey(id)
 }

@@ -17,7 +17,7 @@ object PersonsTable : Table("persons") {
     val nickname = varchar("nickname", 255).nullable()
     val shortStory = varchar("short_story", 255).nullable()
     val fullStory = varchar("full_story", 255).nullable()
-    val image = varchar("image", 255).nullable()
+    val image = text("image").nullable()
     val type = customEnumeration(
         "type",
         "person_type",

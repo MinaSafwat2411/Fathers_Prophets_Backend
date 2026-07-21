@@ -4,6 +4,7 @@ import com.fathersprophets.backend.models.person.CreatePersonRequest
 import com.fathersprophets.backend.models.person.UpdatePersonRequest
 import com.fathersprophets.backend.plugins.requireRole
 import com.fathersprophets.backend.services.person.IPersonService
+import com.fathersprophets.backend.utils.receiveMultipartForm
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -27,7 +28,15 @@ fun Route.personRoutes(personService: IPersonService) {
         post {
             call.requireRole("admin", "superadmin","games")
             val lang = call.request.headers["Accept-Language"] ?: "en"
-            val createPersonRequest = call.receive<CreatePersonRequest>()
+            val form = call.receiveMultipartForm(lang)
+            val createPersonRequest = CreatePersonRequest(
+                name = form.fields["name"],
+                nickname = form.fields["nickname"],
+                shortStory = form.fields["shortStory"],
+                fullStory = form.fields["fullStory"],
+                image = form.base64Image,
+                type = form.fields["type"]
+            )
             val response = personService.addPerson(createPersonRequest, lang)
             call.respond(response)
         }
@@ -36,7 +45,15 @@ fun Route.personRoutes(personService: IPersonService) {
             call.requireRole("admin", "superadmin","games")
             val lang = call.request.headers["Accept-Language"] ?: "en"
             val personId = call.parameters["id"]?.toIntOrNull()
-            val updatePersonRequest = call.receive<UpdatePersonRequest>()
+            val form = call.receiveMultipartForm(lang)
+            val updatePersonRequest = UpdatePersonRequest(
+                name = form.fields["name"],
+                nickname = form.fields["nickname"],
+                shortStory = form.fields["shortStory"],
+                fullStory = form.fields["fullStory"],
+                image = form.base64Image,
+                type = form.fields["type"]
+            )
             val response = personService.updatePerson(personId, updatePersonRequest, lang)
             call.respond(response)
         }

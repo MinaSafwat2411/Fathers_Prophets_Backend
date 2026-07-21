@@ -6,6 +6,7 @@ import com.fathersprophets.backend.plugins.requireAdminOrType
 import com.fathersprophets.backend.plugins.requireRole
 import com.fathersprophets.backend.services.events.IEventService
 import com.fathersprophets.backend.utils.EventBroadcaster
+import com.fathersprophets.backend.utils.receiveMultipartForm
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.principal
 import io.ktor.server.request.*
@@ -47,7 +48,13 @@ fun Route.eventRoutes(
 
         post {
             val lang = call.request.header("Accept-Language") ?: "en"
-            val request = call.receive<CreateEventRequest>()
+            val form = call.receiveMultipartForm(lang)
+            val request = CreateEventRequest(
+                title = form.fields["title"],
+                dateTime = form.fields["dateTime"],
+                type = form.fields["type"],
+                image = form.base64Image
+            )
             call.requireAdminOrType(request.type)
             val response = eventService.addEvent(request, lang)
             EventBroadcaster.broadcastEvents(eventService.getAllEvents(lang))
@@ -55,7 +62,13 @@ fun Route.eventRoutes(
         }
         put("/{id}") {
             val lang = call.request.header("Accept-Language") ?: "en"
-            val request = call.receive<UpdateEventRequest>()
+            val form = call.receiveMultipartForm(lang)
+            val request = UpdateEventRequest(
+                title = form.fields["title"],
+                dateTime = form.fields["dateTime"],
+                type = form.fields["type"],
+                image = form.base64Image
+            )
             call.requireAdminOrType(request.type)
             val id = call.parameters["id"]?.toIntOrNull()
             val response = eventService.updateEvent(id, request, lang)

@@ -4,6 +4,7 @@ import com.fathersprophets.backend.models.classmember.AddClassMemberRequest
 import com.fathersprophets.backend.models.classmember.UpdateClassMemberRequest
 import com.fathersprophets.backend.plugins.requireRole
 import com.fathersprophets.backend.services.classes.classmember.IClassMemberService
+import com.fathersprophets.backend.utils.receiveMultipartForm
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -14,15 +15,23 @@ fun Route.classMemberRoutes(classMemberService: IClassMemberService) {
         get("/{classId}") {
             val classId = call.parameters["classId"]?.toIntOrNull()
             val lang = call.request.header("Accept-Language") ?: "en"
-            
+
             val result = classMemberService.findMemberClass(classId, lang)
             call.respond(HttpStatusCode.OK, result)
         }
 
         post {
             call.requireRole("admin", "superadmin")
-            val request = call.receive<AddClassMemberRequest>()
             val lang = call.request.header("Accept-Language") ?: "en"
+            val form = call.receiveMultipartForm(lang)
+
+            val request = AddClassMemberRequest(
+                userId = form.fields["userId"]?.toIntOrNull(),
+                classId = form.fields["classId"]?.toIntOrNull(),
+                isTeacher = form.fields["isTeacher"]?.toBooleanStrictOrNull(),
+                name = form.fields["name"],
+                image = form.base64Image
+            )
 
             val result = classMemberService.addMember(request, lang)
             call.respond(HttpStatusCode.Created, result)
@@ -31,9 +40,17 @@ fun Route.classMemberRoutes(classMemberService: IClassMemberService) {
         put("/{id}") {
             call.requireRole("admin", "superadmin")
             val id = call.parameters["id"]?.toIntOrNull()
-            val request = call.receive<UpdateClassMemberRequest>()
             val lang = call.request.header("Accept-Language") ?: "en"
-            
+            val form = call.receiveMultipartForm(lang)
+
+            val request = UpdateClassMemberRequest(
+                userId = form.fields["userId"]?.toIntOrNull() ?: 0,
+                classId = form.fields["classId"]?.toIntOrNull() ?: 0,
+                isTeacher = form.fields["isTeacher"]?.toBooleanStrictOrNull() ?: false,
+                name = form.fields["name"] ?: "",
+                image = form.base64Image
+            )
+
             val result = classMemberService.updateMember(id, request, lang)
             call.respond(HttpStatusCode.OK, result)
         }

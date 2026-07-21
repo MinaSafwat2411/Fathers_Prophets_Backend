@@ -108,6 +108,11 @@ object DatabaseFactory {
             )
 
             exec("ALTER TABLE users ALTER COLUMN profile TYPE TEXT")
+            exec("ALTER TABLE classes ALTER COLUMN image TYPE TEXT")
+            exec("ALTER TABLE class_members ALTER COLUMN image TYPE TEXT")
+            exec("ALTER TABLE events ALTER COLUMN image TYPE TEXT")
+            exec("ALTER TABLE persons ALTER COLUMN image TYPE TEXT")
+            exec("ALTER TABLE super_events ALTER COLUMN image TYPE TEXT")
             exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS otp_code VARCHAR(10)")
             exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS otp_expires_at TIMESTAMP")
             exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_transaction_id VARCHAR(64)")

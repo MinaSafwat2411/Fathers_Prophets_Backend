@@ -16,7 +16,7 @@ object SuperEventsTable : Table("super_events") {
     val lastBookingDate = date("last_booking_date").index("idx_super_events_last_booking_date")
     val totalSeats = integer("total_seats")
     val waitingListLimit = integer("waiting_list_limit").default(0)
-    val image = varchar("image", 255).nullable()
+    val image = text("image").nullable()
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
     val teachers = json("teachers").default("[]")
 
