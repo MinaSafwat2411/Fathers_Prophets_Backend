@@ -3,6 +3,7 @@ package com.fathersprophets.backend.plugins
 import com.fathersprophets.backend.exceptions.BadRequestException
 import com.fathersprophets.backend.exceptions.ConflictException
 import com.fathersprophets.backend.exceptions.ForbiddenException
+import com.fathersprophets.backend.exceptions.TooManyRequestsException
 import com.fathersprophets.backend.exceptions.UnauthorizedException
 import com.fathersprophets.backend.models.ApiResponse
 import io.ktor.http.*
@@ -70,6 +71,16 @@ fun Application.configureStatusPages() {
                 ApiResponse<Nothing>(
                     success = false,
                     message = cause.message ?: "Forbidden"
+                )
+            )
+        }
+
+        exception<TooManyRequestsException> { call, cause ->
+            call.respond(
+                HttpStatusCode.TooManyRequests,
+                ApiResponse<Nothing>(
+                    success = false,
+                    message = cause.message ?: "Too many requests"
                 )
             )
         }

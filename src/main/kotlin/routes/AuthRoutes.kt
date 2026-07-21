@@ -9,6 +9,7 @@ import com.fathersprophets.backend.models.auth.SendOtpRequest
 import com.fathersprophets.backend.models.auth.ResendOtpRequest
 import com.fathersprophets.backend.models.auth.VerifyOtpRequest
 import com.fathersprophets.backend.models.auth.ResetPasswordRequest
+import com.fathersprophets.backend.plugins.RateLimitPlugin
 import com.fathersprophets.backend.services.auth.IAuthService
 import com.fathersprophets.backend.utils.Localization
 import io.ktor.http.*
@@ -21,93 +22,99 @@ import io.ktor.server.routing.*
 fun Route.authRoutes(authService: IAuthService) {
 
     route("/auth") {
-        post("/login") {
-            val request = call.receive<LoginRequest>()
-            val lang = call.request.header("Accept-Language") ?: "en"
-            val result = authService.login(request, lang)
+        // Grouped under a path-less route so the rate limiter only scopes to the
+        // unauthenticated endpoints below, not the authenticated /logout route.
+        route("") {
+            install(RateLimitPlugin)
 
-            call.respond(
-                HttpStatusCode.OK,
-                result
-            )
-        }
+            post("/login") {
+                val request = call.receive<LoginRequest>()
+                val lang = call.request.header("Accept-Language") ?: "en"
+                val result = authService.login(request, lang)
 
-        post("/register") {
-            val request = call.receive<RegisterRequest>()
-            val lang = call.request.header("Accept-Language") ?: "en"
-            
-            val result = authService.register(request, lang)
+                call.respond(
+                    HttpStatusCode.OK,
+                    result
+                )
+            }
 
-            call.respond(
-                HttpStatusCode.Created,
-                result
-            )
-        }
+            post("/register") {
+                val request = call.receive<RegisterRequest>()
+                val lang = call.request.header("Accept-Language") ?: "en"
 
-        post("/refresh-token") {
-            val request = call.receive<RefreshRequest>()
-            val lang = call.request.header("Accept-Language") ?: "en"
-            val result = authService.refreshToken(request, lang)
+                val result = authService.register(request, lang)
 
-            call.respond(
-                HttpStatusCode.OK,
-                result
-            )
-        }
+                call.respond(
+                    HttpStatusCode.Created,
+                    result
+                )
+            }
 
-        post("/forgot-password") {
-            val request = call.receive<ForgotPasswordRequest>()
-            val lang = call.request.header("Accept-Language") ?: "en"
-            val result = authService.forgotPassword(request, lang)
+            post("/refresh-token") {
+                val request = call.receive<RefreshRequest>()
+                val lang = call.request.header("Accept-Language") ?: "en"
+                val result = authService.refreshToken(request, lang)
 
-            call.respond(
-                HttpStatusCode.OK,
-                result
-            )
-        }
+                call.respond(
+                    HttpStatusCode.OK,
+                    result
+                )
+            }
 
-        post("/forgot-password/send-otp") {
-            val request = call.receive<SendOtpRequest>()
-            val lang = call.request.header("Accept-Language") ?: "en"
-            val result = authService.sendOtp(request, lang)
+            post("/forgot-password") {
+                val request = call.receive<ForgotPasswordRequest>()
+                val lang = call.request.header("Accept-Language") ?: "en"
+                val result = authService.forgotPassword(request, lang)
 
-            call.respond(
-                HttpStatusCode.OK,
-                result
-            )
-        }
+                call.respond(
+                    HttpStatusCode.OK,
+                    result
+                )
+            }
 
-        post("/forgot-password/resend-otp") {
-            val request = call.receive<ResendOtpRequest>()
-            val lang = call.request.header("Accept-Language") ?: "en"
-            val result = authService.resendOtp(request, lang)
+            post("/forgot-password/send-otp") {
+                val request = call.receive<SendOtpRequest>()
+                val lang = call.request.header("Accept-Language") ?: "en"
+                val result = authService.sendOtp(request, lang)
 
-            call.respond(
-                HttpStatusCode.OK,
-                result
-            )
-        }
+                call.respond(
+                    HttpStatusCode.OK,
+                    result
+                )
+            }
 
-        post("/forgot-password/verify-otp") {
-            val request = call.receive<VerifyOtpRequest>()
-            val lang = call.request.header("Accept-Language") ?: "en"
-            val result = authService.verifyOtp(request, lang)
+            post("/forgot-password/resend-otp") {
+                val request = call.receive<ResendOtpRequest>()
+                val lang = call.request.header("Accept-Language") ?: "en"
+                val result = authService.resendOtp(request, lang)
 
-            call.respond(
-                HttpStatusCode.OK,
-                result
-            )
-        }
+                call.respond(
+                    HttpStatusCode.OK,
+                    result
+                )
+            }
 
-        post("/reset-password") {
-            val request = call.receive<ResetPasswordRequest>()
-            val lang = call.request.header("Accept-Language") ?: "en"
-            val result = authService.resetPassword(request, lang)
+            post("/forgot-password/verify-otp") {
+                val request = call.receive<VerifyOtpRequest>()
+                val lang = call.request.header("Accept-Language") ?: "en"
+                val result = authService.verifyOtp(request, lang)
 
-            call.respond(
-                HttpStatusCode.OK,
-                result
-            )
+                call.respond(
+                    HttpStatusCode.OK,
+                    result
+                )
+            }
+
+            post("/reset-password") {
+                val request = call.receive<ResetPasswordRequest>()
+                val lang = call.request.header("Accept-Language") ?: "en"
+                val result = authService.resetPassword(request, lang)
+
+                call.respond(
+                    HttpStatusCode.OK,
+                    result
+                )
+            }
         }
 
         authenticate("auth-jwt") {

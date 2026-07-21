@@ -9,3 +9,5 @@ class BadRequestException(message: String) : RuntimeException(message)
 class NotFoundException(message: String) : RuntimeException(message)
 
 class ForbiddenException(message: String) : RuntimeException(message)
+
+class TooManyRequestsException(message: String) : RuntimeException(message)
