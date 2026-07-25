@@ -5,6 +5,7 @@
   "otp_invalid": "Invalid OTP code",
   "otp_expired": "OTP code has expired",
   "otp_verified_successfully": "OTP verified successfully",
+  "invalid_phone_token": "Invalid or expired phone verification",
   "username_found": "Username found",
   "contact_admin_no_email": "This account has no email on file. Please contact your admin",
   "email_not_matched": "Email does not match our records",
