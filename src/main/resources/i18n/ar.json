@@ -320,5 +320,6 @@
   "super_event_booking_pay_forbidden": "فقط المدرس المخصص لهذا الحجز يمكنه تأكيد الدفع",
   "teacher_id_required": "معرف المدرس لا يمكن أن يكون فارغًا",
   "super_event_booking_teacher_invalid": "المستخدم المحدد ليس مدرسًا",
-  "super_event_booking_teacher_assigned_successfully": "تم تعيين المدرس للحجز بنجاح"
+  "super_event_booking_teacher_assigned_successfully": "تم تعيين المدرس للحجز بنجاح",
+  "required" : "هذا الحقل مطلوب"
 }

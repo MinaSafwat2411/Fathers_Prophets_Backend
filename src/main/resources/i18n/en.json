@@ -320,5 +320,6 @@
   "super_event_booking_pay_forbidden": "Only the teacher assigned to this booking can confirm payment",
   "teacher_id_required": "Teacher ID cannot be empty",
   "super_event_booking_teacher_invalid": "Selected user is not a teacher",
-  "super_event_booking_teacher_assigned_successfully": "Teacher assigned to booking successfully"
+  "super_event_booking_teacher_assigned_successfully": "Teacher assigned to booking successfully",
+  "required" : "This field is required"
 }
