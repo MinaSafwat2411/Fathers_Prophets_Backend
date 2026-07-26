@@ -78,8 +78,10 @@ import com.fathersprophets.backend.services.superevent.ISuperEventService
 import com.fathersprophets.backend.services.superevent.supereventbooking.ISuperEventBookingService
 import com.fathersprophets.backend.services.users.IUserService
 import com.fathersprophets.backend.services.version.IVersionService
+import com.fathersprophets.backend.utils.FileStorage
 import io.ktor.server.application.*
 import io.ktor.server.auth.authenticate
+import io.ktor.server.http.content.staticFiles
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.get
@@ -125,6 +127,8 @@ fun Application.configureRouting() {
     val superEventBookingService = get<ISuperEventBookingService>()
 
     routing {
+        staticFiles(FileStorage.URL_PATH, FileStorage.uploadDir)
+
         route("/api/v1") {
             authRoutes(authService)
             settingRoutes(versionService)

@@ -5,16 +5,15 @@ import io.ktor.http.content.PartData
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.request.receiveMultipart
 import io.ktor.utils.io.toByteArray
-import java.util.Base64
 
 data class MultipartForm(
     val fields: Map<String, String>,
-    val base64Image: String?
+    val imageUrl: String?
 )
 
 suspend fun ApplicationCall.receiveMultipartForm(lang: String): MultipartForm {
     val fields = mutableMapOf<String, String>()
-    var base64Image: String? = null
+    var imageUrl: String? = null
 
     val multipart = receiveMultipart()
     var part = multipart.readPart()
@@ -26,7 +25,7 @@ suspend fun ApplicationCall.receiveMultipartForm(lang: String): MultipartForm {
                 if (!ImageUtils.isImage(bytes)) {
                     throw BadRequestException(Localization.get("invalid_image_format", lang))
                 }
-                base64Image = Base64.getEncoder().encodeToString(bytes)
+                imageUrl = FileStorage.saveImage(bytes)
             }
             else -> {}
         }
@@ -34,5 +33,5 @@ suspend fun ApplicationCall.receiveMultipartForm(lang: String): MultipartForm {
         part = multipart.readPart()
     }
 
-    return MultipartForm(fields, base64Image)
+    return MultipartForm(fields, imageUrl)
 }

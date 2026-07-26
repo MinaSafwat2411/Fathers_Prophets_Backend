@@ -31,7 +31,7 @@ fun Route.classRoutes(classService: IClassService) {
             val lang = call.request.header("Accept-Language") ?: "en"
             val form = call.receiveMultipartForm(lang)
             val result = classService.createClass(
-                CreateClassRequest(name = form.fields["name"], image = form.base64Image),
+                CreateClassRequest(name = form.fields["name"], image = form.imageUrl),
                 lang
             )
             call.respond(HttpStatusCode.Created, result)
@@ -44,7 +44,7 @@ fun Route.classRoutes(classService: IClassService) {
             val id = call.parameters["id"]?.toIntOrNull()
             val result = classService.updateClass(
                 id,
-                UpdateClassRequest(name = form.fields["name"], image = form.base64Image),
+                UpdateClassRequest(name = form.fields["name"], image = form.imageUrl),
                 lang
             )
             call.respond(HttpStatusCode.OK, result)

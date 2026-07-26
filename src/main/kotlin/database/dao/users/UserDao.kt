@@ -76,6 +76,7 @@ class UserDao {
             it[role] = userDto.role
             it[isReviewed] = userDto.isReviewed
             it[fcmToken] = userDto.fcmToken
+            it[profile] = userDto.profile
         } get UsersTable.id
 
         ParentsTable.insert {

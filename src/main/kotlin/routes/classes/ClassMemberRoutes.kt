@@ -30,7 +30,7 @@ fun Route.classMemberRoutes(classMemberService: IClassMemberService) {
                 classId = form.fields["classId"]?.toIntOrNull(),
                 isTeacher = form.fields["isTeacher"]?.toBooleanStrictOrNull(),
                 name = form.fields["name"],
-                image = form.base64Image
+                image = form.imageUrl
             )
 
             val result = classMemberService.addMember(request, lang)
@@ -48,7 +48,7 @@ fun Route.classMemberRoutes(classMemberService: IClassMemberService) {
                 classId = form.fields["classId"]?.toIntOrNull() ?: 0,
                 isTeacher = form.fields["isTeacher"]?.toBooleanStrictOrNull() ?: false,
                 name = form.fields["name"] ?: "",
-                image = form.base64Image
+                image = form.imageUrl
             )
 
             val result = classMemberService.updateMember(id, request, lang)

@@ -106,20 +106,6 @@ object DatabaseFactory {
                 SuperEventsTable,
                 SuperEventBookingsTable,
             )
-
-            exec("ALTER TABLE users ALTER COLUMN profile TYPE TEXT")
-            exec("ALTER TABLE classes ALTER COLUMN image TYPE TEXT")
-            exec("ALTER TABLE class_members ALTER COLUMN image TYPE TEXT")
-            exec("ALTER TABLE events ALTER COLUMN image TYPE TEXT")
-            exec("ALTER TABLE persons ALTER COLUMN image TYPE TEXT")
-            exec("ALTER TABLE super_events ALTER COLUMN image TYPE TEXT")
-            exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS otp_code VARCHAR(10)")
-            exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS otp_expires_at TIMESTAMP")
-            exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_transaction_id VARCHAR(64)")
-            exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_verify_token VARCHAR(64)")
-            exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_verify_token_expires_at TIMESTAMP")
-            exec("CREATE UNIQUE INDEX IF NOT EXISTS users_reset_transaction_id_unique ON users (reset_transaction_id)")
-            exec("CREATE UNIQUE INDEX IF NOT EXISTS users_reset_verify_token_unique ON users (reset_verify_token)")
         }
     }
 }

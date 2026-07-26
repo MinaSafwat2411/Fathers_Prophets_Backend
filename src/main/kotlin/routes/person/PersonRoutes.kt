@@ -33,7 +33,7 @@ fun Route.personRoutes(personService: IPersonService) {
                 nickname = form.fields["nickname"],
                 shortStory = form.fields["shortStory"],
                 fullStory = form.fields["fullStory"],
-                image = form.base64Image,
+                image = form.imageUrl,
                 type = form.fields["type"]
             )
             val response = personService.addPerson(createPersonRequest, lang)
@@ -50,7 +50,7 @@ fun Route.personRoutes(personService: IPersonService) {
                 nickname = form.fields["nickname"],
                 shortStory = form.fields["shortStory"],
                 fullStory = form.fields["fullStory"],
-                image = form.base64Image,
+                image = form.imageUrl,
                 type = form.fields["type"]
             )
             val response = personService.updatePerson(personId, updatePersonRequest, lang)

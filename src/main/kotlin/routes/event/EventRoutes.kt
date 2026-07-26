@@ -53,7 +53,7 @@ fun Route.eventRoutes(
                 title = form.fields["title"],
                 dateTime = form.fields["dateTime"],
                 type = form.fields["type"],
-                image = form.base64Image
+                image = form.imageUrl
             )
             call.requireAdminOrType(request.type)
             val response = eventService.addEvent(request, lang)
@@ -67,7 +67,7 @@ fun Route.eventRoutes(
                 title = form.fields["title"],
                 dateTime = form.fields["dateTime"],
                 type = form.fields["type"],
-                image = form.base64Image
+                image = form.imageUrl
             )
             call.requireAdminOrType(request.type)
             val id = call.parameters["id"]?.toIntOrNull()

@@ -4,6 +4,7 @@ import com.fathersprophets.backend.models.users.AddUserRequest
 import com.fathersprophets.backend.models.users.UpdateUserRequest
 import com.fathersprophets.backend.plugins.requireRole
 import com.fathersprophets.backend.services.users.IUserService
+import com.fathersprophets.backend.utils.receiveMultipartForm
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -49,9 +50,25 @@ fun Route.userRoutes(
 
         post {
             call.requireRole("admin", "superadmin")
-            val request = call.receive<AddUserRequest>()
             val lang = call.request.header("Accept-Language") ?: "en"
-            val result = userService.addUser(request,lang)
+            val form = call.receiveMultipartForm(lang)
+
+            val request = AddUserRequest(
+                name = form.fields["name"] ?: "",
+                username = form.fields["username"] ?: "",
+                password = form.fields["password"] ?: "",
+                role = form.fields["role"] ?: "",
+                isReviewed = form.fields["isReviewed"]?.toBooleanStrictOrNull(),
+                phone = form.fields["phone"],
+                address = form.fields["address"],
+                birthDate = form.fields["birthDate"],
+                fatherName = form.fields["fatherName"],
+                isShams = form.fields["isShams"]?.toBooleanStrictOrNull(),
+                memberId = form.fields["memberId"],
+                profile = form.imageUrl
+            )
+
+            val result = userService.addUser(request, lang)
             call.respond(result)
         }
 

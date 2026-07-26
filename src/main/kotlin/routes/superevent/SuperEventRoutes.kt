@@ -20,7 +20,7 @@ private fun MultipartForm.toSuperEventRequest() = SuperEventRequest(
     lastBookingDate = fields["lastBookingDate"],
     totalSeats = fields["totalSeats"]?.toIntOrNull(),
     waitingListLimit = fields["waitingListLimit"]?.toIntOrNull(),
-    image = base64Image,
+    image = imageUrl,
     teachers = fields["teachers"]?.let { Json.decodeFromString<List<SuperEventTeacher>>(it) }
 )
 

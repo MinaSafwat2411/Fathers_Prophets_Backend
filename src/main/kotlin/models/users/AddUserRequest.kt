@@ -17,6 +17,7 @@ data class AddUserRequest(
     val fatherName: String? = null,
     val isShams: Boolean? = null,
     val memberId: String? = null,
+    val profile: String? = null,
 ) {
     fun toUserDto(id: Int, hashPassword: String) = UserDto(
         id = id,
@@ -34,6 +35,7 @@ data class AddUserRequest(
         birthDate = this.birthDate,
         fatherName = this.fatherName,
         isShams = this.isShams,
-        memberId = this.memberId
+        memberId = this.memberId,
+        profile = this.profile
     )
 }

@@ -16,6 +16,15 @@ object ImageUtils {
             (bytes.startsWith(RIFF) && bytes.size >= 12 && bytes.copyOfRange(8, 12).contentEquals(WEBP))
     }
 
+    fun extensionFor(bytes: ByteArray): String = when {
+        bytes.startsWith(PNG) -> "png"
+        bytes.startsWith(JPEG) -> "jpg"
+        bytes.startsWith(GIF) -> "gif"
+        bytes.startsWith(BMP) -> "bmp"
+        bytes.startsWith(RIFF) && bytes.size >= 12 && bytes.copyOfRange(8, 12).contentEquals(WEBP) -> "webp"
+        else -> "bin"
+    }
+
     private fun ByteArray.startsWith(signature: ByteArray): Boolean {
         if (size < signature.size) return false
         return signature.indices.all { this[it] == signature[it] }
