@@ -41,3 +41,6 @@ src/main/resources/firebase-service-account.json
 
 ### Env ###
 .env
+
+### Uploads ###
+/uploads/
