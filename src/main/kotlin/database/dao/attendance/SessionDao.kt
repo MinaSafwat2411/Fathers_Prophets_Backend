@@ -4,6 +4,7 @@ import com.fathersprophets.backend.database.tables.attendance.SessionTable
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.SessionDto
 import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
@@ -47,6 +48,6 @@ class SessionDao {
 
 
     fun getAllSessions() = transaction {
-        SessionTable.selectAll().map { rowToSession(it) }
+        SessionTable.selectAll().orderBy(SessionTable.dateTime, SortOrder.DESC).map { rowToSession(it) }
     }
 }

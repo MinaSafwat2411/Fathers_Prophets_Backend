@@ -8,7 +8,7 @@ import io.ktor.server.routing.*
 
 fun Route.settingRoutes(versionService: IVersionService) {
     route("/setting") {
-        install(RateLimitPlugin)
+//        install(RateLimitPlugin)
 
         get {
             val lang = call.request.header("Accept-Language") ?: "en"

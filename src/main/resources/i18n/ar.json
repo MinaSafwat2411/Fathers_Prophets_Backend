@@ -6,6 +6,8 @@
   "otp_expired": "انتهت صلاحية رمز التحقق",
   "otp_verified_successfully": "تم التحقق من الرمز بنجاح",
   "invalid_phone_token": "رمز التحقق من الهاتف غير صالح أو منتهي الصلاحية",
+  "duplicate_value": "هذه القيمة موجودة بالفعل. يرجى استخدام قيمة أخرى",
+  "database_error": "حدث خطأ في قاعدة البيانات. يرجى المحاولة مرة أخرى",
   "username_found": "تم العثور على اسم المستخدم",
   "contact_admin_no_email": "لا يوجد بريد إلكتروني مسجل لهذا الحساب. يرجى التواصل مع المسؤول",
   "email_not_matched": "البريد الإلكتروني غير مطابق لسجلاتنا",
@@ -84,6 +86,7 @@
   "session_create_failed": "فشل إنشاء الجلسة",
   "session_added_successfully": "تمت إضافة الجلسة بنجاح",
   "session_retrieved_successfully": "تم استرجاع الجلسة بنجاح",
+  "sessions_retrieved_successfully": "تم استرجاع الجلسات بنجاح",
   "session_not_found": "الجلسة غير موجودة",
   "attendance_create_failed": "فشل تسجيل الحضور",
   "attendance_create_success": "تم تسجيل الحضور بنجاح",
@@ -209,7 +212,7 @@
   "escape_egypt_question_id_required": "معرف سؤال الهروب من مصر لا يمكن أن يكون فارغًا",
   "escape_egypt_questions_retrieved_successfully": "تم استرجاع أسئلة الهروب من مصر بنجاح",
   "escape_egypt_question_retrieved_successfully": "تم استرجاع سؤال الهروب من مصر بنجاح",
-  "escape_egypt_question_created_successfully": "تم إنشاء سؤال الهروب من مصر بنجاح",
+  "escape_egypt_question_created_successfully": "تم إنشاء سؤال الهروب من مصر بنjاح",
   "escape_egypt_question_updated_successfully": "تم تحديث سؤال الهروب من مصر بنجاح",
   "escape_egypt_question_deleted_successfully": "تم حذف سؤال الهروب من مصر بنجاح",
   "escape_egypt_question_not_found": "سؤال الهروب من مصر غير موجود",
@@ -322,5 +325,6 @@
   "teacher_id_required": "معرف المدرس لا يمكن أن يكون فارغًا",
   "super_event_booking_teacher_invalid": "المستخدم المحدد ليس مدرسًا",
   "super_event_booking_teacher_assigned_successfully": "تم تعيين المدرس للحجز بنجاح",
-  "required" : "هذا الحقل مطلوب"
+  "required" : "هذا الحقل مطلوب",
+  "user_deletion_failed": "فشل حذف المستخدم"
 }

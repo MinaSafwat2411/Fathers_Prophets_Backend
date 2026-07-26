@@ -6,10 +6,13 @@ import com.fathersprophets.backend.exceptions.ForbiddenException
 import com.fathersprophets.backend.exceptions.TooManyRequestsException
 import com.fathersprophets.backend.exceptions.UnauthorizedException
 import com.fathersprophets.backend.models.ApiResponse
+import com.fathersprophets.backend.utils.Localization
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.statuspages.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
+import org.jetbrains.exposed.exceptions.ExposedSQLException
 
 fun Application.configureStatusPages() {
 
@@ -83,6 +86,27 @@ fun Application.configureStatusPages() {
                     message = cause.message ?: "Too many requests"
                 )
             )
+        }
+
+        exception<ExposedSQLException> { call, cause ->
+            val lang = call.request.header("Accept-Language") ?: "en"
+            if (cause.sqlState == "23505") {
+                call.respond(
+                    HttpStatusCode.Conflict,
+                    ApiResponse<Nothing>(
+                        success = false,
+                        message = Localization.get("duplicate_value", lang)
+                    )
+                )
+            } else {
+                call.respond(
+                    HttpStatusCode.InternalServerError,
+                    ApiResponse<Nothing>(
+                        success = false,
+                        message = Localization.get("database_error", lang)
+                    )
+                )
+            }
         }
 
         exception<Throwable> { call, cause ->

@@ -6,6 +6,8 @@
   "otp_expired": "OTP code has expired",
   "otp_verified_successfully": "OTP verified successfully",
   "invalid_phone_token": "Invalid or expired phone verification",
+  "duplicate_value": "This value already exists. Please use a different one",
+  "database_error": "A database error occurred. Please try again",
   "username_found": "Username found",
   "contact_admin_no_email": "This account has no email on file. Please contact your admin",
   "email_not_matched": "Email does not match our records",
@@ -84,6 +86,7 @@
   "session_create_failed": "Failed to create session",
   "session_added_successfully": "Session added successfully",
   "session_retrieved_successfully": "Session retrieved successfully",
+  "sessions_retrieved_successfully": "Sessions retrieved successfully",
   "session_not_found": "Session not found",
   "attendance_create_failed": "Failed to create attendance",
   "attendance_create_success": "Attendance created successfully",
@@ -322,5 +325,6 @@
   "teacher_id_required": "Teacher ID cannot be empty",
   "super_event_booking_teacher_invalid": "Selected user is not a teacher",
   "super_event_booking_teacher_assigned_successfully": "Teacher assigned to booking successfully",
-  "required" : "This field is required"
+  "required" : "This field is required",
+  "user_deletion_failed": "User deletion failed"
 }

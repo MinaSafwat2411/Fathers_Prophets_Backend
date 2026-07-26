@@ -25,7 +25,7 @@ fun Route.authRoutes(authService: IAuthService) {
         // Grouped under a path-less route so the rate limiter only scopes to the
         // unauthenticated endpoints below, not the authenticated /logout route.
         route("") {
-            install(RateLimitPlugin)
+//            install(RateLimitPlugin)
 
             post("/login") {
                 val request = call.receive<LoginRequest>()
