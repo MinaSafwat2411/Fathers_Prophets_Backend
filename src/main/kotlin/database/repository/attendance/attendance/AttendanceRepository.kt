@@ -29,6 +29,9 @@ class AttendanceRepository(
         )
     }
 
+    override fun findAttendanceById(attendanceId: Int): AttendanceResponse? =
+        attendanceDao.findById(attendanceId)?.convertAttendanceResponse()
+
     override fun updateAttendance(
         attendanceId: Int,
         updateAttendance: UpdateAttendanceRequest,

@@ -28,19 +28,7 @@ class AttendanceService(private val attendanceRepository: IAttendanceRepository)
         )
 
         val result = attendanceRepository.addAttendance(attendance, lang)
-        if (result.success) {
-            val sessionId = result.data?.sessionId
-            if (sessionId != null) {
-                val sessionAttendance = attendanceRepository.getAttendanceBySessionId(sessionId, lang)
-                scope.launch {
-                    try {
-                        AttendanceEventBroadcaster.broadcastAttendance(sessionId, sessionAttendance)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-            }
-        }
+        if (result.success) broadcastSession(result.data?.sessionId, lang)
         return result
     }
 
@@ -53,7 +41,9 @@ class AttendanceService(private val attendanceRepository: IAttendanceRepository)
             return ApiResponse(success = false, message = Localization.get("invalid_id", lang))
         }
 
-        return attendanceRepository.updateAttendance(attendanceId, updateAttendance, lang)
+        val result = attendanceRepository.updateAttendance(attendanceId, updateAttendance, lang)
+        if (result.success) broadcastSession(result.data?.sessionId, lang)
+        return result
     }
 
     override fun deleteAttendance(
@@ -63,7 +53,27 @@ class AttendanceService(private val attendanceRepository: IAttendanceRepository)
         if (attendanceId == null) {
             return ApiResponse(success = false, message = Localization.get("invalid_id", lang))
         }
-        return attendanceRepository.deleteAttendance(attendanceId, lang)
+
+        // The record is gone once it is deleted, so read its session first.
+        val sessionId = attendanceRepository.findAttendanceById(attendanceId)?.sessionId
+
+        val result = attendanceRepository.deleteAttendance(attendanceId, lang)
+        if (result.success) broadcastSession(sessionId, lang)
+        return result
+    }
+
+    /** Pushes the whole session to everyone watching it after a change. */
+    private fun broadcastSession(sessionId: Int?, lang: String) {
+        if (sessionId == null) return
+
+        val sessionAttendance = attendanceRepository.getAttendanceBySessionId(sessionId, lang)
+        scope.launch {
+            try {
+                AttendanceEventBroadcaster.broadcastAttendance(sessionId, sessionAttendance)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     override fun getAttendanceByUserId(

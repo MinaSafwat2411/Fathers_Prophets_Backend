@@ -1,5 +1,8 @@
 package com.fathersprophets.backend.models.attendance
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class UpdateAttendanceRequest(
     val attended: Boolean? = null,
     val broughtBible: Boolean? = null,

@@ -63,7 +63,6 @@ class AttendanceDao {
             it[shmas] = attendanceDto.shmas
             it[odas] = attendanceDto.odas
             it[tnawl] = attendanceDto.tnawl
-            it[classId] = attendanceDto.classId
         }.let { findById(attendanceDto.id) }
     }
 
