@@ -18,8 +18,6 @@ class ClassMemberRepository(
 
         val members = classMemberDao.findMemberClass(classId)
 
-        if (members.isEmpty()) throw IllegalArgumentException(Localization.get("class_members_not_found", lang))
-
         return ApiResponse(
             success = true,
             data = members.map { it.toClassMemberResponse() },
