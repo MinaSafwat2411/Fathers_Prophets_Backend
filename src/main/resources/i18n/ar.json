@@ -91,6 +91,8 @@
   "session_not_found": "الجلسة غير موجودة",
   "attendance_create_failed": "فشل تسجيل الحضور",
   "attendance_create_success": "تم تسجيل الحضور بنجاح",
+  "attendance_records_required": "قائمة الحضور لا يمكن أن تكون فارغة",
+  "attendance_duplicate_records": "نفس العضو مُسجَّل أكثر من مرة في نفس الجلسة",
   "attendance_delete_success": "تم حذف سجل الحضور بنجاح",
   "attendance_update_success": "تم تحديث سجل الحضور بنجاح",
   "attendance_retrieved_success": "تم استرجاع سجلات الحضور بنجاح",

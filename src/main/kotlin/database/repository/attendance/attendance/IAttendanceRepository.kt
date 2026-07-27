@@ -7,6 +7,7 @@ import com.fathersprophets.backend.models.attendance.UpdateAttendanceRequest
 
 interface IAttendanceRepository {
     fun addAttendance(attendance: AddAttendanceRequest, lang: String): ApiResponse<AttendanceResponse>
+    fun addAttendanceBulk(attendance: List<AddAttendanceRequest>, lang: String): ApiResponse<List<AttendanceResponse>>
     /** Read before a delete, so the session can still be broadcast afterwards. */
     fun findAttendanceById(attendanceId: Int): AttendanceResponse?
     fun updateAttendance(attendanceId: Int, updateAttendance: UpdateAttendanceRequest, lang: String): ApiResponse<AttendanceResponse>

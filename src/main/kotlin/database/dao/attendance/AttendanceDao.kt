@@ -56,6 +56,24 @@ class AttendanceDao {
         }.let { findById(it[AttendanceTable.id]) }
     }
 
+    /** Inserts the whole list in one transaction, so a single bad row rolls the batch back. */
+    fun addAttendanceBulk(attendanceDtos: List<AttendanceDto>) = transaction {
+        val ids = AttendanceTable.batchInsert(attendanceDtos) { dto ->
+            this[AttendanceTable.userId] = dto.userId
+            this[AttendanceTable.sessionId] = dto.sessionId
+            this[AttendanceTable.name] = dto.name
+            this[AttendanceTable.attended] = dto.attended
+            this[AttendanceTable.broughtBible] = dto.broughtBible
+            this[AttendanceTable.shmas] = dto.shmas
+            this[AttendanceTable.odas] = dto.odas
+            this[AttendanceTable.tnawl] = dto.tnawl
+            this[AttendanceTable.classId] = dto.classId
+        }.map { it[AttendanceTable.id] }
+
+        AttendanceTable.selectAll().where { AttendanceTable.id inList ids }
+            .map { rowToAttendanceDto(it) }
+    }
+
     fun updateAttendance(attendanceDto: AttendanceDto) = transaction {
         AttendanceTable.update({ AttendanceTable.id eq attendanceDto.id }) {
             it[attended] = attendanceDto.attended

@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.routes.attendance
 
 import com.fathersprophets.backend.models.ApiResponse
+import com.fathersprophets.backend.models.attendance.AddAttendanceBulkRequest
 import com.fathersprophets.backend.models.attendance.AddAttendanceRequest
 import com.fathersprophets.backend.models.attendance.AttendanceResponse
 import com.fathersprophets.backend.models.attendance.UpdateAttendanceRequest
@@ -51,6 +52,14 @@ fun Route.attendanceRoutes(attendanceService: IAttendanceService) {
             val lang = call.request.header("Accept-Language") ?: "en"
             val request = call.receive<AddAttendanceRequest>()
             val response = attendanceService.addAttendance(request, lang)
+            call.respond(if (response.success) HttpStatusCode.Created else HttpStatusCode.BadRequest, response)
+        }
+
+        post("/bulk") {
+            call.forbidRoles("member")
+            val lang = call.request.header("Accept-Language") ?: "en"
+            val request = call.receive<AddAttendanceBulkRequest>()
+            val response = attendanceService.addAttendanceBulk(request, lang)
             call.respond(if (response.success) HttpStatusCode.Created else HttpStatusCode.BadRequest, response)
         }
 

@@ -29,6 +29,23 @@ class AttendanceRepository(
         )
     }
 
+    override fun addAttendanceBulk(
+        attendance: List<AddAttendanceRequest>,
+        lang: String
+    ): ApiResponse<List<AttendanceResponse>> {
+        val created = attendanceDao.addAttendanceBulk(attendance.map { it.toAttendanceDto() })
+
+        if (created.size != attendance.size) {
+            throw IllegalArgumentException(Localization.get("attendance_create_failed", lang))
+        }
+
+        return ApiResponse(
+            success = true,
+            data = created.map { it.convertAttendanceResponse() },
+            message = Localization.get("attendance_create_success", lang)
+        )
+    }
+
     override fun findAttendanceById(attendanceId: Int): AttendanceResponse? =
         attendanceDao.findById(attendanceId)?.convertAttendanceResponse()
 
