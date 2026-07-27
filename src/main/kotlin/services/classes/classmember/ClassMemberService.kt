@@ -18,6 +18,14 @@ class ClassMemberService(
         return repository.findMemberClass(classId, lang)
     }
 
+    override suspend fun findMyClassMembers(
+        userId: Int?,
+        lang: String
+    ): ApiResponse<List<ClassMemberResponse>> {
+        if (userId == null) throw IllegalArgumentException("user_id_required")
+        return repository.findMyClassMembers(userId, lang)
+    }
+
     override suspend fun addMember(
         addClassMemberRequest: AddClassMemberRequest,
         lang: String

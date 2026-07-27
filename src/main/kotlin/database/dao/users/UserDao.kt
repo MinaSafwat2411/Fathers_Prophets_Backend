@@ -35,6 +35,7 @@ class UserDao {
         resetTransactionId = row[UsersTable.resetTransactionId],
         resetVerifyToken = row[UsersTable.resetVerifyToken],
         resetVerifyTokenExpiresAt = row[UsersTable.resetVerifyTokenExpiresAt],
+        classId = row[UsersTable.classId],
         parents = row.getOrNull(ParentsTable.id)?.let {
             ParentsDto(
                 motherPhone = row[ParentsTable.motherPhone],

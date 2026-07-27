@@ -3,6 +3,7 @@ package com.fathersprophets.backend.plugins
 import com.fathersprophets.backend.exceptions.BadRequestException
 import com.fathersprophets.backend.exceptions.ConflictException
 import com.fathersprophets.backend.exceptions.ForbiddenException
+import com.fathersprophets.backend.exceptions.NotFoundException
 import com.fathersprophets.backend.exceptions.TooManyRequestsException
 import com.fathersprophets.backend.exceptions.UnauthorizedException
 import com.fathersprophets.backend.models.ApiResponse
@@ -29,6 +30,16 @@ fun Application.configureStatusPages() {
         }
 
         exception<NoSuchElementException> { call, cause ->
+            call.respond(
+                HttpStatusCode.NotFound,
+                ApiResponse<Nothing>(
+                    success = false,
+                    message = cause.message ?: "Not found"
+                )
+            )
+        }
+
+        exception<NotFoundException> { call, cause ->
             call.respond(
                 HttpStatusCode.NotFound,
                 ApiResponse<Nothing>(

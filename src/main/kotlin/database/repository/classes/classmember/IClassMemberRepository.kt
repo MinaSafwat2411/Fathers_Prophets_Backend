@@ -7,6 +7,7 @@ import com.fathersprophets.backend.models.classmember.UpdateClassMemberRequest
 
 interface IClassMemberRepository {
     suspend fun findMemberClass(classId: Int, lang: String): ApiResponse<List<ClassMemberResponse>>
+    suspend fun findMyClassMembers(userId: Int, lang: String): ApiResponse<List<ClassMemberResponse>>
     suspend fun addMember(addClassMemberRequest: AddClassMemberRequest, lang: String): ApiResponse<ClassMemberResponse>
     suspend fun updateMember(id: Int, updateClassMemberRequest: UpdateClassMemberRequest, lang: String): ApiResponse<ClassMemberResponse>
     suspend fun deleteMember(id: Int, lang: String): ApiResponse<Nothing>

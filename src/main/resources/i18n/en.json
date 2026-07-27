@@ -47,6 +47,7 @@
   "role_required": "Role cannot be empty",
   "class_members_found": "Class members found",
   "class_members_not_found": "Class members not found",
+  "user_has_no_class": "User is not assigned to any class",
   "class_member_added": "Class member added successfully",
   "class_member_updated": "Class member updated successfully",
   "class_member_deleted": "Class member deleted successfully",

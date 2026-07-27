@@ -1,6 +1,7 @@
 package com.fathersprophets.backend.database.repository.classes.classmember
 
 import com.fathersprophets.backend.database.dao.classes.ClassMemberDao
+import com.fathersprophets.backend.exceptions.NotFoundException
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.classmember.AddClassMemberRequest
 import com.fathersprophets.backend.models.classmember.ClassMemberResponse
@@ -23,6 +24,17 @@ class ClassMemberRepository(
             data = members.map { it.toClassMemberResponse() },
             message = Localization.get("class_members_found", lang)
         )
+    }
+
+    override suspend fun findMyClassMembers(
+        userId: Int,
+        lang: String
+    ): ApiResponse<List<ClassMemberResponse>> {
+
+        val classMember = classMemberDao.findByUserId(userId)
+            ?: throw NotFoundException(Localization.get("user_has_no_class", lang))
+
+        return findMemberClass(classMember.classId, lang)
     }
 
     override suspend fun addMember(

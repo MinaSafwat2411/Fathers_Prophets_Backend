@@ -6,12 +6,23 @@ import com.fathersprophets.backend.plugins.requireRole
 import com.fathersprophets.backend.services.classes.classmember.IClassMemberService
 import com.fathersprophets.backend.utils.receiveMultipartForm
 import io.ktor.http.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.classMemberRoutes(classMemberService: IClassMemberService) {
     route("/class-members") {
+        get("/my-class") {
+            val lang = call.request.header("Accept-Language") ?: "en"
+            val principal = call.principal<JWTPrincipal>()
+            val userId = principal?.payload?.getClaim("userId")?.asInt()
+
+            val result = classMemberService.findMyClassMembers(userId, lang)
+            call.respond(HttpStatusCode.OK, result)
+        }
+
         get("/{classId}") {
             val classId = call.parameters["classId"]?.toIntOrNull()
             val lang = call.request.header("Accept-Language") ?: "en"
