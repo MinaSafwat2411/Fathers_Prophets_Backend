@@ -60,7 +60,6 @@ class AuthRepository(
 
     override suspend fun login(request: LoginRequest, lang: String): ApiResponse<LoginResponse> {
 
-        val hashPassword = PasswordUtil.hashPassword(request.password ?: "")
 
         var user = userDao.findByUsername(request.username ?: "")
             ?: throw ConflictException(Localization.get("user_not_found", lang))

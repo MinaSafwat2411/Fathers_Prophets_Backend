@@ -1,6 +1,8 @@
 package com.fathersprophets.backend.database.repository.attendance.attendance
 
 import com.fathersprophets.backend.database.dao.attendance.AttendanceDao
+import com.fathersprophets.backend.database.dao.classes.ClassDao
+import com.fathersprophets.backend.database.dao.classes.ClassMemberDao
 import com.fathersprophets.backend.database.dao.users.UserDao
 import com.fathersprophets.backend.exceptions.ForbiddenException
 import com.fathersprophets.backend.models.ApiResponse
@@ -11,7 +13,7 @@ import com.fathersprophets.backend.utils.Localization
 
 class AttendanceRepository(
     private val attendanceDao: AttendanceDao,
-    private val userDao: UserDao
+    private val classMemberDao: ClassMemberDao
 ) : IAttendanceRepository {
     override fun addAttendance(
         attendance: AddAttendanceRequest,
@@ -89,9 +91,9 @@ class AttendanceRepository(
         sessionId: Int,
         lang: String
     ): ApiResponse<List<AttendanceResponse>> {
-        val user = userDao.findById(userId) ?: throw ForbiddenException(Localization.get("user_not_found", lang))
+        val classMember = classMemberDao.findByUserId(userId) ?: throw ForbiddenException(Localization.get("user_not_found", lang))
 
-        val classId = user.classId ?: throw ForbiddenException(Localization.get("user_class_not_found", lang))
+        val classId = classMember.classId
 
         val list = attendanceDao.getAllAttendanceByClassIdAndSessionId(classId, sessionId)
 
@@ -104,17 +106,6 @@ class AttendanceRepository(
 
     override fun getAllAttendance(lang: String): ApiResponse<List<AttendanceResponse>> {
         val list = attendanceDao.getAllAttendance()
-        return ApiResponse(
-            success = true,
-            data = list.map { it.convertAttendanceResponse() },
-            message = Localization.get("attendance_retrieved_success", lang)
-        )
-    }
-
-    override fun getAttendanceByClassId(classId: Int, lang: String): ApiResponse<List<AttendanceResponse>> {
-
-        val list = attendanceDao.getAllAttendanceByClassId(classId)
-
         return ApiResponse(
             success = true,
             data = list.map { it.convertAttendanceResponse() },

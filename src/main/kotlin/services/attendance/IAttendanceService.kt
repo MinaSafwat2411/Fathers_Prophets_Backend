@@ -14,5 +14,4 @@ interface IAttendanceService {
     fun getAttendanceByClassIdAndSessionId(userId: Int?, sessionId: Int?, lang: String): ApiResponse<List<AttendanceResponse>>
 
     fun getAllAttendance(lang: String): ApiResponse<List<AttendanceResponse>>
-    fun getAttendanceByClassId(classId: Int?, lang: String): ApiResponse<List<AttendanceResponse>>
 }

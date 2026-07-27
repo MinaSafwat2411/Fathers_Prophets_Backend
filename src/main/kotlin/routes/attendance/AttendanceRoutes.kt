@@ -114,15 +114,6 @@ fun Route.attendanceRoutes(attendanceService: IAttendanceService) {
             call.respond(if (response.success) HttpStatusCode.OK else HttpStatusCode.BadRequest, response)
         }
 
-        get("/class/{classId}") {
-            call.forbidRoles("member")
-
-            val classId = call.parameters["classId"]?.toIntOrNull()
-            val lang = call.request.header("Accept-Language") ?: "en"
-            val response = attendanceService.getAttendanceByClassId(classId, lang)
-            call.respond(if (response.success) HttpStatusCode.OK else HttpStatusCode.BadRequest, response)
-        }
-
         put("/{id}") {
 
             call.forbidRoles("member")

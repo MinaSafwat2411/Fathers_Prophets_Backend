@@ -100,14 +100,4 @@ class AttendanceService(private val attendanceRepository: IAttendanceRepository)
     override fun getAllAttendance(lang: String): ApiResponse<List<AttendanceResponse>> {
         return attendanceRepository.getAllAttendance(lang)
     }
-
-    override fun getAttendanceByClassId(
-        classId: Int?,
-        lang: String
-    ): ApiResponse<List<AttendanceResponse>> {
-        if (classId == null) {
-            return ApiResponse(success = false, message = Localization.get("invalid_id", lang))
-        }
-        return attendanceRepository.getAttendanceByClassId(classId, lang)
-    }
 }

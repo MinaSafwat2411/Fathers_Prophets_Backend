@@ -33,6 +33,14 @@ class ClassMemberDao {
             .selectAll().where { ClassMemberTable.id eq classMemberId }
             .singleOrNull()?.let { resultRowToClassMember(it) }
     }
+
+    fun  findByUserId(userId : Int) = transaction {
+        (ClassMemberTable innerJoin UsersTable)
+            .selectAll()
+            .where { ClassMemberTable.userId eq userId }
+            .singleOrNull()?.let { resultRowToClassMember(it) }
+    }
+
     fun addMember(classMemberDto: ClassMemberDto) = transaction {
         ClassMemberTable.insert {
             it[ClassMemberTable.name] = classMemberDto.name

@@ -33,10 +33,6 @@ class AttendanceDao {
         AttendanceTable.selectAll().where { AttendanceTable.userId eq userId }.map { rowToAttendanceDto(it) }
     }
 
-    fun getAllAttendanceByClassId(classId: Int) = transaction {
-        AttendanceTable.selectAll().where { AttendanceTable.classId eq classId }.map { rowToAttendanceDto(it) }
-    }
-
     fun getAllAttendanceBySessionId(sessionId: Int) = transaction {
         AttendanceTable.selectAll().where { AttendanceTable.sessionId eq sessionId }.map { rowToAttendanceDto(it) }
     }
