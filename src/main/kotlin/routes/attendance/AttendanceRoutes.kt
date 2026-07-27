@@ -65,7 +65,7 @@ fun Route.attendanceRoutes(attendanceService: IAttendanceService) {
             )
         }
 
-        webSocket("/session/{sessionId}/") {
+        webSocket("/session/{sessionId}") {
             call.requireRole("admin", "superadmin")
 
             val sessionId = call.parameters["sessionId"]?.toIntOrNull()
@@ -84,7 +84,7 @@ fun Route.attendanceRoutes(attendanceService: IAttendanceService) {
             )
         }
 
-        webSocket("/session/my-class/{sessionId}/") {
+        webSocket("/session/my-class/{sessionId}") {
             call.forbidRoles("member")
 
             val sessionId = call.parameters["sessionId"]?.toIntOrNull()
