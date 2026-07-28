@@ -4,6 +4,7 @@ import com.fathersprophets.backend.database.tables.event.EventMembersTable
 import com.fathersprophets.backend.models.dto.EventMemberDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
@@ -34,6 +35,19 @@ class EventMemberDao {
             it[name] = eventMemberDto.name
             it[eventType] = eventMemberDto.eventType
         }.let { findById(it[EventMembersTable.id]) }
+    }
+
+    /** Inserts the whole list in one transaction, so a single bad row rolls the batch back. */
+    fun addEventMembersBulk(eventMemberDtos: List<EventMemberDto>) = transaction {
+        val ids = EventMembersTable.batchInsert(eventMemberDtos) { dto ->
+            this[EventMembersTable.eventId] = dto.eventId
+            this[EventMembersTable.userId] = dto.userId
+            this[EventMembersTable.name] = dto.name
+            this[EventMembersTable.eventType] = dto.eventType
+        }.map { it[EventMembersTable.id] }
+
+        EventMembersTable.selectAll().where { EventMembersTable.id inList ids }
+            .map { rowToEventMember(it) }
     }
 
 

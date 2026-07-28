@@ -1,5 +1,6 @@
 package com.fathersprophets.backend.routes.event
 
+import com.fathersprophets.backend.models.eventmember.EventMemberBulkRequest
 import com.fathersprophets.backend.models.eventmember.EventMemberRequest
 import com.fathersprophets.backend.plugins.forbidRoles
 import com.fathersprophets.backend.plugins.requireAdminOrType
@@ -26,6 +27,26 @@ fun Route.eventMemberRoutes(
             val response = eventMemberService.addEventMember(request, lang)
 
             request.eventId?.let { eventId ->
+                EventMemberBroadcaster.broadcastEventMembers(
+                    eventId,
+                    eventMemberService.getEventMembersByEventId(eventId, lang)
+                )
+            }
+
+            call.respond(response)
+        }
+        post("/bulk") {
+            val lang = call.request.header("Accept-Language") ?: "en"
+            val request = call.receive<EventMemberBulkRequest>()
+
+            // Every type in the batch is checked, so a leader cannot slip another type into the list.
+            val types = request.resolvedMembers().map { it.eventType }.distinct()
+                .ifEmpty { listOf(request.eventType) }
+            types.forEach { call.requireAdminOrType(it) }
+
+            val response = eventMemberService.addEventMembersBulk(request, lang)
+
+            response.data?.map { it.eventId }?.distinct()?.forEach { eventId ->
                 EventMemberBroadcaster.broadcastEventMembers(
                     eventId,
                     eventMemberService.getEventMembersByEventId(eventId, lang)

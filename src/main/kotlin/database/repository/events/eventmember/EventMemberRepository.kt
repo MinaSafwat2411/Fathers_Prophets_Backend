@@ -20,6 +20,23 @@ class EventMemberRepository(
         )
     }
 
+    override fun addEventMembersBulk(
+        eventMembers: List<EventMemberRequest>,
+        lang: String
+    ): ApiResponse<List<EventMemberResponse>> {
+        val created = eventMemberDao.addEventMembersBulk(eventMembers.map { it.toEventMemberDto(0) })
+
+        if (created.size != eventMembers.size) {
+            throw IllegalArgumentException(Localization.get("event_member_creation_failed", lang))
+        }
+
+        return ApiResponse(
+            success = true,
+            data = created.map { it.toEventMemberResponse() },
+            message = Localization.get("event_members_created_successfully", lang)
+        )
+    }
+
     override fun deleteEventMember(eventId: Int, lang: String): ApiResponse<Nothing> {
         val deleted = eventMemberDao.deleteEventMember(eventId)
 

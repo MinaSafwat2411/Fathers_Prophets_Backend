@@ -1,7 +1,9 @@
 package com.fathersprophets.backend.services.events.eventmember
 
 import com.fathersprophets.backend.database.repository.events.eventmember.IEventMemberRepository
+import com.fathersprophets.backend.exceptions.BadRequestException
 import com.fathersprophets.backend.models.ApiResponse
+import com.fathersprophets.backend.models.eventmember.EventMemberBulkRequest
 import com.fathersprophets.backend.models.eventmember.EventMemberRequest
 import com.fathersprophets.backend.models.eventmember.EventMemberResponse
 import com.fathersprophets.backend.utils.Localization
@@ -19,6 +21,34 @@ class EventMemberService(
             lang = lang
         )
         return eventMemberRepository.addEventMember(eventMember, lang)
+    }
+
+    override fun addEventMembersBulk(
+        request: EventMemberBulkRequest,
+        lang: String
+    ): ApiResponse<List<EventMemberResponse>> {
+        val members = request.resolvedMembers()
+
+        if (members.isEmpty()) {
+            throw BadRequestException(Localization.get("event_members_required", lang))
+        }
+
+        members.forEachIndexed { index, member ->
+            validateRequired(
+                member.eventId to "members[$index].event_id",
+                member.userId to "members[$index].user_id",
+                member.name to "members[$index].name",
+                member.eventType to "members[$index].event_type",
+                lang = lang
+            )
+        }
+
+        // One user cannot join the same event twice, so reject it before the batch hits the unique index.
+        if (members.distinctBy { it.eventId to it.userId }.size != members.size) {
+            throw BadRequestException(Localization.get("event_members_duplicate", lang))
+        }
+
+        return eventMemberRepository.addEventMembersBulk(members, lang)
     }
 
     override fun deleteEventMember(eventId: Int?, lang: String): ApiResponse<Nothing> {
