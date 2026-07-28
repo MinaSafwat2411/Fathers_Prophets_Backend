@@ -20,10 +20,10 @@ class EventService(
     }
 
     override fun addEvent(event: CreateEventRequest, lang: String): ApiResponse<EventResponse> {
+        // image is optional, an event can be created without one.
         validateRequired(
             event.title to "title",
             event.dateTime to "date_time",
-            event.image to "image",
             event.type to "type",
             lang = lang
         )
