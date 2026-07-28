@@ -14,6 +14,7 @@ fun Route.userRoutes(
 ) {
     route("/users") {
         get {
+            call.requireRole("admin", "superadmin")
             val lang = call.request.header("Accept-Language") ?: "en"
             val users = userService.getAllUsers(lang)
             call.respond(users)
