@@ -18,7 +18,7 @@ class QuizAnswerService(
     override fun getQuizAnswersByUserIdAndDayId(userId: Int?, dayId: Int?, lang: String): ApiResponse<List<QuizAnswerResponse>> {
         if (userId == null) throw IllegalArgumentException(Localization.get("user_id_required", lang))
         if (dayId == null) throw IllegalArgumentException(Localization.get("quiz_day_id_required", lang))
-        return repository.getQuizAnswersByUserIdAndDayId(userId, dayId, lang)
+        return repository.getQuizAnswersByUserIdAndDayId(dayId = dayId, userId = userId, lang = lang)
     }
 
     override fun createQuizAnswer(request: CreateQuizAnswerRequest, lang: String): ApiResponse<QuizAnswerResponse> {
