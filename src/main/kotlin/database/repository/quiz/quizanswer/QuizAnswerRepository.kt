@@ -35,9 +35,14 @@ class QuizAnswerRepository(
         lang: String
     ): ApiResponse<List<QuizAnswerResponse>> {
         val answers = dao.findByUserIdAndDayId(userId, dayId)
+        val questionsById = quizDayQuestionDao.findByQuizDayId(dayId).associateBy { it.id }
         return ApiResponse(
             success = true,
-            data = answers.map { it.convertToResponse() },
+            data = answers.map { answer ->
+                answer.convertToResponse(
+                    correctAnswer = questionsById[answer.questionId]?.let { getCorrectAnswer(it) }
+                )
+            },
             message = Localization.get("quiz_answers_retrieved_successfully", lang)
         )
     }
@@ -72,7 +77,10 @@ class QuizAnswerRepository(
             )
         )
 
-        created.forEach { trackScore(it) }
+        if (created.isNotEmpty()) {
+            trackScoreList(created, created[0].dayId, created[0].userId, created[0].quizId)
+        }
+
         return ApiResponse(
             success = true,
             data = created.map { it.convertToResponse() },
@@ -84,9 +92,7 @@ class QuizAnswerRepository(
         val question = quizDayQuestionDao.findById(request.questionId)
             ?: throw IllegalArgumentException(Localization.get("quiz_day_question_not_found", lang))
 
-        val status = autoGrade(request.answer, getCorrectAnswer(question))
-
-        return request.convertToDto().copy(status = status)
+        return request.convertToDto().copy(status = autoGrade(request.answer, question))
     }
 
     private fun getCorrectAnswer(question: QuizDayQuestionDto): String {
@@ -121,6 +127,22 @@ class QuizAnswerRepository(
         }
     }
 
-    private fun autoGrade(answer: String, correctAnswer: String) =
-        if (answer == correctAnswer) AnswerStatus.IS_TRUE else AnswerStatus.IS_FALSE
+    /**
+     * Clients send the choice they picked as its key (first/second/third/fourth), so the key is
+     * matched first; the choice text is still accepted for callers that send that instead.
+     */
+    private fun autoGrade(answer: String, question: QuizDayQuestionDto): AnswerStatus {
+        val given = answer.trim()
+        val correctText = getCorrectAnswer(question).trim()
+
+        val matches = given.equals(question.correctAnswer.name, ignoreCase = true) ||
+                (correctText.isNotEmpty() && given.equals(correctText, ignoreCase = true))
+
+        return if (matches) AnswerStatus.IS_TRUE else AnswerStatus.IS_FALSE
+    }
+
+    private fun  trackScoreList(list : List<QuizAnswerDto> ,dayId: Int, userId: Int,quizId : Int) {
+        val correctedList = list.filter { it.status == AnswerStatus.IS_TRUE }
+        userProgressQuizDao.incrementScore(userId, quizId, dayId, correctedList.size)
+    }
 }
