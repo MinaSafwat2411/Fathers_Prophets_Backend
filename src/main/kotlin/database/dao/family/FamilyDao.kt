@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.dao
+package com.fathersprophets.backend.database.dao.family
 
 
 import com.fathersprophets.backend.database.dto.family.FamilyDto

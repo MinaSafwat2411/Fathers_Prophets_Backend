@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.plugins
 
-import com.fathersprophets.backend.database.dao.UserDao
+import com.fathersprophets.backend.database.dao.users.UserDao
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.utils.JwtConfig.verifier
 import com.fathersprophets.backend.utils.Localization

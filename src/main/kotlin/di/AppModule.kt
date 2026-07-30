@@ -3,7 +3,7 @@ package com.fathersprophets.backend.di
 import com.fathersprophets.backend.database.dao.AnonymousChatDao
 import com.fathersprophets.backend.database.dao.AnonymousChatMessageDao
 import com.fathersprophets.backend.database.dao.AttendanceDao
-import com.fathersprophets.backend.database.dao.ClassDao
+import com.fathersprophets.backend.database.dao.classes.ClassDao
 import com.fathersprophets.backend.database.dao.CommentDao
 import com.fathersprophets.backend.database.dao.EscapeEgyptAnswerDao
 import com.fathersprophets.backend.database.dao.EscapeEgyptDao
@@ -34,7 +34,7 @@ import com.fathersprophets.backend.database.dao.SuperEventBookingDao
 import com.fathersprophets.backend.database.dao.UserProgressQuizDao
 import com.fathersprophets.backend.database.dao.TimelineAnswerDao
 import com.fathersprophets.backend.database.dao.TimelineDao
-import com.fathersprophets.backend.database.dao.UserDao
+import com.fathersprophets.backend.database.dao.users.UserDao
 import com.fathersprophets.backend.database.dao.VersionDao
 import com.fathersprophets.backend.database.repository.attendance.attendance.AttendanceRepository
 import com.fathersprophets.backend.database.repository.attendance.attendance.IAttendanceRepository

@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.services.notification
 
-import com.fathersprophets.backend.database.dao.UserDao
+import com.fathersprophets.backend.database.dao.users.UserDao
 import com.fathersprophets.backend.database.repository.users.IUserRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

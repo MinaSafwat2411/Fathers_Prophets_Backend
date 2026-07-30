@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.dao
+package com.fathersprophets.backend.database.dao.classes
 
 import com.fathersprophets.backend.database.tables.classes.ClassesTable
 import com.fathersprophets.backend.database.dto.classes.ClassDto
