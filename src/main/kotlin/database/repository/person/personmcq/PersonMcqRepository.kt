@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.repository.person.personmcq
 
-import com.fathersprophets.backend.database.dao.person.mcq.PersonMcqDao
+import com.fathersprophets.backend.database.dao.PersonMcqDao
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.personmcq.CreatePersonMcqRequest
 import com.fathersprophets.backend.models.personmcq.PersonMcqResponse

@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.repository.activity.matchingpair.matchingpairanswer
 
-import com.fathersprophets.backend.database.dao.activity.matchpair.MatchingPairDao
+import com.fathersprophets.backend.database.dao.MatchingPairDao
 import com.fathersprophets.backend.database.dao.activity.matchpaor.MatchingPairAnswerDao
 import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
 import com.fathersprophets.backend.models.ApiResponse

@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.models.classes
 
-import com.fathersprophets.backend.models.dto.ClassDto
+import com.fathersprophets.backend.database.dto.classes.ClassDto
 import kotlinx.serialization.Serializable
 
 @Serializable

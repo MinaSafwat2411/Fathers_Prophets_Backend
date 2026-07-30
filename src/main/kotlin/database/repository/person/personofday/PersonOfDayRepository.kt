@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.repository.person.personofday
 
-import com.fathersprophets.backend.database.dao.person.personofday.PersonOfDayDao
+import com.fathersprophets.backend.database.dao.PersonOfDayDao
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.personofday.CreatePersonOfDayRequest
 import com.fathersprophets.backend.models.personofday.PersonOfDayResponse

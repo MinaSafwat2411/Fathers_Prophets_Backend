@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.repository.quiz
 
-import com.fathersprophets.backend.database.dao.quiz.QuizDao
+import com.fathersprophets.backend.database.dao.QuizDao
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.quiz.CreateQuizRequest
 import com.fathersprophets.backend.models.quiz.QuizResponse

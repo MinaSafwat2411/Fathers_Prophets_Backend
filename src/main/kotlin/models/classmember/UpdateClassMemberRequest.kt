@@ -1,6 +1,5 @@
 package com.fathersprophets.backend.models.classmember
 
-import com.fathersprophets.backend.models.dto.ClassMemberDto
 import kotlinx.serialization.Serializable
 
 @Serializable

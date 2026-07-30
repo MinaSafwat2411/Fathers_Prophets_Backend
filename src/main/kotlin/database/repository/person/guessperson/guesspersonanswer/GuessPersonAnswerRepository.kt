@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.repository.person.guessperson.guesspersonanswer
 
-import com.fathersprophets.backend.database.dao.person.guessperson.GuessPersonAnswerDao
-import com.fathersprophets.backend.database.dao.person.guessperson.GuessPersonQuestionDao
+import com.fathersprophets.backend.database.dao.GuessPersonAnswerDao
+import com.fathersprophets.backend.database.dao.GuessPersonQuestionDao
 import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
 import com.fathersprophets.backend.database.tables.person.mcq.McqCorrectAnswer
 import com.fathersprophets.backend.models.ApiResponse

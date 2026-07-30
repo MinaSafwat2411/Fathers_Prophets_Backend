@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.repository.users
 
-import com.fathersprophets.backend.database.dao.users.UserDao
+import com.fathersprophets.backend.database.dao.UserDao
 import com.fathersprophets.backend.database.tables.users.UserRole
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.users.*

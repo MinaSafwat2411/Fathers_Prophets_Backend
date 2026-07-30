@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.repository.notification
 
-import com.fathersprophets.backend.database.dao.notification.NotificationDao
+import com.fathersprophets.backend.database.dao.NotificationDao
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.notification.NotificationResponse
 import com.fathersprophets.backend.utils.Localization

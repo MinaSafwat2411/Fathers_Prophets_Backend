@@ -1,0 +1,51 @@
+package com.fathersprophets.backend.database.dao
+
+import com.fathersprophets.backend.database.tables.classes.ClassesTable
+import com.fathersprophets.backend.database.dto.classes.ClassDto
+import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
+
+class ClassDao {
+    private fun resultRowToClass(row: ResultRow) = ClassDto(
+        id = row[ClassesTable.id],
+        name = row[ClassesTable.name],
+        image = row[ClassesTable.image],
+        familyId = row[ClassesTable.familyId]
+    )
+
+    fun findAll() = transaction {
+        ClassesTable.selectAll().map { resultRowToClass(it) }
+    }
+
+    fun findById(classId : Int) = transaction {
+        ClassesTable.selectAll().where { ClassesTable.id eq classId }
+            .singleOrNull()?.let { resultRowToClass(it) }
+    }
+
+    fun createClass(classDto: ClassDto) = transaction {
+        ClassesTable.insert {
+            it[name] = classDto.name
+            it[image] = classDto.image
+            it[familyId] = classDto.familyId
+        }.resultedValues?.singleOrNull()?.let { resultRowToClass(it) }
+    }
+
+    fun updateClass(classDto: ClassDto) = transaction {
+        ClassesTable.update({ ClassesTable.id eq classDto.id }) {
+            it[name] = classDto.name
+            it[image] = classDto.image
+            it[familyId] = classDto.familyId
+        }.let { findById(classDto.id) }
+    }
+
+    fun deleteClass(classId: Int) = transaction {
+        ClassesTable.deleteWhere {
+            ClassesTable.id eq classId
+        } > 0
+    }
+}

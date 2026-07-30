@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.repository.activity.timeline.timelineanswer
 
-import com.fathersprophets.backend.database.dao.activity.timeline.TimelineAnswerDao
-import com.fathersprophets.backend.database.dao.activity.timeline.TimelineDao
+import com.fathersprophets.backend.database.dao.TimelineAnswerDao
+import com.fathersprophets.backend.database.dao.TimelineDao
 import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.timelineanswer.CreateTimelineAnswerRequest

@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.tables.person.complete
 
-import com.fathersprophets.backend.database.tables.users.UsersTable
+import com.fathersprophets.backend.database.tables.UsersTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.postgresql.util.PGobject

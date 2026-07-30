@@ -1,9 +1,0 @@
-CREATE TABLE IF NOT EXISTS quiz(
-    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    number INT NOT NULL UNIQUE,
-    start_at TIMESTAMP NOT NULL,
-    end_at TIMESTAMP NOT NULL
-);
-
-CREATE INDEX IF NOT EXISTS idx_quiz_start_at ON quiz(start_at);
-CREATE INDEX IF NOT EXISTS idx_quiz_end_at ON quiz(end_at);

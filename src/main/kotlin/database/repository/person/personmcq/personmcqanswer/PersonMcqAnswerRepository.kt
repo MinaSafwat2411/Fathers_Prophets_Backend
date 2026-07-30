@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.repository.person.personmcq.personmcqanswer
 
-import com.fathersprophets.backend.database.dao.person.mcq.PersonMcqAnswerDao
-import com.fathersprophets.backend.database.dao.person.mcq.PersonMcqDao
+import com.fathersprophets.backend.database.dao.PersonMcqAnswerDao
+import com.fathersprophets.backend.database.dao.PersonMcqDao
 import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
 import com.fathersprophets.backend.database.tables.person.mcq.McqCorrectAnswer
 import com.fathersprophets.backend.models.ApiResponse

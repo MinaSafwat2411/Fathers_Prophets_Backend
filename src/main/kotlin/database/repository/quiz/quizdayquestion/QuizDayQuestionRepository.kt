@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.repository.quiz.quizdayquestion
 
-import com.fathersprophets.backend.database.dao.quiz.QuizDayQuestionDao
+import com.fathersprophets.backend.database.dao.QuizDayQuestionDao
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.quizdayquestion.CreateQuizDayQuestionRequest
 import com.fathersprophets.backend.models.quizdayquestion.QuizDayQuestionResponse

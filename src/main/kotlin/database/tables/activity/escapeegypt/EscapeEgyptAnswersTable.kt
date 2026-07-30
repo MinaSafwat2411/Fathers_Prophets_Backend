@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.tables.activity.escapeegypt
 
 import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
-import com.fathersprophets.backend.database.tables.users.UsersTable
+import com.fathersprophets.backend.database.tables.UsersTable
 import org.jetbrains.exposed.sql.Table
 import org.postgresql.util.PGobject
 

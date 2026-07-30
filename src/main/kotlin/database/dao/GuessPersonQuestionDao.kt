@@ -1,0 +1,67 @@
+package com.fathersprophets.backend.database.dao
+
+import com.fathersprophets.backend.database.tables.person.guessperson.GuessPersonTable
+import com.fathersprophets.backend.models.dto.GuessPersonQuestionDto
+import com.fathersprophets.backend.models.guessperson.GuessPersonChoice
+import kotlinx.serialization.json.Json
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
+
+class GuessPersonQuestionDao {
+
+    private fun resultRowToDto(row: ResultRow) = GuessPersonQuestionDto(
+        id = row[GuessPersonTable.id],
+        question = row[GuessPersonTable.question],
+        correctPersonId = row[GuessPersonTable.correctPersonId],
+        difficulty = row[GuessPersonTable.difficulty],
+        first = Json.decodeFromString<GuessPersonChoice>(row[GuessPersonTable.first]),
+        second = Json.decodeFromString<GuessPersonChoice>(row[GuessPersonTable.second]),
+        third = Json.decodeFromString<GuessPersonChoice>(row[GuessPersonTable.third]),
+        fourth = Json.decodeFromString<GuessPersonChoice>(row[GuessPersonTable.fourth]),
+        correctAnswer = row[GuessPersonTable.correctAnswer]
+    )
+
+    fun findAll() = transaction {
+        GuessPersonTable.selectAll().map { resultRowToDto(it) }
+    }
+
+    fun findById(id: Int) = transaction {
+        GuessPersonTable.selectAll().where { GuessPersonTable.id eq id }
+            .singleOrNull()?.let { resultRowToDto(it) }
+    }
+
+    fun create(dto: GuessPersonQuestionDto) = transaction {
+        GuessPersonTable.insert {
+            it[difficulty] = dto.difficulty
+            it[question] = dto.question
+            it[first] = Json.encodeToString(dto.first)
+            it[second] = Json.encodeToString(dto.second)
+            it[correctPersonId] = dto.correctPersonId
+            it[third] = Json.encodeToString(dto.third)
+            it[fourth] = Json.encodeToString(dto.fourth)
+            it[correctAnswer] = dto.correctAnswer
+        }.let { findById(it[GuessPersonTable.id]) }
+    }
+
+    fun update(dto: GuessPersonQuestionDto) = transaction {
+        GuessPersonTable.update({ GuessPersonTable.id eq dto.id }) {
+            it[question] = dto.question
+            it[correctPersonId] = dto.correctPersonId
+            it[difficulty] = dto.difficulty
+            it[first] = Json.encodeToString(dto.first)
+            it[second] = Json.encodeToString(dto.second)
+            it[third] = Json.encodeToString(dto.third)
+            it[fourth] = Json.encodeToString(dto.fourth)
+            it[correctAnswer] = dto.correctAnswer
+        }.let { findById(dto.id) }
+    }
+
+    fun delete(guessPersonId: Int) = transaction {
+        GuessPersonTable.deleteWhere { GuessPersonTable.id eq guessPersonId } > 0
+    }
+}

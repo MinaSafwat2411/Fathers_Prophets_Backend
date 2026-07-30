@@ -1,6 +1,5 @@
 package com.fathersprophets.backend.database.repository.classes.classmember
 
-import com.fathersprophets.backend.database.dao.classes.ClassMemberDao
 import com.fathersprophets.backend.exceptions.NotFoundException
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.classmember.AddClassMemberRequest

@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.tables.chat
 
-import com.fathersprophets.backend.database.tables.users.UsersTable
+import com.fathersprophets.backend.database.tables.UsersTable
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.timestamp
 

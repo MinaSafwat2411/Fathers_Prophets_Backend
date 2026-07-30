@@ -13,7 +13,6 @@ import com.fathersprophets.backend.database.tables.attendance.AttendanceTable
 import com.fathersprophets.backend.database.tables.attendance.SessionTable
 import com.fathersprophets.backend.database.tables.chat.AnonymousChatMessagesTable
 import com.fathersprophets.backend.database.tables.chat.AnonymousChatsTable
-import com.fathersprophets.backend.database.tables.classes.ClassMemberTable
 import com.fathersprophets.backend.database.tables.classes.ClassesTable
 import com.fathersprophets.backend.database.tables.event.EventMembersTable
 import com.fathersprophets.backend.database.tables.event.EventsTable
@@ -34,9 +33,8 @@ import com.fathersprophets.backend.database.tables.quiz.QuizTable
 import com.fathersprophets.backend.database.tables.superevent.SuperEventBookingsTable
 import com.fathersprophets.backend.database.tables.superevent.SuperEventsTable
 import com.fathersprophets.backend.database.tables.users.CommentsTable
-import com.fathersprophets.backend.database.tables.users.ParentsTable
 import com.fathersprophets.backend.database.tables.users.UserProgressQuizTable
-import com.fathersprophets.backend.database.tables.users.UsersTable
+import com.fathersprophets.backend.database.tables.UsersTable
 import com.fathersprophets.backend.database.tables.vesion.VersionsTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -54,8 +52,7 @@ object DatabaseFactory {
 
 
         transaction {
-            exec("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'user_role') THEN CREATE TYPE user_role AS ENUM ('member', 'admin', 'superadmin', 'football', 'teacher', 'volleyball', 'chess', 'pingPong', 'pray', 'praise', 'doctrine', 'bible', 'ritual', 'coptic', 'choir', 'mahrgan', 'odas', 'shmas', 'sports', 'spiritual', 'melodies', 'games', 'quiz', 'parent'); END IF; END $$;")
-            exec("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'event_type') THEN CREATE TYPE event_type AS ENUM ('football', 'volleyball', 'chess', 'pingPong', 'pray', 'praise', 'doctrine', 'bible', 'ritual', 'coptic', 'choir', 'mahrgan', 'odas', 'shmas', 'melodies'); END IF; END $$;")
+            exec("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'event_type') THEN CREATE TYPE event_type AS ENUM ('football', 'volleyball', 'chess', 'pingPong', 'pray', 'praise', 'doctrine', 'bible', 'ritual', 'coptic', 'choir', 'carnival', 'odas', 'deacon', 'melodies'); END IF; END $$;")
             exec("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'person_type') THEN CREATE TYPE person_type AS ENUM ('prophets', 'fathers', 'saints', 'apostles', 'judges'); END IF; END $$;")
             exec("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'question_type') THEN CREATE TYPE question_type AS ENUM ('mcq', 'complete'); END IF; END $$;")
             exec("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'answer_status') THEN CREATE TYPE answer_status AS ENUM ('TEACHER_STILL_NOT_CORRECTED', 'IS_TRUE', 'IS_FALSE'); END IF; END $$;")
@@ -70,9 +67,7 @@ object DatabaseFactory {
                 UsersTable,
                 ClassesTable,
                 CommentsTable,
-                ClassMemberTable,
                 VersionsTable,
-                ParentsTable,
                 SessionTable,
                 AttendanceTable,
                 EventsTable,

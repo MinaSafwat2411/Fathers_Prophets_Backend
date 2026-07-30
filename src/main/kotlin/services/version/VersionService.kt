@@ -4,7 +4,7 @@ import com.fathersprophets.backend.database.repository.version.IVersionRepositor
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.version.AdminPinRequest
 import com.fathersprophets.backend.models.version.VersionRequest
-import com.fathersprophets.backend.models.dto.VersionDto
+import com.fathersprophets.backend.database.dto.VersionDto
 import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
 
 class VersionService(
