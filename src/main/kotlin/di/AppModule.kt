@@ -2,14 +2,14 @@ package com.fathersprophets.backend.di
 
 import com.fathersprophets.backend.database.dao.AnonymousChatDao
 import com.fathersprophets.backend.database.dao.AnonymousChatMessageDao
-import com.fathersprophets.backend.database.dao.AttendanceDao
+import com.fathersprophets.backend.database.dao.session.AttendanceDao
 import com.fathersprophets.backend.database.dao.classes.ClassDao
-import com.fathersprophets.backend.database.dao.CommentDao
+import com.fathersprophets.backend.database.dao.comment.CommentDao
 import com.fathersprophets.backend.database.dao.EscapeEgyptAnswerDao
 import com.fathersprophets.backend.database.dao.EscapeEgyptDao
 import com.fathersprophets.backend.database.dao.EscapeEgyptQuestionDao
-import com.fathersprophets.backend.database.dao.EventDao
-import com.fathersprophets.backend.database.dao.EventMemberDao
+import com.fathersprophets.backend.database.dao.event.EventDao
+import com.fathersprophets.backend.database.dao.event.EventMemberDao
 import com.fathersprophets.backend.database.dao.NotificationDao
 import com.fathersprophets.backend.database.dao.PersonAnswerDao
 import com.fathersprophets.backend.database.dao.PersonDao
@@ -28,14 +28,14 @@ import com.fathersprophets.backend.database.dao.QuizAnswerDao
 import com.fathersprophets.backend.database.dao.QuizDao
 import com.fathersprophets.backend.database.dao.QuizDayDao
 import com.fathersprophets.backend.database.dao.QuizDayQuestionDao
-import com.fathersprophets.backend.database.dao.SessionDao
+import com.fathersprophets.backend.database.dao.session.SessionDao
 import com.fathersprophets.backend.database.dao.SuperEventDao
 import com.fathersprophets.backend.database.dao.SuperEventBookingDao
 import com.fathersprophets.backend.database.dao.UserProgressQuizDao
 import com.fathersprophets.backend.database.dao.TimelineAnswerDao
 import com.fathersprophets.backend.database.dao.TimelineDao
 import com.fathersprophets.backend.database.dao.users.UserDao
-import com.fathersprophets.backend.database.dao.VersionDao
+import com.fathersprophets.backend.database.dao.version.VersionDao
 import com.fathersprophets.backend.database.repository.attendance.attendance.AttendanceRepository
 import com.fathersprophets.backend.database.repository.attendance.attendance.IAttendanceRepository
 import com.fathersprophets.backend.database.repository.auth.AuthRepository

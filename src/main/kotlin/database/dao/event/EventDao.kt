@@ -1,23 +1,19 @@
-package com.fathersprophets.backend.database.dao
+package com.fathersprophets.backend.database.dao.event
 
-import com.fathersprophets.backend.database.tables.event.EventType
+import com.fathersprophets.backend.database.dto.event.EventDto
+import com.fathersprophets.backend.database.enums.EventType
 import com.fathersprophets.backend.database.tables.event.EventsTable
 import com.fathersprophets.backend.models.dto.EventCountsDto
-import com.fathersprophets.backend.models.dto.EventDto
-import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.update
 import java.time.LocalDate
 
 class EventDao {
     private fun rowToEvent(row: ResultRow) = EventDto(
         id = row[EventsTable.id],
         type = row[EventsTable.type],
-        dateTime = row[EventsTable.dateTime].toString(),
+        dateTime = row[EventsTable.dateTime],
         title = row[EventsTable.title],
         image = row[EventsTable.image] ?: ""
     )
@@ -46,15 +42,15 @@ class EventDao {
         EventsTable.insert {
             it[title] = eventDto.title
             it[type] = eventDto.type
-            it[dateTime] = LocalDate.parse(eventDto.dateTime)
+            it[dateTime] = eventDto.dateTime
             it[image] = eventDto.image
-        }.let { getEventById(it[EventsTable.id]) }
+        }.resultedValues?.singleOrNull()?.let { rowToEvent(it) }
     }
 
     fun updateEvent(eventDto: EventDto) = transaction {
         EventsTable.update({ EventsTable.id eq eventDto.id }) {
             it[title] = eventDto.title
-            it[dateTime] = LocalDate.parse(eventDto.dateTime)
+            it[dateTime] = eventDto.dateTime
             it[image] = eventDto.image
             it[type] = eventDto.type
         }.let { getEventById(eventDto.id) }

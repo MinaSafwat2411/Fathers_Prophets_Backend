@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.tables.activity.matchingair
 
 import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
-import com.fathersprophets.backend.database.tables.UsersTable
+import com.fathersprophets.backend.database.tables.users.UsersTable
 import com.fathersprophets.backend.database.tables.json
 import org.jetbrains.exposed.sql.Table
 import org.postgresql.util.PGobject

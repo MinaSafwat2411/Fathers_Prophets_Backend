@@ -1,15 +1,9 @@
 package com.fathersprophets.backend.database.tables.person
 
+import com.fathersprophets.backend.database.enums.PersonType
 import org.jetbrains.exposed.sql.Table
 import org.postgresql.util.PGobject
 
-enum class PersonType {
-    prophets,
-    fathers,
-    saints,
-    apostles,
-    judges
-}
 
 object PersonsTable : Table("persons") {
     val id = integer("id").autoIncrement()
@@ -22,7 +16,7 @@ object PersonsTable : Table("persons") {
         "type",
         "person_type",
         { value -> PersonType.valueOf(value as String) },
-        { PGobject().apply { type = "person_type"; value = it.name } }
+        { PGobject().apply { type = "person_type"; value = it.name.lowercase() } }
     ).index("idx_persons_type")
 
     override val primaryKey = PrimaryKey(id)

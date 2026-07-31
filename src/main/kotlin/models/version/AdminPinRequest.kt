@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.models.version
 
-import com.fathersprophets.backend.database.dto.VersionDto
+import com.fathersprophets.backend.database.dto.version.VersionDto
 import kotlinx.serialization.Serializable
 
 @Serializable

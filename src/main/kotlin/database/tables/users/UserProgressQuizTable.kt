@@ -1,6 +1,5 @@
 package com.fathersprophets.backend.database.tables.users
 
-import com.fathersprophets.backend.database.tables.UsersTable
 import com.fathersprophets.backend.database.tables.quiz.QuizDayTable
 import com.fathersprophets.backend.database.tables.quiz.QuizTable
 import org.jetbrains.exposed.sql.Table

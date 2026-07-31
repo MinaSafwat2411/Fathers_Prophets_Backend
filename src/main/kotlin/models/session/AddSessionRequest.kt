@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.models.session
 
-import com.fathersprophets.backend.models.dto.SessionDto
+import com.fathersprophets.backend.database.dto.sessions.SessionDto
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -1,7 +1,7 @@
-package com.fathersprophets.backend.database.dao
+package com.fathersprophets.backend.database.dao.comment
 
 import com.fathersprophets.backend.database.tables.users.CommentsTable
-import com.fathersprophets.backend.models.dto.CommentDto
+import com.fathersprophets.backend.database.dto.comment.CommentDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
@@ -21,7 +21,7 @@ class CommentDao {
         CommentsTable.insert {
             it[CommentsTable.comment] = comment.comment
             it[CommentsTable.userId] = comment.userId
-        }.let { getCommentById(it[CommentsTable.id]) }
+        }.resultedValues?.singleOrNull()?.let { rowToComment(it) }
     }
 
     fun updateComment(comment: CommentDto) = transaction {
@@ -42,9 +42,5 @@ class CommentDao {
     fun getCommentsByUserId(userId: Int) = transaction {
         CommentsTable.selectAll().where { CommentsTable.userId eq userId }
             .map { rowToComment(it) }
-    }
-
-    fun getAllComments() = transaction {
-        CommentsTable.selectAll().map { rowToComment(it) }
     }
 }

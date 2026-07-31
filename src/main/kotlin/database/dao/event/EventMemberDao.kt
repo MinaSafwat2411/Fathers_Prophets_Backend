@@ -1,10 +1,9 @@
-package com.fathersprophets.backend.database.dao
+package com.fathersprophets.backend.database.dao.event
 
 import com.fathersprophets.backend.database.tables.event.EventMembersTable
-import com.fathersprophets.backend.models.dto.EventMemberDto
+import com.fathersprophets.backend.database.dto.event.EventMemberDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
@@ -15,8 +14,6 @@ class EventMemberDao {
         id = row[EventMembersTable.id],
         eventId = row[EventMembersTable.eventId],
         userId = row[EventMembersTable.userId],
-        name = row[EventMembersTable.name],
-        eventType = row[EventMembersTable.eventType]
     )
 
     fun findAll() = transaction {
@@ -32,24 +29,8 @@ class EventMemberDao {
         EventMembersTable.insert {
             it[eventId] = eventMemberDto.eventId
             it[userId] = eventMemberDto.userId
-            it[name] = eventMemberDto.name
-            it[eventType] = eventMemberDto.eventType
-        }.let { findById(it[EventMembersTable.id]) }
+        }.resultedValues?.singleOrNull()?.let { rowToEventMember(it) }
     }
-
-    /** Inserts the whole list in one transaction, so a single bad row rolls the batch back. */
-    fun addEventMembersBulk(eventMemberDtos: List<EventMemberDto>) = transaction {
-        val ids = EventMembersTable.batchInsert(eventMemberDtos) { dto ->
-            this[EventMembersTable.eventId] = dto.eventId
-            this[EventMembersTable.userId] = dto.userId
-            this[EventMembersTable.name] = dto.name
-            this[EventMembersTable.eventType] = dto.eventType
-        }.map { it[EventMembersTable.id] }
-
-        EventMembersTable.selectAll().where { EventMembersTable.id inList ids }
-            .map { rowToEventMember(it) }
-    }
-
 
     fun deleteEventMember(eventMemberId : Int) = transaction {
         EventMembersTable.deleteWhere {

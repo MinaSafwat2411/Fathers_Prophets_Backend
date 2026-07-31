@@ -1,7 +1,7 @@
-package com.fathersprophets.backend.database.dao
+package com.fathersprophets.backend.database.dao.version
 
 import com.fathersprophets.backend.database.tables.vesion.VersionsTable
-import com.fathersprophets.backend.database.dto.VersionDto
+import com.fathersprophets.backend.database.dto.version.VersionDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
@@ -12,7 +12,8 @@ class VersionDao {
     private fun resultRowToVersion(row: ResultRow) = VersionDto(
         id = row[VersionsTable.id],
         version = row[VersionsTable.version],
-        adminPin = row[VersionsTable.adminPin]
+        adminPin = row[VersionsTable.adminPin],
+        versionCode = row[VersionsTable.versionCode]
     )
 
     fun getLastVersion() = transaction {
@@ -28,7 +29,8 @@ class VersionDao {
         VersionsTable.insert {
             it[version] = versionDto.version
             it[adminPin] = versionDto.adminPin
-        }.let { getLastVersion() }
+            it[versionCode] = versionDto.versionCode
+        }.resultedValues?.singleOrNull()?.let { resultRowToVersion(it) }
     }
 
     fun changePinVersion(versionDto: VersionDto) = transaction {

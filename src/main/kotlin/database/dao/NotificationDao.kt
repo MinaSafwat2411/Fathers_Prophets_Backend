@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.dao
 
 import com.fathersprophets.backend.database.tables.notification.NotificationsTable
-import com.fathersprophets.backend.models.dto.NotificationDto
+import com.fathersprophets.backend.database.dto.notification.NotificationDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -14,11 +14,10 @@ class NotificationDao {
 
     private fun rowToDto(row: ResultRow) = NotificationDto(
         id = row[NotificationsTable.id],
-        eventId = row[NotificationsTable.eventId],
         type = row[NotificationsTable.type],
         title = row[NotificationsTable.title],
-        message = row[NotificationsTable.message],
-        isRead = row[NotificationsTable.isRead],
+        referenceId = row[NotificationsTable.referenceId],
+        description = row[NotificationsTable.description],
         createdAt = row[NotificationsTable.createdAt].toString()
     )
 
@@ -35,10 +34,11 @@ class NotificationDao {
 
     fun create(dto: NotificationDto) = transaction {
         NotificationsTable.insert {
-            it[eventId] = dto.eventId
             it[type] = dto.type
             it[title] = dto.title
-            it[message] = dto.message
+            it[referenceId] = dto.referenceId
+            it[description] = dto.description
+            it[createdAt] = dto.createdAt
         }.let { findById(it[NotificationsTable.id]) }
     }
 

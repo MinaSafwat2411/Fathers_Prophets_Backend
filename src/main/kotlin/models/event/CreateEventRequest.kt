@@ -1,8 +1,8 @@
 package com.fathersprophets.backend.models.event
 
 import com.fathersprophets.backend.database.tables.event.EventType
-import com.fathersprophets.backend.models.dto.EventDto
-import com.fathersprophets.backend.models.dto.NotificationDto
+import com.fathersprophets.backend.database.dto.event.EventDto
+import com.fathersprophets.backend.database.dto.notification.NotificationDto
 import kotlinx.serialization.Serializable
 
 @Serializable

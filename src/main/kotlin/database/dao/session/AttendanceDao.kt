@@ -1,7 +1,7 @@
-package com.fathersprophets.backend.database.dao
+package com.fathersprophets.backend.database.dao.session
 
 import com.fathersprophets.backend.database.tables.attendance.AttendanceTable
-import com.fathersprophets.backend.models.dto.AttendanceDto
+import com.fathersprophets.backend.database.dto.sessions.AttendanceDto
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -53,25 +53,7 @@ class AttendanceDao {
             it[odas] = attendanceDto.odas
             it[tnawl] = attendanceDto.tnawl
             it[classId] = attendanceDto.classId
-        }.let { findById(it[AttendanceTable.id]) }
-    }
-
-    /** Inserts the whole list in one transaction, so a single bad row rolls the batch back. */
-    fun addAttendanceBulk(attendanceDtos: List<AttendanceDto>) = transaction {
-        val ids = AttendanceTable.batchInsert(attendanceDtos) { dto ->
-            this[AttendanceTable.userId] = dto.userId
-            this[AttendanceTable.sessionId] = dto.sessionId
-            this[AttendanceTable.name] = dto.name
-            this[AttendanceTable.attended] = dto.attended
-            this[AttendanceTable.broughtBible] = dto.broughtBible
-            this[AttendanceTable.shmas] = dto.shmas
-            this[AttendanceTable.odas] = dto.odas
-            this[AttendanceTable.tnawl] = dto.tnawl
-            this[AttendanceTable.classId] = dto.classId
-        }.map { it[AttendanceTable.id] }
-
-        AttendanceTable.selectAll().where { AttendanceTable.id inList ids }
-            .map { rowToAttendanceDto(it) }
+        }.resultedValues?.singleOrNull()?.let { rowToAttendanceDto(it) }
     }
 
     fun updateAttendance(attendanceDto: AttendanceDto) = transaction {

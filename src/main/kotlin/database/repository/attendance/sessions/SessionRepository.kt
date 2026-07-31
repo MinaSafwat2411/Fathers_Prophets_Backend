@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.repository.attendance.sessions
 
-import com.fathersprophets.backend.database.dao.SessionDao
+import com.fathersprophets.backend.database.dao.session.SessionDao
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.session.AddSessionRequest
 import com.fathersprophets.backend.models.session.SessionResponse
