@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.dao.event
 
-import com.fathersprophets.backend.database.tables.event.EventMembersTable
+import com.fathersprophets.backend.database.tables.EventMembersTable
 import com.fathersprophets.backend.database.dto.event.EventMemberDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

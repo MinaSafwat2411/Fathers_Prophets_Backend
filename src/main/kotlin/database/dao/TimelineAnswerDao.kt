@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.dao
 
-import com.fathersprophets.backend.database.tables.activity.timeline.TimelineAnswersTable
+import com.fathersprophets.backend.database.tables.TimelineAnswersTable
 import com.fathersprophets.backend.models.dto.TimelineAnswerDto
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

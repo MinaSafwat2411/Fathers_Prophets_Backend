@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.dao
 
-import com.fathersprophets.backend.database.tables.chat.AnonymousChatsTable
+import com.fathersprophets.backend.database.tables.AnonymousChatsTable
 import com.fathersprophets.backend.models.dto.AnonymousChatDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.dao.session
 
-import com.fathersprophets.backend.database.tables.attendance.SessionTable
+import com.fathersprophets.backend.database.tables.SessionTable
 import com.fathersprophets.backend.database.dto.sessions.SessionDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SortOrder

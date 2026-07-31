@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.dao.users
 
 import com.fathersprophets.backend.database.enums.UserRole
-import com.fathersprophets.backend.database.tables.users.UsersTable
+import com.fathersprophets.backend.database.tables.UsersTable
 import com.fathersprophets.backend.models.dto.UserDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder

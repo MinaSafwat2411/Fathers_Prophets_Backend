@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.dao.comment
 
-import com.fathersprophets.backend.database.tables.users.CommentsTable
+import com.fathersprophets.backend.database.tables.CommentsTable
 import com.fathersprophets.backend.database.dto.comment.CommentDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

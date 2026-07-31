@@ -2,7 +2,7 @@ package com.fathersprophets.backend.database.dao.event
 
 import com.fathersprophets.backend.database.dto.event.EventDto
 import com.fathersprophets.backend.database.enums.EventType
-import com.fathersprophets.backend.database.tables.event.EventsTable
+import com.fathersprophets.backend.database.tables.EventsTable
 import com.fathersprophets.backend.models.dto.EventCountsDto
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

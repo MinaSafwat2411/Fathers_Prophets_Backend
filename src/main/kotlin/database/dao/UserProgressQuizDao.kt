@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.dao
 
-import com.fathersprophets.backend.database.tables.users.UserProgressQuizTable
+import com.fathersprophets.backend.database.tables.UserProgressQuizTable
 import com.fathersprophets.backend.models.dto.UserProgressQuizDto
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.dao
 
-import com.fathersprophets.backend.database.tables.activity.escapeegypt.EscapeEgyptQuestionsTable
+import com.fathersprophets.backend.database.tables.EscapeEgyptQuestionsTable
 import com.fathersprophets.backend.models.dto.EscapeEgyptQuestionDto
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
