@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.dto.notification
+package com.fathersprophets.backend.database.dto
 
 data class UserNotificationDto(
     val id: Int,

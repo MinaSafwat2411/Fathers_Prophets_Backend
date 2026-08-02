@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.dto.notification
+package com.fathersprophets.backend.database.dto
 
 import com.fathersprophets.backend.database.enums.NotificationType
 

@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.dto.classes
+package com.fathersprophets.backend.database.dto
 
 data class ClassDto(
     val id: Int,

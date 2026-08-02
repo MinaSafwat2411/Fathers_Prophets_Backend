@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.models.attendance
 
-import com.fathersprophets.backend.database.dto.sessions.AttendanceDto
+import com.fathersprophets.backend.database.dto.AttendanceDto
 import kotlinx.serialization.Serializable
 
 @Serializable

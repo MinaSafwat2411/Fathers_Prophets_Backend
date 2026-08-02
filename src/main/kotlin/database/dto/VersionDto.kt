@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.dto.version
+package com.fathersprophets.backend.database.dto
 
 data class VersionDto(
     val id: Int,

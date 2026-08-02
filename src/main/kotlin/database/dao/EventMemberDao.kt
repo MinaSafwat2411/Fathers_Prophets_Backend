@@ -1,7 +1,7 @@
-package com.fathersprophets.backend.database.dao.event
+package com.fathersprophets.backend.database.dao
 
 import com.fathersprophets.backend.database.tables.EventMembersTable
-import com.fathersprophets.backend.database.dto.event.EventMemberDto
+import com.fathersprophets.backend.database.dto.EventMemberDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere

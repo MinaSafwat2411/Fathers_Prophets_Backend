@@ -1,6 +1,6 @@
-package com.fathersprophets.backend.database.dao.event
+package com.fathersprophets.backend.database.dao
 
-import com.fathersprophets.backend.database.dto.event.EventDto
+import com.fathersprophets.backend.database.dto.EventDto
 import com.fathersprophets.backend.database.enums.EventType
 import com.fathersprophets.backend.database.tables.EventsTable
 import com.fathersprophets.backend.models.dto.EventCountsDto

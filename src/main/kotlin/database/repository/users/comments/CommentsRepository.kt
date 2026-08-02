@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.repository.users.comments
 
-import com.fathersprophets.backend.database.dao.comment.CommentDao
+import com.fathersprophets.backend.database.dao.CommentDao
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.comments.AddCommentRequest
 import com.fathersprophets.backend.models.comments.CommentResponse

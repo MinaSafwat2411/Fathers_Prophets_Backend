@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.dto.event
+package com.fathersprophets.backend.database.dto
 
 data class EventMemberDto(
     val id: Int,

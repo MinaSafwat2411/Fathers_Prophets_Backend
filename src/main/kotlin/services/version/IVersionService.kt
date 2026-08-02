@@ -3,7 +3,7 @@ package com.fathersprophets.backend.services.version
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.version.AdminPinRequest
 import com.fathersprophets.backend.models.version.VersionRequest
-import com.fathersprophets.backend.database.dto.version.VersionDto
+import com.fathersprophets.backend.database.dto.VersionDto
 
 interface IVersionService {
 

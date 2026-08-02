@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.models.comments
 
-import com.fathersprophets.backend.database.dto.comment.CommentDto
+import com.fathersprophets.backend.database.dto.CommentDto
 import kotlinx.serialization.Serializable
 
 @Serializable

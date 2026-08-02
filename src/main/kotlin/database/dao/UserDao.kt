@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.dao.users
+package com.fathersprophets.backend.database.dao
 
 import com.fathersprophets.backend.database.enums.UserRole
 import com.fathersprophets.backend.database.tables.UsersTable

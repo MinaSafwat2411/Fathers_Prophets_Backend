@@ -1,7 +1,7 @@
-package com.fathersprophets.backend.database.dao.family
+package com.fathersprophets.backend.database.dao
 
 
-import com.fathersprophets.backend.database.dto.family.FamilyDto
+import com.fathersprophets.backend.database.dto.FamilyDto
 import com.fathersprophets.backend.database.tables.FamilyTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

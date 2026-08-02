@@ -1,7 +1,7 @@
-package com.fathersprophets.backend.database.dao.comment
+package com.fathersprophets.backend.database.dao
 
 import com.fathersprophets.backend.database.tables.CommentsTable
-import com.fathersprophets.backend.database.dto.comment.CommentDto
+import com.fathersprophets.backend.database.dto.CommentDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
