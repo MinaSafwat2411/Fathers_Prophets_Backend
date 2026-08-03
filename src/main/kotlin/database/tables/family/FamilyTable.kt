@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.tables.family
 
-import com.fathersprophets.backend.database.tables.UsersTable
+import com.fathersprophets.backend.database.tables.user.UsersTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 

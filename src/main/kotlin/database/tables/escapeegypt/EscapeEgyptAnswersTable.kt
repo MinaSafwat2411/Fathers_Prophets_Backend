@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.tables.escapeegypt
 
 import com.fathersprophets.backend.database.enums.AnswerStatus
-import com.fathersprophets.backend.database.tables.UsersTable
+import com.fathersprophets.backend.database.tables.user.UsersTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.transactions.TransactionManager
@@ -18,7 +18,7 @@ object EscapeEgyptAnswersTable : Table("escape_egypt_answers") {
         "status",
         "answer_status",
         { value -> AnswerStatus.valueOf(value as String) },
-        { PGobject().apply { type = "answer_status"; value = it.name.lowercase() } }
+        { PGobject().apply { type = "answer_status"; value = it.name } }
     )
 
     override val primaryKey = PrimaryKey(id)

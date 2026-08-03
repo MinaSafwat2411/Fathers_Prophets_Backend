@@ -1,5 +1,6 @@
-package com.fathersprophets.backend.database.tables
+package com.fathersprophets.backend.database.tables.personstory
 
+import com.fathersprophets.backend.database.tables.person.PersonsTable
 import org.jetbrains.exposed.sql.Table
 
 object PersonStoryTable : Table("persons_stories") {

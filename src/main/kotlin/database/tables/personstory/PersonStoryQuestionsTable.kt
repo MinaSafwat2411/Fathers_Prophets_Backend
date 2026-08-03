@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.tables
+package com.fathersprophets.backend.database.tables.personstory
 
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table

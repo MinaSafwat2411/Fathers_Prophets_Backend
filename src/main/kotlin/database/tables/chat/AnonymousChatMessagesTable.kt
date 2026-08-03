@@ -1,6 +1,5 @@
 package com.fathersprophets.backend.database.tables.chat
 
-import com.fathersprophets.backend.database.tables.UsersTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.CurrentTimestamp

@@ -1,8 +1,8 @@
 package com.fathersprophets.backend.database.tables.guessperson
 
 import com.fathersprophets.backend.database.enums.AnswerStatus
-import com.fathersprophets.backend.database.tables.PersonsTable
-import com.fathersprophets.backend.database.tables.UsersTable
+import com.fathersprophets.backend.database.tables.person.PersonsTable
+import com.fathersprophets.backend.database.tables.user.UsersTable
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.postgresql.util.PGobject
@@ -16,7 +16,7 @@ object GuessPersonAnswersTable : Table("guess_person_answers") {
         "status",
         "answer_status",
         { value -> AnswerStatus.valueOf(value as String) },
-        { PGobject().apply { type = "answer_status"; value = it.name.lowercase() } }
+        { PGobject().apply { type = "answer_status"; value = it.name } }
     ).default(AnswerStatus.TEACHER_STILL_NOT_CORRECTED)
 
     override val primaryKey = PrimaryKey(id)
@@ -28,9 +28,9 @@ object GuessPersonAnswersTable : Table("guess_person_answers") {
                 DO $$ BEGIN 
                     IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'answer_status') THEN 
                         CREATE TYPE answer_status AS ENUM (
-                            'CORRECT', 'WRONG', 'TEACHER_STILL_NOT_CORRECTED'
-                        );
-                    END IF;
+                            'TEACHER_STILL_NOT_CORRECTED', 'IS_TRUE', 'IS_FALSE'
+                        ); 
+                    END IF; 
                 END $$;
             """.trimIndent()
         )

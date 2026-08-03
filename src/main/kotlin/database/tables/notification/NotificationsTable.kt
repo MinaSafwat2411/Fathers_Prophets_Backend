@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.tables
+package com.fathersprophets.backend.database.tables.notification
 
 import com.fathersprophets.backend.database.enums.NotificationType
 import org.jetbrains.exposed.sql.Table
@@ -13,7 +13,7 @@ object NotificationsTable : Table("notifications") {
         "type",
         "notification_type",
         { value -> NotificationType.entries.first { it.name.equals((value as String), ignoreCase = true) } },
-        { PGobject().apply { type = "notification_type"; value = it.name.lowercase() } }
+        { PGobject().apply { type = "notification_type"; value = it.name} }
     ).index("idx_notifications_type")
 
     val title = varchar("title", 255)
@@ -29,7 +29,7 @@ object NotificationsTable : Table("notifications") {
             DO $$ BEGIN 
                 IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'notification_type') THEN 
                     CREATE TYPE notification_type AS ENUM (
-                        'event', 'birthday', 'superevent', 'chat'
+                        'Event', 'Birthday', 'SuperEvent', 'Chat'
                     ); 
                 END IF; 
             END $$;

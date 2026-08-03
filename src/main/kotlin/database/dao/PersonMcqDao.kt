@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.dao
 
-import com.fathersprophets.backend.database.tables.PersonsMcqTable
+import com.fathersprophets.backend.database.tables.personmcq.PersonsMcqTable
 import com.fathersprophets.backend.models.dto.PersonMcqDto
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

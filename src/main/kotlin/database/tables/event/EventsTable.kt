@@ -14,7 +14,7 @@ object EventsTable : Table("events") {
         "type",
         "event_type",
         { value -> EventType.entries.first { it.name.equals((value as String), ignoreCase = true) } },
-        { PGobject().apply { type = "event_type"; value = it.name.lowercase() } }
+        { PGobject().apply { type = "event_type"; value = it.name } }
     ).index("idx_events_type")
     val title = varchar("title", 255)
     val dateTime = date("date_time").index("idx_events_date_time")
@@ -30,9 +30,9 @@ object EventsTable : Table("events") {
             DO $$ BEGIN 
                 IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'event_type') THEN 
                     CREATE TYPE event_type AS ENUM (
-                        'football', 'volleyball', 'chess', 'pingpong', 'pray', 
-                        'praise', 'doctrine', 'bible', 'ritual', 'coptic', 
-                        'choir', 'carnival', 'odas', 'deacon', 'melodies'
+                        'Football', 'Volleyball', 'Chess', 'PingPong', 'Pray', 
+                        'Praise', 'Doctrine', 'Bible', 'Ritual', 'Coptic', 
+                        'Choir', 'Carnival', 'Odas', 'Deacon', 'Melodies'
                     ); 
                 END IF; 
             END $$;

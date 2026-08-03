@@ -1,7 +1,9 @@
-package com.fathersprophets.backend.database.tables
+package com.fathersprophets.backend.database.tables.timeline
 
 import com.fathersprophets.backend.database.enums.AnswerStatus
+import com.fathersprophets.backend.database.tables.user.UsersTable
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.postgresql.util.PGobject
 
 object TimelineAnswersTable : Table("timeline_answers") {
@@ -20,5 +22,17 @@ object TimelineAnswersTable : Table("timeline_answers") {
 
     init {
         uniqueIndex(timelineId, userId)
+
+        TransactionManager.current().exec(
+            """
+                DO $$ BEGIN 
+                    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'answer_status') THEN 
+                        CREATE TYPE answer_status AS ENUM (
+                        'TEACHER_STILL_NOT_CORRECTED', 'IS_TRUE', 'IS_FALSE'
+                        ); 
+                    END IF; 
+                END $$;
+            """.trimIndent()
+        )
     }
 }

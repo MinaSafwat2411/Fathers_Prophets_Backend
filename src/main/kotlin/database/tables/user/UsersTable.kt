@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.tables
+package com.fathersprophets.backend.database.tables.user
 
 import com.fathersprophets.backend.database.enums.UserRole
 import com.fathersprophets.backend.database.tables.classes.ClassesTable
@@ -30,11 +30,11 @@ object UsersTable : Table("users") {
         "role",
         "user_role",
         { value -> UserRole.entries.first { it.name.equals((value as String), ignoreCase = true) } },
-        { PGobject().apply { type = "user_role"; value = it.name.lowercase() } }
+        { PGobject().apply { type = "user_role"; value = it.name } }
     ).index("idx_users_role")
     val memberId = varchar("member_id", 100).nullable().uniqueIndex()
-    val familyId = integer("family_id").references(FamilyTable.id , onDelete = ReferenceOption.CASCADE).nullable().index("idx_users_family_id")
-    val classId = integer("class_id").references(ClassesTable.id, onDelete = ReferenceOption.CASCADE).nullable().index("idx_users_class_id")
+    val familyId = reference("family_id",FamilyTable.id , onDelete = ReferenceOption.CASCADE).nullable().index("idx_users_family_id")
+    val classId = reference("class_id",ClassesTable.id, onDelete = ReferenceOption.CASCADE).nullable().index("idx_users_class_id")
     val score = integer("score").default(0)
 
     override val primaryKey = PrimaryKey(id)
@@ -46,11 +46,11 @@ object UsersTable : Table("users") {
             DO $$ BEGIN 
                 IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'user_role') THEN 
                     CREATE TYPE user_role AS ENUM (
-                        'member', 'admin', 'superadmin', 'football', 'teacher', 
-                        'volleyball', 'chess', 'pingpong', 'pray', 'praise', 
-                        'doctrine', 'bible', 'ritual', 'coptic', 'choir', 
-                        'carnival', 'odas', 'deacon', 'sports', 'spiritual', 
-                        'melodies', 'games', 'quiz', 'parent'
+                        'Member', 'Admin', 'SuperAdmin', 'Football', 'Teacher', 
+                        'Volleyball', 'Chess', 'PingPong', 'Pray', 'Praise', 
+                        'Doctrine', 'Bible', 'Ritual', 'Coptic', 'Choir', 
+                        'Carnival', 'Odas', 'Deacon', 'Sports', 'Spiritual', 
+                        'Melodies', 'Games', 'Quiz', 'Parent'
                     ); 
                 END IF; 
             END $$;

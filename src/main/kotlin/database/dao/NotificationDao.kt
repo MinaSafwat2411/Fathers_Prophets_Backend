@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.dao
 
-import com.fathersprophets.backend.database.tables.NotificationsTable
+import com.fathersprophets.backend.database.tables.notification.NotificationsTable
 import com.fathersprophets.backend.database.dto.NotificationDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SortOrder

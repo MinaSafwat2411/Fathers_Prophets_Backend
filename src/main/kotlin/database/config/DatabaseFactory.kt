@@ -7,8 +7,8 @@ import com.fathersprophets.backend.database.tables.guessperson.GuessPersonAnswer
 import com.fathersprophets.backend.database.tables.guessperson.GuessPersonTable
 import com.fathersprophets.backend.database.tables.matchingpair.MatchingPairAnswersTable
 import com.fathersprophets.backend.database.tables.matchingpair.MatchingPairTable
-import com.fathersprophets.backend.database.tables.TimelineAnswersTable
-import com.fathersprophets.backend.database.tables.TimelineTable
+import com.fathersprophets.backend.database.tables.timeline.TimelineAnswersTable
+import com.fathersprophets.backend.database.tables.timeline.TimelineTable
 import com.fathersprophets.backend.database.tables.session.AttendanceTable
 import com.fathersprophets.backend.database.tables.session.SessionTable
 import com.fathersprophets.backend.database.tables.chat.AnonymousChatMessagesTable
@@ -16,27 +16,27 @@ import com.fathersprophets.backend.database.tables.chat.AnonymousChatsTable
 import com.fathersprophets.backend.database.tables.classes.ClassesTable
 import com.fathersprophets.backend.database.tables.event.EventMembersTable
 import com.fathersprophets.backend.database.tables.event.EventsTable
-import com.fathersprophets.backend.database.tables.NotificationsTable
-import com.fathersprophets.backend.database.tables.UserNotificationsTable
-import com.fathersprophets.backend.database.tables.PersonOfDayTable
-import com.fathersprophets.backend.database.tables.PersonsAnswersTable
-import com.fathersprophets.backend.database.tables.PersonsQuestionsTable
-import com.fathersprophets.backend.database.tables.PersonsTable
-import com.fathersprophets.backend.database.tables.PersonsMcqAnswersTable
-import com.fathersprophets.backend.database.tables.PersonsMcqTable
-import com.fathersprophets.backend.database.tables.PersonStoryAnswersTable
-import com.fathersprophets.backend.database.tables.PersonStoryQuestionsTable
-import com.fathersprophets.backend.database.tables.PersonStoryTable
-import com.fathersprophets.backend.database.tables.QuizAnswersTable
-import com.fathersprophets.backend.database.tables.QuizDayQuestionsTable
-import com.fathersprophets.backend.database.tables.QuizDayTable
-import com.fathersprophets.backend.database.tables.QuizTable
-import com.fathersprophets.backend.database.tables.SuperEventBookingsTable
-import com.fathersprophets.backend.database.tables.SuperEventsTable
+import com.fathersprophets.backend.database.tables.notification.NotificationsTable
+import com.fathersprophets.backend.database.tables.notification.NotificationsUserTable
+import com.fathersprophets.backend.database.tables.personofday.PersonOfDayTable
+import com.fathersprophets.backend.database.tables.personcomplete.PersonsAnswersTable
+import com.fathersprophets.backend.database.tables.personcomplete.PersonsQuestionsTable
+import com.fathersprophets.backend.database.tables.person.PersonsTable
+import com.fathersprophets.backend.database.tables.personmcq.PersonsMcqAnswersTable
+import com.fathersprophets.backend.database.tables.personmcq.PersonsMcqTable
+import com.fathersprophets.backend.database.tables.personstory.PersonStoryAnswersTable
+import com.fathersprophets.backend.database.tables.personstory.PersonStoryQuestionsTable
+import com.fathersprophets.backend.database.tables.personstory.PersonStoryTable
+import com.fathersprophets.backend.database.tables.quiz.QuizAnswersTable
+import com.fathersprophets.backend.database.tables.quiz.QuizDayQuestionsTable
+import com.fathersprophets.backend.database.tables.quiz.QuizDayTable
+import com.fathersprophets.backend.database.tables.quiz.QuizTable
+import com.fathersprophets.backend.database.tables.superevent.SuperEventBookingsTable
+import com.fathersprophets.backend.database.tables.superevent.SuperEventsTable
 import com.fathersprophets.backend.database.tables.comments.CommentsTable
-import com.fathersprophets.backend.database.tables.UserProgressQuizTable
-import com.fathersprophets.backend.database.tables.UsersTable
-import com.fathersprophets.backend.database.tables.VersionsTable
+import com.fathersprophets.backend.database.tables.userprogress.UserProgressQuizTable
+import com.fathersprophets.backend.database.tables.user.UsersTable
+import com.fathersprophets.backend.database.tables.version.VersionsTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -72,7 +72,7 @@ object DatabaseFactory {
                 EventsTable,
                 EventMembersTable,
                 NotificationsTable,
-                UserNotificationsTable,
+                NotificationsUserTable,
                 PersonsTable,
                 PersonsQuestionsTable,
                 PersonsMcqTable,

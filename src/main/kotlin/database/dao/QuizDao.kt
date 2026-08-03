@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.dao
 
-import com.fathersprophets.backend.database.tables.QuizTable
+import com.fathersprophets.backend.database.tables.quiz.QuizTable
 import com.fathersprophets.backend.models.dto.QuizDto
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

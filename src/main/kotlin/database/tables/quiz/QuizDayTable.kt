@@ -1,9 +1,10 @@
-package com.fathersprophets.backend.database.tables
+package com.fathersprophets.backend.database.tables.quiz
 
 import com.fathersprophets.backend.database.enums.DayOfWeek
 import com.fathersprophets.backend.database.enums.QuizDayType
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.postgresql.util.PGobject
 
 object QuizDayTable : Table("quiz_day") {
@@ -13,7 +14,7 @@ object QuizDayTable : Table("quiz_day") {
         "day_name",
         "day_of_week",
         { value -> DayOfWeek.valueOf(value as String) },
-        { PGobject().apply { type = "day_of_week"; value = it.name.lowercase() } }
+        { PGobject().apply { type = "day_of_week"; value = it.name } }
     )
     val book = varchar("book", 255)
     val chapter = integer("chapter")
@@ -23,12 +24,29 @@ object QuizDayTable : Table("quiz_day") {
         "type_day",
         "quiz_day_type",
         { value -> QuizDayType.valueOf(value as String) },
-        { PGobject().apply { type = "quiz_day_type"; value = it.name.lowercase() } }
+        { PGobject().apply { type = "quiz_day_type"; value = it.name} }
     )
 
     override val primaryKey = PrimaryKey(id)
 
     init {
         uniqueIndex(quizId, dayName)
+        
+        TransactionManager.current().exec(
+            """
+                DO $$ BEGIN 
+                    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'day_of_week') THEN 
+                        CREATE TYPE day_of_week AS ENUM (
+                            'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'
+                        ); 
+                    END IF; 
+                    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'quiz_day_type') THEN 
+                        CREATE TYPE quiz_day_type AS ENUM (
+                            'QUIZ', 'REVISION'
+                        ); 
+                    END IF; 
+                END $$;
+            """.trimIndent()
+        )
     }
 }

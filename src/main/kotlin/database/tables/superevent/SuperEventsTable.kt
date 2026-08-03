@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.tables
+package com.fathersprophets.backend.database.tables.superevent
 
 import com.fathersprophets.backend.utils.json
 import org.jetbrains.exposed.sql.Table

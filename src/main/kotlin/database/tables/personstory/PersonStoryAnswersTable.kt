@@ -1,7 +1,9 @@
-package com.fathersprophets.backend.database.tables
+package com.fathersprophets.backend.database.tables.personstory
 
 import com.fathersprophets.backend.database.enums.AnswerStatus
+import com.fathersprophets.backend.database.tables.user.UsersTable
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.postgresql.util.PGobject
 
 object PersonStoryAnswersTable : Table("stories_answers") {
@@ -13,7 +15,7 @@ object PersonStoryAnswersTable : Table("stories_answers") {
         "status",
         "answer_status",
         { value -> AnswerStatus.valueOf(value as String) },
-        { PGobject().apply { type = "answer_status"; value = it.name.lowercase() } }
+        { PGobject().apply { type = "answer_status"; value = it.name } }
     )
     val questionId = reference("question_id", PersonStoryQuestionsTable.id)
 
@@ -22,5 +24,17 @@ object PersonStoryAnswersTable : Table("stories_answers") {
 
     init {
         uniqueIndex(storyId, userId, questionId)
+
+        TransactionManager.current().exec(
+            """
+                DO $$ BEGIN 
+                    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'answer_status') THEN 
+                        CREATE TYPE answer_status AS ENUM (
+                            'TEACHER_STILL_NOT_CORRECTED', 'IS_TRUE', 'IS_FALSE'
+                        ); 
+                    END IF; 
+                END $$;
+            """.trimIndent()
+        )
     }
 }

@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.tables
+package com.fathersprophets.backend.database.tables.version
 
 import org.jetbrains.exposed.sql.Table
 

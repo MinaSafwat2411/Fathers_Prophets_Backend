@@ -1,8 +1,11 @@
-package com.fathersprophets.backend.database.tables
+package com.fathersprophets.backend.database.tables.personmcq
 
 import com.fathersprophets.backend.database.enums.AnswerStatus
+import com.fathersprophets.backend.database.tables.user.UsersTable
+import com.fathersprophets.backend.database.tables.person.PersonsTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.postgresql.util.PGobject
 
 object PersonsMcqAnswersTable : Table("persons_mcq_answers") {
@@ -21,5 +24,17 @@ object PersonsMcqAnswersTable : Table("persons_mcq_answers") {
 
     init {
         uniqueIndex(questionId, userId)
+
+        TransactionManager.current().exec(
+            """
+                DO $$ BEGIN 
+                    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'answer_status') THEN 
+                        CREATE TYPE answer_status AS ENUM (
+                            'TEACHER_STILL_NOT_CORRECTED', 'IS_TRUE', 'IS_FALSE'
+                        ); 
+                    END IF; 
+                END $$;
+            """.trimIndent()
+        )
     }
 }

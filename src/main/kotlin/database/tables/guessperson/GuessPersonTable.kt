@@ -1,7 +1,8 @@
 package com.fathersprophets.backend.database.tables.guessperson
 
 import com.fathersprophets.backend.database.enums.DifficultyType
-import com.fathersprophets.backend.database.tables.PersonsTable
+import com.fathersprophets.backend.database.tables.person.PersonsTable
+import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.postgresql.util.PGobject
@@ -14,14 +15,14 @@ object GuessPersonTable : Table("guess_person_questions") {
         "difficulty",
         "difficulty_type",
         { value -> DifficultyType.valueOf(value as String) },
-        { PGobject().apply { type = "difficulty_type"; value = it.name.lowercase() } }
+        { PGobject().apply { type = "difficulty_type"; value = it.name } }
     )
-    val first = integer("first").references(PersonsTable.id)
-    val second = integer("second").references(PersonsTable.id)
-    val third = integer("third").references(PersonsTable.id)
-    val fourth = integer("fourth").references(PersonsTable.id)
+    val first = reference("first",PersonsTable.id, onDelete = ReferenceOption.CASCADE)
+    val second = reference("second",PersonsTable.id, onDelete = ReferenceOption.CASCADE)
+    val third = reference("third",PersonsTable.id, onDelete = ReferenceOption.CASCADE)
+    val fourth = reference("fourth",PersonsTable.id, onDelete = ReferenceOption.CASCADE)
 
-    val correctAnswer = integer("correct_answer").references(PersonsTable.id)
+    val correctAnswer = reference("correct_answer",PersonsTable.id, onDelete = ReferenceOption.CASCADE)
 
     override val primaryKey = PrimaryKey(id)
     
@@ -31,7 +32,7 @@ object GuessPersonTable : Table("guess_person_questions") {
                 DO $$ BEGIN 
                     IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'difficulty_type') THEN 
                         CREATE TYPE difficulty_type AS ENUM (
-                            'EASY', 'MEDIUM', 'HARD'
+                            'Easy', 'Medium', 'Hard'
                         ); 
                         
                     END IF; 

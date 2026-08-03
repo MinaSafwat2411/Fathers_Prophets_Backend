@@ -1,10 +1,12 @@
-package com.fathersprophets.backend.database.tables
+package com.fathersprophets.backend.database.tables.superevent
 
 import com.fathersprophets.backend.database.enums.SuperEventBookingStatus
+import com.fathersprophets.backend.database.tables.user.UsersTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.CurrentTimestamp
 import org.jetbrains.exposed.sql.javatime.timestamp
+import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.postgresql.util.PGobject
 
 object SuperEventBookingsTable : Table("super_event_bookings") {
@@ -19,7 +21,7 @@ object SuperEventBookingsTable : Table("super_event_bookings") {
         "status",
         "super_event_booking_status",
         { value -> SuperEventBookingStatus.valueOf(value as String) },
-        { PGobject().apply { type = "super_event_booking_status"; value = it.name.lowercase() } }
+        { PGobject().apply { type = "super_event_booking_status"; value = it.name } }
     ).index("idx_super_event_bookings_status")
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
     val teacherId = reference("teacher_id", UsersTable.id, onDelete = ReferenceOption.SET_NULL)
@@ -30,5 +32,17 @@ object SuperEventBookingsTable : Table("super_event_bookings") {
 
     init {
         uniqueIndex("super_event_bookings_event_user_unique", superEventId, userId)
+
+        TransactionManager.current().exec(
+            """
+                DO $$ BEGIN 
+                    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'super_event_booking_status') THEN 
+                        CREATE TYPE super_event_booking_status AS ENUM (
+                        'Booked','Waiting','Cancelled'
+                        ); 
+                    END IF; 
+                END $$;
+            """.trimIndent()
+        )
     }
 }

@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.dao
 
 import com.fathersprophets.backend.database.tables.superevent.SuperEventBookingStatus
-import com.fathersprophets.backend.database.tables.SuperEventBookingsTable
+import com.fathersprophets.backend.database.tables.superevent.SuperEventBookingsTable
 import com.fathersprophets.backend.models.dto.SuperEventBookingDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SortOrder

@@ -1,8 +1,9 @@
-package com.fathersprophets.backend.database.tables
+package com.fathersprophets.backend.database.tables.quiz
 
 import com.fathersprophets.backend.database.enums.McqCorrectAnswer
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.postgresql.util.PGobject
 
 object QuizDayQuestionsTable : Table("quiz_day_questions") {
@@ -21,4 +22,18 @@ object QuizDayQuestionsTable : Table("quiz_day_questions") {
     )
 
     override val primaryKey = PrimaryKey(id)
+
+    init {
+        TransactionManager.current().exec(
+            """
+                DO $$ BEGIN 
+                    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'mcq_correct_answer') THEN 
+                        CREATE TYPE mcq_correct_answer AS ENUM (
+                            'First', 'Second', 'Third', 'Fourth'
+                        ); 
+                    END IF; 
+                END $$;
+            """.trimIndent()
+        )
+    }
 }

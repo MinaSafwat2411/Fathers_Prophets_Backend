@@ -12,7 +12,7 @@ object EscapeEgyptTable : Table("escape_egypt") {
         "type",
         "escape_egypt_type",
         { value -> EscapeEgyptType.valueOf(value as String) },
-        { PGobject().apply { type = "escape_egypt_type"; value = it.name.lowercase() } }
+        { PGobject().apply { type = "escape_egypt_type"; value = it.name } }
     )
 
     override val primaryKey = PrimaryKey(id)

@@ -1,5 +1,6 @@
-package com.fathersprophets.backend.database.tables
+package com.fathersprophets.backend.database.tables.personcomplete
 
+import com.fathersprophets.backend.database.tables.person.PersonsTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 
