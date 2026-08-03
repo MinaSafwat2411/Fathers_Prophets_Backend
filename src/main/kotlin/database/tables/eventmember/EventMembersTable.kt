@@ -1,5 +1,6 @@
-package com.fathersprophets.backend.database.tables.event
+package com.fathersprophets.backend.database.tables.eventmember
 
+import com.fathersprophets.backend.database.tables.event.EventsTable
 import com.fathersprophets.backend.database.tables.user.UsersTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table

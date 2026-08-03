@@ -1,5 +1,6 @@
-package com.fathersprophets.backend.database.tables.escapeegypt
+package com.fathersprophets.backend.database.tables.escapeegyptquestion
 
+import com.fathersprophets.backend.database.tables.escapeegypt.EscapeEgyptTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 

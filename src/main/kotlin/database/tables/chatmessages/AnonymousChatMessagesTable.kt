@@ -1,5 +1,6 @@
-package com.fathersprophets.backend.database.tables.chat
+package com.fathersprophets.backend.database.tables.chatmessages
 
+import com.fathersprophets.backend.database.tables.chat.AnonymousChatsTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.CurrentTimestamp

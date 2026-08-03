@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.config
 
-import com.fathersprophets.backend.database.tables.escapeegypt.EscapeEgyptAnswersTable
-import com.fathersprophets.backend.database.tables.escapeegypt.EscapeEgyptQuestionsTable
+import com.fathersprophets.backend.database.tables.escapeegyptanswer.EscapeEgyptAnswersTable
+import com.fathersprophets.backend.database.tables.escapeegyptquestion.EscapeEgyptQuestionsTable
 import com.fathersprophets.backend.database.tables.escapeegypt.EscapeEgyptTable
 import com.fathersprophets.backend.database.tables.guessperson.GuessPersonAnswersTable
 import com.fathersprophets.backend.database.tables.guessperson.GuessPersonTable
@@ -11,10 +11,10 @@ import com.fathersprophets.backend.database.tables.timeline.TimelineAnswersTable
 import com.fathersprophets.backend.database.tables.timeline.TimelineTable
 import com.fathersprophets.backend.database.tables.session.AttendanceTable
 import com.fathersprophets.backend.database.tables.session.SessionTable
-import com.fathersprophets.backend.database.tables.chat.AnonymousChatMessagesTable
+import com.fathersprophets.backend.database.tables.chatmessages.AnonymousChatMessagesTable
 import com.fathersprophets.backend.database.tables.chat.AnonymousChatsTable
 import com.fathersprophets.backend.database.tables.classes.ClassesTable
-import com.fathersprophets.backend.database.tables.event.EventMembersTable
+import com.fathersprophets.backend.database.tables.eventmember.EventMembersTable
 import com.fathersprophets.backend.database.tables.event.EventsTable
 import com.fathersprophets.backend.database.tables.notification.NotificationsTable
 import com.fathersprophets.backend.database.tables.notification.NotificationsUserTable

@@ -1,6 +1,7 @@
-package com.fathersprophets.backend.database.tables.escapeegypt
+package com.fathersprophets.backend.database.tables.escapeegyptanswer
 
 import com.fathersprophets.backend.database.enums.AnswerStatus
+import com.fathersprophets.backend.database.tables.escapeegyptquestion.EscapeEgyptQuestionsTable
 import com.fathersprophets.backend.database.tables.user.UsersTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
