@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.dao
 
-import com.fathersprophets.backend.database.tables.SessionTable
-import com.fathersprophets.backend.database.dto.SessionDto
+import com.fathersprophets.backend.database.tables.session.SessionTable
+import com.fathersprophets.backend.database.dto.session.SessionDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

@@ -1,6 +1,8 @@
-package com.fathersprophets.backend.database.tables
+package com.fathersprophets.backend.database.tables.event
 
 import com.fathersprophets.backend.database.enums.EventType
+import com.fathersprophets.backend.database.tables.family.FamilyTable
+import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.date
 import org.jetbrains.exposed.sql.transactions.TransactionManager
@@ -17,6 +19,8 @@ object EventsTable : Table("events") {
     val title = varchar("title", 255)
     val dateTime = date("date_time").index("idx_events_date_time")
     val image = text("image").nullable()
+    val familyId = reference("family_id", FamilyTable.id, onDelete = ReferenceOption.CASCADE)
+        .index("idx_events_family_id")
 
     override val primaryKey = PrimaryKey(id)
 

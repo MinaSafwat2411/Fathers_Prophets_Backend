@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.tables
+package com.fathersprophets.backend.database.tables.matchingpair
 
 import org.jetbrains.exposed.sql.Table
 

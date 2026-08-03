@@ -1,16 +1,10 @@
-package com.fathersprophets.backend.models.dto
+package com.fathersprophets.backend.database.dto
 
-import com.fathersprophets.backend.database.tables.activity.escapeegypt.EscapeEgyptType
-import com.fathersprophets.backend.models.escapeegypt.EscapeEgyptResponse
+import com.fathersprophets.backend.database.enums.EscapeEgyptType
+
 
 data class EscapeEgyptDto(
     val id: Int,
     val title: String,
     val type: EscapeEgyptType
-) {
-    fun convertToResponse() = EscapeEgyptResponse(
-        id = id,
-        title = title,
-        type = type.name
-    )
-}
+)

@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.dao
 
-import com.fathersprophets.backend.database.tables.AttendanceTable
-import com.fathersprophets.backend.database.dto.AttendanceDto
+import com.fathersprophets.backend.database.tables.session.AttendanceTable
+import com.fathersprophets.backend.database.dto.session.AttendanceDto
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction

@@ -1,7 +1,10 @@
-package com.fathersprophets.backend.database.tables
+package com.fathersprophets.backend.database.tables.guessperson
 
 import com.fathersprophets.backend.database.enums.AnswerStatus
+import com.fathersprophets.backend.database.tables.PersonsTable
+import com.fathersprophets.backend.database.tables.UsersTable
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.postgresql.util.PGobject
 
 object GuessPersonAnswersTable : Table("guess_person_answers") {
@@ -20,5 +23,16 @@ object GuessPersonAnswersTable : Table("guess_person_answers") {
 
     init {
         uniqueIndex(questionId, userId)
+        TransactionManager.current().exec(
+            """
+                DO $$ BEGIN 
+                    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'answer_status') THEN 
+                        CREATE TYPE answer_status AS ENUM (
+                            'CORRECT', 'WRONG', 'TEACHER_STILL_NOT_CORRECTED'
+                        );
+                    END IF;
+                END $$;
+            """.trimIndent()
+        )
     }
 }

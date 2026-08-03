@@ -1,6 +1,8 @@
 package com.fathersprophets.backend.database.tables
 
 import com.fathersprophets.backend.database.enums.UserRole
+import com.fathersprophets.backend.database.tables.classes.ClassesTable
+import com.fathersprophets.backend.database.tables.family.FamilyTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.date

@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.models.escapeegypt
 
 import com.fathersprophets.backend.database.tables.activity.escapeegypt.EscapeEgyptType
-import com.fathersprophets.backend.models.dto.EscapeEgyptDto
+import com.fathersprophets.backend.database.dto.EscapeEgyptDto
 import kotlinx.serialization.Serializable
 
 @Serializable

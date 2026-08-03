@@ -1,5 +1,6 @@
-package com.fathersprophets.backend.database.tables
+package com.fathersprophets.backend.database.tables.session
 
+import com.fathersprophets.backend.database.tables.family.FamilyTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.CurrentTimestamp
@@ -10,7 +11,7 @@ object SessionTable : Table("sessions") {
     val id = integer("id").autoIncrement()
     val dateTime = datetime("date_time").uniqueIndex()
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
-    val familyId = integer("family_id").references(FamilyTable.id, onDelete = ReferenceOption.CASCADE).index("idx_sessions_family_id")
+    val familyId = reference("family_id", FamilyTable.id, onDelete = ReferenceOption.CASCADE).index("idx_sessions_family_id")
 
     override val primaryKey = PrimaryKey(id)
 }

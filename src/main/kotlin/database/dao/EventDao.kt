@@ -2,8 +2,8 @@ package com.fathersprophets.backend.database.dao
 
 import com.fathersprophets.backend.database.dto.EventDto
 import com.fathersprophets.backend.database.enums.EventType
-import com.fathersprophets.backend.database.tables.EventsTable
-import com.fathersprophets.backend.models.dto.EventCountsDto
+import com.fathersprophets.backend.database.tables.event.EventsTable
+import com.fathersprophets.backend.database.dto.EventCountsDto
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction

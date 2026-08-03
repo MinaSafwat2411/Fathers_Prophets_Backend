@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.models.escapeegyptquestion
 
-import com.fathersprophets.backend.models.dto.EscapeEgyptQuestionDto
+import com.fathersprophets.backend.database.dto.EscapeEgyptQuestionDto
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.database.dao
 
-import com.fathersprophets.backend.database.tables.MatchingPairTable
+import com.fathersprophets.backend.database.tables.matchingpair.MatchingPairTable
 import com.fathersprophets.backend.models.dto.MatchingPairDto
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

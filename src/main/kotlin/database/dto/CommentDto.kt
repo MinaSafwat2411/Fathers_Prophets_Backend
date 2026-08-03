@@ -4,4 +4,5 @@ data class CommentDto(
     val id : Int,
     val userId : Int,
     val comment : String,
+    val teamId : Int,
 )

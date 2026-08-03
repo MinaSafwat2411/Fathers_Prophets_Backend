@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.models.anonymouschat
 
-import com.fathersprophets.backend.models.dto.AnonymousChatDto
+import com.fathersprophets.backend.database.dto.chat.AnonymousChatDto
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -4,7 +4,7 @@ import com.fathersprophets.backend.database.dao.EscapeEgyptAnswerDao
 import com.fathersprophets.backend.database.dao.EscapeEgyptQuestionDao
 import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
 import com.fathersprophets.backend.models.ApiResponse
-import com.fathersprophets.backend.models.dto.EscapeEgyptAnswerDto
+import com.fathersprophets.backend.database.dto.EscapeEgyptAnswerDto
 import com.fathersprophets.backend.models.escapeegyptanswer.CreateEscapeEgyptAnswerRequest
 import com.fathersprophets.backend.models.escapeegyptanswer.EscapeEgyptAnswerResponse
 import com.fathersprophets.backend.models.escapeegyptanswer.UpdateEscapeEgyptAnswerRequest

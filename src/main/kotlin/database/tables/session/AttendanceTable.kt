@@ -1,5 +1,7 @@
-package com.fathersprophets.backend.database.tables
+package com.fathersprophets.backend.database.tables.session
 
+import com.fathersprophets.backend.database.tables.classes.ClassesTable
+import com.fathersprophets.backend.database.tables.UsersTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 

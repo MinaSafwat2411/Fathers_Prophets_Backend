@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.dao
 
-import com.fathersprophets.backend.database.tables.ClassesTable
-import com.fathersprophets.backend.database.dto.ClassDto
+import com.fathersprophets.backend.database.tables.classes.ClassesTable
+import com.fathersprophets.backend.database.dto.classes.ClassDto
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere

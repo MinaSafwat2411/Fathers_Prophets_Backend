@@ -1,23 +1,12 @@
-package com.fathersprophets.backend.models.dto
+package com.fathersprophets.backend.database.dto
 
-import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
-import com.fathersprophets.backend.models.escapeegyptanswer.EscapeEgyptAnswerResponse
+import com.fathersprophets.backend.database.enums.AnswerStatus
+
 
 data class EscapeEgyptAnswerDto(
     val id: Int,
-    val escapeEgyptId: Int,
     val escapeQuestionId: Int,
     val userId: Int,
     val answer: String,
     val status: AnswerStatus
-) {
-    fun convertToResponse(correctAnswer : String? = null) = EscapeEgyptAnswerResponse(
-        id = id,
-        escapeEgyptId = escapeEgyptId,
-        escapeQuestionId = escapeQuestionId,
-        userId = userId,
-        answer = answer,
-        status = status.name,
-        correctAnswer = correctAnswer
-    )
-}
+)

@@ -5,6 +5,7 @@ import java.time.LocalDate
 
 data class EventDto(
     val id: Int,
+    val familyId : Int,
     val type: EventType,
     val title: String,
     val dateTime: LocalDate,

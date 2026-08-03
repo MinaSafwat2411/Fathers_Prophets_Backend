@@ -1,4 +1,4 @@
-package com.fathersprophets.backend.database.dto
+package com.fathersprophets.backend.database.dto.session
 
 data class SessionDto(
     val id: Int,

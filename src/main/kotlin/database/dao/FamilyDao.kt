@@ -2,7 +2,7 @@ package com.fathersprophets.backend.database.dao
 
 
 import com.fathersprophets.backend.database.dto.FamilyDto
-import com.fathersprophets.backend.database.tables.FamilyTable
+import com.fathersprophets.backend.database.tables.family.FamilyTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
