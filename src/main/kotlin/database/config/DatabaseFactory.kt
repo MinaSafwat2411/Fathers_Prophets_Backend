@@ -1,42 +1,42 @@
 package com.fathersprophets.backend.database.config
 
-import com.fathersprophets.backend.database.tables.escapeegyptanswer.EscapeEgyptAnswersTable
-import com.fathersprophets.backend.database.tables.escapeegyptquestion.EscapeEgyptQuestionsTable
-import com.fathersprophets.backend.database.tables.escapeegypt.EscapeEgyptTable
-import com.fathersprophets.backend.database.tables.guessperson.GuessPersonAnswersTable
-import com.fathersprophets.backend.database.tables.guessperson.GuessPersonTable
-import com.fathersprophets.backend.database.tables.matchingpair.MatchingPairAnswersTable
-import com.fathersprophets.backend.database.tables.matchingpair.MatchingPairTable
-import com.fathersprophets.backend.database.tables.timeline.TimelineAnswersTable
-import com.fathersprophets.backend.database.tables.timeline.TimelineTable
-import com.fathersprophets.backend.database.tables.session.AttendanceTable
-import com.fathersprophets.backend.database.tables.session.SessionTable
-import com.fathersprophets.backend.database.tables.chatmessages.AnonymousChatMessagesTable
-import com.fathersprophets.backend.database.tables.chat.AnonymousChatsTable
-import com.fathersprophets.backend.database.tables.classes.ClassesTable
-import com.fathersprophets.backend.database.tables.eventmember.EventMembersTable
-import com.fathersprophets.backend.database.tables.event.EventsTable
-import com.fathersprophets.backend.database.tables.notification.NotificationsTable
-import com.fathersprophets.backend.database.tables.notification.NotificationsUserTable
-import com.fathersprophets.backend.database.tables.personofday.PersonOfDayTable
-import com.fathersprophets.backend.database.tables.personcomplete.PersonsAnswersTable
-import com.fathersprophets.backend.database.tables.personcomplete.PersonsQuestionsTable
-import com.fathersprophets.backend.database.tables.person.PersonsTable
-import com.fathersprophets.backend.database.tables.personmcq.PersonsMcqAnswersTable
-import com.fathersprophets.backend.database.tables.personmcq.PersonsMcqTable
-import com.fathersprophets.backend.database.tables.personstory.PersonStoryAnswersTable
-import com.fathersprophets.backend.database.tables.personstory.PersonStoryQuestionsTable
-import com.fathersprophets.backend.database.tables.personstory.PersonStoryTable
-import com.fathersprophets.backend.database.tables.quiz.QuizAnswersTable
-import com.fathersprophets.backend.database.tables.quiz.QuizDayQuestionsTable
-import com.fathersprophets.backend.database.tables.quiz.QuizDayTable
-import com.fathersprophets.backend.database.tables.quiz.QuizTable
-import com.fathersprophets.backend.database.tables.superevent.SuperEventBookingsTable
-import com.fathersprophets.backend.database.tables.superevent.SuperEventsTable
-import com.fathersprophets.backend.database.tables.comments.CommentsTable
-import com.fathersprophets.backend.database.tables.userprogress.UserProgressQuizTable
-import com.fathersprophets.backend.database.tables.user.UsersTable
-import com.fathersprophets.backend.database.tables.version.VersionsTable
+import com.fathersprophets.backend.modules.escapeegyptanswer.EscapeEgyptAnswersTable
+import com.fathersprophets.backend.modules.escapeegyptquestion.EscapeEgyptQuestionsTable
+import com.fathersprophets.backend.modules.escapeegypt.EscapeEgyptTable
+import com.fathersprophets.backend.modules.guesspersonanswer.GuessPersonAnswersTable
+import com.fathersprophets.backend.modules.guessperson.GuessPersonTable
+import com.fathersprophets.backend.modules.matchingpairanswer.MatchingPairAnswersTable
+import com.fathersprophets.backend.modules.matchingpair.MatchingPairTable
+import com.fathersprophets.backend.modules.timelineanswer.TimelineAnswersTable
+import com.fathersprophets.backend.modules.timeline.TimelineTable
+import com.fathersprophets.backend.modules.sessionattendance.SessionAttendanceTable
+import com.fathersprophets.backend.modules.session.SessionTable
+import com.fathersprophets.backend.modules.chatmessages.AnonymousChatMessagesTable
+import com.fathersprophets.backend.modules.chat.AnonymousChatsTable
+import com.fathersprophets.backend.modules.classes.ClassesTable
+import com.fathersprophets.backend.modules.eventmember.EventMembersTable
+import com.fathersprophets.backend.modules.event.EventsTable
+import com.fathersprophets.backend.modules.notification.NotificationsTable
+import com.fathersprophets.backend.modules.notificationuser.NotificationsUserTable
+import com.fathersprophets.backend.modules.personofday.PersonOfDayTable
+import com.fathersprophets.backend.modules.personcompleteanswer.PersonsAnswersTable
+import com.fathersprophets.backend.modules.personcomplete.PersonsQuestionsTable
+import com.fathersprophets.backend.modules.person.PersonsTable
+import com.fathersprophets.backend.modules.personmcqanswer.PersonsMcqAnswersTable
+import com.fathersprophets.backend.modules.personmcq.PersonsMcqTable
+import com.fathersprophets.backend.modules.personstoryanswer.PersonStoryAnswersTable
+import com.fathersprophets.backend.modules.personstoryquestion.PersonStoryQuestionsTable
+import com.fathersprophets.backend.modules.personstory.PersonStoryTable
+import com.fathersprophets.backend.modules.quizanswers.QuizAnswersTable
+import com.fathersprophets.backend.modules.quizdayquestion.QuizDayQuestionsTable
+import com.fathersprophets.backend.modules.quizday.QuizDayTable
+import com.fathersprophets.backend.modules.quiz.QuizTable
+import com.fathersprophets.backend.modules.supereventbooking.SuperEventBookingsTable
+import com.fathersprophets.backend.modules.superevent.SuperEventsTable
+import com.fathersprophets.backend.modules.comments.CommentsTable
+import com.fathersprophets.backend.modules.userprogress.UserProgressQuizTable
+import com.fathersprophets.backend.modules.user.UsersTable
+import com.fathersprophets.backend.modules.version.VersionsTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -68,7 +68,7 @@ object DatabaseFactory {
                 CommentsTable,
                 VersionsTable,
                 SessionTable,
-                AttendanceTable,
+                SessionAttendanceTable,
                 EventsTable,
                 EventMembersTable,
                 NotificationsTable,

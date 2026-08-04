@@ -3,8 +3,8 @@ package com.fathersprophets.backend.database.repository.events
 import com.fathersprophets.backend.database.dao.EventDao
 import com.fathersprophets.backend.database.dao.NotificationDao
 import com.fathersprophets.backend.database.dao.UserDao
-import com.fathersprophets.backend.database.tables.event.EventType
-import com.fathersprophets.backend.database.tables.users.UserRole
+import com.fathersprophets.backend.modules.event.EventType
+import com.fathersprophets.backend.modules.users.UserRole
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.event.CreateEventRequest
 import com.fathersprophets.backend.models.event.EventCountsResponse

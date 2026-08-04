@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.repository.auth
 
 import com.fathersprophets.backend.database.dao.UserDao
-import com.fathersprophets.backend.database.tables.users.UserRole
+import com.fathersprophets.backend.modules.users.UserRole
 import com.fathersprophets.backend.exceptions.BadRequestException
 import com.fathersprophets.backend.exceptions.ConflictException
 import com.fathersprophets.backend.exceptions.UnauthorizedException

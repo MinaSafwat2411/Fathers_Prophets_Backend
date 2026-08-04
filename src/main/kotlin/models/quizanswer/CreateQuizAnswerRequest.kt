@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.models.quizanswer
 
-import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
+import com.fathersprophets.backend.modules.person.complete.AnswerStatus
 import com.fathersprophets.backend.models.dto.QuizAnswerDto
 import kotlinx.serialization.Serializable
 

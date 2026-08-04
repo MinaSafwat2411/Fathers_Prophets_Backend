@@ -3,8 +3,8 @@ package com.fathersprophets.backend.database.repository.quiz.quizanswer
 import com.fathersprophets.backend.database.dao.QuizAnswerDao
 import com.fathersprophets.backend.database.dao.QuizDayQuestionDao
 import com.fathersprophets.backend.database.dao.UserProgressQuizDao
-import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
-import com.fathersprophets.backend.database.tables.person.mcq.McqCorrectAnswer
+import com.fathersprophets.backend.modules.person.complete.AnswerStatus
+import com.fathersprophets.backend.modules.person.mcq.McqCorrectAnswer
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.QuizAnswerDto
 import com.fathersprophets.backend.models.dto.QuizDayQuestionDto

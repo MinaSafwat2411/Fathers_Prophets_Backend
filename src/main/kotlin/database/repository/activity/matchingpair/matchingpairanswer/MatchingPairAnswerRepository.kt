@@ -2,7 +2,7 @@ package com.fathersprophets.backend.database.repository.activity.matchingpair.ma
 
 import com.fathersprophets.backend.database.dao.MatchingPairDao
 import com.fathersprophets.backend.database.dao.activity.matchpaor.MatchingPairAnswerDao
-import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
+import com.fathersprophets.backend.modules.person.complete.AnswerStatus
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.MatchingPairDto
 import com.fathersprophets.backend.models.matchingpairanswer.CreateMatchingPairAnswerRequest

@@ -2,7 +2,7 @@ package com.fathersprophets.backend.database.repository.activity.escapeegypt.esc
 
 import com.fathersprophets.backend.database.dao.EscapeEgyptAnswerDao
 import com.fathersprophets.backend.database.dao.EscapeEgyptQuestionDao
-import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
+import com.fathersprophets.backend.modules.person.complete.AnswerStatus
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.database.dto.EscapeEgyptAnswerDto
 import com.fathersprophets.backend.models.escapeegyptanswer.CreateEscapeEgyptAnswerRequest

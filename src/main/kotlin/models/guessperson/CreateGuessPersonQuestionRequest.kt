@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.models.guessperson
 
-import com.fathersprophets.backend.database.tables.person.mcq.McqCorrectAnswer
+import com.fathersprophets.backend.modules.person.mcq.McqCorrectAnswer
 import com.fathersprophets.backend.models.dto.GuessPersonQuestionDto
 import kotlinx.serialization.Serializable
 

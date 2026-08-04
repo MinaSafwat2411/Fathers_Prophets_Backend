@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.models.supereventbooking
 
-import com.fathersprophets.backend.database.tables.superevent.SuperEventBookingStatus
+import com.fathersprophets.backend.modules.superevent.SuperEventBookingStatus
 import com.fathersprophets.backend.models.dto.SuperEventBookingDto
 import kotlinx.serialization.Serializable
 

@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.repository.person
 
 import com.fathersprophets.backend.database.dao.PersonDao
-import com.fathersprophets.backend.database.tables.person.PersonType
+import com.fathersprophets.backend.modules.person.PersonType
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.person.CreatePersonRequest
 import com.fathersprophets.backend.models.person.PersonResponse

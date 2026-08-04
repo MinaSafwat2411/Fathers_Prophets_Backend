@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.models.personstoryanswer
 
-import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
+import com.fathersprophets.backend.modules.person.complete.AnswerStatus
 import com.fathersprophets.backend.models.dto.PersonStoryAnswerDto
 import kotlinx.serialization.Serializable
 

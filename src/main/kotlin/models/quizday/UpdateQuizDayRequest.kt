@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.models.quizday
 
-import com.fathersprophets.backend.database.tables.quiz.DayOfWeek
-import com.fathersprophets.backend.database.tables.quiz.QuizDayType
+import com.fathersprophets.backend.modules.quiz.DayOfWeek
+import com.fathersprophets.backend.modules.quiz.QuizDayType
 import com.fathersprophets.backend.models.dto.QuizDayDto
 import kotlinx.serialization.Serializable
 import java.time.Instant

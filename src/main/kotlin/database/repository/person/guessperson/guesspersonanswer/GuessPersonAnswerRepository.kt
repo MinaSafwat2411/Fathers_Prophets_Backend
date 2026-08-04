@@ -2,8 +2,8 @@ package com.fathersprophets.backend.database.repository.person.guessperson.guess
 
 import com.fathersprophets.backend.database.dao.GuessPersonAnswerDao
 import com.fathersprophets.backend.database.dao.GuessPersonQuestionDao
-import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
-import com.fathersprophets.backend.database.tables.person.mcq.McqCorrectAnswer
+import com.fathersprophets.backend.modules.person.complete.AnswerStatus
+import com.fathersprophets.backend.modules.person.mcq.McqCorrectAnswer
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.GuessPersonQuestionDto
 import com.fathersprophets.backend.models.guessperson.GuessPersonChoice

@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.database.repository.events
 
-import com.fathersprophets.backend.database.tables.event.EventType
-import com.fathersprophets.backend.database.tables.users.UserRole
+import com.fathersprophets.backend.modules.event.EventType
+import com.fathersprophets.backend.modules.users.UserRole
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.event.EventCountsResponse
 import com.fathersprophets.backend.models.event.CreateEventRequest

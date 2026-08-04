@@ -2,7 +2,7 @@ package com.fathersprophets.backend.database.repository.person.personstory.perso
 
 import com.fathersprophets.backend.database.dao.PersonStoryAnswerDao
 import com.fathersprophets.backend.database.dao.PersonStoryQuestionDao
-import com.fathersprophets.backend.database.tables.person.complete.AnswerStatus
+import com.fathersprophets.backend.modules.person.complete.AnswerStatus
 import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.models.dto.PersonStoryAnswerDto
 import com.fathersprophets.backend.models.personstoryanswer.CreatePersonStoryAnswerRequest
