@@ -13,7 +13,9 @@ import org.postgresql.util.PGobject
 object UsersTable : Table("users") {
 
     val id = integer("id").autoIncrement()
-    val name = varchar("name", 255)
+    val fullName = varchar("name", 255)
+    val firstName = varchar("first_name", 255)
+    val lastName = varchar("last_name", 255)
     val password = varchar("password", 255)
     val username = varchar("username", 255).uniqueIndex()
     val email = varchar("email", 255).nullable().uniqueIndex()
@@ -26,6 +28,7 @@ object UsersTable : Table("users") {
     val isShams = bool("is_shams").default(false)
     val profile = text("profile").nullable()
     val isReviewed = bool("is_reviewed").default(false)
+    val isVerified = bool("is_verified").default(false)
     val role = customEnumeration(
         "role",
         "user_role",

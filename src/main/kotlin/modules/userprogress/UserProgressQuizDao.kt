@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.modules.userprogress
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class UserProgressQuizDao {
+class UserProgressQuizDao : CrudDao<UserProgressQuizDto, UserProgressQuizCreateDto, UserProgressQuizUpdateDto> {
 
     private fun ResultRow.toDto() = UserProgressQuizDto(
         id = this[UserProgressQuizTable.id],
@@ -14,11 +16,11 @@ class UserProgressQuizDao {
         score = this[UserProgressQuizTable.score]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         UserProgressQuizTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         UserProgressQuizTable.selectAll()
             .where { UserProgressQuizTable.id eq id }
             .map { it.toDto() }
@@ -48,7 +50,7 @@ class UserProgressQuizDao {
             .singleOrNull()
     }
 
-    fun create(dto: UserProgressQuizCreateDto) = transaction {
+    override fun create(dto: UserProgressQuizCreateDto) = transaction {
         UserProgressQuizTable.insert {
             it[userId] = dto.userId
             it[quizId] = dto.quizId
@@ -57,7 +59,7 @@ class UserProgressQuizDao {
         }.let { getById(it[UserProgressQuizTable.id]) }
     }
 
-    fun update(id: Int, dto: UserProgressQuizUpdateDto) = transaction {
+    override fun update(id: Int, dto: UserProgressQuizUpdateDto) = transaction {
         UserProgressQuizTable.update({ UserProgressQuizTable.id eq id }) { updateStatement ->
             dto.userId?.let { updateStatement[UserProgressQuizTable.userId] = it }
             dto.quizId?.let { updateStatement[UserProgressQuizTable.quizId] = it }
@@ -66,7 +68,7 @@ class UserProgressQuizDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         UserProgressQuizTable.deleteWhere { UserProgressQuizTable.id eq id } > 0
     }
 }

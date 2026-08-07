@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.modules.classes
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class ClassDao {
+class ClassDao : CrudDao<ClassDto, ClassCreateDto, ClassUpdateDto> {
 
     private fun ResultRow.toDto() = ClassDto(
         id = this[ClassesTable.id],
@@ -13,11 +15,11 @@ class ClassDao {
         familyId = this[ClassesTable.familyId]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         ClassesTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         ClassesTable.selectAll()
             .where { ClassesTable.id eq id }
             .map { it.toDto() }
@@ -30,7 +32,7 @@ class ClassDao {
             .map { it.toDto() }
     }
 
-    fun create(dto: ClassCreateDto) = transaction {
+    override fun create(dto: ClassCreateDto) = transaction {
         ClassesTable.insert {
             it[name] = dto.name
             it[image] = dto.image
@@ -38,7 +40,7 @@ class ClassDao {
         }.let { getById(it[ClassesTable.id]) }
     }
 
-    fun update(id: Int, dto: ClassUpdateDto) = transaction {
+    override fun update(id: Int, dto: ClassUpdateDto) = transaction {
         ClassesTable.update({ ClassesTable.id eq id }) { updateStatement ->
             dto.name?.let { updateStatement[ClassesTable.name] = it }
             dto.image?.let { updateStatement[ClassesTable.image] = it }
@@ -46,7 +48,7 @@ class ClassDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         ClassesTable.deleteWhere { ClassesTable.id eq id } > 0
     }
 }

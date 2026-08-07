@@ -1,12 +1,13 @@
 package com.fathersprophets.backend.modules.otp
 
+import com.fathersprophets.backend.base.CrudDao
 
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.Instant
 
-class OtpDao {
+class OtpDao : CrudDao<OtpDto, OtpCreateDto, OtpUpdateDto> {
 
     private fun ResultRow.toDto() = OtpDto(
         id = this[OtpTable.id],
@@ -19,11 +20,11 @@ class OtpDao {
         resetVerifyTokenExpiresAt = this[OtpTable.resetVerifyTokenExpiresAt]?.toString()
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         OtpTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         OtpTable.selectAll()
             .where { OtpTable.id eq id }
             .map { it.toDto() }
@@ -57,7 +58,7 @@ class OtpDao {
             .singleOrNull()
     }
 
-    fun create(dto: OtpCreateDto) = transaction {
+    override fun create(dto: OtpCreateDto) = transaction {
         OtpTable.insert {
             it[userId] = dto.userId
             it[type] = dto.type
@@ -69,7 +70,7 @@ class OtpDao {
         }.let { getById(it[OtpTable.id]) }
     }
 
-    fun update(id: Int, dto: OtpUpdateDto) = transaction {
+    override fun update(id: Int, dto: OtpUpdateDto) = transaction {
         OtpTable.update({ OtpTable.id eq id }) { updateStatement ->
             dto.userId?.let { updateStatement[OtpTable.userId] = it }
             dto.type?.let { updateStatement[OtpTable.type] = it }
@@ -81,7 +82,7 @@ class OtpDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         OtpTable.deleteWhere { OtpTable.id eq id } > 0
     }
 }

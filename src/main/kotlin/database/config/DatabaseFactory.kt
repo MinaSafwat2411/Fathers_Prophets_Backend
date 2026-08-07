@@ -34,6 +34,7 @@ import com.fathersprophets.backend.modules.quiz.QuizTable
 import com.fathersprophets.backend.modules.supereventbooking.SuperEventBookingsTable
 import com.fathersprophets.backend.modules.superevent.SuperEventsTable
 import com.fathersprophets.backend.modules.comments.CommentsTable
+import com.fathersprophets.backend.modules.family.FamilyTable
 import com.fathersprophets.backend.modules.userprogress.UserProgressQuizTable
 import com.fathersprophets.backend.modules.user.UsersTable
 import com.fathersprophets.backend.modules.version.VersionsTable
@@ -53,18 +54,10 @@ object DatabaseFactory {
 
 
         transaction {
-            exec("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'question_type') THEN CREATE TYPE question_type AS ENUM ('mcq', 'complete'); END IF; END $$;")
-            exec("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'answer_status') THEN CREATE TYPE answer_status AS ENUM ('TEACHER_STILL_NOT_CORRECTED', 'IS_TRUE', 'IS_FALSE'); END IF; END $$;")
-            exec("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'mcq_correct_answer') THEN CREATE TYPE mcq_correct_answer AS ENUM ('first', 'second', 'third', 'fourth'); END IF; END $$;")
-            exec("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'anonymous_chat_status') THEN CREATE TYPE anonymous_chat_status AS ENUM ('OPEN', 'CLOSED'); END IF; END $$;")
-            exec("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'escape_egypt_type') THEN CREATE TYPE escape_egypt_type AS ENUM ('from', 'to'); END IF; END $$;")
-            exec("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'day_of_week') THEN CREATE TYPE day_of_week AS ENUM ('SAT', 'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI'); END IF; END $$;")
-            exec("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'quiz_day_type') THEN CREATE TYPE quiz_day_type AS ENUM ('TRUE_FALSE', 'MCQ'); END IF; END $$;")
-            exec("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'super_event_booking_status') THEN CREATE TYPE super_event_booking_status AS ENUM ('booked', 'waiting', 'cancelled'); END IF; END $$;")
-
             SchemaUtils.create(
-                UsersTable,
+                FamilyTable,
                 ClassesTable,
+                UsersTable,
                 CommentsTable,
                 VersionsTable,
                 SessionTable,

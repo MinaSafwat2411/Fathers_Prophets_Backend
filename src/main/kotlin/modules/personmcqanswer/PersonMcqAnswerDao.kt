@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.modules.personmcqanswer
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class PersonMcqAnswerDao {
+class PersonMcqAnswerDao : CrudDao<PersonMcqAnswerDto, PersonMcqAnswerCreateDto, PersonMcqAnswerUpdateDto> {
 
     private fun ResultRow.toDto() = PersonMcqAnswerDto(
         id = this[PersonsMcqAnswersTable.id],
@@ -14,11 +16,11 @@ class PersonMcqAnswerDao {
         status = this[PersonsMcqAnswersTable.status]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         PersonsMcqAnswersTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         PersonsMcqAnswersTable.selectAll()
             .where { PersonsMcqAnswersTable.id eq id }
             .map { it.toDto() }
@@ -44,7 +46,7 @@ class PersonMcqAnswerDao {
             .singleOrNull()
     }
 
-    fun create(dto: PersonMcqAnswerCreateDto) = transaction {
+    override fun create(dto: PersonMcqAnswerCreateDto) = transaction {
         PersonsMcqAnswersTable.insert {
             it[answer] = dto.answer
             it[questionId] = dto.questionId
@@ -53,7 +55,7 @@ class PersonMcqAnswerDao {
         }.let { getById(it[PersonsMcqAnswersTable.id]) }
     }
 
-    fun update(id: Int, dto: PersonMcqAnswerUpdateDto) = transaction {
+    override fun update(id: Int, dto: PersonMcqAnswerUpdateDto) = transaction {
         PersonsMcqAnswersTable.update({ PersonsMcqAnswersTable.id eq id }) { updateStatement ->
             dto.answer?.let { updateStatement[PersonsMcqAnswersTable.answer] = it }
             dto.questionId?.let { updateStatement[PersonsMcqAnswersTable.questionId] = it }
@@ -62,7 +64,7 @@ class PersonMcqAnswerDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         PersonsMcqAnswersTable.deleteWhere { PersonsMcqAnswersTable.id eq id } > 0
     }
 }

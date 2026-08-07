@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.modules.sessionattendance
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class SessionAttendanceDao {
+class SessionAttendanceDao : CrudDao<SessionAttendanceDto, SessionAttendanceCreateDto, SessionAttendanceUpdateDto> {
 
     private fun ResultRow.toDto() = SessionAttendanceDto(
         id = this[SessionAttendanceTable.id],
@@ -18,11 +20,11 @@ class SessionAttendanceDao {
         classId = this[SessionAttendanceTable.classId]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         SessionAttendanceTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         SessionAttendanceTable.selectAll()
             .where { SessionAttendanceTable.id eq id }
             .map { it.toDto() }
@@ -48,7 +50,7 @@ class SessionAttendanceDao {
             .singleOrNull()
     }
 
-    fun create(dto: SessionAttendanceCreateDto) = transaction {
+    override fun create(dto: SessionAttendanceCreateDto) = transaction {
         SessionAttendanceTable.insert {
             it[userId] = dto.userId
             it[sessionId] = dto.sessionId
@@ -61,7 +63,7 @@ class SessionAttendanceDao {
         }.let { getById(it[SessionAttendanceTable.id]) }
     }
 
-    fun update(id: Int, dto: SessionAttendanceUpdateDto) = transaction {
+    override fun update(id: Int, dto: SessionAttendanceUpdateDto) = transaction {
         SessionAttendanceTable.update({ SessionAttendanceTable.id eq id }) { updateStatement ->
             dto.userId?.let { updateStatement[SessionAttendanceTable.userId] = it }
             dto.sessionId?.let { updateStatement[SessionAttendanceTable.sessionId] = it }
@@ -74,7 +76,7 @@ class SessionAttendanceDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         SessionAttendanceTable.deleteWhere { SessionAttendanceTable.id eq id } > 0
     }
 }

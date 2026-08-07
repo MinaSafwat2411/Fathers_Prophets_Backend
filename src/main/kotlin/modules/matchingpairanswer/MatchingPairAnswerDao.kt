@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.modules.matchingpairanswer
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class MatchingPairAnswerDao {
+class MatchingPairAnswerDao : CrudDao<MatchingPairAnswerDto, MatchingPairAnswerCreateDto, MatchingPairAnswerUpdateDto> {
 
     private fun ResultRow.toDto() = MatchingPairAnswerDto(
         id = this[MatchingPairAnswersTable.id],
@@ -15,11 +17,11 @@ class MatchingPairAnswerDao {
         status = this[MatchingPairAnswersTable.status]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         MatchingPairAnswersTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         MatchingPairAnswersTable.selectAll()
             .where { MatchingPairAnswersTable.id eq id }
             .map { it.toDto() }
@@ -45,7 +47,7 @@ class MatchingPairAnswerDao {
             .singleOrNull()
     }
 
-    fun create(dto: MatchingPairAnswerCreateDto) = transaction {
+    override fun create(dto: MatchingPairAnswerCreateDto) = transaction {
         MatchingPairAnswersTable.insert {
             it[pairId] = dto.pairId
             it[userId] = dto.userId
@@ -55,7 +57,7 @@ class MatchingPairAnswerDao {
         }.let { getById(it[MatchingPairAnswersTable.id]) }
     }
 
-    fun update(id: Int, dto: MatchingPairAnswerUpdateDto) = transaction {
+    override fun update(id: Int, dto: MatchingPairAnswerUpdateDto) = transaction {
         MatchingPairAnswersTable.update({ MatchingPairAnswersTable.id eq id }) { updateStatement ->
             dto.pairId?.let { updateStatement[MatchingPairAnswersTable.pairId] = it }
             dto.userId?.let { updateStatement[MatchingPairAnswersTable.userId] = it }
@@ -65,7 +67,7 @@ class MatchingPairAnswerDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         MatchingPairAnswersTable.deleteWhere { MatchingPairAnswersTable.id eq id } > 0
     }
 }

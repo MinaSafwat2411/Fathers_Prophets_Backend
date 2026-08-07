@@ -1,11 +1,12 @@
 package com.fathersprophets.backend.modules.personofday
 
+import com.fathersprophets.backend.base.CrudDao
 
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class PersonOfDayDao {
+class PersonOfDayDao : CrudDao<PersonOfDayDto, PersonOfDayCreateDto, PersonOfDayUpdateDto> {
 
     private fun ResultRow.toDto() = PersonOfDayDto(
         id = this[PersonOfDayTable.id],
@@ -15,11 +16,11 @@ class PersonOfDayDao {
         date = this[PersonOfDayTable.date].toString()
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         PersonOfDayTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         PersonOfDayTable.selectAll()
             .where { PersonOfDayTable.id eq id }
             .map { it.toDto() }
@@ -39,7 +40,7 @@ class PersonOfDayDao {
             .singleOrNull()
     }
 
-    fun create(dto: PersonOfDayCreateDto) = transaction {
+    override fun create(dto: PersonOfDayCreateDto) = transaction {
         PersonOfDayTable.insert {
             it[personId] = dto.personId
             it[message] = dto.message
@@ -48,7 +49,7 @@ class PersonOfDayDao {
         }.let { getById(it[PersonOfDayTable.id]) }
     }
 
-    fun update(id: Int, dto: PersonOfDayUpdateDto) = transaction {
+    override fun update(id: Int, dto: PersonOfDayUpdateDto) = transaction {
         PersonOfDayTable.update({ PersonOfDayTable.id eq id }) { updateStatement ->
             dto.personId?.let { updateStatement[PersonOfDayTable.personId] = it }
             dto.message?.let { updateStatement[PersonOfDayTable.message] = it }
@@ -57,7 +58,7 @@ class PersonOfDayDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         PersonOfDayTable.deleteWhere { PersonOfDayTable.id eq id } > 0
     }
 }

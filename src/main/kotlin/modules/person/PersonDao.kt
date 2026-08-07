@@ -1,11 +1,12 @@
 package com.fathersprophets.backend.modules.person
 
+import com.fathersprophets.backend.base.CrudDao
 
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class PersonDao {
+class PersonDao : CrudDao<PersonDto, PersonCreateDto, PersonUpdateDto> {
 
     private fun ResultRow.toDto() = PersonDto(
         id = this[PersonsTable.id],
@@ -17,11 +18,11 @@ class PersonDao {
         type = this[PersonsTable.type]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         PersonsTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         PersonsTable.selectAll()
             .where { PersonsTable.id eq id }
             .map { it.toDto() }
@@ -34,7 +35,7 @@ class PersonDao {
             .map { it.toDto() }
     }
 
-    fun create(dto: PersonCreateDto) = transaction {
+    override fun create(dto: PersonCreateDto) = transaction {
         PersonsTable.insert {
             it[name] = dto.name
             it[nickname] = dto.nickname
@@ -45,7 +46,7 @@ class PersonDao {
         }.let { getById(it[PersonsTable.id]) }
     }
 
-    fun update(id: Int, dto: PersonUpdateDto) = transaction {
+    override fun update(id: Int, dto: PersonUpdateDto) = transaction {
         PersonsTable.update({ PersonsTable.id eq id }) { updateStatement ->
             dto.name?.let { updateStatement[PersonsTable.name] = it }
             dto.nickname?.let { updateStatement[PersonsTable.nickname] = it }
@@ -56,7 +57,7 @@ class PersonDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         PersonsTable.deleteWhere { PersonsTable.id eq id } > 0
     }
 }

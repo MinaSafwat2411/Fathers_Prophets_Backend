@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.modules.timeline
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class TimelineDao {
+class TimelineDao : CrudDao<TimelineDto, TimelineCreateDto, TimelineUpdateDto> {
 
     private fun ResultRow.toDto() = TimelineDto(
         id = this[TimelineTable.id],
@@ -21,18 +23,18 @@ class TimelineDao {
         correctOrder = this[TimelineTable.correctOrder]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         TimelineTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         TimelineTable.selectAll()
             .where { TimelineTable.id eq id }
             .map { it.toDto() }
             .singleOrNull()
     }
 
-    fun create(dto: TimelineCreateDto) = transaction {
+    override fun create(dto: TimelineCreateDto) = transaction {
         TimelineTable.insert {
             it[event1] = dto.event1
             it[event2] = dto.event2
@@ -48,7 +50,7 @@ class TimelineDao {
         }.let { getById(it[TimelineTable.id]) }
     }
 
-    fun update(id: Int, dto: TimelineUpdateDto) = transaction {
+    override fun update(id: Int, dto: TimelineUpdateDto) = transaction {
         TimelineTable.update({ TimelineTable.id eq id }) { updateStatement ->
             dto.event1?.let { updateStatement[TimelineTable.event1] = it }
             dto.event2?.let { updateStatement[TimelineTable.event2] = it }
@@ -64,7 +66,7 @@ class TimelineDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         TimelineTable.deleteWhere { TimelineTable.id eq id } > 0
     }
 }

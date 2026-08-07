@@ -60,6 +60,7 @@
   "refresh_token_required": "رمز التحديث لا يمكن أن يكون فارغًا",
   "name_required": "الاسم لا يمكن أن يكون فارغًا",
   "class_id_required": "معرف الفصل لا يمكن أن يكون فارغًا",
+  "family_id_required": "معرف العائلة لا يمكن أن يكون فارغًا",
   "user_id_required": "معرف المستخدم لا يمكن أن يكون فارغًا",
   "is_teacher_required": "حالة المعلم لا يمكن أن تكون فارغة",
   "version_required": "الإصدار لا يمكن أن يكون فارغًا",
@@ -334,5 +335,12 @@
   "super_event_booking_teacher_invalid": "المستخدم المحدد ليس مدرسًا",
   "super_event_booking_teacher_assigned_successfully": "تم تعيين المدرس للحجز بنجاح",
   "required" : "هذا الحقل مطلوب",
-  "user_deletion_failed": "فشل حذف المستخدم"
+  "user_deletion_failed": "فشل حذف المستخدم",
+
+  "email_exists": "البريد الإلكتروني مستخدم بالفعل",
+  "otp_not_requested": "لم يتم طلب رمز التحقق",
+  "account_not_verified": "حسابك غير موثق. تم إرسال رمز التحقق إلى بريدك الإلكتروني",
+  "token_not_found": "الرمز غير موجود",
+  "token_update_failed": "فشل تحديث الرمز",
+  "token_updated_successfully": "تم تحديث الرمز بنجاح"
 }

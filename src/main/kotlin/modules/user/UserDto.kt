@@ -6,7 +6,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserDto(
     val id: Int,
-    val name: String,
+    val fullName: String,
+    val firstName: String,
+    val lastName: String,
     val username: String,
     val email: String?,
     val phone: String?,
@@ -18,6 +20,7 @@ data class UserDto(
     val isShams: Boolean,
     val profile: String?,
     val isReviewed: Boolean,
+    val isVerified: Boolean,
     val role: UserRole,
     val memberId: String?,
     val familyId: Int?,
@@ -27,7 +30,8 @@ data class UserDto(
 
 @Serializable
 data class UserCreateDto(
-    val name: String,
+    val firstName: String,
+    val lastName: String,
     val password: String,
     val username: String,
     val email: String? = null,
@@ -40,6 +44,7 @@ data class UserCreateDto(
     val isShams: Boolean = false,
     val profile: String? = null,
     val isReviewed: Boolean = false,
+    val isVerified: Boolean = false,
     val role: UserRole,
     val memberId: String? = null,
     val familyId: Int? = null,
@@ -49,7 +54,8 @@ data class UserCreateDto(
 
 @Serializable
 data class UserUpdateDto(
-    val name: String? = null,
+    val firstName: String? = null,
+    val lastName: String? = null,
     val password: String? = null,
     val username: String? = null,
     val email: String? = null,
@@ -62,6 +68,7 @@ data class UserUpdateDto(
     val isShams: Boolean? = null,
     val profile: String? = null,
     val isReviewed: Boolean? = null,
+    val isVerified: Boolean? = null,
     val role: UserRole? = null,
     val memberId: String? = null,
     val familyId: Int? = null,

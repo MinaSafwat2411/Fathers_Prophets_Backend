@@ -1,11 +1,13 @@
 package com.fathersprophets.backend.modules.superevent
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDate
 
-class SuperEventDao {
+class SuperEventDao : CrudDao<SuperEventDto, SuperEventCreateDto, SuperEventUpdateDto> {
 
     private fun ResultRow.toDto() = SuperEventDto(
         id = this[SuperEventsTable.id],
@@ -22,18 +24,18 @@ class SuperEventDao {
         teachers = this[SuperEventsTable.teachers]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         SuperEventsTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         SuperEventsTable.selectAll()
             .where { SuperEventsTable.id eq id }
             .map { it.toDto() }
             .singleOrNull()
     }
 
-    fun create(dto: SuperEventCreateDto) = transaction {
+    override fun create(dto: SuperEventCreateDto) = transaction {
         SuperEventsTable.insert {
             it[title] = dto.title
             it[description] = dto.description
@@ -48,7 +50,7 @@ class SuperEventDao {
         }.let { getById(it[SuperEventsTable.id]) }
     }
 
-    fun update(id: Int, dto: SuperEventUpdateDto) = transaction {
+    override fun update(id: Int, dto: SuperEventUpdateDto) = transaction {
         SuperEventsTable.update({ SuperEventsTable.id eq id }) { updateStatement ->
             dto.title?.let { updateStatement[SuperEventsTable.title] = it }
             dto.description?.let { updateStatement[SuperEventsTable.description] = it }
@@ -63,7 +65,7 @@ class SuperEventDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         SuperEventsTable.deleteWhere { SuperEventsTable.id eq id } > 0
     }
 }

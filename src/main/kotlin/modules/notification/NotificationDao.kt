@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.modules.notification
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class NotificationDao {
+class NotificationDao : CrudDao<NotificationDto, NotificationCreateDto, NotificationUpdateDto> {
 
     private fun ResultRow.toDto() = NotificationDto(
         id = this[NotificationsTable.id],
@@ -15,11 +17,11 @@ class NotificationDao {
         createdAt = this[NotificationsTable.createdAt].toString()
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         NotificationsTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         NotificationsTable.selectAll()
             .where { NotificationsTable.id eq id }
             .map { it.toDto() }
@@ -32,7 +34,7 @@ class NotificationDao {
             .map { it.toDto() }
     }
 
-    fun create(dto: NotificationCreateDto) = transaction {
+    override fun create(dto: NotificationCreateDto) = transaction {
         NotificationsTable.insert {
             it[type] = dto.type
             it[title] = dto.title
@@ -41,7 +43,7 @@ class NotificationDao {
         }.let { getById(it[NotificationsTable.id]) }
     }
 
-    fun update(id: Int, dto: NotificationUpdateDto) = transaction {
+    override fun update(id: Int, dto: NotificationUpdateDto) = transaction {
         NotificationsTable.update({ NotificationsTable.id eq id }) { updateStatement ->
             dto.type?.let { updateStatement[NotificationsTable.type] = it }
             dto.title?.let { updateStatement[NotificationsTable.title] = it }
@@ -50,7 +52,7 @@ class NotificationDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         NotificationsTable.deleteWhere { NotificationsTable.id eq id } > 0
     }
 }

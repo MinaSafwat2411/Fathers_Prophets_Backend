@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.modules.event
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class EventDao {
+class EventDao : CrudDao<EventDto, EventCreateDto, EventUpdateDto> {
 
     private fun ResultRow.toDto() = EventDto(
         id = this[EventsTable.id],
@@ -15,11 +17,11 @@ class EventDao {
         familyId = this[EventsTable.familyId]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         EventsTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         EventsTable.selectAll()
             .where { EventsTable.id eq id }
             .map { it.toDto() }
@@ -32,7 +34,7 @@ class EventDao {
             .map { it.toDto() }
     }
 
-    fun create(dto: EventCreateDto) = transaction {
+    override fun create(dto: EventCreateDto) = transaction {
         EventsTable.insert {
             it[type] = dto.type
             it[title] = dto.title
@@ -42,7 +44,7 @@ class EventDao {
         }.let { getById(it[EventsTable.id]) }
     }
 
-    fun update(id: Int, dto: EventUpdateDto) = transaction {
+    override fun update(id: Int, dto: EventUpdateDto) = transaction {
         EventsTable.update({ EventsTable.id eq id }) { updateStatement ->
             dto.type?.let { updateStatement[EventsTable.type] = it }
             dto.title?.let { updateStatement[EventsTable.title] = it }
@@ -52,7 +54,7 @@ class EventDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         EventsTable.deleteWhere { EventsTable.id eq id } > 0
     }
 }

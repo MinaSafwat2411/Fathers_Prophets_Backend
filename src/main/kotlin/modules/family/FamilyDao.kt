@@ -1,11 +1,12 @@
 package com.fathersprophets.backend.modules.family
 
+import com.fathersprophets.backend.base.CrudDao
 
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class FamilyDao {
+class FamilyDao : CrudDao<FamilyDto, FamilyCreateDto, FamilyUpdateDto> {
 
     private fun ResultRow.toDto() = FamilyDto(
         id = this[FamilyTable.id],
@@ -15,30 +16,18 @@ class FamilyDao {
         subLeaderId = this[FamilyTable.subLeaderId]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         FamilyTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         FamilyTable.selectAll()
             .where { FamilyTable.id eq id }
             .map { it.toDto() }
             .singleOrNull()
     }
 
-    fun getByLeaderId(leaderId: Int) = transaction {
-        FamilyTable.selectAll()
-            .where { FamilyTable.leaderId eq leaderId }
-            .map { it.toDto() }
-    }
-
-    fun getBySubLeaderId(subLeaderId: Int) = transaction {
-        FamilyTable.selectAll()
-            .where { FamilyTable.subLeaderId eq subLeaderId }
-            .map { it.toDto() }
-    }
-
-    fun create(dto: FamilyCreateDto) = transaction {
+    override fun create(dto: FamilyCreateDto) = transaction {
         FamilyTable.insert {
             it[familyName] = dto.familyName
             it[image] = dto.image
@@ -47,7 +36,7 @@ class FamilyDao {
         }.let { getById(it[FamilyTable.id]) }
     }
 
-    fun update(id: Int, dto: FamilyUpdateDto) = transaction {
+    override fun update(id: Int, dto: FamilyUpdateDto) = transaction {
         FamilyTable.update({ FamilyTable.id eq id }) { updateStatement ->
             dto.familyName?.let { updateStatement[FamilyTable.familyName] = it }
             dto.image?.let { updateStatement[FamilyTable.image] = it }
@@ -56,7 +45,7 @@ class FamilyDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         FamilyTable.deleteWhere { FamilyTable.id eq id } > 0
     }
 }

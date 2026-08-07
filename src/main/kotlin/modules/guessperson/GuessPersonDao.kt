@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.modules.guessperson
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class GuessPersonDao {
+class GuessPersonDao : CrudDao<GuessPersonDto, GuessPersonCreateDto, GuessPersonUpdateDto> {
 
     private fun ResultRow.toDto() = GuessPersonDto(
         id = this[GuessPersonTable.id],
@@ -18,11 +20,11 @@ class GuessPersonDao {
         correctAnswer = this[GuessPersonTable.correctAnswer]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         GuessPersonTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         GuessPersonTable.selectAll()
             .where { GuessPersonTable.id eq id }
             .map { it.toDto() }
@@ -35,7 +37,7 @@ class GuessPersonDao {
             .map { it.toDto() }
     }
 
-    fun create(dto: GuessPersonCreateDto) = transaction {
+    override fun create(dto: GuessPersonCreateDto) = transaction {
         GuessPersonTable.insert {
             it[question] = dto.question
             it[correctPersonId] = dto.correctPersonId
@@ -48,7 +50,7 @@ class GuessPersonDao {
         }.let { getById(it[GuessPersonTable.id]) }
     }
 
-    fun update(id: Int, dto: GuessPersonUpdateDto) = transaction {
+    override fun update(id: Int, dto: GuessPersonUpdateDto) = transaction {
         GuessPersonTable.update({ GuessPersonTable.id eq id }) { updateStatement ->
             dto.question?.let { updateStatement[GuessPersonTable.question] = it }
             dto.correctPersonId?.let { updateStatement[GuessPersonTable.correctPersonId] = it }
@@ -61,7 +63,7 @@ class GuessPersonDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         GuessPersonTable.deleteWhere { GuessPersonTable.id eq id } > 0
     }
 }

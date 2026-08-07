@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.plugins
 
-import com.fathersprophets.backend.services.notification.BirthdayReminderScheduler
+import com.fathersprophets.backend.modules.notification.BirthdayReminderScheduler
 import io.ktor.server.application.Application
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

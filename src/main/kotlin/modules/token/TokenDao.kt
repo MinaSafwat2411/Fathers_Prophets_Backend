@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.modules.token
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class TokenDao {
+class TokenDao : CrudDao<TokenDto, TokenCreateDto, TokenUpdateDto> {
 
     private fun ResultRow.toDto() = TokenDto(
         id = this[TokenTable.id],
@@ -16,11 +18,11 @@ class TokenDao {
         adminToken = this[TokenTable.adminToken]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         TokenTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         TokenTable.selectAll()
             .where { TokenTable.id eq id }
             .map { it.toDto() }
@@ -31,6 +33,10 @@ class TokenDao {
         TokenTable.selectAll()
             .where { TokenTable.userId eq userId }
             .map { it.toDto() }
+    }
+
+    fun getAllFcmTokens() = transaction {
+        TokenTable.selectAll().mapNotNull { it[TokenTable.fcmToken] }
     }
 
     fun getByToken(token: String) = transaction {
@@ -47,7 +53,7 @@ class TokenDao {
             .singleOrNull()
     }
 
-    fun create(dto: TokenCreateDto) = transaction {
+    override fun create(dto: TokenCreateDto) = transaction {
         TokenTable.insert {
             it[userId] = dto.userId
             it[token] = dto.token
@@ -58,7 +64,7 @@ class TokenDao {
         }.let { getById(it[TokenTable.id]) }
     }
 
-    fun update(id: Int, dto: TokenUpdateDto) = transaction {
+    override fun update(id: Int, dto: TokenUpdateDto) = transaction {
         TokenTable.update({ TokenTable.id eq id }) { updateStatement ->
             dto.userId?.let { updateStatement[TokenTable.userId] = it }
             dto.token?.let { updateStatement[TokenTable.token] = it }
@@ -69,7 +75,7 @@ class TokenDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         TokenTable.deleteWhere { TokenTable.id eq id } > 0
     }
 }

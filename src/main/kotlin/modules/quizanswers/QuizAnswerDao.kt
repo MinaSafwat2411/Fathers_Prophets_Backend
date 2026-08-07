@@ -1,11 +1,12 @@
 package com.fathersprophets.backend.modules.quizanswers
 
+import com.fathersprophets.backend.base.CrudDao
 
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class QuizAnswerDao {
+class QuizAnswerDao : CrudDao<QuizAnswerDto, QuizAnswerCreateDto, QuizAnswerUpdateDto> {
 
     private fun ResultRow.toDto() = QuizAnswerDto(
         id = this[QuizAnswersTable.id],
@@ -16,11 +17,11 @@ class QuizAnswerDao {
         status = this[QuizAnswersTable.status]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         QuizAnswersTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         QuizAnswersTable.selectAll()
             .where { QuizAnswersTable.id eq id }
             .map { it.toDto() }
@@ -46,7 +47,7 @@ class QuizAnswerDao {
             .singleOrNull()
     }
 
-    fun create(dto: QuizAnswerCreateDto) = transaction {
+    override fun create(dto: QuizAnswerCreateDto) = transaction {
         QuizAnswersTable.insert {
             it[questionId] = dto.questionId
             it[userId] = dto.userId
@@ -56,7 +57,7 @@ class QuizAnswerDao {
         }.let { getById(it[QuizAnswersTable.id]) }
     }
 
-    fun update(id: Int, dto: QuizAnswerUpdateDto) = transaction {
+    override fun update(id: Int, dto: QuizAnswerUpdateDto) = transaction {
         QuizAnswersTable.update({ QuizAnswersTable.id eq id }) { updateStatement ->
             dto.questionId?.let { updateStatement[QuizAnswersTable.questionId] = it }
             dto.userId?.let { updateStatement[QuizAnswersTable.userId] = it }
@@ -66,7 +67,7 @@ class QuizAnswerDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         QuizAnswersTable.deleteWhere { QuizAnswersTable.id eq id } > 0
     }
 }

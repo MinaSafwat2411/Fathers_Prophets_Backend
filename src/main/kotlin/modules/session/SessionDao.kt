@@ -1,11 +1,13 @@
 package com.fathersprophets.backend.modules.session
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDateTime
 
-class SessionDao {
+class SessionDao : CrudDao<SessionDto, SessionCreateDto, SessionUpdateDto> {
 
     private fun ResultRow.toDto() = SessionDto(
         id = this[SessionTable.id],
@@ -14,11 +16,11 @@ class SessionDao {
         familyId = this[SessionTable.familyId]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         SessionTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         SessionTable.selectAll()
             .where { SessionTable.id eq id }
             .map { it.toDto() }
@@ -31,21 +33,21 @@ class SessionDao {
             .map { it.toDto() }
     }
 
-    fun create(dto: SessionCreateDto) = transaction {
+    override fun create(dto: SessionCreateDto) = transaction {
         SessionTable.insert {
             it[dateTime] = LocalDateTime.parse(dto.dateTime)
             it[familyId] = dto.familyId
         }.let { getById(it[SessionTable.id]) }
     }
 
-    fun update(id: Int, dto: SessionUpdateDto) = transaction {
+    override fun update(id: Int, dto: SessionUpdateDto) = transaction {
         SessionTable.update({ SessionTable.id eq id }) { updateStatement ->
             dto.dateTime?.let { updateStatement[SessionTable.dateTime] = LocalDateTime.parse(it) }
             dto.familyId?.let { updateStatement[SessionTable.familyId] = it }
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         SessionTable.deleteWhere { SessionTable.id eq id } > 0
     }
 }

@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.plugins
 
-import com.fathersprophets.backend.database.dao.UserDao
-import com.fathersprophets.backend.models.ApiResponse
+import com.fathersprophets.backend.base.ApiResponse
+import com.fathersprophets.backend.modules.token.TokenDao
 import com.fathersprophets.backend.utils.JwtConfig.verifier
 import com.fathersprophets.backend.utils.Localization
 import io.ktor.http.HttpStatusCode
@@ -16,7 +16,7 @@ fun Application.configureAuth() {
     val jwtRealm = environment.config.propertyOrNull("jwt.realm")
         ?.getString() ?: "Access to 'fathers-prophets'"
 
-    val userDao = get<UserDao>()
+    val tokenDao = get<TokenDao>()
 
     install(Authentication) {
 
@@ -34,8 +34,8 @@ fun Application.configureAuth() {
                 if (username.isNullOrEmpty() || userId == null || presentedToken.isNullOrEmpty()) {
                     null
                 } else {
-                    val user = userDao.findById(userId)
-                    if (user?.token != null && user.token == presentedToken) {
+                    val storedToken = tokenDao.getByUserId(userId).firstOrNull()?.token
+                    if (storedToken != null && storedToken == presentedToken) {
                         JWTPrincipal(credential.payload)
                     } else {
                         null

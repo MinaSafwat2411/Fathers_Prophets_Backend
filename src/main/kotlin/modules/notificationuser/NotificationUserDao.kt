@@ -1,12 +1,13 @@
 package com.fathersprophets.backend.modules.notificationuser
 
+import com.fathersprophets.backend.base.CrudDao
 
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.Instant
 
-class NotificationUserDao {
+class NotificationUserDao : CrudDao<NotificationUserDto, NotificationUserCreateDto, NotificationUserUpdateDto> {
 
     private fun ResultRow.toDto() = NotificationUserDto(
         id = this[NotificationsUserTable.id],
@@ -16,11 +17,11 @@ class NotificationUserDao {
         readAt = this[NotificationsUserTable.readAt]?.toString()
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         NotificationsUserTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         NotificationsUserTable.selectAll()
             .where { NotificationsUserTable.id eq id }
             .map { it.toDto() }
@@ -46,7 +47,7 @@ class NotificationUserDao {
             .singleOrNull()
     }
 
-    fun create(dto: NotificationUserCreateDto) = transaction {
+    override fun create(dto: NotificationUserCreateDto) = transaction {
         NotificationsUserTable.insert {
             it[notificationId] = dto.notificationId
             it[userId] = dto.userId
@@ -55,7 +56,7 @@ class NotificationUserDao {
         }.let { getById(it[NotificationsUserTable.id]) }
     }
 
-    fun update(id: Int, dto: NotificationUserUpdateDto) = transaction {
+    override fun update(id: Int, dto: NotificationUserUpdateDto) = transaction {
         NotificationsUserTable.update({ NotificationsUserTable.id eq id }) { updateStatement ->
             dto.notificationId?.let { updateStatement[NotificationsUserTable.notificationId] = it }
             dto.userId?.let { updateStatement[NotificationsUserTable.userId] = it }
@@ -64,7 +65,7 @@ class NotificationUserDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         NotificationsUserTable.deleteWhere { NotificationsUserTable.id eq id } > 0
     }
 }

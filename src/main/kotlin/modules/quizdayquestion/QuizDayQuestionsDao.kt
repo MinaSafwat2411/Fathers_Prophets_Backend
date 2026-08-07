@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.modules.quizdayquestion
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class QuizDayQuestionsDao {
+class QuizDayQuestionsDao : CrudDao<QuizDayQuestionDto, QuizDayQuestionCreateDto, QuizDayQuestionUpdateDto> {
 
     private fun ResultRow.toDto() = QuizDayQuestionDto(
         id = this[QuizDayQuestionsTable.id],
@@ -17,11 +19,11 @@ class QuizDayQuestionsDao {
         correctAnswer = this[QuizDayQuestionsTable.correctAnswer]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         QuizDayQuestionsTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         QuizDayQuestionsTable.selectAll()
             .where { QuizDayQuestionsTable.id eq id }
             .map { it.toDto() }
@@ -34,7 +36,7 @@ class QuizDayQuestionsDao {
             .map { it.toDto() }
     }
 
-    fun create(dto: QuizDayQuestionCreateDto) = transaction {
+    override fun create(dto: QuizDayQuestionCreateDto) = transaction {
         QuizDayQuestionsTable.insert {
             it[quizDayId] = dto.quizDayId
             it[question] = dto.question
@@ -46,7 +48,7 @@ class QuizDayQuestionsDao {
         }.let { getById(it[QuizDayQuestionsTable.id]) }
     }
 
-    fun update(id: Int, dto: QuizDayQuestionUpdateDto) = transaction {
+    override fun update(id: Int, dto: QuizDayQuestionUpdateDto) = transaction {
         QuizDayQuestionsTable.update({ QuizDayQuestionsTable.id eq id }) { updateStatement ->
             dto.quizDayId?.let { updateStatement[QuizDayQuestionsTable.quizDayId] = it }
             dto.question?.let { updateStatement[QuizDayQuestionsTable.question] = it }
@@ -58,7 +60,7 @@ class QuizDayQuestionsDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         QuizDayQuestionsTable.deleteWhere { QuizDayQuestionsTable.id eq id } > 0
     }
 }

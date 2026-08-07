@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.modules.version
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class VersionDao {
+class VersionDao : CrudDao<VersionDto, VersionCreateDto, VersionUpdateDto> {
 
     private fun ResultRow.toDto() = VersionDto(
         id = this[VersionsTable.id],
@@ -13,11 +15,11 @@ class VersionDao {
         adminPin = this[VersionsTable.adminPin]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         VersionsTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         VersionsTable.selectAll()
             .where { VersionsTable.id eq id }
             .map { it.toDto() }
@@ -46,7 +48,7 @@ class VersionDao {
             .singleOrNull()
     }
 
-    fun create(dto: VersionCreateDto) = transaction {
+    override fun create(dto: VersionCreateDto) = transaction {
         VersionsTable.insert {
             it[version] = dto.version
             it[versionCode] = dto.versionCode
@@ -54,7 +56,7 @@ class VersionDao {
         }.let { getById(it[VersionsTable.id]) }
     }
 
-    fun update(id: Int, dto: VersionUpdateDto) = transaction {
+    override fun update(id: Int, dto: VersionUpdateDto) = transaction {
         VersionsTable.update({ VersionsTable.id eq id }) { updateStatement ->
             dto.version?.let { updateStatement[VersionsTable.version] = it }
             dto.versionCode?.let { updateStatement[VersionsTable.versionCode] = it }
@@ -62,7 +64,7 @@ class VersionDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         VersionsTable.deleteWhere { VersionsTable.id eq id } > 0
     }
 }

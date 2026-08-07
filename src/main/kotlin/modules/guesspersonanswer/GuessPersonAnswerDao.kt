@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.modules.guesspersonanswer
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class GuessPersonAnswerDao {
+class GuessPersonAnswerDao : CrudDao<GuessPersonAnswerDto, GuessPersonAnswerCreateDto, GuessPersonAnswerUpdateDto> {
 
     private fun ResultRow.toDto() = GuessPersonAnswerDto(
         id = this[GuessPersonAnswersTable.id],
@@ -14,11 +16,11 @@ class GuessPersonAnswerDao {
         status = this[GuessPersonAnswersTable.status]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         GuessPersonAnswersTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         GuessPersonAnswersTable.selectAll()
             .where { GuessPersonAnswersTable.id eq id }
             .map { it.toDto() }
@@ -44,7 +46,7 @@ class GuessPersonAnswerDao {
             .singleOrNull()
     }
 
-    fun create(dto: GuessPersonAnswerCreateDto) = transaction {
+    override fun create(dto: GuessPersonAnswerCreateDto) = transaction {
         GuessPersonAnswersTable.insert {
             it[questionId] = dto.questionId
             it[userId] = dto.userId
@@ -53,7 +55,7 @@ class GuessPersonAnswerDao {
         }.let { getById(it[GuessPersonAnswersTable.id]) }
     }
 
-    fun update(id: Int, dto: GuessPersonAnswerUpdateDto) = transaction {
+    override fun update(id: Int, dto: GuessPersonAnswerUpdateDto) = transaction {
         GuessPersonAnswersTable.update({ GuessPersonAnswersTable.id eq id }) { updateStatement ->
             dto.questionId?.let { updateStatement[GuessPersonAnswersTable.questionId] = it }
             dto.userId?.let { updateStatement[GuessPersonAnswersTable.userId] = it }
@@ -62,7 +64,7 @@ class GuessPersonAnswerDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         GuessPersonAnswersTable.deleteWhere { GuessPersonAnswersTable.id eq id } > 0
     }
 }

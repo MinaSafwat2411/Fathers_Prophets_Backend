@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.modules.quizday
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class QuizDayDao {
+class QuizDayDao : CrudDao<QuizDayDto, QuizDayCreateDto, QuizDayUpdateDto> {
 
     private fun ResultRow.toDto() = QuizDayDto(
         id = this[QuizDayTable.id],
@@ -17,11 +19,11 @@ class QuizDayDao {
         typeDay = this[QuizDayTable.typeDay]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         QuizDayTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         QuizDayTable.selectAll()
             .where { QuizDayTable.id eq id }
             .map { it.toDto() }
@@ -41,7 +43,7 @@ class QuizDayDao {
             .singleOrNull()
     }
 
-    fun create(dto: QuizDayCreateDto) = transaction {
+    override fun create(dto: QuizDayCreateDto) = transaction {
         QuizDayTable.insert {
             it[quizId] = dto.quizId
             it[dayName] = dto.dayName
@@ -53,7 +55,7 @@ class QuizDayDao {
         }.let { getById(it[QuizDayTable.id]) }
     }
 
-    fun update(id: Int, dto: QuizDayUpdateDto) = transaction {
+    override fun update(id: Int, dto: QuizDayUpdateDto) = transaction {
         QuizDayTable.update({ QuizDayTable.id eq id }) { updateStatement ->
             dto.quizId?.let { updateStatement[QuizDayTable.quizId] = it }
             dto.dayName?.let { updateStatement[QuizDayTable.dayName] = it }
@@ -65,7 +67,7 @@ class QuizDayDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         QuizDayTable.deleteWhere { QuizDayTable.id eq id } > 0
     }
 }

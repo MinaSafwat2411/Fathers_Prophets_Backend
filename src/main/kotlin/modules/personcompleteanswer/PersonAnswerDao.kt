@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.modules.personcompleteanswer
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class PersonAnswerDao {
+class PersonAnswerDao : CrudDao<PersonAnswerDto, PersonAnswerCreateDto, PersonAnswerUpdateDto> {
 
     private fun ResultRow.toDto() = PersonAnswerDto(
         id = this[PersonsAnswersTable.id],
@@ -14,11 +16,11 @@ class PersonAnswerDao {
         status = this[PersonsAnswersTable.status]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         PersonsAnswersTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         PersonsAnswersTable.selectAll()
             .where { PersonsAnswersTable.id eq id }
             .map { it.toDto() }
@@ -44,7 +46,7 @@ class PersonAnswerDao {
             .singleOrNull()
     }
 
-    fun create(dto: PersonAnswerCreateDto) = transaction {
+    override fun create(dto: PersonAnswerCreateDto) = transaction {
         PersonsAnswersTable.insert {
             it[answer] = dto.answer
             it[questionId] = dto.questionId
@@ -53,7 +55,7 @@ class PersonAnswerDao {
         }.let { getById(it[PersonsAnswersTable.id]) }
     }
 
-    fun update(id: Int, dto: PersonAnswerUpdateDto) = transaction {
+    override fun update(id: Int, dto: PersonAnswerUpdateDto) = transaction {
         PersonsAnswersTable.update({ PersonsAnswersTable.id eq id }) { updateStatement ->
             dto.answer?.let { updateStatement[PersonsAnswersTable.answer] = it }
             dto.questionId?.let { updateStatement[PersonsAnswersTable.questionId] = it }
@@ -62,7 +64,7 @@ class PersonAnswerDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         PersonsAnswersTable.deleteWhere { PersonsAnswersTable.id eq id } > 0
     }
 }

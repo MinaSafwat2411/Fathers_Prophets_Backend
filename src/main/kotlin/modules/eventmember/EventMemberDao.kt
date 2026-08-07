@@ -1,11 +1,12 @@
 package com.fathersprophets.backend.modules.eventmember
 
+import com.fathersprophets.backend.base.CrudDao
 
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class EventMemberDao {
+class EventMemberDao : CrudDao<EventMemberDto, EventMemberCreateDto, EventMemberUpdateDto> {
 
     private fun ResultRow.toDto() = EventMemberDto(
         id = this[EventMembersTable.id],
@@ -13,11 +14,11 @@ class EventMemberDao {
         userId = this[EventMembersTable.userId]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         EventMembersTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         EventMembersTable.selectAll()
             .where { EventMembersTable.id eq id }
             .map { it.toDto() }
@@ -43,21 +44,21 @@ class EventMemberDao {
             .singleOrNull()
     }
 
-    fun create(dto: EventMemberCreateDto) = transaction {
+    override fun create(dto: EventMemberCreateDto) = transaction {
         EventMembersTable.insert {
             it[eventId] = dto.eventId
             it[userId] = dto.userId
         }.let { getById(it[EventMembersTable.id]) }
     }
 
-    fun update(id: Int, dto: EventMemberUpdateDto) = transaction {
+    override fun update(id: Int, dto: EventMemberUpdateDto) = transaction {
         EventMembersTable.update({ EventMembersTable.id eq id }) { updateStatement ->
             dto.eventId?.let { updateStatement[EventMembersTable.eventId] = it }
             dto.userId?.let { updateStatement[EventMembersTable.userId] = it }
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         EventMembersTable.deleteWhere { EventMembersTable.id eq id } > 0
     }
 }

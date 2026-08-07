@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.modules.supereventbooking
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class SuperEventBookingDao {
+class SuperEventBookingDao : CrudDao<SuperEventBookingDto, SuperEventBookingCreateDto, SuperEventBookingUpdateDto> {
 
     private fun ResultRow.toDto() = SuperEventBookingDto(
         id = this[SuperEventBookingsTable.id],
@@ -17,11 +19,11 @@ class SuperEventBookingDao {
         teacherId = this[SuperEventBookingsTable.teacherId]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         SuperEventBookingsTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         SuperEventBookingsTable.selectAll()
             .where { SuperEventBookingsTable.id eq id }
             .map { it.toDto() }
@@ -47,7 +49,7 @@ class SuperEventBookingDao {
             .singleOrNull()
     }
 
-    fun create(dto: SuperEventBookingCreateDto) = transaction {
+    override fun create(dto: SuperEventBookingCreateDto) = transaction {
         SuperEventBookingsTable.insert {
             it[superEventId] = dto.superEventId
             it[userId] = dto.userId
@@ -58,7 +60,7 @@ class SuperEventBookingDao {
         }.let { getById(it[SuperEventBookingsTable.id]) }
     }
 
-    fun update(id: Int, dto: SuperEventBookingUpdateDto) = transaction {
+    override fun update(id: Int, dto: SuperEventBookingUpdateDto) = transaction {
         SuperEventBookingsTable.update({ SuperEventBookingsTable.id eq id }) { updateStatement ->
             dto.superEventId?.let { updateStatement[SuperEventBookingsTable.superEventId] = it }
             dto.userId?.let { updateStatement[SuperEventBookingsTable.userId] = it }
@@ -69,7 +71,7 @@ class SuperEventBookingDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         SuperEventBookingsTable.deleteWhere { SuperEventBookingsTable.id eq id } > 0
     }
 }

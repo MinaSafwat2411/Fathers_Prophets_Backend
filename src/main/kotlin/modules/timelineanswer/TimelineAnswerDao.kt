@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.modules.timelineanswer
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class TimelineAnswerDao {
+class TimelineAnswerDao : CrudDao<TimelineAnswerDto, TimelineAnswerCreateDto, TimelineAnswerUpdateDto> {
 
     private fun ResultRow.toDto() = TimelineAnswerDto(
         id = this[TimelineAnswersTable.id],
@@ -14,11 +16,11 @@ class TimelineAnswerDao {
         status = this[TimelineAnswersTable.status]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         TimelineAnswersTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         TimelineAnswersTable.selectAll()
             .where { TimelineAnswersTable.id eq id }
             .map { it.toDto() }
@@ -44,7 +46,7 @@ class TimelineAnswerDao {
             .singleOrNull()
     }
 
-    fun create(dto: TimelineAnswerCreateDto) = transaction {
+    override fun create(dto: TimelineAnswerCreateDto) = transaction {
         TimelineAnswersTable.insert {
             it[timelineId] = dto.timelineId
             it[userId] = dto.userId
@@ -53,7 +55,7 @@ class TimelineAnswerDao {
         }.let { getById(it[TimelineAnswersTable.id]) }
     }
 
-    fun update(id: Int, dto: TimelineAnswerUpdateDto) = transaction {
+    override fun update(id: Int, dto: TimelineAnswerUpdateDto) = transaction {
         TimelineAnswersTable.update({ TimelineAnswersTable.id eq id }) { updateStatement ->
             dto.timelineId?.let { updateStatement[TimelineAnswersTable.timelineId] = it }
             dto.userId?.let { updateStatement[TimelineAnswersTable.userId] = it }
@@ -62,7 +64,7 @@ class TimelineAnswerDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         TimelineAnswersTable.deleteWhere { TimelineAnswersTable.id eq id } > 0
     }
 }

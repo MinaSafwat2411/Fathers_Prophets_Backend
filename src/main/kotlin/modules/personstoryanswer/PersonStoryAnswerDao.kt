@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.modules.personstoryanswer
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class PersonStoryAnswerDao {
+class PersonStoryAnswerDao : CrudDao<PersonStoryAnswerDto, PersonStoryAnswerCreateDto, PersonStoryAnswerUpdateDto> {
 
     private fun ResultRow.toDto() = PersonStoryAnswerDto(
         id = this[PersonStoryAnswersTable.id],
@@ -15,11 +17,11 @@ class PersonStoryAnswerDao {
         questionId = this[PersonStoryAnswersTable.questionId]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         PersonStoryAnswersTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         PersonStoryAnswersTable.selectAll()
             .where { PersonStoryAnswersTable.id eq id }
             .map { it.toDto() }
@@ -55,7 +57,7 @@ class PersonStoryAnswerDao {
             .singleOrNull()
     }
 
-    fun create(dto: PersonStoryAnswerCreateDto) = transaction {
+    override fun create(dto: PersonStoryAnswerCreateDto) = transaction {
         PersonStoryAnswersTable.insert {
             it[storyId] = dto.storyId
             it[userId] = dto.userId
@@ -65,7 +67,7 @@ class PersonStoryAnswerDao {
         }.let { getById(it[PersonStoryAnswersTable.id]) }
     }
 
-    fun update(id: Int, dto: PersonStoryAnswerUpdateDto) = transaction {
+    override fun update(id: Int, dto: PersonStoryAnswerUpdateDto) = transaction {
         PersonStoryAnswersTable.update({ PersonStoryAnswersTable.id eq id }) { updateStatement ->
             dto.storyId?.let { updateStatement[PersonStoryAnswersTable.storyId] = it }
             dto.userId?.let { updateStatement[PersonStoryAnswersTable.userId] = it }
@@ -75,7 +77,7 @@ class PersonStoryAnswerDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         PersonStoryAnswersTable.deleteWhere { PersonStoryAnswersTable.id eq id } > 0
     }
 }

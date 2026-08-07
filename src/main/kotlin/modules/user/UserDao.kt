@@ -1,15 +1,19 @@
 package com.fathersprophets.backend.modules.user
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDate
 
-class UserDao {
+class UserDao : CrudDao<UserDto, UserCreateDto, UserUpdateDto> {
 
     private fun ResultRow.toDto() = UserDto(
         id = this[UsersTable.id],
-        name = this[UsersTable.name],
+        fullName = this[UsersTable.fullName],
+        firstName = this[UsersTable.firstName],
+        lastName = this[UsersTable.lastName],
         username = this[UsersTable.username],
         email = this[UsersTable.email],
         phone = this[UsersTable.phone],
@@ -21,6 +25,7 @@ class UserDao {
         isShams = this[UsersTable.isShams],
         profile = this[UsersTable.profile],
         isReviewed = this[UsersTable.isReviewed],
+        isVerified = this[UsersTable.isVerified],
         role = this[UsersTable.role],
         memberId = this[UsersTable.memberId],
         familyId = this[UsersTable.familyId],
@@ -28,11 +33,11 @@ class UserDao {
         score = this[UsersTable.score]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         UsersTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         UsersTable.selectAll()
             .where { UsersTable.id eq id }
             .map { it.toDto() }
@@ -43,6 +48,13 @@ class UserDao {
         UsersTable.selectAll()
             .where { UsersTable.username eq username }
             .map { it.toDto() }
+            .singleOrNull()
+    }
+
+    fun getPasswordHashByUsername(username: String) = transaction {
+        UsersTable.selectAll()
+            .where { UsersTable.username eq username }
+            .map { it[UsersTable.password] }
             .singleOrNull()
     }
 
@@ -67,6 +79,12 @@ class UserDao {
             .singleOrNull()
     }
 
+    fun getUsersWithBirthDate() = transaction {
+        UsersTable.selectAll()
+            .where { UsersTable.birthDate.isNotNull() }
+            .map { it.toDto() }
+    }
+
     fun getByFamilyId(familyId: Int) = transaction {
         UsersTable.selectAll()
             .where { UsersTable.familyId eq familyId }
@@ -79,9 +97,11 @@ class UserDao {
             .map { it.toDto() }
     }
 
-    fun create(dto: UserCreateDto) = transaction {
+    override fun create(dto: UserCreateDto) = transaction {
         UsersTable.insert {
-            it[name] = dto.name
+            it[firstName] = dto.firstName
+            it[lastName] = dto.lastName
+            it[fullName] = "${dto.firstName} ${dto.lastName}"
             it[password] = dto.password
             it[username] = dto.username
             it[email] = dto.email
@@ -94,6 +114,7 @@ class UserDao {
             it[isShams] = dto.isShams
             it[profile] = dto.profile
             it[isReviewed] = dto.isReviewed
+            it[isVerified] = dto.isVerified
             it[role] = dto.role
             it[memberId] = dto.memberId
             it[familyId] = dto.familyId
@@ -102,9 +123,18 @@ class UserDao {
         }.let { getById(it[UsersTable.id]) }
     }
 
-    fun update(id: Int, dto: UserUpdateDto) = transaction {
+    override fun update(id: Int, dto: UserUpdateDto) = transaction {
         UsersTable.update({ UsersTable.id eq id }) { updateStatement ->
-            dto.name?.let { updateStatement[UsersTable.name] = it }
+            var fullName : String? = null
+            dto.firstName?.let {
+                updateStatement[UsersTable.firstName] = it
+                fullName = it
+            }
+            dto.lastName?.let {
+                updateStatement[UsersTable.lastName] = it
+                fullName = "$fullName $it"
+            }
+            fullName?.let { updateStatement[UsersTable.fullName] = it }
             dto.password?.let { updateStatement[UsersTable.password] = it }
             dto.username?.let { updateStatement[UsersTable.username] = it }
             dto.email?.let { updateStatement[UsersTable.email] = it }
@@ -117,6 +147,7 @@ class UserDao {
             dto.isShams?.let { updateStatement[UsersTable.isShams] = it }
             dto.profile?.let { updateStatement[UsersTable.profile] = it }
             dto.isReviewed?.let { updateStatement[UsersTable.isReviewed] = it }
+            dto.isVerified?.let { updateStatement[UsersTable.isVerified] = it }
             dto.role?.let { updateStatement[UsersTable.role] = it }
             dto.memberId?.let { updateStatement[UsersTable.memberId] = it }
             dto.familyId?.let { updateStatement[UsersTable.familyId] = it }
@@ -125,7 +156,7 @@ class UserDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         UsersTable.deleteWhere { UsersTable.id eq id } > 0
     }
 }

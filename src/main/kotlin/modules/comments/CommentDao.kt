@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.modules.comments
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class CommentDao {
+class CommentDao : CrudDao<CommentDto, CommentCreateDto, CommentUpdateDto> {
 
     private fun ResultRow.toDto() = CommentDto(
         id = this[CommentsTable.id],
@@ -13,11 +15,11 @@ class CommentDao {
         teacherId = this[CommentsTable.teacherId]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         CommentsTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         CommentsTable.selectAll()
             .where { CommentsTable.id eq id }
             .map { it.toDto() }
@@ -36,7 +38,7 @@ class CommentDao {
             .map { it.toDto() }
     }
 
-    fun create(dto: CommentCreateDto) = transaction {
+    override fun create(dto: CommentCreateDto) = transaction {
         CommentsTable.insert {
             it[userId] = dto.userId
             it[comment] = dto.comment
@@ -44,14 +46,14 @@ class CommentDao {
         }.let { getById(it[CommentsTable.id]) }
     }
 
-    fun update(id: Int, dto: CommentUpdateDto) = transaction {
+    override fun update(id: Int, dto: CommentUpdateDto) = transaction {
         CommentsTable.update({ CommentsTable.id eq id }) { updateStatement ->
             dto.comment?.let { updateStatement[CommentsTable.comment] = it }
             dto.teacherId?.let { updateStatement[CommentsTable.teacherId] = it }
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         CommentsTable.deleteWhere { CommentsTable.id eq id } > 0
     }
 }

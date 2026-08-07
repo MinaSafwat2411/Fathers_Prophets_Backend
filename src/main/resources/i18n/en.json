@@ -60,6 +60,7 @@
   "refresh_token_required": "Refresh token cannot be empty",
   "name_required": "Name cannot be empty",
   "class_id_required": "Class ID cannot be empty",
+  "family_id_required": "Family ID cannot be empty",
   "user_id_required": "User ID cannot be empty",
   "is_teacher_required": "Teacher status cannot be empty",
   "version_required": "Version cannot be empty",
@@ -334,5 +335,12 @@
   "super_event_booking_teacher_invalid": "Selected user is not a teacher",
   "super_event_booking_teacher_assigned_successfully": "Teacher assigned to booking successfully",
   "required" : "This field is required",
-  "user_deletion_failed": "User deletion failed"
+  "user_deletion_failed": "User deletion failed",
+
+  "email_exists": "Email already exists",
+  "otp_not_requested": "OTP was not requested",
+  "account_not_verified": "Your account is not verified. An OTP has been sent to your email",
+  "token_not_found": "Token not found",
+  "token_update_failed": "Failed to update token",
+  "token_updated_successfully": "Token updated successfully"
 }

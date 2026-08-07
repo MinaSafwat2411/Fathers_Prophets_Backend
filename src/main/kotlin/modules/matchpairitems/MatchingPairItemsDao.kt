@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.modules.matchpairitems
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class MatchingPairItemsDao {
+class MatchingPairItemsDao : CrudDao<MatchingPairItemDto, MatchingPairItemCreateDto, MatchingPairItemUpdateDto> {
 
     private fun ResultRow.toDto() = MatchingPairItemDto(
         id = this[MatchingPairItemsTable.id],
@@ -13,11 +15,11 @@ class MatchingPairItemsDao {
         left = this[MatchingPairItemsTable.left]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         MatchingPairItemsTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         MatchingPairItemsTable.selectAll()
             .where { MatchingPairItemsTable.id eq id }
             .map { it.toDto() }
@@ -30,7 +32,7 @@ class MatchingPairItemsDao {
             .map { it.toDto() }
     }
 
-    fun create(dto: MatchingPairItemCreateDto) = transaction {
+    override fun create(dto: MatchingPairItemCreateDto) = transaction {
         MatchingPairItemsTable.insert {
             it[pairId] = dto.pairId
             it[right] = dto.right
@@ -38,7 +40,7 @@ class MatchingPairItemsDao {
         }.let { getById(it[MatchingPairItemsTable.id]) }
     }
 
-    fun update(id: Int, dto: MatchingPairItemUpdateDto) = transaction {
+    override fun update(id: Int, dto: MatchingPairItemUpdateDto) = transaction {
         MatchingPairItemsTable.update({ MatchingPairItemsTable.id eq id }) { updateStatement ->
             dto.pairId?.let { updateStatement[MatchingPairItemsTable.pairId] = it }
             dto.right?.let { updateStatement[MatchingPairItemsTable.right] = it }
@@ -46,7 +48,7 @@ class MatchingPairItemsDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         MatchingPairItemsTable.deleteWhere { MatchingPairItemsTable.id eq id } > 0
     }
 }

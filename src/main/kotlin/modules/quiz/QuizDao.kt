@@ -1,12 +1,13 @@
 package com.fathersprophets.backend.modules.quiz
 
+import com.fathersprophets.backend.base.CrudDao
 
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.Instant
 
-class QuizDao {
+class QuizDao : CrudDao<QuizDto, QuizCreateDto, QuizUpdateDto> {
 
     private fun ResultRow.toDto() = QuizDto(
         id = this[QuizTable.id],
@@ -17,11 +18,11 @@ class QuizDao {
         familyId = this[QuizTable.familyId]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         QuizTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         QuizTable.selectAll()
             .where { QuizTable.id eq id }
             .map { it.toDto() }
@@ -41,7 +42,7 @@ class QuizDao {
             .map { it.toDto() }
     }
 
-    fun create(dto: QuizCreateDto) = transaction {
+    override fun create(dto: QuizCreateDto) = transaction {
         QuizTable.insert {
             it[number] = dto.number
             it[startAt] = Instant.parse(dto.startAt)
@@ -51,7 +52,7 @@ class QuizDao {
         }.let { getById(it[QuizTable.id]) }
     }
 
-    fun update(id: Int, dto: QuizUpdateDto) = transaction {
+    override fun update(id: Int, dto: QuizUpdateDto) = transaction {
         QuizTable.update({ QuizTable.id eq id }) { updateStatement ->
             dto.number?.let { updateStatement[QuizTable.number] = it }
             dto.startAt?.let { updateStatement[QuizTable.startAt] = Instant.parse(it) }
@@ -61,7 +62,7 @@ class QuizDao {
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         QuizTable.deleteWhere { QuizTable.id eq id } > 0
     }
 }

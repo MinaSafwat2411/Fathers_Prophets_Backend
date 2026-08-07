@@ -1,10 +1,12 @@
 package com.fathersprophets.backend.modules.escapeegyptanswer
 
+import com.fathersprophets.backend.base.CrudDao
+
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class EscapeEgyptAnswerDao {
+class EscapeEgyptAnswerDao : CrudDao<EscapeEgyptAnswerDto, EscapeEgyptAnswerCreateDto, EscapeEgyptAnswerUpdateDto> {
 
     private fun ResultRow.toDto() = EscapeEgyptAnswerDto(
         id = this[EscapeEgyptAnswersTable.id],
@@ -14,11 +16,11 @@ class EscapeEgyptAnswerDao {
         status = this[EscapeEgyptAnswersTable.status]
     )
 
-    fun getAll() = transaction {
+    override fun getAll() = transaction {
         EscapeEgyptAnswersTable.selectAll().map { it.toDto() }
     }
 
-    fun getById(id: Int) = transaction {
+    override fun getById(id: Int) = transaction {
         EscapeEgyptAnswersTable.selectAll()
             .where { EscapeEgyptAnswersTable.id eq id }
             .map { it.toDto() }
@@ -44,7 +46,7 @@ class EscapeEgyptAnswerDao {
             .singleOrNull()
     }
 
-    fun create(dto: EscapeEgyptAnswerCreateDto) = transaction {
+    override fun create(dto: EscapeEgyptAnswerCreateDto) = transaction {
         EscapeEgyptAnswersTable.insert {
             it[escapeQuestionId] = dto.escapeQuestionId
             it[userId] = dto.userId
@@ -53,14 +55,14 @@ class EscapeEgyptAnswerDao {
         }.let { getById(it[EscapeEgyptAnswersTable.id]) }
     }
 
-    fun update(id: Int, dto: EscapeEgyptAnswerUpdateDto) = transaction {
+    override fun update(id: Int, dto: EscapeEgyptAnswerUpdateDto) = transaction {
         EscapeEgyptAnswersTable.update({ EscapeEgyptAnswersTable.id eq id }) { updateStatement ->
             dto.answer?.let { updateStatement[EscapeEgyptAnswersTable.answer] = it }
             dto.status?.let { updateStatement[EscapeEgyptAnswersTable.status] = it }
         }.let { getById(id) }
     }
 
-    fun delete(id: Int) = transaction {
+    override fun delete(id: Int) = transaction {
         EscapeEgyptAnswersTable.deleteWhere { EscapeEgyptAnswersTable.id eq id } > 0
     }
 }
