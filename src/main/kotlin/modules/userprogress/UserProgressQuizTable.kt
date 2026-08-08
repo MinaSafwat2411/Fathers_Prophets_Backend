@@ -1,8 +1,8 @@
 package com.fathersprophets.backend.modules.userprogress
 
-import com.fathersprophets.backend.modules.quizday.QuizDayTable
-import com.fathersprophets.backend.modules.quiz.QuizTable
-import com.fathersprophets.backend.modules.user.UsersTable
+import com.fathersprophets.backend.database.tables.quizday.QuizDayTable
+import com.fathersprophets.backend.database.tables.quiz.QuizTable
+import com.fathersprophets.backend.database.tables.user.UsersTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 

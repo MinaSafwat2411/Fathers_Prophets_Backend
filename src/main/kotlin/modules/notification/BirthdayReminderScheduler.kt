@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.modules.notification
 
 import com.fathersprophets.backend.modules.token.TokenDao
-import com.fathersprophets.backend.modules.user.UserDao
+import com.fathersprophets.backend.database.tables.user.UserDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

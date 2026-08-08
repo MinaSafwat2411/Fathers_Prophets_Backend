@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.modules.quizdayquestion
 
 import com.fathersprophets.backend.database.enums.McqCorrectAnswer
-import com.fathersprophets.backend.modules.quizday.QuizDayTable
+import com.fathersprophets.backend.database.tables.quizday.QuizDayTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.transactions.TransactionManager

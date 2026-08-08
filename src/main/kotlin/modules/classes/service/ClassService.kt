@@ -4,9 +4,9 @@ import com.fathersprophets.backend.base.ApiResponse
 import com.fathersprophets.backend.base.BaseService
 import com.fathersprophets.backend.exceptions.BadRequestException
 import com.fathersprophets.backend.exceptions.NotFoundException
-import com.fathersprophets.backend.modules.classes.ClassCreateDto
-import com.fathersprophets.backend.modules.classes.ClassDto
-import com.fathersprophets.backend.modules.classes.ClassUpdateDto
+import com.fathersprophets.backend.database.tables.classes.ClassCreateDto
+import com.fathersprophets.backend.database.tables.classes.ClassDto
+import com.fathersprophets.backend.database.tables.classes.ClassUpdateDto
 import com.fathersprophets.backend.modules.classes.repository.ClassRepository
 import com.fathersprophets.backend.utils.Localization
 import com.fathersprophets.backend.utils.ValidationUtils.validateRequired

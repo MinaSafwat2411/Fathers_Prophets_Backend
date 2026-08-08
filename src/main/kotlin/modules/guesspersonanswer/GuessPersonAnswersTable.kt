@@ -3,7 +3,7 @@ package com.fathersprophets.backend.modules.guesspersonanswer
 import com.fathersprophets.backend.database.enums.AnswerStatus
 import com.fathersprophets.backend.modules.guessperson.GuessPersonTable
 import com.fathersprophets.backend.modules.person.PersonsTable
-import com.fathersprophets.backend.modules.user.UsersTable
+import com.fathersprophets.backend.database.tables.user.UsersTable
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.postgresql.util.PGobject

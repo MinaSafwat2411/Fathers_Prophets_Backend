@@ -16,9 +16,9 @@ import com.fathersprophets.backend.modules.auth.models.VerifyOtpRequest
 import com.fathersprophets.backend.modules.auth.models.VerifyResetOtpRequest
 import com.fathersprophets.backend.modules.auth.models.VerifyResetOtpResponse
 import com.fathersprophets.backend.modules.auth.repository.AuthRepository
-import com.fathersprophets.backend.modules.user.UserCreateDto
-import com.fathersprophets.backend.modules.user.UserDto
-import com.fathersprophets.backend.modules.user.UserUpdateDto
+import com.fathersprophets.backend.database.tables.user.UserCreateDto
+import com.fathersprophets.backend.database.tables.user.UserDto
+import com.fathersprophets.backend.database.tables.user.UserUpdateDto
 import com.fathersprophets.backend.utils.ValidationUtils.validateRequired
 
 class AuthService(

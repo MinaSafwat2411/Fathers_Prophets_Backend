@@ -1,9 +1,9 @@
 package com.fathersprophets.backend.modules.classes.service
 
 import com.fathersprophets.backend.base.ApiResponse
-import com.fathersprophets.backend.modules.classes.ClassCreateDto
-import com.fathersprophets.backend.modules.classes.ClassDto
-import com.fathersprophets.backend.modules.classes.ClassUpdateDto
+import com.fathersprophets.backend.database.tables.classes.ClassCreateDto
+import com.fathersprophets.backend.database.tables.classes.ClassDto
+import com.fathersprophets.backend.database.tables.classes.ClassUpdateDto
 
 interface IClassService {
     fun getAll(lang: String): ApiResponse<List<ClassDto>>

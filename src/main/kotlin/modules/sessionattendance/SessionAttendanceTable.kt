@@ -1,8 +1,8 @@
 package com.fathersprophets.backend.modules.sessionattendance
 
-import com.fathersprophets.backend.modules.classes.ClassesTable
+import com.fathersprophets.backend.database.tables.classes.ClassesTable
 import com.fathersprophets.backend.modules.session.SessionTable
-import com.fathersprophets.backend.modules.user.UsersTable
+import com.fathersprophets.backend.database.tables.user.UsersTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 

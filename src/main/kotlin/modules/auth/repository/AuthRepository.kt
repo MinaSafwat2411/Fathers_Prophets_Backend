@@ -29,10 +29,10 @@ import com.fathersprophets.backend.modules.otp.OtpUpdateDto
 import com.fathersprophets.backend.modules.token.TokenCreateDto
 import com.fathersprophets.backend.modules.token.TokenDao
 import com.fathersprophets.backend.modules.token.TokenUpdateDto
-import com.fathersprophets.backend.modules.user.UserCreateDto
-import com.fathersprophets.backend.modules.user.UserDao
-import com.fathersprophets.backend.modules.user.UserDto
-import com.fathersprophets.backend.modules.user.UserUpdateDto
+import com.fathersprophets.backend.database.tables.user.UserCreateDto
+import com.fathersprophets.backend.database.tables.user.UserDao
+import com.fathersprophets.backend.database.tables.user.UserDto
+import com.fathersprophets.backend.database.tables.user.UserUpdateDto
 import com.fathersprophets.backend.utils.JwtConfig
 import com.fathersprophets.backend.utils.Localization
 import com.fathersprophets.backend.utils.MailSender

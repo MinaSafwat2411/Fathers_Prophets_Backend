@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.modules.personmcqanswer
 
 import com.fathersprophets.backend.database.enums.AnswerStatus
-import com.fathersprophets.backend.modules.user.UsersTable
+import com.fathersprophets.backend.database.tables.user.UsersTable
 import com.fathersprophets.backend.modules.person.PersonsTable
 import com.fathersprophets.backend.modules.personmcq.PersonsMcqTable
 import org.jetbrains.exposed.sql.ReferenceOption

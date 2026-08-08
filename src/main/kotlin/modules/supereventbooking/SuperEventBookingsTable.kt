@@ -2,7 +2,7 @@ package com.fathersprophets.backend.modules.supereventbooking
 
 import com.fathersprophets.backend.database.enums.SuperEventBookingStatus
 import com.fathersprophets.backend.modules.superevent.SuperEventsTable
-import com.fathersprophets.backend.modules.user.UsersTable
+import com.fathersprophets.backend.database.tables.user.UsersTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.CurrentTimestamp

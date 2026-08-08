@@ -1,10 +1,10 @@
 package com.fathersprophets.backend.modules.classes.repository
 
 import com.fathersprophets.backend.base.BaseRepository
-import com.fathersprophets.backend.modules.classes.ClassCreateDto
-import com.fathersprophets.backend.modules.classes.ClassDao
-import com.fathersprophets.backend.modules.classes.ClassDto
-import com.fathersprophets.backend.modules.classes.ClassUpdateDto
+import com.fathersprophets.backend.database.tables.classes.ClassCreateDto
+import com.fathersprophets.backend.database.tables.classes.ClassDao
+import com.fathersprophets.backend.database.tables.classes.ClassDto
+import com.fathersprophets.backend.database.tables.classes.ClassUpdateDto
 
 class ClassRepository(
     classDao: ClassDao

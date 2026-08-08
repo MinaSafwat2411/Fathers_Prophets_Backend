@@ -1,6 +1,6 @@
 package com.fathersprophets.backend.modules.session
 
-import com.fathersprophets.backend.modules.family.FamilyTable
+import com.fathersprophets.backend.database.tables.family.FamilyTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.CurrentTimestamp

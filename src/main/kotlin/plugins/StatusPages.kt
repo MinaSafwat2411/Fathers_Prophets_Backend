@@ -1,12 +1,12 @@
 package com.fathersprophets.backend.plugins
 
+import com.fathersprophets.backend.base.ApiResponse
 import com.fathersprophets.backend.exceptions.BadRequestException
 import com.fathersprophets.backend.exceptions.ConflictException
 import com.fathersprophets.backend.exceptions.ForbiddenException
 import com.fathersprophets.backend.exceptions.NotFoundException
 import com.fathersprophets.backend.exceptions.TooManyRequestsException
 import com.fathersprophets.backend.exceptions.UnauthorizedException
-import com.fathersprophets.backend.models.ApiResponse
 import com.fathersprophets.backend.utils.Localization
 import io.ktor.http.*
 import io.ktor.server.application.*

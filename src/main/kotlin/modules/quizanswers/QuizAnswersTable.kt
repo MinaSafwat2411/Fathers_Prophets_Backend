@@ -3,7 +3,7 @@ package com.fathersprophets.backend.modules.quizanswers
 import com.fathersprophets.backend.database.enums.AnswerStatus
 import com.fathersprophets.backend.database.enums.McqCorrectAnswer
 import com.fathersprophets.backend.modules.quizdayquestion.QuizDayQuestionsTable
-import com.fathersprophets.backend.modules.user.UsersTable
+import com.fathersprophets.backend.database.tables.user.UsersTable
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.postgresql.util.PGobject

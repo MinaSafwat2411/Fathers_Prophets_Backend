@@ -2,7 +2,7 @@ package com.fathersprophets.backend.modules.escapeegyptanswer
 
 import com.fathersprophets.backend.database.enums.AnswerStatus
 import com.fathersprophets.backend.modules.escapeegyptquestion.EscapeEgyptQuestionsTable
-import com.fathersprophets.backend.modules.user.UsersTable
+import com.fathersprophets.backend.database.tables.user.UsersTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.transactions.TransactionManager

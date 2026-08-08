@@ -1,7 +1,7 @@
 package com.fathersprophets.backend.modules.notificationuser
 
 import com.fathersprophets.backend.modules.notification.NotificationsTable
-import com.fathersprophets.backend.modules.user.UsersTable
+import com.fathersprophets.backend.database.tables.user.UsersTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.timestamp

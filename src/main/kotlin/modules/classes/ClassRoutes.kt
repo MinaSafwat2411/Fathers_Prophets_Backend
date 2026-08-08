@@ -1,5 +1,7 @@
 package com.fathersprophets.backend.modules.classes
 
+import com.fathersprophets.backend.database.tables.classes.ClassCreateDto
+import com.fathersprophets.backend.database.tables.classes.ClassUpdateDto
 import com.fathersprophets.backend.exceptions.BadRequestException
 import com.fathersprophets.backend.modules.classes.service.IClassService
 import com.fathersprophets.backend.utils.Localization
